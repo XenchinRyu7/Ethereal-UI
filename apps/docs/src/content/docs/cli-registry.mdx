@@ -1,0 +1,38 @@
+---
+title: "CLI & JSON Registry Engine"
+description: "How Ethereal UI exposes a static JSON Registry compatible with shadcn CLI and automated AI code generation tools."
+order: 4
+badge: "Registry API"
+---
+
+## Live JSON Registry Endpoints
+
+Every primitive, enterprise block, and full-page dashboard template in Ethereal UI is automatically indexed and served as a static JSON endpoint during the Astro build:
+
+- **Master Registry Index**: [`/registry/index.json`](/registry/index.json)
+- **Individual Item Payload**: `/registry/[slug].json` (e.g. [`/registry/data-table.json`](/registry/data-table.json), [`/registry/executive-analytics.json`](/registry/executive-analytics.json))
+
+---
+
+## Example Registry JSON Payload
+
+```json
+{
+  "$schema": "https://ethereal-ui.vercel.app/schema/registry-item.json",
+  "name": "data-table",
+  "title": "Enterprise Data Grid & Slide-Over Inspector",
+  "type": "registry:block",
+  "dependencies": [
+    "@radix-ui/react-dialog",
+    "@radix-ui/react-dropdown-menu",
+    "lucide-react"
+  ],
+  "files": [
+    {
+      "path": "packages/ui/src/blocks/data-table.tsx",
+      "type": "registry:block"
+    }
+  ]
+}
+```
+

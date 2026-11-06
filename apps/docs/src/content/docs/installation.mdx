@@ -1,0 +1,46 @@
+---
+title: "Installation & Monorepo Setup"
+description: "Install @ethereal/ui as an NPM package or pull individual components and blocks via our shadcn-compatible JSON Registry."
+order: 2
+badge: "Setup"
+---
+
+## Option 1: Install via Package Manager
+
+Install `@ethereal/ui` along with its peer dependencies in any React 18/19 or Next.js / Astro project:
+
+```bash
+pnpm add @ethereal/ui lucide-react clsx tailwind-merge class-variance-authority
+```
+
+Import the native Tailwind CSS v4 theme variables in your root stylesheet:
+
+```css
+@import "tailwindcss";
+@import "@ethereal/ui/styles.css";
+```
+
+Then import any primitive, enterprise block, or full template directly:
+
+```tsx
+import { Button, MultiMetricGrid, EnterpriseDataTable } from "@ethereal/ui"
+
+export default function Dashboard() {
+  return (
+    <main className="space-y-6 p-6 bg-[#09090b] text-zinc-100">
+      <MultiMetricGrid />
+      <EnterpriseDataTable />
+    </main>
+  )
+}
+```
+
+---
+
+## Option 2: Copy & Paste or CLI Registry
+
+Just like **shadcn/ui** and **BoardUI**, you own the source code. Every component and block page includes:
+
+- **One-Click Copy Code**: Copy the self-contained TSX implementation directly into your `components/ui` or `components/blocks` folder.
+- **JSON Registry Endpoint**: Fetch component source and dependency trees programmatically from `/registry/<slug>.json`.
+

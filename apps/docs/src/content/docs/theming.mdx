@@ -1,0 +1,49 @@
+---
+title: "Tailwind v4 Dark Theme Tokens"
+description: "Precision Zinc & Indigo Glow dark-mode design tokens powered by native Tailwind CSS v4 @theme variables."
+order: 3
+badge: "Design System"
+---
+
+## Dark-Mode First Philosophy
+
+Enterprise operators, SREs, and financial analysts spend hours inspecting dense telemetry grids. **Ethereal UI** is engineered specifically for low-eye-strain, high-contrast dark surfaces (`#09090b` root canvas and `#121215` elevated panels) with crisp `1px solid rgba(255, 255, 255, 0.08)` hairlines.
+
+---
+
+## CSS Variable Tokens (`@theme`)
+
+```css
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", ui-monospace, monospace;
+
+  --color-ethereal-bg: #09090b;
+  --color-ethereal-surface: #121215;
+  --color-ethereal-elevated: #18181b;
+  --color-ethereal-border: rgba(255, 255, 255, 0.08);
+  --color-ethereal-hover: rgba(255, 255, 255, 0.04);
+  --color-ethereal-ring: rgba(255, 255, 255, 0.15);
+
+  --color-accent-indigo: #6366f1;
+  --color-accent-violet: #8b5cf6;
+  --color-status-emerald: #10b981;
+  --color-status-amber: #f59e0b;
+  --color-status-rose: #f43f5e;
+}
+```
+
+---
+
+## Surface & Border Hierarchy
+
+| Token / Utility | Hex / RGBA | Usage |
+| :--- | :--- | :--- |
+| `bg-[#09090b]` | `#09090b` | Root application background |
+| `bg-zinc-900/50` | `#121215` | Card, Data Table, and Sidebar surface |
+| `border-white/10` | `rgba(255,255,255,0.08)` | Crisp 1px structural borders |
+| `hover:bg-white/5` | `rgba(255,255,255,0.04)` | Interactive row & button hover states |
+| `ring-white/20` | `rgba(255,255,255,0.15)` | Accessible keyboard focus ring |
+

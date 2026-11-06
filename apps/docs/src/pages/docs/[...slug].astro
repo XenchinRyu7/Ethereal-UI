@@ -1,0 +1,39 @@
+---
+import { getCollection, render } from "astro:content"
+import DocsLayout from "../../layouts/DocsLayout.astro"
+
+export async function getStaticPaths() {
+  const entries = await getCollection("docs")
+  return entries.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }))
+}
+
+const { entry } = Astro.props
+const { Content } = await render(entry)
+---
+
+<DocsLayout
+  title={entry.data.title}
+  description={entry.data.description}
+  categoryLabel="Documentation"
+  toc={[{ id: "overview", label: entry.data.title }]}
+>
+  <article id="overview" class="space-y-6">
+    <div class="space-y-2 border-b border-zinc-200 pb-6 dark:border-zinc-800">
+      <h1 class="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+        {entry.data.title}
+      </h1>
+      <p class="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
+        {entry.data.description}
+      </p>
+    </div>
+
+    <div
+      class="space-y-4 text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed [&_h2]:text-lg [&_h2]:font-semibold [&_h2]:text-zinc-900 dark:[&_h2]:text-white [&_h2]:mt-8 [&_h2]:mb-3 [&_pre]:rounded-xl [&_pre]:border [&_pre]:border-zinc-200 dark:[&_pre]:border-zinc-800 [&_pre]:bg-zinc-950 [&_pre]:text-zinc-100 [&_pre]:p-4 [&_code]:font-mono [&_code]:text-xs [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:my-1.5 [&_hr]:border-zinc-200 dark:[&_hr]:border-zinc-800 [&_hr]:my-6 [&_table]:w-full [&_th]:text-left [&_th]:py-2 [&_th]:text-xs [&_th]:text-zinc-500 [&_td]:py-2 [&_td]:border-t [&_td]:border-zinc-200 dark:[&_td]:border-zinc-800 [&_a]:text-blue-600 dark:[&_a]:text-blue-400 [&_a:hover]:underline"
+    >
+      <Content />
+    </div>
+  </article>
+</DocsLayout>
