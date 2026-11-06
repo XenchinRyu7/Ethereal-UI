@@ -15,7 +15,7 @@
   "dependencies": {
     "@astrojs/mdx": "^4.1.0",
     "@astrojs/react": "^4.2.0",
-    "@ethereal/ui": "workspace:*",
+    "@etherealui/react": "workspace:*",
     "@tailwindcss/vite": "^4.0.9",
     "astro": "^5.4.0",
     "clsx": "^2.1.1",

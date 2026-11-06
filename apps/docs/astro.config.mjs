@@ -5,12 +5,18 @@ import mdx from "@astrojs/mdx"
 import tailwindcss from "@tailwindcss/vite"
 
 export default defineConfig({
-  site: "https://ethereal-ui.vercel.app",
+  site: "https://ui.saefulrohman.dev",
   integrations: [react(), mdx()],
   vite: {
     plugins: [tailwindcss()],
     resolve: {
       alias: {
+        "@etherealui/react/styles.css": fileURLToPath(
+          new URL("../../packages/ui/src/styles/globals.css", import.meta.url)
+        ),
+        "@etherealui/react": fileURLToPath(
+          new URL("../../packages/ui/src/index.ts", import.meta.url)
+        ),
         "@ethereal/ui/styles.css": fileURLToPath(
           new URL("../../packages/ui/src/styles/globals.css", import.meta.url)
         ),

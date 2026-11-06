@@ -12,9 +12,13 @@
     "build": "turbo run build",
     "lint": "eslint \"packages/ui/src/**/*.{ts,tsx}\" \"apps/docs/src/**/*.{ts,tsx}\" && turbo run lint",
     "typecheck": "turbo run lint",
-    "clean": "turbo run clean"
+    "clean": "turbo run clean",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "pnpm --filter @etherealui/react build && changeset publish"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.28.1",
     "@eslint/js": "^10.0.1",
     "eslint": "^10.14.0",
     "husky": "^9.1.7",

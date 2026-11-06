@@ -1,29 +1,29 @@
 ---
 title: "Installation & Monorepo Setup"
-description: "Install @ethereal/ui as an NPM package or pull individual components and blocks via our shadcn-compatible JSON Registry."
+description: "Install @etherealui/react as an NPM package or pull individual components and blocks via our shadcn-compatible JSON Registry."
 order: 2
 badge: "Setup"
 ---
 
 ## Option 1: Install via Package Manager
 
-Install `@ethereal/ui` along with its peer dependencies in any React 18/19 or Next.js / Astro project:
+Install `@etherealui/react` along with its peer dependencies in any React 18/19 or Next.js / Astro project:
 
 ```bash
-pnpm add @ethereal/ui lucide-react clsx tailwind-merge class-variance-authority
+pnpm add @etherealui/react lucide-react clsx tailwind-merge class-variance-authority
 ```
 
 Import the native Tailwind CSS v4 theme variables in your root stylesheet:
 
 ```css
 @import "tailwindcss";
-@import "@ethereal/ui/styles.css";
+@import "@etherealui/react/styles.css";
 ```
 
 Then import any primitive, enterprise block, or full template directly:
 
 ```tsx
-import { Button, MultiMetricGrid, EnterpriseDataTable } from "@ethereal/ui"
+import { Button, MultiMetricGrid, EnterpriseDataTable } from "@etherealui/react"
 
 export default function Dashboard() {
   return (

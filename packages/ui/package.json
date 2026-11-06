@@ -1,7 +1,33 @@
 {
-  "name": "@ethereal/ui",
-  "version": "1.0.0",
-  "description": "Free, Open-Source, Modern, Dark-First Enterprise Dashboard Blocks & Component System",
+  "name": "@etherealui/react",
+  "version": "0.0.1",
+  "description": "Free, Open-Source, Modern, Dark-First Enterprise Dashboard Blocks & Component System for React",
+  "license": "MIT",
+  "author": "Saeful Rohman <saefulrohmandevelopers@gmail.com> (https://saefulrohman.dev)",
+  "homepage": "https://ui.saefulrohman.dev",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/XenchinRyu7/Ethereal-UI.git",
+    "directory": "packages/ui"
+  },
+  "bugs": {
+    "url": "https://github.com/XenchinRyu7/Ethereal-UI/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "react",
+    "ui",
+    "components",
+    "dashboard-blocks",
+    "tailwind-css",
+    "tailwindcss-v4",
+    "radix-ui",
+    "design-system",
+    "enterprise-ui",
+    "ethereal-ui"
+  ],
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",

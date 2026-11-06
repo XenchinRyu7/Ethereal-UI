@@ -207,3 +207,6 @@ export const ProgressMetricCard: React.FC<ProgressMetricCardProps> = ({
     </div>
   )
 }
+
+export type StatCardProps = StatMetricCardProps
+export const StatCard = StatMetricCard

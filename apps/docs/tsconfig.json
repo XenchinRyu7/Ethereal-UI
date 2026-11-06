@@ -6,6 +6,7 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
+      "@etherealui/react": ["../../packages/ui/src/index.ts"],
       "@ethereal/ui": ["../../packages/ui/src/index.ts"]
     }
   }

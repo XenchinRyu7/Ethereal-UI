@@ -399,3 +399,43 @@ export const PageHeaderBar: React.FC<PageHeaderBarProps> = ({
     </div>
   )
 }
+
+export interface AppShellProps {
+  workspaceName?: string
+  planBadge?: string
+  breadcrumbs?: string[]
+  user?: {
+    name: string
+    email: string
+    initials: string
+    avatarSrc?: string
+  }
+  children?: React.ReactNode
+  className?: string
+}
+
+export const AppShell: React.FC<AppShellProps> = ({
+  workspaceName = "Acme Corp",
+  planBadge = "Pro",
+  breadcrumbs = ["Workspace", "Overview"],
+  children,
+  className,
+}) => {
+  return (
+    <div
+      className={cn(
+        "flex min-h-[600px] w-full overflow-hidden rounded-2xl border border-zinc-200 bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-950",
+        className
+      )}
+    >
+      <SidebarShell
+        workspaceName={workspaceName}
+        workspaceTier={planBadge}
+      />
+      <div className="flex flex-1 flex-col min-w-0">
+        <HeaderNavbar breadcrumbs={breadcrumbs} />
+        <main className="flex-1 p-6 space-y-6 overflow-y-auto">{children}</main>
+      </div>
+    </div>
+  )
+}
