@@ -18,6 +18,7 @@ import { cn } from "../utils/cn"
 import { Avatar } from "../primitives/avatar"
 import { Badge } from "../primitives/badge"
 import { Button } from "../primitives/button"
+import { CommandPalette } from "../primitives/command-palette"
 
 export interface SidebarNavItem {
   id: string
@@ -266,63 +267,83 @@ export const HeaderNavbar: React.FC<HeaderNavbarProps> = ({
   onOpenCommandPalette,
   className,
 }) => {
+  const [internalCmdOpen, setInternalCmdOpen] = React.useState(false)
+
+  const handleOpenSearch = () => {
+    if (onOpenCommandPalette) {
+      onOpenCommandPalette()
+    } else {
+      setInternalCmdOpen(true)
+    }
+  }
+
   return (
-    <header
-      className={cn(
-        "flex h-14 w-full items-center justify-between border-b border-zinc-200 bg-white px-5 dark:border-zinc-800 dark:bg-zinc-900",
-        className
-      )}
-    >
-      {/* Breadcrumb Trail */}
-      <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-xs">
-        {breadcrumbs.map((crumb, idx) => {
-          const isLast = idx === breadcrumbs.length - 1
-          return (
-            <React.Fragment key={crumb}>
-              {idx > 0 && (
-                <ChevronRight className="h-3.5 w-3.5 text-zinc-400 shrink-0" />
-              )}
-              <span
-                className={cn(
-                  "truncate",
-                  isLast
-                    ? "font-medium text-zinc-900 dark:text-zinc-100"
-                    : "text-zinc-500 dark:text-zinc-400"
+    <>
+      <header
+        className={cn(
+          "flex h-14 w-full items-center justify-between border-b border-zinc-200 bg-white px-5 dark:border-zinc-800 dark:bg-zinc-900",
+          className
+        )}
+      >
+        {/* Breadcrumb Trail */}
+        <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-xs">
+          {breadcrumbs.map((crumb, idx) => {
+            const isLast = idx === breadcrumbs.length - 1
+            return (
+              <React.Fragment key={crumb}>
+                {idx > 0 && (
+                  <ChevronRight className="h-3.5 w-3.5 text-zinc-400 shrink-0" />
                 )}
-              >
-                {crumb}
-              </span>
-            </React.Fragment>
-          )
-        })}
-      </nav>
+                <span
+                  className={cn(
+                    "truncate",
+                    isLast
+                      ? "font-medium text-zinc-900 dark:text-zinc-100"
+                      : "text-zinc-500 dark:text-zinc-400"
+                  )}
+                >
+                  {crumb}
+                </span>
+              </React.Fragment>
+            )
+          })}
+        </nav>
 
-      {/* Right Controls */}
-      <div className="flex items-center gap-2.5">
-        <button
-          type="button"
-          onClick={onOpenCommandPalette}
-          className="hidden sm:flex h-8 w-52 items-center justify-between rounded-lg border border-zinc-200 bg-zinc-50 px-2.5 text-xs text-zinc-500 transition-colors hover:border-zinc-300 dark:border-zinc-800 dark:bg-zinc-800/60 dark:text-zinc-400 cursor-pointer"
-        >
-          <span className="flex items-center gap-2">
-            <Search className="h-3.5 w-3.5 text-zinc-400" />
-            <span>Quick search...</span>
-          </span>
-          <kbd className="rounded border border-zinc-200 bg-white px-1.5 py-0.5 font-mono text-[10px] text-zinc-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-400">
-            ⌘K
-          </kbd>
-        </button>
+        {/* Right Controls */}
+        <div className="flex items-center gap-2.5">
+          <button
+            type="button"
+            onClick={handleOpenSearch}
+            className="hidden sm:flex h-8 w-52 items-center justify-between rounded-lg border border-zinc-200 bg-zinc-50 px-2.5 text-xs text-zinc-500 transition-colors hover:border-zinc-300 hover:text-zinc-800 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:border-zinc-600 dark:hover:text-zinc-100 cursor-pointer"
+          >
+            <span className="flex items-center gap-2">
+              <Search className="h-3.5 w-3.5 text-zinc-400 dark:text-zinc-400" />
+              <span>Quick search...</span>
+            </span>
+            <kbd className="rounded border border-zinc-200 bg-white px-1.5 py-0.5 font-mono text-[10px] text-zinc-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300">
+              ⌘K
+            </kbd>
+          </button>
 
-        <button
-          type="button"
-          aria-label="Notifications"
-          className="relative flex h-8 w-8 items-center justify-center rounded-lg border border-zinc-200 bg-white text-zinc-500 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 cursor-pointer"
-        >
-          <Bell className="h-3.5 w-3.5" />
-          <span className="absolute right-1.5 top-1.5 h-1.5 w-1.5 rounded-full bg-blue-600" />
-        </button>
-      </div>
-    </header>
+          <button
+            type="button"
+            aria-label="Notifications"
+            className="relative flex h-8 w-8 items-center justify-center rounded-lg border border-zinc-200 bg-white text-zinc-500 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700 cursor-pointer"
+          >
+            <Bell className="h-3.5 w-3.5" />
+            <span className="absolute right-1.5 top-1.5 h-1.5 w-1.5 rounded-full bg-blue-600" />
+          </button>
+        </div>
+      </header>
+
+      {!onOpenCommandPalette && (
+        <CommandPalette
+          open={internalCmdOpen}
+          onOpenChange={setInternalCmdOpen}
+          enableGlobalShortcut={false}
+        />
+      )}
+    </>
   )
 }
 

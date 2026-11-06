@@ -59,7 +59,7 @@ export const UserProfileFormBlock: React.FC<{ className?: string }> = ({
         </div>
         <div className="space-y-2">
           <Label>Username</Label>
-          <Input prefixText="boardui.com/" defaultValue="saefulrdevs" />
+          <Input prefixText="ethereal-ui.dev/" defaultValue="saefulrdevs" />
         </div>
         <div className="space-y-2">
           <Label>Email address</Label>
