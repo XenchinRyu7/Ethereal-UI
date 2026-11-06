@@ -8,10 +8,10 @@ Need help integrating **Ethereal UI (`@etherealui/react`)**, customizing Tailwin
 
 Before opening an issue, please check our comprehensive documentation and interactive component playground:
 
-- **Documentation & Live Playground**: [https://ui.saefulrohman.dev](https://ui.saefulrohman.dev)
-- **Installation Guide**: [https://ui.saefulrohman.dev/docs/installation](https://ui.saefulrohman.dev/docs/installation)
-- **Theming & Dark Mode Tokens**: [https://ui.saefulrohman.dev/docs/theming](https://ui.saefulrohman.dev/docs/theming)
-- **CLI & JSON Registry**: [https://ui.saefulrohman.dev/docs/cli-registry](https://ui.saefulrohman.dev/docs/cli-registry)
+- **Documentation & Live Playground**: [https://ethereal-ui.saefulrohman.dev](https://ethereal-ui.saefulrohman.dev)
+- **Installation Guide**: [https://ethereal-ui.saefulrohman.dev/docs/installation](https://ethereal-ui.saefulrohman.dev/docs/installation)
+- **Theming & Dark Mode Tokens**: [https://ethereal-ui.saefulrohman.dev/docs/theming](https://ethereal-ui.saefulrohman.dev/docs/theming)
+- **CLI & JSON Registry**: [https://ethereal-ui.saefulrohman.dev/docs/cli-registry](https://ethereal-ui.saefulrohman.dev/docs/cli-registry)
 
 ---
 

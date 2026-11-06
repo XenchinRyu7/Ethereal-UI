@@ -1,10 +1,10 @@
 {
   "name": "@etherealui/react",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Free, Open-Source, Modern, Dark-First Enterprise Dashboard Blocks & Component System for React",
   "license": "MIT",
   "author": "Saeful Rohman <saefulrohmandevelopers@gmail.com> (https://saefulrohman.dev)",
-  "homepage": "https://ui.saefulrohman.dev",
+  "homepage": "https://ethereal-ui.saefulrohman.dev",
   "repository": {
     "type": "git",
     "url": "https://github.com/XenchinRyu7/Ethereal-UI.git",

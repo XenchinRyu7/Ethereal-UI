@@ -4,7 +4,7 @@
 
 [![NPM Version](https://img.shields.io/npm/v/@etherealui/react?style=flat-square&logo=npm&color=2563eb&label=%40etherealui%2Freact)](https://www.npmjs.com/package/@etherealui/react)
 [![License: MIT](https://img.shields.io/badge/License-MIT-10b981.svg?style=flat-square)](https://github.com/XenchinRyu7/Ethereal-UI/blob/main/LICENSE)
-[![Astro Docs](https://img.shields.io/badge/Docs-ui.saefulrohman.dev-ff5d01?style=flat-square&logo=astro&logoColor=white)](https://ui.saefulrohman.dev)
+[![Astro Docs](https://img.shields.io/badge/Docs-ethereal-ui.saefulrohman.dev-ff5d01?style=flat-square&logo=astro&logoColor=white)](https://ethereal-ui.saefulrohman.dev)
 [![Tailwind CSS v4](https://img.shields.io/badge/Tailwind%20CSS-v4.0-38bdf8?style=flat-square&logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
 
 ---
@@ -57,7 +57,7 @@ export default function Dashboard() {
 
 ## 🔗 Links
 
-- **Official Documentation**: [https://ui.saefulrohman.dev](https://ui.saefulrohman.dev)
+- **Official Documentation**: [https://ethereal-ui.saefulrohman.dev](https://ethereal-ui.saefulrohman.dev)
 - **GitHub Repository**: [https://github.com/XenchinRyu7/Ethereal-UI](https://github.com/XenchinRyu7/Ethereal-UI)
 - **Author**: [Saeful Rohman (`saefulrohman.dev`)](https://saefulrohman.dev)
 

@@ -2,20 +2,22 @@ name: Release @etherealui/react to NPM
 
 on:
   push:
-    branches:
-      - main
+    tags:
+      - "v*"
+  release:
+    types:
+      - published
   workflow_dispatch:
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
   release:
-    name: Build & Publish @etherealui/react
+    name: Build & Publish @etherealui/react (Tag Release)
     runs-on: ubuntu-latest
     permissions:
       contents: write
       packages: write
-      pull-requests: write
       id-token: write
     env:
       HUSKY: "0"
@@ -31,51 +33,46 @@ jobs:
         with:
           version: 10.22.0
 
-      - name: Setup Node.js
+      - name: Setup Node.js & NPM Registry
         uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: "pnpm"
           registry-url: "https://registry.npmjs.org"
 
-      - name: Configure NPM Authentication & Public Access
-        run: |
-          npm config set //registry.npmjs.org/:_authToken "${NPM_TOKEN}"
-          npm config set access public
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile=false
+
+      - name: Lint & Typecheck @etherealui/react
+        run: pnpm --filter @etherealui/react lint
 
       - name: Build @etherealui/react Package
         run: pnpm --filter @etherealui/react build
 
-      - name: Publish Current Version to NPM if Not Yet Published (--access public)
+      - name: Verify Tag Matches package.json Version (Optional Sync)
         run: |
+          RAW_TAG="${GITHUB_REF_NAME#v}"
           PKG_VERSION=$(node -p "require('./packages/ui/package.json').version")
-          if npm view "@etherealui/react@${PKG_VERSION}" version > /dev/null 2>&1; then
-            echo "@etherealui/react@${PKG_VERSION} is already published on NPM."
+          echo "Git Ref/Tag: ${GITHUB_REF_NAME} | package.json version: ${PKG_VERSION}"
+          if [[ "${GITHUB_REF_TYPE}" == "tag" && "${RAW_TAG}" != "${PKG_VERSION}" ]]; then
+            echo "Syncing packages/ui/package.json version to tag version ${RAW_TAG}..."
+            node -e "
+              const fs = require('fs');
+              const pkg = JSON.parse(fs.readFileSync('./packages/ui/package.json', 'utf8'));
+              pkg.version = '${RAW_TAG}';
+              fs.writeFileSync('./packages/ui/package.json', JSON.stringify(pkg, null, 2) + '\n');
+            "
+          fi
+
+      - name: Publish @etherealui/react to NPM Registry (--access public)
+        run: |
+          FINAL_VERSION=$(node -p "require('./packages/ui/package.json').version")
+          if npm view "@etherealui/react@${FINAL_VERSION}" version > /dev/null 2>&1; then
+            echo "@etherealui/react@${FINAL_VERSION} is already published on NPM."
           else
-            echo "Publishing @etherealui/react@${PKG_VERSION} to NPM with --access public..."
+            echo "Publishing @etherealui/react@${FINAL_VERSION} to NPM with --access public..."
             pnpm --filter @etherealui/react publish --access public --no-git-checks
           fi
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Create Release Pull Request or Publish Updates via Changesets
-        id: changesets
-        uses: changesets/action@v1
-        with:
-          version: pnpm version-packages
-          publish: pnpm --filter @etherealui/react build && pnpm changeset publish
-          commit: "chore(release): version packages"
-          title: "chore(release): version packages"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NPM_CONFIG_ACCESS: public
-          HUSKY: "0"
-

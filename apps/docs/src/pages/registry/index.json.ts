@@ -3,9 +3,9 @@ import { REGISTRY_ITEMS } from "../../data/registry-catalog"
 
 export const GET: APIRoute = async () => {
   const payload = {
-    $schema: "https://ui.saefulrohman.dev/schema/registry.json",
+    $schema: "https://ethereal-ui.saefulrohman.dev/schema/registry.json",
     name: "@etherealui/react",
-    version: "0.0.1",
+    version: "0.0.2",
     license: "MIT",
     totalItems: REGISTRY_ITEMS.length,
     items: REGISTRY_ITEMS.map((item) => ({

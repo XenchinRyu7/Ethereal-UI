@@ -7,16 +7,16 @@
 
   [![NPM Version](https://img.shields.io/npm/v/@etherealui/react?style=flat-square&logo=npm&color=2563eb&label=%40etherealui%2Freact)](https://www.npmjs.com/package/@etherealui/react)
   [![License: MIT](https://img.shields.io/badge/License-MIT-10b981.svg?style=flat-square)](./LICENSE)
-  [![Astro Docs](https://img.shields.io/badge/Docs-Astro%20v5-ff5d01?style=flat-square&logo=astro&logoColor=white)](https://ui.saefulrohman.dev)
+  [![Astro Docs](https://img.shields.io/badge/Docs-Astro%20v5-ff5d01?style=flat-square&logo=astro&logoColor=white)](https://ethereal-ui.saefulrohman.dev)
   [![Tailwind CSS v4](https://img.shields.io/badge/Tailwind%20CSS-v4.0-38bdf8?style=flat-square&logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
   [![Build Status](https://img.shields.io/github/actions/workflow/status/XenchinRyu7/Ethereal-UI/release.yml?branch=main&style=flat-square&logo=githubactions&logoColor=white&label=Build%20%26%20Release)](https://github.com/XenchinRyu7/Ethereal-UI/actions)
 
   <p align="center">
-    <a href="https://ui.saefulrohman.dev"><strong>Explore Documentation</strong></a> ·
-    <a href="https://ui.saefulrohman.dev/components/avatar"><strong>37+ Primitives</strong></a> ·
-    <a href="https://ui.saefulrohman.dev/charts/area-chart"><strong>Statistical Charts</strong></a> ·
-    <a href="https://ui.saefulrohman.dev/blocks/sidebar"><strong>Enterprise Blocks</strong></a> ·
-    <a href="https://ui.saefulrohman.dev/templates/executive-analytics"><strong>SaaS Templates</strong></a>
+    <a href="https://ethereal-ui.saefulrohman.dev"><strong>Explore Documentation</strong></a> ·
+    <a href="https://ethereal-ui.saefulrohman.dev/components/avatar"><strong>37+ Primitives</strong></a> ·
+    <a href="https://ethereal-ui.saefulrohman.dev/charts/area-chart"><strong>Statistical Charts</strong></a> ·
+    <a href="https://ethereal-ui.saefulrohman.dev/blocks/sidebar"><strong>Enterprise Blocks</strong></a> ·
+    <a href="https://ethereal-ui.saefulrohman.dev/templates/executive-analytics"><strong>SaaS Templates</strong></a>
   </p>
 </div>
 
@@ -152,7 +152,7 @@ ethereal-ui/
 ├── .github/workflows/          # GitHub Actions CI/CD (release.yml & deploy-docs.yml)
 ├── .husky/                     # Pre-commit quality gate (ESLint + tsc + Astro build)
 ├── apps/
-│   └── docs/                   # Astro v5 Documentation & Playground (hosted at ui.saefulrohman.dev)
+│   └── docs/                   # Astro v5 Documentation & Playground (hosted at ethereal-ui.saefulrohman.dev)
 ├── packages/
 │   └── ui/                     # @etherealui/react source, Tailwind v4 tokens & tsup bundler
 ├── CONTRIBUTING.md             # Contributor setup, coding standards & PR workflow
@@ -182,7 +182,7 @@ pnpm build
 
 ## 🔗 Links & Resources
 
-- **Official Documentation & Playground**: [https://ui.saefulrohman.dev](https://ui.saefulrohman.dev)
+- **Official Documentation & Playground**: [https://ethereal-ui.saefulrohman.dev](https://ethereal-ui.saefulrohman.dev)
 - **NPM Package Registry**: [https://www.npmjs.com/package/@etherealui/react](https://www.npmjs.com/package/@etherealui/react)
 - **Author's Personal Website**: [https://saefulrohman.dev](https://saefulrohman.dev)
 - **Contributing Guide**: [CONTRIBUTING.md](./CONTRIBUTING.md)
