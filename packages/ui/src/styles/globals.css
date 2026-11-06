@@ -1,0 +1,48 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+:root {
+  --bg-canvas: #ffffff;
+  --bg-subtle: #fafafa;
+  --bg-muted: #f4f4f5;
+  --bg-elevated: #ffffff;
+  --fg-primary: #18181b;
+  --fg-secondary: #52525b;
+  --fg-muted: #71717a;
+  --border-default: #e4e4e7;
+  --border-subtle: #f4f4f5;
+  --accent-primary: #2563eb;
+  --accent-soft: #dbeafe;
+  color-scheme: light;
+}
+
+.dark {
+  --bg-canvas: #09090b;
+  --bg-subtle: #121215;
+  --bg-muted: #18181b;
+  --bg-elevated: #18181b;
+  --fg-primary: #fafafa;
+  --fg-secondary: #a1a1aa;
+  --fg-muted: #71717a;
+  --border-default: #27272a;
+  --border-subtle: #18181b;
+  --accent-primary: #3b82f6;
+  --accent-soft: rgba(59, 130, 246, 0.15);
+  color-scheme: dark;
+}
+
+@layer base {
+  body {
+    background-color: var(--bg-canvas);
+    color: var(--fg-primary);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
