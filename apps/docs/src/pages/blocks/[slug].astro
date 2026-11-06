@@ -1,0 +1,50 @@
+---
+import DocsLayout from "../../layouts/DocsLayout.astro"
+import { BoardUIDocPage } from "../../components/PreviewCanvas"
+import { getRegistryByCategory } from "../../data/registry-catalog"
+
+export async function getStaticPaths() {
+  const blocks = getRegistryByCategory("blocks")
+  return blocks.map((item) => ({
+    params: { slug: item.slug },
+    props: { item },
+  }))
+}
+
+const { item } = Astro.props
+
+const toc = [
+  { id: "preview", label: "Preview" },
+  { id: "installation", label: "Installation" },
+  ...(item.sections || []).map((s) => ({ id: s.id, label: s.title })),
+]
+---
+
+<DocsLayout
+  title={item.title}
+  description={item.description}
+  categoryLabel="Blocks"
+  toc={toc}
+>
+  <div class="space-y-6">
+    <div class="space-y-2">
+      <h1 class="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+        {item.title}
+      </h1>
+      <p class="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
+        {item.description}
+      </p>
+    </div>
+
+    <BoardUIDocPage
+      client:load
+      slug={item.slug}
+      title={item.title}
+      description={item.description}
+      code={item.code}
+      sourceFile={item.sourceFile}
+      dependencies={item.dependencies}
+      sections={item.sections}
+    />
+  </div>
+</DocsLayout>
