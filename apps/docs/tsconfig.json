@@ -5,8 +5,8 @@
     "jsxImportSource": "react",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@ethereal/ui": ["../../packages/ui/src/index.ts"]
     }
   }
 }
-
