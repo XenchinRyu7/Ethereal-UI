@@ -1,0 +1,43 @@
+---
+import "../styles/global.css"
+import { ThemeToggle } from "../components/ThemeToggle"
+
+interface Props {
+  title?: string
+  description?: string
+}
+
+const {
+  title = "Ethereal UI — Modern React Components & Dashboard Blocks",
+  description = "Clean, accessible light & dark mode React components and dashboard blocks built with Tailwind CSS v4 and Radix UI.",
+} = Astro.props
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <script is:inline>
+      // Respect saved light/dark preference (defaulting to clean Light mode like BoardUI)
+      const saved = localStorage.getItem("ethereal-theme")
+      if (saved === "dark") {
+        document.documentElement.classList.add("dark")
+      } else {
+        document.documentElement.classList.remove("dark")
+      }
+    </script>
+  </head>
+  <body class="min-h-screen bg-white text-zinc-900 antialiased dark:bg-[#09090b] dark:text-zinc-100">
+    <slot />
+    <ThemeToggle floating client:load />
+  </body>
+</html>
