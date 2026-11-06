@@ -1,6 +1,6 @@
 import * as React from "react"
 import { Search, Layers, Box, LayoutTemplate, BookOpen } from "lucide-react"
-import { CommandPalette, type CommandItem } from "@ethereal/ui"
+import { CommandPalette, type CommandItem } from "@etherealui/react"
 import { REGISTRY_ITEMS } from "../data/registry-catalog"
 
 export const NavbarSearchModal: React.FC = () => {

@@ -22,7 +22,7 @@ import {
   ToastCard,
   Combobox,
   cn,
-} from "@ethereal/ui"
+} from "@etherealui/react"
 
 export const LandingHeroShowcase: React.FC = () => {
   const [activeTab, setActiveTab] = React.useState<
@@ -32,7 +32,7 @@ export const LandingHeroShowcase: React.FC = () => {
   const [region, setRegion] = React.useState("us-east-1")
   const [autoBackup, setAutoBackup] = React.useState(true)
 
-  const cliCmd = "npx ethereal-ui@latest add avatar"
+  const cliCmd = "npx @etherealui/cli@latest add avatar"
 
   return (
     <div className="space-y-4">

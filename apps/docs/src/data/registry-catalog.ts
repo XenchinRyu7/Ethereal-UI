@@ -34,7 +34,7 @@ export const REGISTRY_ITEMS: RegistryItem[] = [
     isNew: true,
     dependencies: ["lucide-react"],
     sourceFile: "packages/ui/src/primitives/dialog.tsx",
-    code: `import { Accordion } from "@ethereal/ui"
+    code: `import { Accordion } from "@etherealui/react"
 
 export function AccordionDemo() {
   return (
@@ -79,7 +79,7 @@ export function AccordionDemo() {
     isNew: true,
     dependencies: ["lucide-react"],
     sourceFile: "packages/ui/src/primitives/dialog.tsx",
-    code: `import { Announcement } from "@ethereal/ui"
+    code: `import { Announcement } from "@etherealui/react"
 
 export function AnnouncementDemo() {
   return (
@@ -108,7 +108,7 @@ export function AnnouncementDemo() {
       "A photo or initials avatar in four sizes (20 / 24 / 32 / 36px) with neutral and blue initial tints - used across tables, breadcrumbs, menus, and the sidebar.",
     dependencies: ["class-variance-authority"],
     sourceFile: "packages/ui/src/primitives/avatar.tsx",
-    code: `import { Avatar } from "@ethereal/ui"
+    code: `import { Avatar } from "@etherealui/react"
 
 export function AvatarDemo() {
   return (
@@ -171,7 +171,7 @@ export function AvatarDemo() {
       "Compact status indicators and semantic labels with optional dot indicators for tables, cards, and navigation items.",
     dependencies: ["class-variance-authority"],
     sourceFile: "packages/ui/src/primitives/badge.tsx",
-    code: `import { Badge } from "@ethereal/ui"
+    code: `import { Badge } from "@etherealui/react"
 
 export function BadgeDemo() {
   return (
@@ -202,7 +202,7 @@ export function BadgeDemo() {
       "Displays the current page hierarchy within a workspace so users can navigate back to parent views.",
     dependencies: ["lucide-react"],
     sourceFile: "packages/ui/src/primitives/dialog.tsx",
-    code: `import { Breadcrumb } from "@ethereal/ui"
+    code: `import { Breadcrumb } from "@etherealui/react"
 
 export function BreadcrumbDemo() {
   return (
@@ -226,7 +226,7 @@ export function BreadcrumbDemo() {
       "Interactive button primitive with six semantic variants, four sizes, and built-in loading spinner support.",
     dependencies: ["@radix-ui/react-slot", "class-variance-authority", "lucide-react"],
     sourceFile: "packages/ui/src/primitives/button.tsx",
-    code: `import { Button } from "@ethereal/ui"
+    code: `import { Button } from "@etherealui/react"
 
 export function ButtonDemo() {
   return (
@@ -268,7 +268,7 @@ export function ButtonDemo() {
       "Groups related action buttons or view toggles into a unified segmented container.",
     dependencies: ["lucide-react"],
     sourceFile: "packages/ui/src/primitives/button.tsx",
-    code: `import { Button, ButtonGroup } from "@ethereal/ui"
+    code: `import { Button, ButtonGroup } from "@etherealui/react"
 
 export function ButtonGroupDemo() {
   return (
@@ -291,7 +291,7 @@ export function ButtonGroupDemo() {
     isNew: true,
     dependencies: ["lucide-react"],
     sourceFile: "packages/ui/src/primitives/date-picker.tsx",
-    code: `import { Carousel } from "@ethereal/ui"
+    code: `import { Carousel } from "@etherealui/react"
 
 export function CarouselDemo() {
   return <Carousel />
@@ -307,7 +307,7 @@ export function CarouselDemo() {
       "Accessible Radix UI checkbox control for forms, bulk table row selection, and filter lists.",
     dependencies: ["@radix-ui/react-checkbox", "lucide-react"],
     sourceFile: "packages/ui/src/primitives/switch.tsx",
-    code: `import { Checkbox } from "@ethereal/ui"
+    code: `import { Checkbox } from "@etherealui/react"
 
 export function CheckboxDemo() {
   return (
@@ -334,7 +334,7 @@ export function CheckboxDemo() {
       "Interactive pill tags with optional remove buttons for active filters, multi-select inputs, and categories.",
     dependencies: ["lucide-react"],
     sourceFile: "packages/ui/src/primitives/badge.tsx",
-    code: `import { Chip } from "@ethereal/ui"
+    code: `import { Chip } from "@etherealui/react"
 
 export function ChipDemo() {
   return (
@@ -356,7 +356,7 @@ export function ChipDemo() {
       "Standardized dismiss button for modals, drawers, alerts, and toast notifications.",
     dependencies: ["lucide-react"],
     sourceFile: "packages/ui/src/primitives/button.tsx",
-    code: `import { CloseButton } from "@ethereal/ui"
+    code: `import { CloseButton } from "@etherealui/react"
 
 export function CloseButtonDemo() {
   return (
@@ -378,7 +378,7 @@ export function CloseButtonDemo() {
     isNew: true,
     dependencies: [],
     sourceFile: "packages/ui/src/primitives/date-picker.tsx",
-    code: `import { ColorPicker } from "@ethereal/ui"
+    code: `import { ColorPicker } from "@etherealui/react"
 
 export function ColorPickerDemo() {
   return <ColorPicker />
@@ -396,7 +396,7 @@ export function ColorPickerDemo() {
     dependencies: ["@radix-ui/react-popover", "lucide-react"],
     sourceFile: "packages/ui/src/primitives/select.tsx",
     code: `import * as React from "react"
-import { Combobox } from "@ethereal/ui"
+import { Combobox } from "@etherealui/react"
 
 export function ComboboxDemo() {
   const [value, setValue] = React.useState("us-east")
@@ -426,7 +426,7 @@ export function ComboboxDemo() {
     dependencies: ["@radix-ui/react-dialog", "lucide-react"],
     sourceFile: "packages/ui/src/primitives/command-palette.tsx",
     code: `import * as React from "react"
-import { CommandPalette, Button } from "@ethereal/ui"
+import { CommandPalette, Button } from "@etherealui/react"
 
 export function CommandPaletteDemo() {
   const [open, setOpen] = React.useState(false)
@@ -451,7 +451,7 @@ export function CommandPaletteDemo() {
     isNew: true,
     dependencies: ["lucide-react"],
     sourceFile: "packages/ui/src/primitives/dropdown-menu.tsx",
-    code: `import { ContextMenuBox } from "@ethereal/ui"
+    code: `import { ContextMenuBox } from "@etherealui/react"
 
 export function ContextMenuDemo() {
   return (
@@ -479,7 +479,7 @@ export function ContextMenuDemo() {
     isNew: true,
     dependencies: ["lucide-react"],
     sourceFile: "packages/ui/src/primitives/date-picker.tsx",
-    code: `import { DateCalendar } from "@ethereal/ui"
+    code: `import { DateCalendar } from "@etherealui/react"
 
 export function DateCalendarDemo() {
   return <DateCalendar />
@@ -495,7 +495,7 @@ export function DateCalendarDemo() {
       "Popover date-range selector with common analytics reporting presets (Last 7 days, Last 30 days, YTD).",
     dependencies: ["@radix-ui/react-popover", "lucide-react"],
     sourceFile: "packages/ui/src/primitives/date-picker.tsx",
-    code: `import { DateRangePicker } from "@ethereal/ui"
+    code: `import { DateRangePicker } from "@etherealui/react"
 
 export function DatePickerDemo() {
   return <DateRangePicker />
@@ -511,7 +511,7 @@ export function DatePickerDemo() {
       "Horizontal structural hairline with an optional centered section label.",
     dependencies: [],
     sourceFile: "packages/ui/src/primitives/dialog.tsx",
-    code: `import { Divider } from "@ethereal/ui"
+    code: `import { Divider } from "@etherealui/react"
 
 export function DividerDemo() {
   return (
@@ -535,7 +535,7 @@ export function DividerDemo() {
     sourceFile: "packages/ui/src/primitives/drawer.tsx",
     code: `import {
   Drawer, DrawerTrigger, DrawerContent, DrawerHeader, DrawerTitle, DrawerDescription, DrawerFooter, Button
-} from "@ethereal/ui"
+} from "@etherealui/react"
 
 export function DrawerDemo() {
   return (
@@ -571,7 +571,7 @@ export function DrawerDemo() {
     sourceFile: "packages/ui/src/primitives/dropdown-menu.tsx",
     code: `import {
   DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, Button
-} from "@ethereal/ui"
+} from "@etherealui/react"
 
 export function DropdownDemo() {
   return (
@@ -599,7 +599,7 @@ export function DropdownDemo() {
       "Drag-and-drop file upload zone with file size formatting and upload progress bars.",
     dependencies: ["lucide-react"],
     sourceFile: "packages/ui/src/primitives/date-picker.tsx",
-    code: `import { FileDropzone } from "@ethereal/ui"
+    code: `import { FileDropzone } from "@etherealui/react"
 
 export function FileUploadDemo() {
   return <FileDropzone className="w-full max-w-md" />
@@ -615,7 +615,7 @@ export function FileUploadDemo() {
       "Compact square button designed specifically for toolbar icons, table actions, and navigation controls.",
     dependencies: ["lucide-react"],
     sourceFile: "packages/ui/src/primitives/button.tsx",
-    code: `import { Button } from "@ethereal/ui"
+    code: `import { Button } from "@etherealui/react"
 import { Settings, Bell, Plus } from "lucide-react"
 
 export function IconButtonDemo() {
@@ -644,7 +644,7 @@ export function IconButtonDemo() {
       "Single-line text input supporting leading/trailing icons and fixed text prefixes or suffixes.",
     dependencies: ["lucide-react"],
     sourceFile: "packages/ui/src/primitives/input.tsx",
-    code: `import { Input, Label } from "@ethereal/ui"
+    code: `import { Input, Label } from "@etherealui/react"
 
 export function InputDemo() {
   return (
@@ -673,7 +673,7 @@ export function InputDemo() {
     sourceFile: "packages/ui/src/primitives/dialog.tsx",
     code: `import {
   Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, Button
-} from "@ethereal/ui"
+} from "@etherealui/react"
 
 export function ModalDemo() {
   return (
@@ -706,7 +706,7 @@ export function ModalDemo() {
       "Page number navigation bar with previous and next buttons for multi-page tables and lists.",
     dependencies: ["lucide-react"],
     sourceFile: "packages/ui/src/primitives/dialog.tsx",
-    code: `import { Pagination } from "@ethereal/ui"
+    code: `import { Pagination } from "@etherealui/react"
 
 export function PaginationDemo() {
   return <Pagination totalPages={5} initialPage={2} />
@@ -722,7 +722,7 @@ export function PaginationDemo() {
       "Floating card anchored to a trigger button for quick settings, filters, and inline forms.",
     dependencies: ["@radix-ui/react-popover"],
     sourceFile: "packages/ui/src/primitives/tooltip.tsx",
-    code: `import { Popover, PopoverTrigger, PopoverContent, Button, Input, Label } from "@ethereal/ui"
+    code: `import { Popover, PopoverTrigger, PopoverContent, Button, Input, Label } from "@etherealui/react"
 
 export function PopoverDemo() {
   return (
@@ -751,7 +751,7 @@ export function PopoverDemo() {
       "Linear and circular progress bars for quota consumption, onboarding completion, and file uploads.",
     dependencies: [],
     sourceFile: "packages/ui/src/primitives/progress.tsx",
-    code: `import { Progress, CircularProgress } from "@ethereal/ui"
+    code: `import { Progress, CircularProgress } from "@etherealui/react"
 
 export function ProgressDemo() {
   return (
@@ -773,7 +773,7 @@ export function ProgressDemo() {
     dependencies: [],
     sourceFile: "packages/ui/src/primitives/switch.tsx",
     code: `import * as React from "react"
-import { RadioGroup } from "@ethereal/ui"
+import { RadioGroup } from "@etherealui/react"
 
 export function RadioGroupDemo() {
   const [plan, setPlan] = React.useState("pro")
@@ -800,7 +800,7 @@ export function RadioGroupDemo() {
       "Native-feeling accessible dropdown menu built on Radix UI Select primitives.",
     dependencies: ["@radix-ui/react-select", "lucide-react"],
     sourceFile: "packages/ui/src/primitives/select.tsx",
-    code: `import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@ethereal/ui"
+    code: `import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@etherealui/react"
 
 export function SelectDemo() {
   return (
@@ -827,7 +827,7 @@ export function SelectDemo() {
       "Animated placeholder shapes that preview the layout of cards and tables while data is loading.",
     dependencies: [],
     sourceFile: "packages/ui/src/primitives/skeleton.tsx",
-    code: `import { CardSkeleton } from "@ethereal/ui"
+    code: `import { CardSkeleton } from "@etherealui/react"
 
 export function SkeletonDemo() {
   return <CardSkeleton className="w-80" />
@@ -844,7 +844,7 @@ export function SkeletonDemo() {
     dependencies: [],
     sourceFile: "packages/ui/src/primitives/switch.tsx",
     code: `import * as React from "react"
-import { Slider } from "@ethereal/ui"
+import { Slider } from "@etherealui/react"
 
 export function SliderDemo() {
   const [val, setVal] = React.useState(65)
@@ -861,7 +861,7 @@ export function SliderDemo() {
       "Two-state toggle switch built on Radix UI Switch for instant boolean preferences.",
     dependencies: ["@radix-ui/react-switch"],
     sourceFile: "packages/ui/src/primitives/switch.tsx",
-    code: `import { Switch } from "@ethereal/ui"
+    code: `import { Switch } from "@etherealui/react"
 
 export function SwitchDemo() {
   return (
@@ -882,7 +882,7 @@ export function SwitchDemo() {
       "Clean, responsive tabular layout with subtle row hover states, avatars, and status badges.",
     dependencies: [],
     sourceFile: "packages/ui/src/blocks/data-table.tsx",
-    code: `import { Avatar, Badge } from "@ethereal/ui"
+    code: `import { Avatar, Badge } from "@etherealui/react"
 
 export function SimpleTableDemo() {
   return (
@@ -920,7 +920,7 @@ export function SimpleTableDemo() {
       "Layered content views supporting Segmented, Underline, and Pill trigger styles.",
     dependencies: ["@radix-ui/react-tabs", "class-variance-authority"],
     sourceFile: "packages/ui/src/primitives/tabs.tsx",
-    code: `import { Tabs, TabsList, TabsTrigger, TabsContent } from "@ethereal/ui"
+    code: `import { Tabs, TabsList, TabsTrigger, TabsContent } from "@etherealui/react"
 
 export function TabsDemo() {
   return (
@@ -947,7 +947,7 @@ export function TabsDemo() {
       "Multi-line text input with optional automatic height expansion as the user types.",
     dependencies: [],
     sourceFile: "packages/ui/src/primitives/input.tsx",
-    code: `import { Textarea, Label } from "@ethereal/ui"
+    code: `import { Textarea, Label } from "@etherealui/react"
 
 export function TextareaDemo() {
   return (
@@ -968,7 +968,7 @@ export function TextareaDemo() {
       "Non-disruptive notification card with semantic status icons (success, info, warning, error).",
     dependencies: ["lucide-react"],
     sourceFile: "packages/ui/src/primitives/toast.tsx",
-    code: `import { ToastCard } from "@ethereal/ui"
+    code: `import { ToastCard } from "@etherealui/react"
 
 export function ToastDemo() {
   return (
@@ -990,7 +990,7 @@ export function ToastDemo() {
       "Compact floating label that appears on hover or keyboard focus to explain icon controls.",
     dependencies: ["@radix-ui/react-tooltip"],
     sourceFile: "packages/ui/src/primitives/tooltip.tsx",
-    code: `import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent, Button } from "@ethereal/ui"
+    code: `import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent, Button } from "@etherealui/react"
 
 export function TooltipDemo() {
   return (
@@ -1020,7 +1020,7 @@ export function TooltipDemo() {
     isNew: true,
     dependencies: ["lucide-react"],
     sourceFile: "packages/ui/src/blocks/app-shell.tsx",
-    code: `import { SidebarShell } from "@ethereal/ui"
+    code: `import { SidebarShell } from "@etherealui/react"
 
 export function SidebarBlockDemo() {
   return <SidebarShell />
@@ -1036,7 +1036,7 @@ export function SidebarBlockDemo() {
       "Top application bar featuring breadcrumb navigation, Cmd+K quick search trigger, and notification bell.",
     dependencies: ["lucide-react"],
     sourceFile: "packages/ui/src/blocks/app-shell.tsx",
-    code: `import { HeaderNavbar, PageHeaderBar } from "@ethereal/ui"
+    code: `import { HeaderNavbar, PageHeaderBar } from "@etherealui/react"
 
 export function HeaderNavbarDemo() {
   return (
@@ -1060,7 +1060,7 @@ export function HeaderNavbarDemo() {
       "KPI metric card with percentage trend badge, comparison subtitle, and inline SVG sparkline.",
     dependencies: ["lucide-react"],
     sourceFile: "packages/ui/src/blocks/stat-cards.tsx",
-    code: `import { StatMetricCard, ProgressMetricCard } from "@ethereal/ui"
+    code: `import { StatMetricCard, ProgressMetricCard } from "@etherealui/react"
 
 export function StatCardDemo() {
   return (
@@ -1087,7 +1087,7 @@ export function StatCardDemo() {
     isNew: true,
     dependencies: ["lucide-react"],
     sourceFile: "packages/ui/src/blocks/stat-cards.tsx",
-    code: `import { MultiMetricGrid } from "@ethereal/ui"
+    code: `import { MultiMetricGrid } from "@etherealui/react"
 
 export function MetricGridDemo() {
   return <MultiMetricGrid />
@@ -1104,7 +1104,7 @@ export function MetricGridDemo() {
     isNew: true,
     dependencies: ["@radix-ui/react-dialog", "@radix-ui/react-dropdown-menu", "lucide-react"],
     sourceFile: "packages/ui/src/blocks/data-table.tsx",
-    code: `import { EnterpriseDataTable } from "@ethereal/ui"
+    code: `import { EnterpriseDataTable } from "@etherealui/react"
 
 export function DataTableDemo() {
   return <EnterpriseDataTable />
@@ -1120,7 +1120,7 @@ export function DataTableDemo() {
       "Multi-condition filter bar with search input, removable filter chips, date-range picker, and list/grid view toggle.",
     dependencies: ["lucide-react"],
     sourceFile: "packages/ui/src/blocks/filter-bar.tsx",
-    code: `import { AdvancedFilterBar } from "@ethereal/ui"
+    code: `import { AdvancedFilterBar } from "@etherealui/react"
 
 export function FilterBarDemo() {
   return <AdvancedFilterBar />
@@ -1136,7 +1136,7 @@ export function FilterBarDemo() {
       "Account profile form block with avatar upload header, prefix username input, timezone select, and auto-resizing bio.",
     dependencies: ["@radix-ui/react-select", "lucide-react"],
     sourceFile: "packages/ui/src/blocks/settings-blocks.tsx",
-    code: `import { UserProfileFormBlock } from "@ethereal/ui"
+    code: `import { UserProfileFormBlock } from "@etherealui/react"
 
 export function ProfileFormDemo() {
   return <UserProfileFormBlock />
@@ -1152,7 +1152,7 @@ export function ProfileFormDemo() {
       "Workspace team directory with online presence avatars, role selector dropdowns, and member invitation flow.",
     dependencies: ["@radix-ui/react-select", "lucide-react"],
     sourceFile: "packages/ui/src/blocks/settings-blocks.tsx",
-    code: `import { TeamRbacTableBlock } from "@ethereal/ui"
+    code: `import { TeamRbacTableBlock } from "@etherealui/react"
 
 export function TeamMembersDemo() {
   return <TeamRbacTableBlock />
@@ -1168,7 +1168,7 @@ export function TeamMembersDemo() {
       "Two-factor authentication toggles (TOTP & WebAuthn passkeys) paired with an active device session list.",
     dependencies: ["@radix-ui/react-switch", "lucide-react"],
     sourceFile: "packages/ui/src/blocks/settings-blocks.tsx",
-    code: `import { SecurityPasswordFormBlock } from "@ethereal/ui"
+    code: `import { SecurityPasswordFormBlock } from "@etherealui/react"
 
 export function SecuritySettingsDemo() {
   return <SecurityPasswordFormBlock />
@@ -1184,7 +1184,7 @@ export function SecuritySettingsDemo() {
       "Subscription plan overview with seat/storage usage meters and default payment method management.",
     dependencies: ["lucide-react"],
     sourceFile: "packages/ui/src/blocks/settings-blocks.tsx",
-    code: `import { BillingPlanCardBlock } from "@ethereal/ui"
+    code: `import { BillingPlanCardBlock } from "@etherealui/react"
 
 export function BillingCardDemo() {
   return <BillingPlanCardBlock />
@@ -1205,7 +1205,7 @@ export function BillingCardDemo() {
     isNew: true,
     dependencies: ["lucide-react"],
     sourceFile: "packages/ui/src/templates/executive-analytics.tsx",
-    code: `import { ExecutiveAnalyticsTemplate } from "@ethereal/ui"
+    code: `import { ExecutiveAnalyticsTemplate } from "@etherealui/react"
 
 export default function AnalyticsDashboardPage() {
   return <ExecutiveAnalyticsTemplate />
@@ -1221,7 +1221,7 @@ export default function AnalyticsDashboardPage() {
       "Full-page customer management view featuring the filter bar, sortable data table, and slide-over customer details drawer.",
     dependencies: ["lucide-react"],
     sourceFile: "packages/ui/src/templates/control-tower.tsx",
-    code: `import { ControlTowerTemplate } from "@ethereal/ui"
+    code: `import { ControlTowerTemplate } from "@etherealui/react"
 
 export default function CustomerDirectoryPage() {
   return <ControlTowerTemplate />
@@ -1237,7 +1237,7 @@ export default function CustomerDirectoryPage() {
       "Tabbed organization settings portal covering profile details, team members, billing usage, API keys, and security.",
     dependencies: ["lucide-react"],
     sourceFile: "packages/ui/src/templates/workspace-settings.tsx",
-    code: `import { WorkspaceSettingsTemplate } from "@ethereal/ui"
+    code: `import { WorkspaceSettingsTemplate } from "@etherealui/react"
 
 export default function WorkspaceSettingsPage() {
   return <WorkspaceSettingsTemplate />
@@ -1258,7 +1258,7 @@ export default function WorkspaceSettingsPage() {
     isNew: true,
     dependencies: ["lucide-react"],
     sourceFile: "packages/ui/src/primitives/chart.tsx",
-    code: `import { AreaStatisticChart } from "@ethereal/ui"
+    code: `import { AreaStatisticChart } from "@etherealui/react"
 
 export function AreaChartDemo() {
   return (
@@ -1282,7 +1282,7 @@ export function AreaChartDemo() {
     isNew: true,
     dependencies: ["lucide-react"],
     sourceFile: "packages/ui/src/primitives/chart.tsx",
-    code: `import { BarStatisticChart } from "@ethereal/ui"
+    code: `import { BarStatisticChart } from "@etherealui/react"
 
 export function BarChartDemo() {
   return (
@@ -1304,7 +1304,7 @@ export function BarChartDemo() {
     isNew: true,
     dependencies: ["lucide-react"],
     sourceFile: "packages/ui/src/primitives/chart.tsx",
-    code: `import { LineStatisticChart } from "@ethereal/ui"
+    code: `import { LineStatisticChart } from "@etherealui/react"
 
 export function LineChartDemo() {
   return (
@@ -1326,7 +1326,7 @@ export function LineChartDemo() {
     isNew: true,
     dependencies: ["lucide-react"],
     sourceFile: "packages/ui/src/primitives/chart.tsx",
-    code: `import { DonutStatisticChart } from "@ethereal/ui"
+    code: `import { DonutStatisticChart } from "@etherealui/react"
 
 export function DonutChartDemo() {
   return (
@@ -1345,7 +1345,7 @@ export function DonutChartDemo() {
     isNew: true,
     dependencies: ["lucide-react"],
     sourceFile: "packages/ui/src/primitives/chart.tsx",
-    code: `import { RadialStatisticChart } from "@ethereal/ui"
+    code: `import { RadialStatisticChart } from "@etherealui/react"
 
 export function RadialChartDemo() {
   return (
@@ -1367,7 +1367,7 @@ export function RadialChartDemo() {
     isNew: true,
     dependencies: ["lucide-react"],
     sourceFile: "packages/ui/src/primitives/chart.tsx",
-    code: `import { HeatmapStatisticChart } from "@ethereal/ui"
+    code: `import { HeatmapStatisticChart } from "@etherealui/react"
 
 export function HeatmapChartDemo() {
   return (

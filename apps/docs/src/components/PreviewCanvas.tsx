@@ -100,7 +100,7 @@ import {
   ControlTowerTemplate,
   WorkspaceSettingsTemplate,
   cn,
-} from "@ethereal/ui"
+} from "@etherealui/react"
 import type { RegistryVariantSection } from "../data/registry-catalog"
 
 export const LiveDemoRenderer: React.FC<{ slug: string; sectionId?: string }> = ({
@@ -828,6 +828,182 @@ export interface PreviewBoxProps {
   showCopyPage?: boolean
 }
 
+const KEYWORDS = new Set([
+  "import",
+  "from",
+  "export",
+  "default",
+  "function",
+  "return",
+  "const",
+  "let",
+  "var",
+  "type",
+  "interface",
+  "async",
+  "await",
+  "true",
+  "false",
+  "null",
+  "undefined",
+])
+
+const highlightTsxLine = (line: string): React.ReactNode[] => {
+  if (line.trim().startsWith("//")) {
+    return [
+      <span key="comment" className="text-zinc-400 dark:text-zinc-500 italic">
+        {line}
+      </span>,
+    ]
+  }
+
+  const tokenRegex =
+    /("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'|`(?:[^`\\]|\\.)*`|<\/?[A-Za-z0-9_.]+|\b[A-Za-z_][A-Za-z0-9_]*(?=\s*=)|\b[A-Za-z_][A-Za-z0-9_]*\b|[{}()[\].,:;+-=*/>]+)/g
+
+  const nodes: React.ReactNode[] = []
+  let lastIndex = 0
+  let match: RegExpExecArray | null
+
+  while ((match = tokenRegex.exec(line)) !== null) {
+    if (match.index > lastIndex) {
+      nodes.push(line.slice(lastIndex, match.index))
+    }
+
+    const token = match[0]
+    const key = `${match.index}-${token}`
+
+    if (
+      (token.startsWith('"') && token.endsWith('"')) ||
+      (token.startsWith("'") && token.endsWith("'")) ||
+      (token.startsWith("`") && token.endsWith("`"))
+    ) {
+      nodes.push(
+        <span key={key} className="text-emerald-600 dark:text-emerald-400">
+          {token}
+        </span>
+      )
+    } else if (token.startsWith("</") || token.startsWith("<")) {
+      const tagName = token.replace(/^<\/?/, "")
+      const isComponent = /^[A-Z]/.test(tagName)
+      const bracket = token.startsWith("</") ? "</" : "<"
+      nodes.push(
+        <span key={key}>
+          <span className="text-zinc-400 dark:text-zinc-500">{bracket}</span>
+          <span
+            className={
+              isComponent
+                ? "text-blue-600 dark:text-sky-400 font-medium"
+                : "text-indigo-600 dark:text-indigo-400"
+            }
+          >
+            {tagName}
+          </span>
+        </span>
+      )
+    } else if (KEYWORDS.has(token)) {
+      nodes.push(
+        <span key={key} className="text-rose-600 dark:text-rose-400 font-medium">
+          {token}
+        </span>
+      )
+    } else if (
+      line.slice(match.index + token.length).trimStart().startsWith("=") &&
+      !line.slice(0, match.index).trimEnd().endsWith("const") &&
+      !line.slice(0, match.index).trimEnd().endsWith("let")
+    ) {
+      nodes.push(
+        <span key={key} className="text-violet-600 dark:text-violet-400">
+          {token}
+        </span>
+      )
+    } else if (/^[A-Z][A-Za-z0-9_]*$/.test(token)) {
+      nodes.push(
+        <span key={key} className="text-blue-600 dark:text-sky-400">
+          {token}
+        </span>
+      )
+    } else if (/^[{}()[\].,:;+-=*/>]+$/.test(token)) {
+      nodes.push(
+        <span key={key} className="text-zinc-400 dark:text-zinc-500">
+          {token}
+        </span>
+      )
+    } else {
+      nodes.push(
+        <span key={key} className="text-zinc-800 dark:text-zinc-200">
+          {token}
+        </span>
+      )
+    }
+
+    lastIndex = tokenRegex.lastIndex
+  }
+
+  if (lastIndex < line.length) {
+    nodes.push(line.slice(lastIndex))
+  }
+
+  return nodes
+}
+
+export const SyntaxHighlightedCodeBox: React.FC<{
+  code: string
+  filename?: string
+}> = ({ code, filename }) => {
+  const [copied, setCopied] = React.useState(false)
+  const lines = code.trim().split("\n")
+
+  return (
+    <div className="overflow-hidden rounded-2xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950">
+      <div className="flex items-center justify-between border-b border-zinc-200 bg-zinc-50/80 px-4 py-2 dark:border-zinc-800 dark:bg-zinc-900/60">
+        <div className="flex items-center gap-2">
+          <FileCode2 className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
+          <span className="font-mono text-[11px] font-medium text-zinc-600 dark:text-zinc-300">
+            {filename || "example.tsx"}
+          </span>
+        </div>
+        <button
+          type="button"
+          onClick={() => {
+            navigator.clipboard?.writeText(code)
+            setCopied(true)
+            setTimeout(() => setCopied(false), 1800)
+          }}
+          className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-white px-2.5 py-1 text-[11px] font-medium text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700 cursor-pointer"
+        >
+          {copied ? (
+            <>
+              <Check className="h-3 w-3 text-emerald-500" />
+              <span className="text-emerald-600 dark:text-emerald-400">Copied</span>
+            </>
+          ) : (
+            <>
+              <Copy className="h-3 w-3" />
+              <span>Copy code</span>
+            </>
+          )}
+        </button>
+      </div>
+      <div className="overflow-x-auto p-4">
+        <pre className="font-mono text-xs leading-6">
+          <code>
+            {lines.map((line, idx) => (
+              <div key={idx} className="table-row">
+                <span className="table-cell select-none pr-4 text-right text-[11px] text-zinc-300 dark:text-zinc-600">
+                  {idx + 1}
+                </span>
+                <span className="table-cell whitespace-pre">
+                  {highlightTsxLine(line)}
+                </span>
+              </div>
+            ))}
+          </code>
+        </pre>
+      </div>
+    </div>
+  )
+}
+
 export const PreviewCanvas: React.FC<PreviewBoxProps & { title?: string; description?: string; badge?: string; sourceFile?: string }> = ({
   slug,
   code,
@@ -907,26 +1083,10 @@ export const PreviewCanvas: React.FC<PreviewBoxProps & { title?: string; descrip
           <LiveDemoRenderer slug={slug} sectionId={sectionId} />
         </div>
       ) : (
-        <div className="relative rounded-2xl border border-zinc-200 bg-zinc-950 p-5 text-zinc-100 dark:border-zinc-800 overflow-x-auto">
-          <button
-            type="button"
-            onClick={() => {
-              navigator.clipboard?.writeText(code)
-              setCopied(true)
-              setTimeout(() => setCopied(false), 1800)
-            }}
-            className="absolute right-4 top-4 rounded-lg border border-zinc-800 bg-zinc-900 p-1.5 text-zinc-400 hover:text-white cursor-pointer"
-          >
-            {copied ? (
-              <Check className="h-3.5 w-3.5 text-emerald-400" />
-            ) : (
-              <Copy className="h-3.5 w-3.5" />
-            )}
-          </button>
-          <pre className="font-mono text-xs leading-relaxed">
-            <code>{code}</code>
-          </pre>
-        </div>
+        <SyntaxHighlightedCodeBox
+          code={code}
+          filename={`${slug}${sectionId ? `-${sectionId}` : ""}.tsx`}
+        />
       )}
     </div>
   )
@@ -965,9 +1125,9 @@ export const BoardUIDocPage: React.FC<BoardUIDocPageProps> = ({
   const [copiedCli, setCopiedCli] = React.useState(false)
 
   const cliCommandMap = {
-    npm: `npx ethereal-ui@latest add ${slug}`,
-    pnpm: `pnpm dlx ethereal-ui@latest add ${slug}`,
-    yarn: `yarn dlx ethereal-ui@latest add ${slug}`,
+    npm: `npx @etherealui/cli@latest add ${slug}`,
+    pnpm: `pnpm dlx @etherealui/cli@latest add ${slug}`,
+    yarn: `yarn dlx @etherealui/cli@latest add ${slug}`,
   }
 
   return (
@@ -1073,7 +1233,7 @@ export const BoardUIDocPage: React.FC<BoardUIDocPageProps> = ({
                   {pkgManager === "npm" ? "npx" : `${pkgManager} dlx`}
                 </span>{" "}
                 <span className="text-blue-600 dark:text-blue-400">
-                  ethereal-ui@latest
+                  @etherealui/cli@latest
                 </span>{" "}
                 <span className="text-zinc-700 dark:text-zinc-300">
                   add {slug}
@@ -1082,15 +1242,24 @@ export const BoardUIDocPage: React.FC<BoardUIDocPageProps> = ({
             </div>
           </div>
         ) : (
-          <div className="space-y-3 pt-1">
+          <div className="space-y-4 pt-1">
             <p className="text-xs text-zinc-500 dark:text-zinc-400">
-              Copy and paste the following component code into your project:
+              1. Install <code className="rounded bg-zinc-100 px-1.5 py-0.5 font-mono text-[11px] text-blue-600 dark:bg-zinc-800 dark:text-blue-400">@etherealui/react</code> from NPM or copy the component usage below into your project:
             </p>
-            <div className="rounded-xl border border-zinc-200 bg-zinc-950 p-4 text-zinc-100 dark:border-zinc-800 overflow-x-auto">
-              <pre className="font-mono text-xs leading-relaxed">
-                <code>{code}</code>
-              </pre>
+            <div className="overflow-hidden rounded-xl border border-zinc-200 bg-white px-4 py-3 font-mono text-xs dark:border-zinc-800 dark:bg-zinc-950">
+              <span className="text-rose-500 dark:text-rose-400">pnpm</span>{" "}
+              <span className="text-zinc-700 dark:text-zinc-300">add</span>{" "}
+              <span className="text-blue-600 dark:text-sky-400 font-medium">
+                @etherealui/react
+              </span>{" "}
+              <span className="text-emerald-600 dark:text-emerald-400">
+                lucide-react clsx tailwind-merge
+              </span>
             </div>
+            <SyntaxHighlightedCodeBox
+              code={code}
+              filename={`components/ui/${slug}.tsx`}
+            />
           </div>
         )}
       </section>
