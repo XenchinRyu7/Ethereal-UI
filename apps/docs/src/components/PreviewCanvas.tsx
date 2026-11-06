@@ -402,7 +402,7 @@ export const LiveDemoRenderer: React.FC<{ slug: string; sectionId?: string }> = 
             { label: "Duplicate row", shortcut: "⌘ D" },
             { label: "Delete record", shortcut: "⌘ ⌫", destructive: true },
           ]}
-          className="flex h-36 w-80 items-center justify-center rounded-xl border border-dashed border-zinc-300 bg-white/50 text-xs text-zinc-500 dark:border-zinc-700 dark:bg-zinc-900/40"
+          className="flex h-36 w-full max-w-xs items-center justify-center rounded-xl border border-dashed border-zinc-300 bg-white/50 text-xs text-zinc-500 dark:border-zinc-700 dark:bg-zinc-900/40"
         >
           Right-click anywhere inside this box
         </ContextMenuBox>
@@ -416,7 +416,7 @@ export const LiveDemoRenderer: React.FC<{ slug: string; sectionId?: string }> = 
 
     case "divider":
       return (
-        <div className="w-80 space-y-4">
+        <div className="w-full max-w-xs space-y-4">
           <Divider />
           <Divider label="Or continue with" />
         </div>
@@ -488,7 +488,7 @@ export const LiveDemoRenderer: React.FC<{ slug: string; sectionId?: string }> = 
 
     case "input":
       return (
-        <div className="w-80 space-y-3">
+        <div className="w-full max-w-xs space-y-3">
           <div className="space-y-1.5">
             <Label>Email address</Label>
             <Input placeholder="you@example.com" />
@@ -551,7 +551,7 @@ export const LiveDemoRenderer: React.FC<{ slug: string; sectionId?: string }> = 
 
     case "progress":
       return (
-        <div className="flex items-center gap-6 w-80">
+        <div className="flex items-center gap-6 w-full max-w-xs">
           <CircularProgress value={72} variant="blue" />
           <Progress
             value={72}
@@ -565,7 +565,7 @@ export const LiveDemoRenderer: React.FC<{ slug: string; sectionId?: string }> = 
     case "radio-group":
       return (
         <RadioGroup
-          className="w-80"
+          className="w-full max-w-xs"
           value={radioVal}
           onValueChange={setRadioVal}
           options={[
@@ -598,7 +598,7 @@ export const LiveDemoRenderer: React.FC<{ slug: string; sectionId?: string }> = 
       )
 
     case "skeleton":
-      return <CardSkeleton className="w-80" />
+      return <CardSkeleton className="w-full max-w-xs" />
 
     case "slider":
       return (
@@ -606,7 +606,7 @@ export const LiveDemoRenderer: React.FC<{ slug: string; sectionId?: string }> = 
           value={sliderVal}
           onValueChange={setSliderVal}
           label="Alert threshold"
-          className="w-72"
+          className="w-full max-w-xs"
         />
       )
 
@@ -667,7 +667,7 @@ export const LiveDemoRenderer: React.FC<{ slug: string; sectionId?: string }> = 
 
     case "tabs":
       return (
-        <Tabs defaultValue="overview" className="w-80">
+        <Tabs defaultValue="overview" className="w-full max-w-xs">
           <TabsList variant="segmented">
             <TabsTrigger variant="segmented" value="overview">
               Overview
@@ -693,7 +693,7 @@ export const LiveDemoRenderer: React.FC<{ slug: string; sectionId?: string }> = 
 
     case "textarea":
       return (
-        <div className="w-80 space-y-1.5">
+        <div className="w-full max-w-xs space-y-1.5">
           <Label optional>Project description</Label>
           <Textarea autoResize placeholder="Write a short summary..." />
         </div>
@@ -1079,7 +1079,7 @@ export const PreviewCanvas: React.FC<PreviewBoxProps & { title?: string; descrip
 
       {/* Main Rounded Preview / Code Box */}
       {tab === "preview" ? (
-        <div className="flex min-h-[260px] w-full items-center justify-center rounded-2xl border border-zinc-200/90 bg-zinc-50/40 p-6 sm:p-10 dark:border-zinc-800/90 dark:bg-zinc-900/30 overflow-x-auto">
+        <div className="flex min-h-[240px] sm:min-h-[260px] w-full items-center justify-center rounded-2xl border border-zinc-200/90 bg-zinc-50/40 p-3.5 sm:p-8 dark:border-zinc-800/90 dark:bg-zinc-900/30 overflow-x-auto">
           <LiveDemoRenderer slug={slug} sectionId={sectionId} />
         </div>
       ) : (

@@ -13,6 +13,8 @@ import {
   CreditCard,
   FolderKanban,
   BarChart3,
+  Menu,
+  X,
 } from "lucide-react"
 import { cn } from "../utils/cn"
 import { Avatar } from "../primitives/avatar"
@@ -259,12 +261,14 @@ export const SidebarShell: React.FC<SidebarShellProps> = ({
 export interface HeaderNavbarProps {
   breadcrumbs?: string[]
   onOpenCommandPalette?: () => void
+  onToggleMobileMenu?: () => void
   className?: string
 }
 
 export const HeaderNavbar: React.FC<HeaderNavbarProps> = ({
   breadcrumbs = ["Workspace", "Analytics", "Overview"],
   onOpenCommandPalette,
+  onToggleMobileMenu,
   className,
 }) => {
   const [internalCmdOpen, setInternalCmdOpen] = React.useState(false)
@@ -281,40 +285,68 @@ export const HeaderNavbar: React.FC<HeaderNavbarProps> = ({
     <>
       <header
         className={cn(
-          "flex h-14 w-full items-center justify-between border-b border-zinc-200 bg-white px-5 dark:border-zinc-800 dark:bg-zinc-900",
+          "flex h-14 w-full items-center justify-between gap-2 border-b border-zinc-200 bg-white px-3.5 sm:px-5 dark:border-zinc-800 dark:bg-zinc-900",
           className
         )}
       >
-        {/* Breadcrumb Trail */}
-        <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-xs">
-          {breadcrumbs.map((crumb, idx) => {
-            const isLast = idx === breadcrumbs.length - 1
-            return (
-              <React.Fragment key={crumb}>
-                {idx > 0 && (
-                  <ChevronRight className="h-3.5 w-3.5 text-zinc-400 shrink-0" />
-                )}
-                <span
-                  className={cn(
-                    "truncate",
-                    isLast
-                      ? "font-medium text-zinc-900 dark:text-zinc-100"
-                      : "text-zinc-500 dark:text-zinc-400"
+        <div className="flex items-center gap-2 min-w-0">
+          {onToggleMobileMenu && (
+            <button
+              type="button"
+              onClick={onToggleMobileMenu}
+              aria-label="Toggle workspace navigation"
+              className="flex md:hidden h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-zinc-200 bg-white text-zinc-600 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 cursor-pointer"
+            >
+              <Menu className="h-4 w-4" />
+            </button>
+          )}
+
+          {/* Breadcrumb Trail */}
+          <nav aria-label="Breadcrumb" className="flex items-center gap-1 sm:gap-1.5 text-xs min-w-0 overflow-hidden">
+            {breadcrumbs.map((crumb, idx) => {
+              const isLast = idx === breadcrumbs.length - 1
+              return (
+                <React.Fragment key={crumb}>
+                  {idx > 0 && (
+                    <ChevronRight
+                      className={cn(
+                        "h-3.5 w-3.5 text-zinc-400 shrink-0",
+                        idx < breadcrumbs.length - 1 && "hidden sm:block"
+                      )}
+                    />
                   )}
-                >
-                  {crumb}
-                </span>
-              </React.Fragment>
-            )
-          })}
-        </nav>
+                  <span
+                    className={cn(
+                      "truncate",
+                      idx < breadcrumbs.length - 1 && "hidden sm:inline",
+                      isLast
+                        ? "font-medium text-zinc-900 dark:text-zinc-100"
+                        : "text-zinc-500 dark:text-zinc-400"
+                    )}
+                  >
+                    {crumb}
+                  </span>
+                </React.Fragment>
+              )
+            })}
+          </nav>
+        </div>
 
         {/* Right Controls */}
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-2 shrink-0">
           <button
             type="button"
             onClick={handleOpenSearch}
-            className="hidden sm:flex h-8 w-52 items-center justify-between rounded-lg border border-zinc-200 bg-zinc-50 px-2.5 text-xs text-zinc-500 transition-colors hover:border-zinc-300 hover:text-zinc-800 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:border-zinc-600 dark:hover:text-zinc-100 cursor-pointer"
+            aria-label="Quick search"
+            className="flex sm:hidden h-8 w-8 items-center justify-center rounded-lg border border-zinc-200 bg-zinc-50 text-zinc-500 hover:text-zinc-800 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 cursor-pointer"
+          >
+            <Search className="h-3.5 w-3.5" />
+          </button>
+
+          <button
+            type="button"
+            onClick={handleOpenSearch}
+            className="hidden sm:flex h-8 w-44 md:w-52 items-center justify-between rounded-lg border border-zinc-200 bg-zinc-50 px-2.5 text-xs text-zinc-500 transition-colors hover:border-zinc-300 hover:text-zinc-800 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:border-zinc-600 dark:hover:text-zinc-100 cursor-pointer"
           >
             <span className="flex items-center gap-2">
               <Search className="h-3.5 w-3.5 text-zinc-400 dark:text-zinc-400" />
@@ -421,20 +453,53 @@ export const AppShell: React.FC<AppShellProps> = ({
   children,
   className,
 }) => {
+  const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false)
+
   return (
     <div
       className={cn(
-        "flex min-h-[600px] w-full overflow-hidden rounded-2xl border border-zinc-200 bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-950",
+        "relative flex min-h-[560px] sm:min-h-[600px] w-full overflow-hidden rounded-2xl border border-zinc-200 bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-950",
         className
       )}
     >
       <SidebarShell
         workspaceName={workspaceName}
         workspaceTier={planBadge}
+        className="hidden md:flex"
       />
+
+      {mobileMenuOpen && (
+        <div className="absolute inset-0 z-30 flex md:hidden">
+          <div
+            className="fixed inset-0 bg-black/50 backdrop-blur-xs"
+            onClick={() => setMobileMenuOpen(false)}
+          />
+          <div className="relative z-10 flex h-full">
+            <SidebarShell
+              workspaceName={workspaceName}
+              workspaceTier={planBadge}
+              className="h-full bg-white dark:bg-zinc-900 shadow-xl"
+            />
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen(false)}
+              aria-label="Close sidebar"
+              className="m-2 flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-900/80 text-white"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
+      )}
+
       <div className="flex flex-1 flex-col min-w-0">
-        <HeaderNavbar breadcrumbs={breadcrumbs} />
-        <main className="flex-1 p-6 space-y-6 overflow-y-auto">{children}</main>
+        <HeaderNavbar
+          breadcrumbs={breadcrumbs}
+          onToggleMobileMenu={() => setMobileMenuOpen(true)}
+        />
+        <main className="flex-1 p-3.5 sm:p-6 space-y-5 sm:space-y-6 overflow-y-auto">
+          {children}
+        </main>
       </div>
     </div>
   )

@@ -37,13 +37,13 @@ export const LandingHeroShowcase: React.FC = () => {
   return (
     <div className="space-y-4">
       {/* Clean BoardUI / shadcn Switcher Bar */}
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between rounded-2xl border border-zinc-200 bg-zinc-50/80 p-1.5 dark:border-zinc-800 dark:bg-zinc-900/70">
-        <div className="flex flex-wrap items-center gap-1">
+      <div className="flex flex-col gap-2.5 sm:flex-row sm:items-center sm:justify-between rounded-2xl border border-zinc-200 bg-zinc-50/80 p-1.5 dark:border-zinc-800 dark:bg-zinc-900/70">
+        <div className="flex items-center gap-1 overflow-x-auto pb-1 sm:pb-0">
           <button
             type="button"
             onClick={() => setActiveTab("analytics")}
             className={cn(
-              "inline-flex items-center gap-2 rounded-xl px-3.5 py-1.5 text-xs font-medium transition-all cursor-pointer",
+              "inline-flex shrink-0 items-center gap-2 rounded-xl px-3 sm:px-3.5 py-1.5 text-xs font-medium transition-all cursor-pointer",
               activeTab === "analytics"
                 ? "bg-white text-zinc-900 shadow-2xs dark:bg-zinc-800 dark:text-white"
                 : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
@@ -57,7 +57,7 @@ export const LandingHeroShowcase: React.FC = () => {
             type="button"
             onClick={() => setActiveTab("customers")}
             className={cn(
-              "inline-flex items-center gap-2 rounded-xl px-3.5 py-1.5 text-xs font-medium transition-all cursor-pointer",
+              "inline-flex shrink-0 items-center gap-2 rounded-xl px-3 sm:px-3.5 py-1.5 text-xs font-medium transition-all cursor-pointer",
               activeTab === "customers"
                 ? "bg-white text-zinc-900 shadow-2xs dark:bg-zinc-800 dark:text-white"
                 : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
@@ -71,7 +71,7 @@ export const LandingHeroShowcase: React.FC = () => {
             type="button"
             onClick={() => setActiveTab("settings")}
             className={cn(
-              "inline-flex items-center gap-2 rounded-xl px-3.5 py-1.5 text-xs font-medium transition-all cursor-pointer",
+              "inline-flex shrink-0 items-center gap-2 rounded-xl px-3 sm:px-3.5 py-1.5 text-xs font-medium transition-all cursor-pointer",
               activeTab === "settings"
                 ? "bg-white text-zinc-900 shadow-2xs dark:bg-zinc-800 dark:text-white"
                 : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
@@ -85,7 +85,7 @@ export const LandingHeroShowcase: React.FC = () => {
             type="button"
             onClick={() => setActiveTab("primitives")}
             className={cn(
-              "inline-flex items-center gap-2 rounded-xl px-3.5 py-1.5 text-xs font-medium transition-all cursor-pointer",
+              "inline-flex shrink-0 items-center gap-2 rounded-xl px-3 sm:px-3.5 py-1.5 text-xs font-medium transition-all cursor-pointer",
               activeTab === "primitives"
                 ? "bg-white text-zinc-900 shadow-2xs dark:bg-zinc-800 dark:text-white"
                 : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
@@ -104,14 +104,16 @@ export const LandingHeroShowcase: React.FC = () => {
               setCopiedCli(true)
               setTimeout(() => setCopiedCli(false), 1800)
             }}
-            className="inline-flex h-8 items-center gap-2 rounded-xl border border-zinc-200 bg-white px-3 font-mono text-xs text-zinc-600 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-300 cursor-pointer"
+            className="inline-flex h-8 w-full sm:w-auto items-center justify-between sm:justify-start gap-2 rounded-xl border border-zinc-200 bg-white px-3 font-mono text-[11px] sm:text-xs text-zinc-600 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-300 cursor-pointer min-w-0"
           >
-            <Terminal className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
-            <span>{cliCmd}</span>
+            <span className="flex items-center gap-2 truncate">
+              <Terminal className="h-3.5 w-3.5 shrink-0 text-blue-600 dark:text-blue-400" />
+              <span className="truncate">{cliCmd}</span>
+            </span>
             {copiedCli ? (
-              <Check className="h-3.5 w-3.5 text-emerald-500" />
+              <Check className="h-3.5 w-3.5 shrink-0 text-emerald-500" />
             ) : (
-              <Copy className="h-3.5 w-3.5 text-zinc-400" />
+              <Copy className="h-3.5 w-3.5 shrink-0 text-zinc-400" />
             )}
           </button>
         </div>

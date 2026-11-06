@@ -1,5 +1,5 @@
 import * as React from "react"
-import { ArrowUpRight, RefreshCw } from "lucide-react"
+import { ArrowUpRight, RefreshCw, X } from "lucide-react"
 import { cn } from "../utils/cn"
 import {
   SidebarShell,
@@ -93,12 +93,13 @@ export const ExecutiveAnalyticsTemplate: React.FC<{ className?: string }> = ({
 }) => {
   const [range, setRange] = React.useState("30d")
   const [cmdOpen, setCmdOpen] = React.useState(false)
+  const [mobileNavOpen, setMobileNavOpen] = React.useState(false)
   const points = chartSeriesData[range] || chartSeriesData["30d"]
 
   return (
     <div
       className={cn(
-        "flex min-h-[720px] w-full overflow-hidden rounded-2xl border border-zinc-200 bg-zinc-50/40 text-zinc-900 shadow-sm dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100",
+        "relative flex min-h-[560px] sm:min-h-[720px] w-full overflow-hidden rounded-2xl border border-zinc-200 bg-zinc-50/40 text-zinc-900 shadow-sm dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100",
         className
       )}
     >
@@ -108,15 +109,39 @@ export const ExecutiveAnalyticsTemplate: React.FC<{ className?: string }> = ({
         enableGlobalShortcut={false}
       />
 
-      <SidebarShell activeId="overview" />
+      <SidebarShell activeId="overview" className="hidden md:flex" />
+
+      {mobileNavOpen && (
+        <div className="absolute inset-0 z-30 flex md:hidden">
+          <div
+            className="fixed inset-0 bg-black/50 backdrop-blur-xs"
+            onClick={() => setMobileNavOpen(false)}
+          />
+          <div className="relative z-10 flex h-full">
+            <SidebarShell
+              activeId="overview"
+              className="h-full bg-white dark:bg-zinc-900 shadow-xl"
+            />
+            <button
+              type="button"
+              onClick={() => setMobileNavOpen(false)}
+              aria-label="Close sidebar"
+              className="m-2 flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-900/80 text-white"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
+      )}
 
       <div className="flex flex-1 flex-col min-w-0">
         <HeaderNavbar
           breadcrumbs={["Workspace", "Analytics", "Overview"]}
           onOpenCommandPalette={() => setCmdOpen(true)}
+          onToggleMobileMenu={() => setMobileNavOpen(true)}
         />
 
-        <main className="flex-1 space-y-6 overflow-y-auto p-6">
+        <main className="flex-1 space-y-5 sm:space-y-6 overflow-y-auto p-3.5 sm:p-6">
           <PageHeaderBar
             title="Analytics Overview"
             subtitle="Track recurring revenue, subscriber retention, and account expansion."

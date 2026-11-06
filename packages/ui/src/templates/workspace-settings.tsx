@@ -1,5 +1,5 @@
 import * as React from "react"
-import { KeyRound, Copy, Check, Plus, Eye, EyeOff } from "lucide-react"
+import { KeyRound, Copy, Check, Plus, Eye, EyeOff, X } from "lucide-react"
 import { cn } from "../utils/cn"
 import {
   SidebarShell,
@@ -21,6 +21,7 @@ export const WorkspaceSettingsTemplate: React.FC<{ className?: string }> = ({
 }) => {
   const [copiedKey, setCopiedKey] = React.useState<string | null>(null)
   const [revealSecret, setRevealSecret] = React.useState(false)
+  const [mobileNavOpen, setMobileNavOpen] = React.useState(false)
 
   const apiKeys = [
     {
@@ -44,41 +45,67 @@ export const WorkspaceSettingsTemplate: React.FC<{ className?: string }> = ({
   return (
     <div
       className={cn(
-        "flex min-h-[720px] w-full overflow-hidden rounded-2xl border border-zinc-200 bg-zinc-50/40 text-zinc-900 shadow-sm dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100",
+        "relative flex min-h-[560px] sm:min-h-[720px] w-full overflow-hidden rounded-2xl border border-zinc-200 bg-zinc-50/40 text-zinc-900 shadow-sm dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100",
         className
       )}
     >
-      <SidebarShell activeId="settings" />
+      <SidebarShell activeId="settings" className="hidden md:flex" />
+
+      {mobileNavOpen && (
+        <div className="absolute inset-0 z-30 flex md:hidden">
+          <div
+            className="fixed inset-0 bg-black/50 backdrop-blur-xs"
+            onClick={() => setMobileNavOpen(false)}
+          />
+          <div className="relative z-10 flex h-full">
+            <SidebarShell
+              activeId="settings"
+              className="h-full bg-white dark:bg-zinc-900 shadow-xl"
+            />
+            <button
+              type="button"
+              onClick={() => setMobileNavOpen(false)}
+              aria-label="Close sidebar"
+              className="m-2 flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-900/80 text-white"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
+      )}
 
       <div className="flex flex-1 flex-col min-w-0">
         <HeaderNavbar
           breadcrumbs={["Workspace", "Settings", "General"]}
+          onToggleMobileMenu={() => setMobileNavOpen(true)}
         />
 
-        <main className="flex-1 space-y-6 overflow-y-auto p-6">
+        <main className="flex-1 space-y-5 sm:space-y-6 overflow-y-auto p-3.5 sm:p-6">
           <PageHeaderBar
             title="Workspace Settings"
             subtitle="Manage your profile, team members, billing plan, and API keys."
           />
 
           <Tabs defaultValue="general" className="w-full">
-            <TabsList variant="underline">
-              <TabsTrigger variant="underline" value="general">
-                Profile
-              </TabsTrigger>
-              <TabsTrigger variant="underline" value="team">
-                Team
-              </TabsTrigger>
-              <TabsTrigger variant="underline" value="billing">
-                Billing
-              </TabsTrigger>
-              <TabsTrigger variant="underline" value="apikeys">
-                API Keys
-              </TabsTrigger>
-              <TabsTrigger variant="underline" value="security">
-                Security
-              </TabsTrigger>
-            </TabsList>
+            <div className="overflow-x-auto pb-1">
+              <TabsList variant="underline" className="min-w-max">
+                <TabsTrigger variant="underline" value="general">
+                  Profile
+                </TabsTrigger>
+                <TabsTrigger variant="underline" value="team">
+                  Team
+                </TabsTrigger>
+                <TabsTrigger variant="underline" value="billing">
+                  Billing
+                </TabsTrigger>
+                <TabsTrigger variant="underline" value="apikeys">
+                  API Keys
+                </TabsTrigger>
+                <TabsTrigger variant="underline" value="security">
+                  Security
+                </TabsTrigger>
+              </TabsList>
+            </div>
 
             <TabsContent value="general" className="pt-4">
               <UserProfileFormBlock />
