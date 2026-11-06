@@ -87,6 +87,15 @@ export { Tabs, TabsList, TabsTrigger, TabsContent, type TabsListProps, type Tabs
 export { Textarea, type TextareaProps } from "./primitives/textarea"
 export { ToastCard, type ToastVariant, type ToastItem, type ToastCardProps } from "./primitives/toast"
 export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "./primitives/tooltip"
+export {
+  AreaStatisticChart,
+  BarStatisticChart,
+  DonutStatisticChart,
+  type ChartDataPoint,
+  type AreaStatisticChartProps,
+  type BarStatisticChartProps,
+  type DonutSegment,
+} from "./primitives/chart"
 
 // Enterprise Blocks
 export * from "./blocks/app-shell"
