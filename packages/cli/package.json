@@ -1,0 +1,56 @@
+{
+  "name": "@etherealui/cli",
+  "version": "0.0.3",
+  "description": "Official CLI for Ethereal UI (@etherealui/react) — scaffold enterprise React components, charts, and dashboard blocks from the JSON Registry.",
+  "license": "MIT",
+  "author": "Saeful Rohman <saefulrohmandevelopers@gmail.com> (https://saefulrohman.dev)",
+  "homepage": "https://ethereal-ui.saefulrohman.dev",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/XenchinRyu7/Ethereal-UI.git",
+    "directory": "packages/cli"
+  },
+  "bugs": {
+    "url": "https://github.com/XenchinRyu7/Ethereal-UI/issues"
+  },
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/XenchinRyu7"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "bin": {
+    "ethereal-ui": "./dist/index.js",
+    "etherealui": "./dist/index.js"
+  },
+  "main": "./dist/index.js",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "lint": "tsc --noEmit",
+    "clean": "rimraf dist"
+  },
+  "keywords": [
+    "ethereal-ui",
+    "etherealui",
+    "cli",
+    "shadcn",
+    "boardui",
+    "react",
+    "tailwindcss-v4",
+    "components",
+    "registry"
+  ],
+  "devDependencies": {
+    "@types/node": "^22.13.5",
+    "tsup": "^8.3.6",
+    "typescript": "^5.7.3"
+  }
+}

@@ -10,7 +10,7 @@
     "prepare": "husky",
     "dev": "turbo run dev",
     "build": "turbo run build",
-    "lint": "eslint \"packages/ui/src/**/*.{ts,tsx}\" \"apps/docs/src/**/*.{ts,tsx}\" && turbo run lint",
+    "lint": "eslint \"packages/ui/src/**/*.{ts,tsx}\" \"packages/cli/src/**/*.{ts,tsx}\" \"apps/docs/src/**/*.{ts,tsx}\" && turbo run lint",
     "typecheck": "turbo run lint",
     "clean": "turbo run clean",
     "changeset": "changeset",

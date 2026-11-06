@@ -1,4 +1,4 @@
-name: Release @etherealui/react to NPM
+name: Release @etherealui/react & @etherealui/cli to NPM
 
 on:
   push:
@@ -13,7 +13,7 @@ concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
   release:
-    name: Build & Publish @etherealui/react (Tag Release)
+    name: Build & Publish @etherealui Packages (Tag Release)
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -43,35 +43,50 @@ jobs:
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile=false
 
-      - name: Lint & Typecheck @etherealui/react
-        run: pnpm --filter @etherealui/react lint
+      - name: Lint & Typecheck Packages
+        run: |
+          pnpm --filter @etherealui/react lint
+          pnpm --filter @etherealui/cli lint
 
-      - name: Build @etherealui/react Package
-        run: pnpm --filter @etherealui/react build
+      - name: Build @etherealui/react & @etherealui/cli
+        run: |
+          pnpm --filter @etherealui/react build
+          pnpm --filter @etherealui/cli build
 
-      - name: Verify Tag Matches package.json Version (Optional Sync)
+      - name: Sync Tag Version with Package Versions
         run: |
           RAW_TAG="${GITHUB_REF_NAME#v}"
-          PKG_VERSION=$(node -p "require('./packages/ui/package.json').version")
-          echo "Git Ref/Tag: ${GITHUB_REF_NAME} | package.json version: ${PKG_VERSION}"
-          if [[ "${GITHUB_REF_TYPE}" == "tag" && "${RAW_TAG}" != "${PKG_VERSION}" ]]; then
-            echo "Syncing packages/ui/package.json version to tag version ${RAW_TAG}..."
-            node -e "
-              const fs = require('fs');
-              const pkg = JSON.parse(fs.readFileSync('./packages/ui/package.json', 'utf8'));
-              pkg.version = '${RAW_TAG}';
-              fs.writeFileSync('./packages/ui/package.json', JSON.stringify(pkg, null, 2) + '\n');
-            "
+          if [[ "${GITHUB_REF_TYPE}" == "tag" ]]; then
+            for PKG_PATH in "./packages/ui/package.json" "./packages/cli/package.json"; do
+              PKG_VERSION=$(node -p "require('${PKG_PATH}').version")
+              if [[ "${RAW_TAG}" != "${PKG_VERSION}" ]]; then
+                echo "Syncing ${PKG_PATH} version to tag ${RAW_TAG}..."
+                node -e "
+                  const fs = require('fs');
+                  const pkg = JSON.parse(fs.readFileSync('${PKG_PATH}', 'utf8'));
+                  pkg.version = '${RAW_TAG}';
+                  fs.writeFileSync('${PKG_PATH}', JSON.stringify(pkg, null, 2) + '\n');
+                "
+              fi
+            done
           fi
 
-      - name: Publish @etherealui/react to NPM Registry (--access public)
+      - name: Publish @etherealui/react & @etherealui/cli to NPM Registry (--access public)
         run: |
-          FINAL_VERSION=$(node -p "require('./packages/ui/package.json').version")
-          if npm view "@etherealui/react@${FINAL_VERSION}" version > /dev/null 2>&1; then
-            echo "@etherealui/react@${FINAL_VERSION} is already published on NPM."
+          UI_VERSION=$(node -p "require('./packages/ui/package.json').version")
+          if npm view "@etherealui/react@${UI_VERSION}" version > /dev/null 2>&1; then
+            echo "@etherealui/react@${UI_VERSION} is already published on NPM."
           else
-            echo "Publishing @etherealui/react@${FINAL_VERSION} to NPM with --access public..."
+            echo "Publishing @etherealui/react@${UI_VERSION} to NPM with --access public..."
             pnpm --filter @etherealui/react publish --access public --no-git-checks
+          fi
+
+          CLI_VERSION=$(node -p "require('./packages/cli/package.json').version")
+          if npm view "@etherealui/cli@${CLI_VERSION}" version > /dev/null 2>&1; then
+            echo "@etherealui/cli@${CLI_VERSION} is already published on NPM."
+          else
+            echo "Publishing @etherealui/cli@${CLI_VERSION} to NPM with --access public..."
+            pnpm --filter @etherealui/cli publish --access public --no-git-checks
           fi
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
