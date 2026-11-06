@@ -1,0 +1,95 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro"
+import LandingNav from "../../components/LandingNav.astro"
+
+const posts = [
+  {
+    slug: "introducing-ethereal-ui-v1",
+    date: "November 6, 2026",
+    tag: "Release",
+    title: "Introducing Ethereal UI 1.0: 37+ Components & 10 Free Dashboard Blocks",
+    excerpt:
+      "Why we built a 100% free, open-source component system and dashboard block registry inspired by BoardUI and shadcn/ui—with native Light & Dark mode support.",
+    author: "Saeful Rohman",
+    role: "Creator of Ethereal UI",
+  },
+  {
+    slug: "tailwind-v4-semantic-tokens",
+    date: "November 2, 2026",
+    tag: "Architecture",
+    title: "Zero-Config Light & Dark Mode with Tailwind CSS v4 Semantic Tokens",
+    excerpt:
+      "How we replaced legacy tailwind.config.js files with native CSS variables and @custom-variant dark for instant, flicker-free theme switching.",
+    author: "Saeful Rohman",
+    role: "Creator of Ethereal UI",
+  },
+  {
+    slug: "accessible-data-tables-radix",
+    date: "October 26, 2026",
+    tag: "Engineering",
+    title: "Designing High-Density SaaS Data Tables with Slide-Over Drawers",
+    excerpt:
+      "A deep dive into building accessible keyboard navigation, bulk row selection, and slide-over telemetry inspection drawers with Radix UI Primitives.",
+    author: "Saeful Rohman",
+    role: "Creator of Ethereal UI",
+  },
+]
+---
+
+<BaseLayout
+  title="Blog — Ethereal UI"
+  description="Engineering articles, release notes, and design system updates from the Ethereal UI team."
+>
+  <LandingNav />
+
+  <main class="mx-auto max-w-4xl px-4 sm:px-6 py-14 space-y-10">
+    <div class="space-y-2 border-b border-zinc-200 pb-6 dark:border-zinc-800">
+      <span class="text-xs font-semibold uppercase tracking-wider text-blue-600 dark:text-blue-400">
+        Changelog &amp; Engineering
+      </span>
+      <h1 class="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+        Ethereal UI Blog
+      </h1>
+      <p class="text-sm text-zinc-600 dark:text-zinc-400">
+        Release announcements, architecture deep-dives, and new component drops.
+      </p>
+    </div>
+
+    <div class="divide-y divide-zinc-200 dark:divide-zinc-800">
+      {posts.map((post) => (
+        <article class="py-8 first:pt-2 space-y-3">
+          <div class="flex items-center gap-2.5 text-xs text-zinc-500">
+            <span class="rounded-full bg-blue-100 px-2.5 py-0.5 text-[10px] font-semibold text-blue-700 dark:bg-blue-500/20 dark:text-blue-300">
+              {post.tag}
+            </span>
+            <span>•</span>
+            <time>{post.date}</time>
+          </div>
+
+          <h2 class="text-xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+            <a href="/docs/introduction" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+              {post.title}
+            </a>
+          </h2>
+
+          <p class="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
+            {post.excerpt}
+          </p>
+
+          <div class="pt-2 flex items-center justify-between text-xs">
+            <span class="text-zinc-500">
+              By <strong class="font-medium text-zinc-800 dark:text-zinc-200">{post.author}</strong>
+            </span>
+            <a
+              href="/docs/introduction"
+              class="font-medium text-blue-600 hover:underline dark:text-blue-400"
+            >
+              Read article &rarr;
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </main>
+</BaseLayout>
+
