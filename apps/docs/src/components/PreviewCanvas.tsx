@@ -933,20 +933,33 @@ export const PreviewCanvas: React.FC<PreviewBoxProps & { title?: string; descrip
 }
 
 export interface BoardUIDocPageProps {
-  slug: string
-  title: string
-  description: string
-  code: string
-  sourceFile: string
-  dependencies: string[]
+  slug?: string
+  title?: string
+  description?: string
+  code?: string
+  sourceFile?: string
+  dependencies?: string[]
   sections?: RegistryVariantSection[]
+  item?: {
+    slug: string
+    title: string
+    description: string
+    code: string
+    sourceFile: string
+    dependencies: string[]
+    sections?: RegistryVariantSection[]
+  }
 }
 
 export const BoardUIDocPage: React.FC<BoardUIDocPageProps> = ({
-  slug,
-  code,
-  sections = [],
+  slug: propSlug,
+  code: propCode,
+  sections: propSections,
+  item,
 }) => {
+  const slug = propSlug || item?.slug || "component"
+  const code = propCode || item?.code || ""
+  const sections = propSections || item?.sections || []
   const [installTab, setInstallTab] = React.useState<"cli" | "manual">("cli")
   const [pkgManager, setPkgManager] = React.useState<"npm" | "pnpm" | "yarn">("npm")
   const [copiedCli, setCopiedCli] = React.useState(false)
