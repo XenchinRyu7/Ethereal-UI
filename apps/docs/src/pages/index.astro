@@ -6,6 +6,7 @@ import { LandingHeroShowcase } from "../components/LandingHeroShowcase"
 import { getRegistryByCategory } from "../data/registry-catalog"
 
 const PRIMITIVE_ITEMS = getRegistryByCategory("primitives")
+const CHART_ITEMS = getRegistryByCategory("charts")
 const BLOCK_ITEMS = getRegistryByCategory("blocks")
 const TEMPLATE_ITEMS = getRegistryByCategory("templates")
 ---
@@ -109,6 +110,61 @@ const TEMPLATE_ITEMS = getRegistryByCategory("templates")
   <!-- Dashboard Blocks & Full Page Templates Overview -->
   <section class="py-16">
     <div class="mx-auto max-w-[1400px] px-4 sm:px-6 space-y-12">
+      <!-- 6 Statistical Charts -->
+      <div class="space-y-6">
+        <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <span class="text-xs font-semibold uppercase tracking-wider text-blue-600 dark:text-blue-400">
+              Statistical Charts
+            </span>
+            <h2 class="mt-1 text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+              6 Interactive Statistical Charts
+            </h2>
+            <p class="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+              Zero-dependency SVG charts for Area velocity, Dual-Series Bar, Telemetry Line, Donut breakdown, Radial SLA rings, and Activity Heatmaps.
+            </p>
+          </div>
+          <a
+            href="/charts"
+            class="text-xs font-semibold text-blue-600 hover:underline dark:text-blue-400"
+          >
+            View all charts &rarr;
+          </a>
+        </div>
+
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {
+            CHART_ITEMS.map((item) => (
+              <a
+                href={`/charts/${item.slug}`}
+                class="group flex flex-col justify-between rounded-2xl border border-zinc-200 bg-white p-5 transition-all hover:border-blue-500/50 hover:shadow-xs dark:border-zinc-800 dark:bg-zinc-900/50 dark:hover:border-blue-500/40"
+              >
+                <div class="space-y-2">
+                  <div class="flex items-center justify-between">
+                    <span class="text-[10px] font-semibold uppercase tracking-wider text-blue-600 dark:text-blue-400">
+                      {item.subcategory}
+                    </span>
+                    <span class="rounded bg-blue-100 px-1.5 py-0.5 text-[9px] font-semibold text-blue-700 dark:bg-blue-500/20 dark:text-blue-300">
+                      NEW
+                    </span>
+                  </div>
+                  <h3 class="text-base font-semibold text-zinc-900 group-hover:text-blue-600 dark:text-zinc-100 dark:group-hover:text-blue-400">
+                    {item.title}
+                  </h3>
+                  <p class="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
+                    {item.description}
+                  </p>
+                </div>
+                <div class="mt-4 flex items-center justify-between border-t border-zinc-100 pt-3 text-[11px] font-mono text-zinc-400 dark:border-zinc-800/80">
+                  <span>npx ethereal-ui add {item.slug}</span>
+                  <span>&rarr;</span>
+                </div>
+              </a>
+            ))
+          }
+        </div>
+      </div>
+
       <!-- 10 Blocks -->
       <div class="space-y-6">
         <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
