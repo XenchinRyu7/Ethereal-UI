@@ -299,6 +299,58 @@ export function CarouselDemo() {
     sections: [],
   },
   {
+    slug: "chart",
+    title: "Chart",
+    category: "primitives",
+    subcategory: "Base",
+    description:
+      "Interactive SVG statistical charts — Area & Line velocity chart, Dual-Series Bar chart, and Multi-Segment Donut chart with live hover tooltips and Light/Dark mode support.",
+    isNew: true,
+    dependencies: ["lucide-react"],
+    sourceFile: "packages/ui/src/primitives/chart.tsx",
+    code: `import { AreaStatisticChart } from "@ethereal/ui"
+
+export function ChartDemo() {
+  return (
+    <AreaStatisticChart
+      title="Net Revenue & MRR Velocity"
+      subtitle="Real-time settled volume vs previous billing cycle"
+      value="$128,430"
+      change="+18.4%"
+    />
+  )
+}`,
+    sections: [
+      {
+        id: "bar-chart",
+        title: "Dual-Series Bar Chart",
+        description:
+          "Compare primary and secondary metrics across cohorts with interactive hover value tooltips.",
+        code: `import { BarStatisticChart } from "@ethereal/ui"
+
+export function BarChartDemo() {
+  return (
+    <BarStatisticChart
+      title="Monthly Cohort Conversion"
+      subtitle="Enterprise vs self-serve onboarding completion (%)"
+    />
+  )
+}`,
+      },
+      {
+        id: "donut-chart",
+        title: "Donut Breakdown Chart",
+        description:
+          "Multi-segment SVG ring chart with interactive segment highlighting and percentage legend.",
+        code: `import { DonutStatisticChart } from "@ethereal/ui"
+
+export function DonutChartDemo() {
+  return <DonutStatisticChart title="Revenue Distribution by Tier" />
+}`,
+      },
+    ],
+  },
+  {
     slug: "checkbox",
     title: "Checkbox",
     category: "primitives",

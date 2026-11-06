@@ -23,6 +23,9 @@ import {
   CloseButton,
   ButtonGroup,
   Carousel,
+  AreaStatisticChart,
+  BarStatisticChart,
+  DonutStatisticChart,
   Checkbox,
   ColorPicker,
   Combobox,
@@ -280,6 +283,27 @@ export const LiveDemoRenderer: React.FC<{ slug: string; sectionId?: string }> = 
 
     case "carousel":
       return <Carousel />
+
+    case "chart":
+      if (sectionId === "bar-chart") {
+        return (
+          <div className="w-full max-w-xl">
+            <BarStatisticChart />
+          </div>
+        )
+      }
+      if (sectionId === "donut-chart") {
+        return (
+          <div className="w-full max-w-xl">
+            <DonutStatisticChart />
+          </div>
+        )
+      }
+      return (
+        <div className="w-full max-w-2xl">
+          <AreaStatisticChart />
+        </div>
+      )
 
     case "checkbox":
       return (
