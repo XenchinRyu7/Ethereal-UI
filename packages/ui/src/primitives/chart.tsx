@@ -1,5 +1,13 @@
 import * as React from "react"
-import { ArrowUpRight, TrendingUp, Activity, PieChart as PieChartIcon } from "lucide-react"
+import {
+  ArrowUpRight,
+  TrendingUp,
+  Activity,
+  PieChart as PieChartIcon,
+  Gauge,
+  Grid,
+  LineChart as LineChartIcon,
+} from "lucide-react"
 import { cn } from "../utils/cn"
 
 export interface ChartDataPoint {
@@ -63,11 +71,8 @@ export const AreaStatisticChart: React.FC<AreaStatisticChartProps> = ({
   const padY = 18
 
   const getCoords = (val: number, idx: number) => {
-    const x =
-      padX +
-      (idx / Math.max(series.length - 1, 1)) * (width - padX * 2)
-    const y =
-      height - padY - (val / maxVal) * (height - padY * 2)
+    const x = padX + (idx / Math.max(series.length - 1, 1)) * (width - padX * 2)
+    const y = height - padY - (val / maxVal) * (height - padY * 2)
     return { x, y }
   }
 
@@ -177,7 +182,6 @@ export const AreaStatisticChart: React.FC<AreaStatisticChartProps> = ({
             </linearGradient>
           </defs>
 
-          {/* Horizontal Grid Lines */}
           {[0.2, 0.5, 0.8].map((ratio) => (
             <line
               key={ratio}
@@ -191,7 +195,6 @@ export const AreaStatisticChart: React.FC<AreaStatisticChartProps> = ({
             />
           ))}
 
-          {/* Secondary Comparison Line */}
           <path
             d={secondaryPath}
             fill="none"
@@ -201,7 +204,6 @@ export const AreaStatisticChart: React.FC<AreaStatisticChartProps> = ({
             className="text-zinc-300 dark:text-zinc-700"
           />
 
-          {/* Primary Gradient Area & Line */}
           <path d={areaPath} fill="url(#etherealAreaGrad)" />
           <path
             d={linePath}
@@ -212,7 +214,6 @@ export const AreaStatisticChart: React.FC<AreaStatisticChartProps> = ({
             strokeLinejoin="round"
           />
 
-          {/* Interactive Data Points */}
           {primaryPoints.map((pt, idx) => {
             const isHovered = hoverIdx === idx
             return (
@@ -243,7 +244,6 @@ export const AreaStatisticChart: React.FC<AreaStatisticChartProps> = ({
                       : "fill-white dark:fill-zinc-900 stroke-blue-600 stroke-2"
                   )}
                 />
-                {/* Invisible wider hit target */}
                 <rect
                   x={pt.x - 24}
                   y={0}
@@ -364,6 +364,166 @@ export const BarStatisticChart: React.FC<BarStatisticChartProps> = ({
   )
 }
 
+export interface LineStatisticChartProps {
+  title?: string
+  subtitle?: string
+  className?: string
+}
+
+const DEFAULT_LINE_TELEMETRY = [
+  { time: "00:00", p95: 22, p50: 11 },
+  { time: "04:00", p95: 19, p50: 10 },
+  { time: "08:00", p95: 28, p50: 14 },
+  { time: "12:00", p95: 34, p50: 16 },
+  { time: "16:00", p95: 25, p50: 12 },
+  { time: "20:00", p95: 21, p50: 11 },
+  { time: "24:00", p95: 18, p50: 9 },
+]
+
+export const LineStatisticChart: React.FC<LineStatisticChartProps> = ({
+  title = "Edge API Response Latency (ms)",
+  subtitle = "P95 vs P50 global edge worker response time over 24 hours",
+  className,
+}) => {
+  const [hoverIdx, setHoverIdx] = React.useState<number | null>(null)
+  const width = 520
+  const height = 150
+  const padX = 18
+  const padY = 18
+  const maxVal = 45
+
+  const toPoint = (val: number, i: number) => ({
+    x: padX + (i / (DEFAULT_LINE_TELEMETRY.length - 1)) * (width - padX * 2),
+    y: height - padY - (val / maxVal) * (height - padY * 2),
+  })
+
+  const p95Pts = DEFAULT_LINE_TELEMETRY.map((d, i) => toPoint(d.p95, i))
+  const p50Pts = DEFAULT_LINE_TELEMETRY.map((d, i) => toPoint(d.p50, i))
+
+  const p95Path = p95Pts
+    .map((p, i) => `${i === 0 ? "M" : "L"}${p.x.toFixed(1)},${p.y.toFixed(1)}`)
+    .join(" ")
+  const p50Path = p50Pts
+    .map((p, i) => `${i === 0 ? "M" : "L"}${p.x.toFixed(1)},${p.y.toFixed(1)}`)
+    .join(" ")
+
+  const current =
+    hoverIdx !== null
+      ? DEFAULT_LINE_TELEMETRY[hoverIdx]
+      : DEFAULT_LINE_TELEMETRY[DEFAULT_LINE_TELEMETRY.length - 1]
+
+  return (
+    <div
+      className={cn(
+        "w-full rounded-2xl border border-zinc-200 bg-white p-5 shadow-2xs dark:border-zinc-800 dark:bg-zinc-900",
+        className
+      )}
+    >
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+            <LineChartIcon className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+            {title}
+          </h3>
+          <p className="mt-0.5 text-xs text-zinc-500 dark:text-zinc-400">
+            {subtitle}
+          </p>
+        </div>
+
+        <div className="flex items-center gap-4 text-xs">
+          <span className="flex items-center gap-1.5 font-mono text-zinc-700 dark:text-zinc-200">
+            <span className="h-2 w-2 rounded-full bg-blue-600" />
+            P95: <strong>{current.p95}ms</strong>
+          </span>
+          <span className="flex items-center gap-1.5 font-mono text-zinc-700 dark:text-zinc-200">
+            <span className="h-2 w-2 rounded-full bg-emerald-500" />
+            P50: <strong>{current.p50}ms</strong>
+          </span>
+        </div>
+      </div>
+
+      <div className="mt-4">
+        <svg
+          viewBox={`0 0 ${width} ${height}`}
+          className="h-40 w-full overflow-visible select-none"
+          onMouseLeave={() => setHoverIdx(null)}
+        >
+          {[0.25, 0.5, 0.75].map((r) => (
+            <line
+              key={r}
+              x1={padX}
+              x2={width - padX}
+              y1={height * r}
+              y2={height * r}
+              stroke="currentColor"
+              strokeDasharray="3 3"
+              className="text-zinc-200 dark:text-zinc-800"
+            />
+          ))}
+
+          <path
+            d={p95Path}
+            fill="none"
+            stroke="#2563eb"
+            strokeWidth="2.25"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path
+            d={p50Path}
+            fill="none"
+            stroke="#10b981"
+            strokeWidth="2.25"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+
+          {p95Pts.map((pt, i) => (
+            <g
+              key={DEFAULT_LINE_TELEMETRY[i].time}
+              className="cursor-pointer"
+              onMouseEnter={() => setHoverIdx(i)}
+            >
+              <circle
+                cx={pt.x}
+                cy={pt.y}
+                r={hoverIdx === i ? 5 : 3}
+                className="fill-blue-600 stroke-white dark:stroke-zinc-900 stroke-2"
+              />
+              <circle
+                cx={p50Pts[i].x}
+                cy={p50Pts[i].y}
+                r={hoverIdx === i ? 5 : 3}
+                className="fill-emerald-500 stroke-white dark:stroke-zinc-900 stroke-2"
+              />
+              <rect
+                x={pt.x - 24}
+                y={0}
+                width={48}
+                height={height}
+                fill="transparent"
+              />
+            </g>
+          ))}
+        </svg>
+
+        <div className="mt-2 flex justify-between px-2 font-mono text-[11px] text-zinc-400">
+          {DEFAULT_LINE_TELEMETRY.map((d, i) => (
+            <span
+              key={d.time}
+              className={cn(
+                hoverIdx === i && "font-semibold text-blue-600 dark:text-blue-400"
+              )}
+            >
+              {d.time}
+            </span>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export interface DonutSegment {
   label: string
   value: number
@@ -409,7 +569,6 @@ export const DonutStatisticChart: React.FC<{
       </div>
 
       <div className="mt-5 flex flex-col items-center gap-6 sm:flex-row sm:justify-around">
-        {/* SVG Donut Ring */}
         <div className="relative flex h-36 w-36 items-center justify-center shrink-0">
           <svg className="h-36 w-36 -rotate-90" viewBox="0 0 128 128">
             <circle
@@ -454,7 +613,6 @@ export const DonutStatisticChart: React.FC<{
           </div>
         </div>
 
-        {/* Interactive Breakdown Legend */}
         <div className="w-full max-w-xs space-y-2.5">
           {segments.map((seg, idx) => (
             <div
@@ -477,6 +635,195 @@ export const DonutStatisticChart: React.FC<{
               </span>
             </div>
           ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export const RadialStatisticChart: React.FC<{
+  title?: string
+  score?: number
+  className?: string
+}> = ({
+  title = "Workspace Health & SLA Score",
+  score = 98,
+  className,
+}) => {
+  return (
+    <div
+      className={cn(
+        "w-full rounded-2xl border border-zinc-200 bg-white p-5 shadow-2xs dark:border-zinc-800 dark:bg-zinc-900",
+        className
+      )}
+    >
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <Gauge className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+          <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+            {title}
+          </h3>
+        </div>
+        <span className="rounded-full bg-emerald-500/10 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-600 dark:text-emerald-400">
+          Excellent
+        </span>
+      </div>
+
+      <div className="mt-5 flex flex-col items-center gap-6 sm:flex-row sm:justify-around">
+        {/* Concentric Activity Rings */}
+        <div className="relative flex h-36 w-36 items-center justify-center shrink-0">
+          <svg className="h-36 w-36 -rotate-90" viewBox="0 0 128 128">
+            <circle
+              cx="64"
+              cy="64"
+              r="52"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="10"
+              className="text-zinc-100 dark:text-zinc-800"
+            />
+            <circle
+              cx="64"
+              cy="64"
+              r="52"
+              fill="none"
+              stroke="#2563eb"
+              strokeWidth="10"
+              strokeDasharray="326"
+              strokeDashoffset="22"
+              strokeLinecap="round"
+            />
+            <circle
+              cx="64"
+              cy="64"
+              r="38"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="10"
+              className="text-zinc-100 dark:text-zinc-800"
+            />
+            <circle
+              cx="64"
+              cy="64"
+              r="38"
+              fill="none"
+              stroke="#10b981"
+              strokeWidth="10"
+              strokeDasharray="238"
+              strokeDashoffset="28"
+              strokeLinecap="round"
+            />
+          </svg>
+          <div className="absolute inset-0 flex flex-col items-center justify-center">
+            <span className="text-2xl font-bold text-zinc-900 dark:text-white">
+              {score}
+            </span>
+            <span className="text-[10px] text-zinc-400">/ 100</span>
+          </div>
+        </div>
+
+        <div className="w-full max-w-xs space-y-3 text-xs">
+          <div className="space-y-1">
+            <div className="flex justify-between">
+              <span className="text-zinc-500">Global Uptime SLA</span>
+              <span className="font-mono font-semibold text-zinc-900 dark:text-white">
+                99.98%
+              </span>
+            </div>
+            <div className="h-1.5 w-full rounded-full bg-zinc-100 dark:bg-zinc-800">
+              <div className="h-full w-[98%] rounded-full bg-blue-600" />
+            </div>
+          </div>
+
+          <div className="space-y-1">
+            <div className="flex justify-between">
+              <span className="text-zinc-500">Edge Cache Hit Ratio</span>
+              <span className="font-mono font-semibold text-zinc-900 dark:text-white">
+                94.2%
+              </span>
+            </div>
+            <div className="h-1.5 w-full rounded-full bg-zinc-100 dark:bg-zinc-800">
+              <div className="h-full w-[94%] rounded-full bg-emerald-500" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+const HEATMAP_DATA = [
+  1, 2, 3, 2, 1, 0, 2, 3, 4, 3, 2, 1, 3, 4, 2, 3,
+  2, 3, 4, 3, 2, 1, 3, 4, 2, 1, 3, 2, 4, 3, 1, 2,
+  0, 1, 2, 4, 3, 2, 1, 3, 4, 4, 3, 2, 3, 4, 3, 4,
+  2, 3, 1, 2, 3, 4, 2, 1, 3, 2, 4, 3, 2, 1, 4, 3,
+]
+
+export const HeatmapStatisticChart: React.FC<{
+  title?: string
+  subtitle?: string
+  className?: string
+}> = ({
+  title = "Deployment & Commit Frequency Heatmap",
+  subtitle = "64-day production release intensity across workspace repositories",
+  className,
+}) => {
+  const [hoveredCell, setHoveredCell] = React.useState<number | null>(null)
+
+  return (
+    <div
+      className={cn(
+        "w-full rounded-2xl border border-zinc-200 bg-white p-5 shadow-2xs dark:border-zinc-800 dark:bg-zinc-900",
+        className
+      )}
+    >
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+            <Grid className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+            {title}
+          </h3>
+          <p className="mt-0.5 text-xs text-zinc-500 dark:text-zinc-400">
+            {subtitle}
+          </p>
+        </div>
+
+        <span className="font-mono text-xs text-zinc-500 dark:text-zinc-400">
+          {hoveredCell !== null
+            ? `Day ${hoveredCell + 1}: ${HEATMAP_DATA[hoveredCell] * 6} events`
+            : "1,428 total events"}
+        </span>
+      </div>
+
+      <div className="mt-5 grid grid-cols-16 gap-1.5">
+        {HEATMAP_DATA.map((lvl, idx) => (
+          <button
+            key={idx}
+            type="button"
+            onMouseEnter={() => setHoveredCell(idx)}
+            onMouseLeave={() => setHoveredCell(null)}
+            aria-label={`Day ${idx + 1}`}
+            className={cn(
+              "h-5 w-full rounded-[4px] transition-transform hover:scale-115 cursor-pointer",
+              lvl === 0 && "bg-zinc-100 dark:bg-zinc-800",
+              lvl === 1 && "bg-blue-200 dark:bg-blue-950",
+              lvl === 2 && "bg-blue-400 dark:bg-blue-800",
+              lvl === 3 && "bg-blue-500 dark:bg-blue-600",
+              lvl === 4 && "bg-blue-600 dark:bg-blue-400"
+            )}
+          />
+        ))}
+      </div>
+
+      <div className="mt-4 flex items-center justify-between text-[11px] text-zinc-400">
+        <span>64 days ago</span>
+        <div className="flex items-center gap-1">
+          <span>Less</span>
+          <span className="h-2.5 w-2.5 rounded-[2px] bg-zinc-100 dark:bg-zinc-800" />
+          <span className="h-2.5 w-2.5 rounded-[2px] bg-blue-200 dark:bg-blue-950" />
+          <span className="h-2.5 w-2.5 rounded-[2px] bg-blue-400 dark:bg-blue-800" />
+          <span className="h-2.5 w-2.5 rounded-[2px] bg-blue-600 dark:bg-blue-400" />
+          <span>More</span>
         </div>
       </div>
     </div>

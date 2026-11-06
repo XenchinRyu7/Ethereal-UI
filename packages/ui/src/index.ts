@@ -90,10 +90,14 @@ export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "./prim
 export {
   AreaStatisticChart,
   BarStatisticChart,
+  LineStatisticChart,
   DonutStatisticChart,
+  RadialStatisticChart,
+  HeatmapStatisticChart,
   type ChartDataPoint,
   type AreaStatisticChartProps,
   type BarStatisticChartProps,
+  type LineStatisticChartProps,
   type DonutSegment,
 } from "./primitives/chart"
 
