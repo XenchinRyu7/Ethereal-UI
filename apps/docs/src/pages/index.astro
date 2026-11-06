@@ -3,11 +3,11 @@ import BaseLayout from "../layouts/BaseLayout.astro"
 import LandingNav from "../components/LandingNav.astro"
 import { LandingBentoShowcase } from "../components/LandingBentoShowcase"
 import { LandingHeroShowcase } from "../components/LandingHeroShowcase"
-import {
-  PRIMITIVE_ITEMS,
-  BLOCK_ITEMS,
-  TEMPLATE_ITEMS,
-} from "../data/registry-catalog"
+import { getRegistryByCategory } from "../data/registry-catalog"
+
+const PRIMITIVE_ITEMS = getRegistryByCategory("primitives")
+const BLOCK_ITEMS = getRegistryByCategory("blocks")
+const TEMPLATE_ITEMS = getRegistryByCategory("templates")
 ---
 
 <BaseLayout

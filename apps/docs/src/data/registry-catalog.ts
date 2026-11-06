@@ -1253,3 +1253,8 @@ export function getRegistryByCategory(category: RegistryCategory) {
 export function getRegistryBySlug(slug: string) {
   return REGISTRY_ITEMS.find((item) => item.slug === slug)
 }
+
+export const PRIMITIVE_ITEMS = getRegistryByCategory("primitives")
+export const BLOCK_ITEMS = getRegistryByCategory("blocks")
+export const TEMPLATE_ITEMS = getRegistryByCategory("templates")
+

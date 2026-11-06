@@ -807,6 +807,223 @@ export const LandingBentoShowcase: React.FC = () => {
             </p>
           </div>
         </div>
+
+        {/* Card 9: Interactive Prompt Composer (BoardUI Row 3 Card 1) */}
+        <div className="group flex flex-col justify-between rounded-3xl border border-zinc-200/90 bg-zinc-50/50 p-3 transition-all duration-200 hover:border-zinc-300 hover:shadow-md dark:border-zinc-800/90 dark:bg-zinc-900/40 dark:hover:border-zinc-700">
+          <div className="relative h-52 overflow-hidden rounded-2xl border border-zinc-200/80 bg-white p-3.5 shadow-2xs dark:border-zinc-800 dark:bg-zinc-950 flex flex-col justify-between">
+            <div className="flex flex-wrap gap-1.5">
+              {["Generate KPI block", "Add dark mode", "Export CSV"].map((chip) => (
+                <span
+                  key={chip}
+                  className="rounded-lg border border-zinc-200/80 bg-zinc-50 px-2 py-0.5 text-[10px] text-zinc-500 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400"
+                >
+                  {chip}
+                </span>
+              ))}
+            </div>
+
+            <div className="rounded-2xl border border-zinc-200 bg-zinc-50/60 p-3 shadow-2xs dark:border-zinc-800 dark:bg-zinc-900">
+              <div className="flex items-center gap-2 text-xs text-zinc-400">
+                <span className="flex h-5 w-5 items-center justify-center rounded-full border border-zinc-300 bg-white text-zinc-600 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+                  <Plus className="h-3 w-3" />
+                </span>
+                <input
+                  type="text"
+                  defaultValue=""
+                  placeholder="Ask me anything..."
+                  className="w-full bg-transparent text-xs text-zinc-800 placeholder:text-zinc-400 focus:outline-none dark:text-zinc-200"
+                />
+              </div>
+
+              <div className="mt-3 flex items-center justify-between border-t border-zinc-200/70 pt-2 text-[10px] text-zinc-500 dark:border-zinc-800">
+                <div className="flex items-center gap-2">
+                  <span className="font-mono font-medium text-zinc-700 dark:text-zinc-300">
+                    ⑂ main
+                  </span>
+                  <span>•</span>
+                  <span className="truncate">project-sea ▾</span>
+                </div>
+                <span
+                  className={cn(
+                    "inline-flex h-5 w-5 items-center justify-center rounded-full text-white",
+                    theme.bg
+                  )}
+                >
+                  <ArrowUpRight className="h-3 w-3" />
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div className="px-2 pt-3.5 pb-1.5">
+            <a href="/components/textarea" className="text-sm font-semibold text-zinc-900 hover:underline dark:text-zinc-100">
+              Prompt composer
+            </a>
+            <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400 line-clamp-2">
+              Rich multi-line prompt input with branch context, attachments, and quick chips.
+            </p>
+          </div>
+        </div>
+
+        {/* Card 10: Streaming Reasoning Trace (BoardUI Row 3 Card 2) */}
+        <div className="group flex flex-col justify-between rounded-3xl border border-zinc-200/90 bg-zinc-50/50 p-3 transition-all duration-200 hover:border-zinc-300 hover:shadow-md dark:border-zinc-800/90 dark:bg-zinc-900/40 dark:hover:border-zinc-700">
+          <div className="relative h-52 overflow-hidden rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-2xs dark:border-zinc-800 dark:bg-zinc-950 flex flex-col justify-center">
+            <div className="space-y-3">
+              {[
+                { label: "Thinking", meta: "1.2s", icon: "✦" },
+                { label: "Searching the docs", meta: "37 matches", icon: "⌕" },
+                { label: "Reading token files", meta: "globals.css", icon: "▤" },
+                { label: "Writing the answer", meta: "Streaming...", icon: "✎" },
+              ].map((item, idx) => {
+                const isCurrent = (activeStep % 4) === idx
+                return (
+                  <div
+                    key={item.label}
+                    className={cn(
+                      "flex items-center justify-between rounded-xl px-2.5 py-1.5 text-xs transition-all",
+                      isCurrent
+                        ? "bg-zinc-100 text-zinc-900 font-semibold dark:bg-zinc-900 dark:text-white"
+                        : "text-zinc-400 dark:text-zinc-500"
+                    )}
+                  >
+                    <span className="flex items-center gap-2.5">
+                      <span className={cn("text-xs", isCurrent && theme.text)}>
+                        {item.icon}
+                      </span>
+                      <span>{item.label}</span>
+                    </span>
+                    <span className="font-mono text-[10px]">{item.meta}</span>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+
+          <div className="px-2 pt-3.5 pb-1.5">
+            <a href="/components/skeleton" className="text-sm font-semibold text-zinc-900 hover:underline dark:text-zinc-100">
+              Streaming reasoning trace
+            </a>
+            <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400 line-clamp-2">
+              Step-by-step reasoning states and live skeleton transitions for AI &amp; SaaS apps.
+            </p>
+          </div>
+        </div>
+
+        {/* Card 11: Interactive Media & Carousel Card (BoardUI Row 3 Card 3) */}
+        <div className="group flex flex-col justify-between rounded-3xl border border-zinc-200/90 bg-zinc-50/50 p-3 transition-all duration-200 hover:border-zinc-300 hover:shadow-md dark:border-zinc-800/90 dark:bg-zinc-900/40 dark:hover:border-zinc-700">
+          <div className="relative h-52 overflow-hidden rounded-2xl border border-zinc-200/80 bg-gradient-to-br from-blue-600 via-indigo-600 to-violet-700 p-4 text-white shadow-2xs flex flex-col justify-between">
+            <div className="flex items-center justify-between">
+              <span className="rounded-full bg-white/20 px-2.5 py-0.5 text-[10px] font-semibold backdrop-blur-xs">
+                Featured System
+              </span>
+              <span className="font-mono text-[10px] text-white/80">01 / 04</span>
+            </div>
+
+            <div className="space-y-1">
+              <p className="text-xs font-medium text-white/80">Design Token Engine</p>
+              <h4 className="text-base font-bold leading-snug">
+                Zero-Runtime Light &amp; Dark Theme Architecture
+              </h4>
+            </div>
+
+            <div className="flex items-center justify-between pt-1">
+              <div className="flex gap-1">
+                <span className="h-1.5 w-5 rounded-full bg-white" />
+                <span className="h-1.5 w-1.5 rounded-full bg-white/40" />
+                <span className="h-1.5 w-1.5 rounded-full bg-white/40" />
+              </div>
+              <span className="text-[10px] font-medium text-white/90">Explore &rarr;</span>
+            </div>
+          </div>
+
+          <div className="px-2 pt-3.5 pb-1.5">
+            <a href="/components/carousel" className="text-sm font-semibold text-zinc-900 hover:underline dark:text-zinc-100">
+              Media &amp; feature carousel
+            </a>
+            <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400 line-clamp-2">
+              Smooth multi-slide carousels and rich spotlight cards with keyboard controls.
+            </p>
+          </div>
+        </div>
+
+        {/* Card 12: Monthly Event Scheduler Calendar (BoardUI Row 3 Card 4) */}
+        <div className="group flex flex-col justify-between rounded-3xl border border-zinc-200/90 bg-zinc-50/50 p-3 transition-all duration-200 hover:border-zinc-300 hover:shadow-md dark:border-zinc-800/90 dark:bg-zinc-900/40 dark:hover:border-zinc-700">
+          <div className="relative h-52 overflow-hidden rounded-2xl border border-zinc-200/80 bg-white p-3.5 shadow-2xs dark:border-zinc-800 dark:bg-zinc-950 flex flex-col justify-between">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
+                August 2026
+              </span>
+              <span
+                className={cn(
+                  "inline-flex items-center gap-1 rounded-lg px-2 py-0.5 text-[10px] font-semibold text-white",
+                  theme.bg
+                )}
+              >
+                <Plus className="h-2.5 w-2.5" /> New event
+              </span>
+            </div>
+
+            <div className="grid grid-cols-5 gap-1 text-[9px]">
+              {[
+                { day: "12", tag: "Sync", color: "bg-blue-500/15 text-blue-600 dark:text-blue-400" },
+                { day: "13", tag: "", color: "" },
+                { day: "14", tag: "Release", color: "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400" },
+                { day: "15", tag: "Review", color: "bg-violet-500/15 text-violet-600 dark:text-violet-400" },
+                { day: "16", tag: "", color: "" },
+                { day: "17", tag: "Audit", color: "bg-amber-500/15 text-amber-600 dark:text-amber-400" },
+                { day: "18", tag: "", color: "" },
+                { day: "19", tag: "Demo", color: "bg-rose-500/15 text-rose-600 dark:text-rose-400" },
+                { day: "20", tag: "", color: "" },
+                { day: "21", tag: "Ship", color: "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400" },
+              ].map((cell) => (
+                <div
+                  key={cell.day}
+                  className="h-12 rounded-lg border border-zinc-100 p-1 flex flex-col justify-between dark:border-zinc-800/80"
+                >
+                  <span className="font-mono text-zinc-400">{cell.day}</span>
+                  {cell.tag && (
+                    <span className={cn("truncate rounded px-1 py-0.2 text-[8px] font-semibold", cell.color)}>
+                      {cell.tag}
+                    </span>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="px-2 pt-3.5 pb-1.5">
+            <a href="/components/date-calendar" className="text-sm font-semibold text-zinc-900 hover:underline dark:text-zinc-100">
+              Event calendar &amp; scheduler
+            </a>
+            <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400 line-clamp-2">
+              Monthly and range calendars with event pills, keyboard navigation, and popovers.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Floating Bottom-Center Accent Color Dock (BoardUI style) */}
+      <div className="fixed bottom-4 left-1/2 z-40 -translate-x-1/2 flex items-center gap-2 rounded-full border border-zinc-200/90 bg-white/90 px-3 py-1.5 shadow-lg backdrop-blur-md dark:border-zinc-800 dark:bg-zinc-900/90">
+        {(Object.keys(ACCENT_PALETTE) as AccentColor[]).map((key) => {
+          const item = ACCENT_PALETTE[key]
+          const active = accent === key
+          return (
+            <button
+              key={key}
+              type="button"
+              onClick={() => setAccent(key)}
+              title={`Theme: ${item.name}`}
+              aria-label={`Theme: ${item.name}`}
+              className={cn(
+                "h-5 w-5 rounded-full transition-transform cursor-pointer",
+                item.dot,
+                active
+                  ? "scale-115 ring-2 ring-offset-2 ring-zinc-900 dark:ring-white dark:ring-offset-zinc-950"
+                  : "opacity-80 hover:opacity-100 hover:scale-105"
+              )}
+            />
+          )
+        })}
       </div>
 
       {/* 3. Dedicated Interactive Statistical Block Section (Block Statistik) */}
@@ -991,3 +1208,4 @@ export const LandingBentoShowcase: React.FC = () => {
     </div>
   )
 }
+
