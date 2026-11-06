@@ -19,7 +19,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           )}
         >
           {prefixText && (
-            <span className="flex h-full items-center border-r border-zinc-200 bg-zinc-50 px-3 text-xs text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400 select-none">
+            <span className="flex h-full items-center rounded-l-lg border-r border-zinc-200 bg-zinc-50 px-3 text-xs text-zinc-500 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-300 select-none">
               {prefixText}
             </span>
           )}
