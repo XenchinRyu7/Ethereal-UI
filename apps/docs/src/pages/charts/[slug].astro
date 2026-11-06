@@ -1,0 +1,30 @@
+---
+import DocsLayout from "../../layouts/DocsLayout.astro"
+import { BoardUIDocPage } from "../../components/PreviewCanvas"
+import { getRegistryByCategory } from "../../data/registry-catalog"
+
+export function getStaticPaths() {
+  const charts = getRegistryByCategory("charts")
+  return charts.map((item) => ({
+    params: { slug: item.slug },
+    props: { item },
+  }))
+}
+
+const { item } = Astro.props
+
+const toc = [
+  { id: "preview", label: "Preview" },
+  { id: "installation", label: "Installation" },
+  ...item.sections.map((s) => ({ id: s.id, label: s.title })),
+]
+---
+
+<DocsLayout
+  title={item.title}
+  description={item.description}
+  categoryLabel="Charts"
+  toc={toc}
+>
+  <BoardUIDocPage client:load item={item} />
+</DocsLayout>

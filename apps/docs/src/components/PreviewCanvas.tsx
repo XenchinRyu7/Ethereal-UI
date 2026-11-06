@@ -25,7 +25,10 @@ import {
   Carousel,
   AreaStatisticChart,
   BarStatisticChart,
+  LineStatisticChart,
   DonutStatisticChart,
+  RadialStatisticChart,
+  HeatmapStatisticChart,
   Checkbox,
   ColorPicker,
   Combobox,
@@ -284,24 +287,46 @@ export const LiveDemoRenderer: React.FC<{ slug: string; sectionId?: string }> = 
     case "carousel":
       return <Carousel />
 
-    case "chart":
-      if (sectionId === "bar-chart") {
-        return (
-          <div className="w-full max-w-xl">
-            <BarStatisticChart />
-          </div>
-        )
-      }
-      if (sectionId === "donut-chart") {
-        return (
-          <div className="w-full max-w-xl">
-            <DonutStatisticChart />
-          </div>
-        )
-      }
+    // CHARTS
+    case "area-chart":
       return (
         <div className="w-full max-w-2xl">
           <AreaStatisticChart />
+        </div>
+      )
+
+    case "bar-chart":
+      return (
+        <div className="w-full max-w-2xl">
+          <BarStatisticChart />
+        </div>
+      )
+
+    case "line-chart":
+      return (
+        <div className="w-full max-w-2xl">
+          <LineStatisticChart />
+        </div>
+      )
+
+    case "donut-chart":
+      return (
+        <div className="w-full max-w-2xl">
+          <DonutStatisticChart />
+        </div>
+      )
+
+    case "radial-chart":
+      return (
+        <div className="w-full max-w-2xl">
+          <RadialStatisticChart />
+        </div>
+      )
+
+    case "heatmap-chart":
+      return (
+        <div className="w-full max-w-2xl">
+          <HeatmapStatisticChart />
         </div>
       )
 

@@ -46,6 +46,8 @@ export const NavbarSearchModal: React.FC = () => {
       category:
         item.category === "primitives"
           ? "Base Components"
+          : item.category === "charts"
+          ? "Charts"
           : item.category === "blocks"
           ? "Blocks"
           : "Templates",
@@ -53,6 +55,8 @@ export const NavbarSearchModal: React.FC = () => {
       icon:
         item.category === "primitives" ? (
           <Box className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+        ) : item.category === "charts" ? (
+          <Layers className="h-4 w-4 text-violet-600 dark:text-violet-400" />
         ) : item.category === "blocks" ? (
           <Layers className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
         ) : (
@@ -62,6 +66,8 @@ export const NavbarSearchModal: React.FC = () => {
         const base =
           item.category === "primitives"
             ? "/components"
+            : item.category === "charts"
+            ? "/charts"
             : item.category === "blocks"
             ? "/blocks"
             : "/templates"

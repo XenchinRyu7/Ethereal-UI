@@ -46,6 +46,17 @@ const pathname = Astro.url.pathname
           Components
         </a>
         <a
+          href="/charts"
+          class:list={[
+            "transition-colors",
+            pathname.startsWith("/charts")
+              ? "text-zinc-900 dark:text-white font-semibold"
+              : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100",
+          ]}
+        >
+          Charts
+        </a>
+        <a
           href="/blocks"
           class:list={[
             "transition-colors flex items-center gap-1.5",

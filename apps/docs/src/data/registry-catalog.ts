@@ -1,4 +1,4 @@
-export type RegistryCategory = "primitives" | "blocks" | "templates"
+export type RegistryCategory = "primitives" | "charts" | "blocks" | "templates"
 
 export interface RegistryVariantSection {
   id: string
@@ -297,58 +297,6 @@ export function CarouselDemo() {
   return <Carousel />
 }`,
     sections: [],
-  },
-  {
-    slug: "chart",
-    title: "Chart",
-    category: "primitives",
-    subcategory: "Base",
-    description:
-      "Interactive SVG statistical charts — Area & Line velocity chart, Dual-Series Bar chart, and Multi-Segment Donut chart with live hover tooltips and Light/Dark mode support.",
-    isNew: true,
-    dependencies: ["lucide-react"],
-    sourceFile: "packages/ui/src/primitives/chart.tsx",
-    code: `import { AreaStatisticChart } from "@ethereal/ui"
-
-export function ChartDemo() {
-  return (
-    <AreaStatisticChart
-      title="Net Revenue & MRR Velocity"
-      subtitle="Real-time settled volume vs previous billing cycle"
-      value="$128,430"
-      change="+18.4%"
-    />
-  )
-}`,
-    sections: [
-      {
-        id: "bar-chart",
-        title: "Dual-Series Bar Chart",
-        description:
-          "Compare primary and secondary metrics across cohorts with interactive hover value tooltips.",
-        code: `import { BarStatisticChart } from "@ethereal/ui"
-
-export function BarChartDemo() {
-  return (
-    <BarStatisticChart
-      title="Monthly Cohort Conversion"
-      subtitle="Enterprise vs self-serve onboarding completion (%)"
-    />
-  )
-}`,
-      },
-      {
-        id: "donut-chart",
-        title: "Donut Breakdown Chart",
-        description:
-          "Multi-segment SVG ring chart with interactive segment highlighting and percentage legend.",
-        code: `import { DonutStatisticChart } from "@ethereal/ui"
-
-export function DonutChartDemo() {
-  return <DonutStatisticChart title="Revenue Distribution by Tier" />
-}`,
-      },
-    ],
   },
   {
     slug: "checkbox",
@@ -1296,6 +1244,141 @@ export default function WorkspaceSettingsPage() {
 }`,
     sections: [],
   },
+
+  // ============================================================================
+  // CHARTS (Dedicated Statistical Charts category in Sidebar)
+  // ============================================================================
+  {
+    slug: "area-chart",
+    title: "Area Chart",
+    category: "charts",
+    subcategory: "Charts",
+    description:
+      "Interactive SVG Area & Line velocity chart with timeframe switching (7D / 30D / 90D), gradient fill, comparison line, and live hover crosshair.",
+    isNew: true,
+    dependencies: ["lucide-react"],
+    sourceFile: "packages/ui/src/primitives/chart.tsx",
+    code: `import { AreaStatisticChart } from "@ethereal/ui"
+
+export function AreaChartDemo() {
+  return (
+    <AreaStatisticChart
+      title="Net Revenue & MRR Velocity"
+      subtitle="Real-time settled volume vs previous billing cycle"
+      value="$128,430"
+      change="+18.4%"
+    />
+  )
+}`,
+    sections: [],
+  },
+  {
+    slug: "bar-chart",
+    title: "Bar Chart",
+    category: "charts",
+    subcategory: "Charts",
+    description:
+      "Dual-series comparative bar chart for cohort conversion, monthly revenue, and quota benchmarks with hover value tooltips.",
+    isNew: true,
+    dependencies: ["lucide-react"],
+    sourceFile: "packages/ui/src/primitives/chart.tsx",
+    code: `import { BarStatisticChart } from "@ethereal/ui"
+
+export function BarChartDemo() {
+  return (
+    <BarStatisticChart
+      title="Monthly Cohort Conversion"
+      subtitle="Enterprise vs self-serve onboarding completion (%)"
+    />
+  )
+}`,
+    sections: [],
+  },
+  {
+    slug: "line-chart",
+    title: "Line Chart",
+    category: "charts",
+    subcategory: "Charts",
+    description:
+      "Multi-series telemetry line chart for tracking P95/P50 API latency, request throughput, and time-series benchmarks.",
+    isNew: true,
+    dependencies: ["lucide-react"],
+    sourceFile: "packages/ui/src/primitives/chart.tsx",
+    code: `import { LineStatisticChart } from "@ethereal/ui"
+
+export function LineChartDemo() {
+  return (
+    <LineStatisticChart
+      title="Edge API Response Latency (ms)"
+      subtitle="P95 vs P50 global edge worker response time over 24 hours"
+    />
+  )
+}`,
+    sections: [],
+  },
+  {
+    slug: "donut-chart",
+    title: "Donut Chart",
+    category: "charts",
+    subcategory: "Charts",
+    description:
+      "Multi-segment SVG ring chart with interactive segment highlighting, dynamic center total, and breakdown legend.",
+    isNew: true,
+    dependencies: ["lucide-react"],
+    sourceFile: "packages/ui/src/primitives/chart.tsx",
+    code: `import { DonutStatisticChart } from "@ethereal/ui"
+
+export function DonutChartDemo() {
+  return (
+    <DonutStatisticChart title="Revenue Distribution by Tier" />
+  )
+}`,
+    sections: [],
+  },
+  {
+    slug: "radial-chart",
+    title: "Radial Ring Chart",
+    category: "charts",
+    subcategory: "Charts",
+    description:
+      "Concentric multi-ring KPI health score gauge for SLA uptime, cache efficiency, and quota completion.",
+    isNew: true,
+    dependencies: ["lucide-react"],
+    sourceFile: "packages/ui/src/primitives/chart.tsx",
+    code: `import { RadialStatisticChart } from "@ethereal/ui"
+
+export function RadialChartDemo() {
+  return (
+    <RadialStatisticChart
+      title="Workspace Health & SLA Score"
+      score={98}
+    />
+  )
+}`,
+    sections: [],
+  },
+  {
+    slug: "heatmap-chart",
+    title: "Activity Heatmap",
+    category: "charts",
+    subcategory: "Charts",
+    description:
+      "64-day contribution and production deployment intensity matrix with interactive cell hover inspection.",
+    isNew: true,
+    dependencies: ["lucide-react"],
+    sourceFile: "packages/ui/src/primitives/chart.tsx",
+    code: `import { HeatmapStatisticChart } from "@ethereal/ui"
+
+export function HeatmapChartDemo() {
+  return (
+    <HeatmapStatisticChart
+      title="Deployment & Commit Frequency Heatmap"
+      subtitle="64-day production release intensity across workspace repositories"
+    />
+  )
+}`,
+    sections: [],
+  },
 ]
 
 export function getRegistryByCategory(category: RegistryCategory) {
@@ -1307,6 +1390,7 @@ export function getRegistryBySlug(slug: string) {
 }
 
 export const PRIMITIVE_ITEMS = getRegistryByCategory("primitives")
+export const CHART_ITEMS = getRegistryByCategory("charts")
 export const BLOCK_ITEMS = getRegistryByCategory("blocks")
 export const TEMPLATE_ITEMS = getRegistryByCategory("templates")
 

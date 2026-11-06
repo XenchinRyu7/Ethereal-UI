@@ -20,7 +20,15 @@ const { categoryLabel = "Components", pageTitle } = Astro.props
     </a>
     <span class="text-zinc-300 dark:text-zinc-700">&gt;</span>
     <a
-      href={categoryLabel === "Blocks" ? "/blocks" : categoryLabel === "Templates" ? "/templates" : "/components"}
+      href={
+        categoryLabel === "Charts"
+          ? "/charts"
+          : categoryLabel === "Blocks"
+          ? "/blocks"
+          : categoryLabel === "Templates"
+          ? "/templates"
+          : "/components"
+      }
       class="text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
     >
       {categoryLabel}
@@ -43,6 +51,9 @@ const { categoryLabel = "Components", pageTitle } = Astro.props
       </a>
       <a href="/components/avatar" class="hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors">
         Components
+      </a>
+      <a href="/charts" class="hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors">
+        Charts
       </a>
       <a href="/blocks" class="hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors">
         Blocks

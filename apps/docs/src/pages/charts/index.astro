@@ -1,0 +1,52 @@
+---
+import DocsLayout from "../../layouts/DocsLayout.astro"
+import { PreviewCanvas } from "../../components/PreviewCanvas"
+import { getRegistryByCategory } from "../../data/registry-catalog"
+
+const charts = getRegistryByCategory("charts")
+---
+
+<DocsLayout
+  title="Charts"
+  description="Interactive statistical SVG charts — Area, Bar, Line, Donut, Radial Ring, and Activity Heatmap charts for SaaS analytics."
+  categoryLabel="Charts"
+  toc={charts.map((c) => ({ id: c.slug, label: c.title }))}
+>
+  <div class="space-y-10">
+    <div class="space-y-2">
+      <h1 class="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+        Statistical Charts
+      </h1>
+      <p class="text-sm text-zinc-600 dark:text-zinc-400">
+        Zero-dependency SVG statistical charts that adapt automatically to Light and Dark mode. Click any chart title to open its dedicated documentation page.
+      </p>
+    </div>
+
+    <div class="space-y-12">
+      {charts.map((item) => (
+        <section id={item.slug} class="space-y-3 scroll-mt-20">
+          <div class="flex items-center justify-between">
+            <div>
+              <a
+                href={`/charts/${item.slug}`}
+                class="text-base font-semibold text-zinc-900 hover:text-blue-600 dark:text-zinc-100 dark:hover:text-blue-400 transition-colors"
+              >
+                {item.title} &rarr;
+              </a>
+              <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
+                {item.description}
+              </p>
+            </div>
+          </div>
+
+          <PreviewCanvas
+            client:visible
+            slug={item.slug}
+            code={item.code}
+            showCopyPage={true}
+          />
+        </section>
+      ))}
+    </div>
+  </div>
+</DocsLayout>
