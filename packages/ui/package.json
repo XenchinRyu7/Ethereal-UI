@@ -13,6 +13,10 @@
   "bugs": {
     "url": "https://github.com/XenchinRyu7/Ethereal-UI/issues"
   },
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/XenchinRyu7"
+  },
   "publishConfig": {
     "access": "public"
   },

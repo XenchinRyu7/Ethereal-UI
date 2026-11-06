@@ -156,6 +156,7 @@ ethereal-ui/
 ├── packages/
 │   └── ui/                     # @etherealui/react source, Tailwind v4 tokens & tsup bundler
 ├── CONTRIBUTING.md             # Contributor setup, coding standards & PR workflow
+├── FUNDING.md                  # Open-source sponsorship & enterprise support guide
 ├── LICENSE                     # MIT License (Copyright © 2026 Saeful Rohman)
 ├── SECURITY.md                 # Private vulnerability disclosure policy
 └── SUPPORT.md                  # Community support & bug reporting guide
@@ -185,6 +186,7 @@ pnpm build
 - **NPM Package Registry**: [https://www.npmjs.com/package/@etherealui/react](https://www.npmjs.com/package/@etherealui/react)
 - **Author's Personal Website**: [https://saefulrohman.dev](https://saefulrohman.dev)
 - **Contributing Guide**: [CONTRIBUTING.md](./CONTRIBUTING.md)
+- **Funding & Sponsorship**: [FUNDING.md](./FUNDING.md)
 - **Support & Bug Reports**: [SUPPORT.md](./SUPPORT.md)
 - **Security Policy**: [SECURITY.md](./SECURITY.md)
 

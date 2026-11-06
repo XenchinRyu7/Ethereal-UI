@@ -17,6 +17,8 @@ jobs:
       packages: write
       pull-requests: write
       id-token: write
+    env:
+      HUSKY: "0"
 
     steps:
       - name: Checkout Repository
@@ -49,7 +51,20 @@ jobs:
       - name: Build @etherealui/react Package
         run: pnpm --filter @etherealui/react build
 
-      - name: Create Release Pull Request or Publish to NPM via Changesets
+      - name: Publish Current Version to NPM if Not Yet Published (--access public)
+        run: |
+          PKG_VERSION=$(node -p "require('./packages/ui/package.json').version")
+          if npm view "@etherealui/react@${PKG_VERSION}" version > /dev/null 2>&1; then
+            echo "@etherealui/react@${PKG_VERSION} is already published on NPM."
+          else
+            echo "Publishing @etherealui/react@${PKG_VERSION} to NPM with --access public..."
+            pnpm --filter @etherealui/react publish --access public --no-git-checks
+          fi
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Create Release Pull Request or Publish Updates via Changesets
         id: changesets
         uses: changesets/action@v1
         with:
@@ -60,19 +75,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NPM_CONFIG_ACCESS: public
-
-      - name: Ensure Initial Release v0.0.1 is Published to NPM (--access public)
-        if: steps.changesets.outputs.published != 'true'
-        run: |
-          PKG_VERSION=$(node -p "require('./packages/ui/package.json').version")
-          if npm view "@etherealui/react@${PKG_VERSION}" version > /dev/null 2>&1; then
-            echo "@etherealui/react@${PKG_VERSION} is already published on NPM."
-          else
-            echo "Publishing initial @etherealui/react@${PKG_VERSION} to NPM with --access public..."
-            pnpm --filter @etherealui/react publish --access public --no-git-checks
-          fi
-        env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_ACCESS: public
+          HUSKY: "0"
 

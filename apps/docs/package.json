@@ -8,8 +8,8 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "lint": "tsc --noEmit",
-    "typecheck": "tsc --noEmit",
+    "lint": "astro sync && tsc --noEmit",
+    "typecheck": "astro sync && tsc --noEmit",
     "clean": "rimraf dist .astro"
   },
   "dependencies": {
