@@ -1,6 +1,6 @@
 {
   "name": "@etherealui/react",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Free, Open-Source, Modern, Dark-First Enterprise Dashboard Blocks & Component System for React",
   "license": "MIT",
   "author": "Saeful Rohman <saefulrohmandevelopers@gmail.com> (https://saefulrohman.dev)",
@@ -84,4 +84,3 @@
     "typescript": "^5.7.3"
   }
 }
-
