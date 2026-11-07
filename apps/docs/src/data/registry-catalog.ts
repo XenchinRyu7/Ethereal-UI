@@ -1006,6 +1006,108 @@ export function TooltipDemo() {
 }`,
     sections: [],
   },
+  {
+    slug: "timeline",
+    title: "Timeline",
+    category: "primitives",
+    subcategory: "Data Display",
+    description:
+      "Vertical audit trail and activity log primitive for Core Banking wire settlement traces, Maker-Checker sign-offs, and HRMS recruitment pipelines.",
+    isNew: true,
+    dependencies: ["lucide-react"],
+    sourceFile: "packages/ui/src/primitives/timeline.tsx",
+    code: `import { Timeline } from "@etherealui/react"
+
+export function TimelineDemo() {
+  return <Timeline />
+}`,
+    sections: [],
+  },
+  {
+    slug: "stepper",
+    title: "Stepper",
+    category: "primitives",
+    subcategory: "Navigation",
+    description:
+      "Interactive multi-step progress wizard for KYC/AML compliance verification, HRMS employee onboarding, and multi-stage loan origination.",
+    isNew: true,
+    dependencies: ["lucide-react"],
+    sourceFile: "packages/ui/src/primitives/stepper.tsx",
+    code: `import { Stepper } from "@etherealui/react"
+
+export function StepperDemo() {
+  return <Stepper currentStep={1} />
+}`,
+    sections: [],
+  },
+  {
+    slug: "number-input",
+    title: "Number Input",
+    category: "primitives",
+    subcategory: "Forms",
+    description:
+      "Formatted currency and numeric amount input with +/- steppers, min/max clamping, and quick amount presets for Treasury wires and HRMS payroll.",
+    isNew: true,
+    dependencies: ["lucide-react"],
+    sourceFile: "packages/ui/src/primitives/number-input.tsx",
+    code: `import { NumberInput } from "@etherealui/react"
+
+export function NumberInputDemo() {
+  return <NumberInput currency="USD" defaultValue={25000} step={500} />
+}`,
+    sections: [],
+  },
+  {
+    slug: "otp-input",
+    title: "OTP / PIN Input",
+    category: "primitives",
+    subcategory: "Forms",
+    description:
+      "6-digit Transaction Authorization PIN and 2FA OTP input with automatic focus advance, keyboard navigation, and clipboard paste support.",
+    isNew: true,
+    dependencies: ["lucide-react"],
+    sourceFile: "packages/ui/src/primitives/otp-input.tsx",
+    code: `import { OtpInput } from "@etherealui/react"
+
+export function OtpInputDemo() {
+  return <OtpInput length={6} onComplete={(code) => console.log("PIN:", code)} />
+}`,
+    sections: [],
+  },
+  {
+    slug: "empty-state",
+    title: "Empty State",
+    category: "primitives",
+    subcategory: "Feedback",
+    description:
+      "Enterprise empty state placeholder for zero-result search queries, cleared approval queues, and unconfigured dashboard modules.",
+    isNew: true,
+    dependencies: ["lucide-react"],
+    sourceFile: "packages/ui/src/primitives/empty-state.tsx",
+    code: `import { EmptyState } from "@etherealui/react"
+
+export function EmptyStateDemo() {
+  return <EmptyState />
+}`,
+    sections: [],
+  },
+  {
+    slug: "description-list",
+    title: "Description List",
+    category: "primitives",
+    subcategory: "Data Display",
+    description:
+      "Structured key-value dossier for Core Banking SWIFT/IBAN settlement records, KYC entity profiles, and HRMS employee contracts with one-click copy.",
+    isNew: true,
+    dependencies: ["lucide-react"],
+    sourceFile: "packages/ui/src/primitives/description-list.tsx",
+    code: `import { DescriptionList } from "@etherealui/react"
+
+export function DescriptionListDemo() {
+  return <DescriptionList />
+}`,
+    sections: [],
+  },
 
   // ============================================================================
   // ENTERPRISE DASHBOARD BLOCKS (Individual blocks)
@@ -1467,6 +1569,148 @@ export function AgentQueueKanbanDemo() {
 }`,
       },
     ],
+  },
+  {
+    slug: "ai-chat-thread",
+    title: "AI Copilot Chat Thread",
+    category: "blocks",
+    subcategory: "AI & Agentic",
+    description:
+      "Multi-turn Agentic Copilot conversation block featuring expandable MCP tool-call execution cards, generated TypeScript code artifacts with copy action, and inline prompt reply.",
+    isNew: true,
+    dependencies: ["lucide-react"],
+    sourceFile: "packages/ui/src/blocks/ai-chat-thread.tsx",
+    code: `import { AiChatThreadBlock } from "@etherealui/react"
+
+export function AiChatThreadDemo() {
+  return (
+    <AiChatThreadBlock
+      onSendMessage={(msg) => console.log("Follow-up prompt:", msg)}
+    />
+  )
+}`,
+    sections: [],
+  },
+  {
+    slug: "approval-workflow",
+    title: "Maker-Checker Approval",
+    category: "blocks",
+    subcategory: "FinTech & HRMS",
+    description:
+      "Dual-control Maker-Checker approval center for Core Banking high-value wire transfers, HRMS paid leave requests, expense claims, and JIT security access with a modal request creator.",
+    isNew: true,
+    dependencies: ["@radix-ui/react-dialog", "@radix-ui/react-select", "lucide-react"],
+    sourceFile: "packages/ui/src/blocks/approval-workflow.tsx",
+    code: `import { ApprovalWorkflowBlock } from "@etherealui/react"
+
+export function ApprovalWorkflowDemo() {
+  return (
+    <ApprovalWorkflowBlock
+      onApprove={(id, req) => console.log("Approved:", id, req)}
+      onReject={(id, req) => console.log("Rejected:", id, req)}
+      onRequestCreate={(req) => console.log("Created request:", req)}
+    />
+  )
+}`,
+    sections: [],
+  },
+  {
+    slug: "transaction-ledger",
+    title: "Core Banking Ledger",
+    category: "blocks",
+    subcategory: "FinTech & HRMS",
+    description:
+      "ISO-20022 Core Banking Treasury block displaying multi-currency Nostro account vaults (USD, IDR, EUR), real-time SWIFT / BI-FAST / SEPA settlement ledger, AML hold badges, and an Outbound Wire modal.",
+    isNew: true,
+    dependencies: ["@radix-ui/react-dialog", "@radix-ui/react-select", "lucide-react"],
+    sourceFile: "packages/ui/src/blocks/transaction-ledger.tsx",
+    code: `import { TransactionLedgerBlock } from "@etherealui/react"
+
+export function TransactionLedgerDemo() {
+  return (
+    <TransactionLedgerBlock
+      onInitiateTransfer={(tx) => console.log("Dispatched wire:", tx)}
+    />
+  )
+}`,
+    sections: [],
+  },
+  {
+    slug: "org-directory",
+    title: "HRMS People & KPI Directory",
+    category: "blocks",
+    subcategory: "FinTech & HRMS",
+    description:
+      "HRMS Employee Directory paired with a Contributor KPI Spotlight card and 90-day attendance/velocity heatmap (powering Landing Card 7) plus an Employee Onboarding modal.",
+    isNew: true,
+    dependencies: ["@radix-ui/react-dialog", "@radix-ui/react-select", "lucide-react"],
+    sourceFile: "packages/ui/src/blocks/org-directory.tsx",
+    code: `import { OrgDirectoryBlock } from "@etherealui/react"
+
+export function OrgDirectoryDemo() {
+  return (
+    <OrgDirectoryBlock
+      onEmployeeCreate={(emp) => console.log("Onboarded:", emp)}
+    />
+  )
+}`,
+    sections: [
+      {
+        id: "spotlight",
+        title: "Contributor & metric profile spotlight",
+        description:
+          "Standalone contributor KPI profile card with 36-cell activity and attendance heatmap.",
+        code: `import { OrgDirectoryBlock } from "@etherealui/react"
+
+export function ContributorSpotlightDemo() {
+  return <OrgDirectoryBlock variant="spotlight" />
+}`,
+      },
+    ],
+  },
+  {
+    slug: "event-scheduler",
+    title: "Event & Shift Scheduler",
+    category: "blocks",
+    subcategory: "Operations",
+    description:
+      "Interactive monthly release train calendar, HRMS shift roster, and compliance audit scheduler (powering Landing Card 12) with a New Event modal dialog.",
+    isNew: true,
+    dependencies: ["@radix-ui/react-dialog", "@radix-ui/react-select", "lucide-react"],
+    sourceFile: "packages/ui/src/blocks/event-scheduler.tsx",
+    code: `import { EventSchedulerBlock } from "@etherealui/react"
+
+export function EventSchedulerDemo() {
+  return (
+    <EventSchedulerBlock
+      monthLabel="November 2026"
+      onEventCreate={(ev) => console.log("Scheduled event:", ev)}
+    />
+  )
+}`,
+    sections: [],
+  },
+  {
+    slug: "system-health",
+    title: "System SLA & Alert Feed",
+    category: "blocks",
+    subcategory: "Metrics",
+    description:
+      "Composite multi-ring SVG SLA health gauge (98 Excellent) paired with an interactive PagerDuty / incident alert acknowledgement feed (powering Landing Card 5).",
+    isNew: true,
+    dependencies: ["@radix-ui/react-progress", "lucide-react"],
+    sourceFile: "packages/ui/src/blocks/system-health.tsx",
+    code: `import { SystemHealthBlock } from "@etherealui/react"
+
+export function SystemHealthDemo() {
+  return (
+    <SystemHealthBlock
+      score={98}
+      onAcknowledgeAlert={(id) => console.log("Acknowledged alert:", id)}
+    />
+  )
+}`,
+    sections: [],
   },
 
   // ============================================================================

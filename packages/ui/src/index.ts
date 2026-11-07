@@ -100,6 +100,12 @@ export {
   type LineStatisticChartProps,
   type DonutSegment,
 } from "./primitives/chart"
+export { Timeline, type TimelineEventItem, type TimelineItemStatus, type TimelineProps } from "./primitives/timeline"
+export { Stepper, type StepperStepItem, type StepperProps } from "./primitives/stepper"
+export { NumberInput, type NumberInputProps } from "./primitives/number-input"
+export { OtpInput, type OtpInputProps } from "./primitives/otp-input"
+export { EmptyState, type EmptyStateProps } from "./primitives/empty-state"
+export { DescriptionList, type DescriptionListItem, type DescriptionListProps } from "./primitives/description-list"
 
 // Enterprise Blocks
 export * from "./blocks/app-shell"
@@ -111,6 +117,12 @@ export * from "./blocks/prompt-composer"
 export * from "./blocks/agent-progress"
 export * from "./blocks/token-usage"
 export * from "./blocks/kanban-board"
+export * from "./blocks/approval-workflow"
+export * from "./blocks/transaction-ledger"
+export * from "./blocks/org-directory"
+export * from "./blocks/event-scheduler"
+export * from "./blocks/system-health"
+export * from "./blocks/ai-chat-thread"
 
 // Full Page Dashboard Templates
 export * from "./templates/executive-analytics"

@@ -602,7 +602,7 @@ export const LandingBentoShowcase: React.FC = () => {
           </div>
 
           <div className="px-2 pt-3.5 pb-1.5">
-            <a href="/blocks/stat-card" className="text-sm font-semibold text-zinc-900 hover:underline dark:text-zinc-100">
+            <a href="/blocks/system-health" className="text-sm font-semibold text-zinc-900 hover:underline dark:text-zinc-100">
               Statistical &amp; health widgets
             </a>
             <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400 line-clamp-2">
@@ -742,7 +742,7 @@ export const LandingBentoShowcase: React.FC = () => {
           </div>
 
           <div className="px-2 pt-3.5 pb-1.5">
-            <a href="/blocks/profile-form" className="text-sm font-semibold text-zinc-900 hover:underline dark:text-zinc-100">
+            <a href="/blocks/org-directory" className="text-sm font-semibold text-zinc-900 hover:underline dark:text-zinc-100">
               Contributor &amp; metric profile
             </a>
             <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400 line-clamp-2">
@@ -999,7 +999,7 @@ export const LandingBentoShowcase: React.FC = () => {
           </div>
 
           <div className="px-2 pt-3.5 pb-1.5">
-            <a href="/components/date-calendar" className="text-sm font-semibold text-zinc-900 hover:underline dark:text-zinc-100">
+            <a href="/blocks/event-scheduler" className="text-sm font-semibold text-zinc-900 hover:underline dark:text-zinc-100">
               Event calendar &amp; scheduler
             </a>
             <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400 line-clamp-2">
@@ -1234,10 +1234,13 @@ export const LandingBentoShowcase: React.FC = () => {
               <a href="/blocks/prompt-composer">Prompt Composer &rarr;</a>
             </Button>
             <Button asChild variant="outline" size="sm">
-              <a href="/blocks/agent-progress">Agent Progress &rarr;</a>
+              <a href="/blocks/ai-chat-thread">AI Copilot Thread &rarr;</a>
             </Button>
             <Button asChild variant="outline" size="sm">
-              <a href="/blocks/token-usage">Token Usage &rarr;</a>
+              <a href="/blocks/approval-workflow">Maker-Checker &rarr;</a>
+            </Button>
+            <Button asChild variant="outline" size="sm">
+              <a href="/blocks/transaction-ledger">Banking Ledger &rarr;</a>
             </Button>
             <Button
               asChild

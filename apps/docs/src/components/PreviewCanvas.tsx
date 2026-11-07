@@ -100,6 +100,18 @@ import {
   AgentProgressBlock,
   TokenUsageBlock,
   KanbanBoardBlock,
+  ApprovalWorkflowBlock,
+  TransactionLedgerBlock,
+  OrgDirectoryBlock,
+  EventSchedulerBlock,
+  SystemHealthBlock,
+  AiChatThreadBlock,
+  Timeline,
+  Stepper,
+  NumberInput,
+  OtpInput,
+  EmptyState,
+  DescriptionList,
   ExecutiveAnalyticsTemplate,
   ControlTowerTemplate,
   WorkspaceSettingsTemplate,
@@ -940,6 +952,46 @@ export const LiveDemoRenderer: React.FC<{ slug: string; sectionId?: string }> = 
         return <KanbanBoardBlock variant="agent-queue" />
       }
       return <KanbanBoardBlock />
+
+    case "ai-chat-thread":
+      return <AiChatThreadBlock />
+
+    case "approval-workflow":
+      return <ApprovalWorkflowBlock />
+
+    case "transaction-ledger":
+      return <TransactionLedgerBlock />
+
+    case "org-directory":
+      if (sectionId === "spotlight") {
+        return <OrgDirectoryBlock variant="spotlight" />
+      }
+      return <OrgDirectoryBlock />
+
+    case "event-scheduler":
+      return <EventSchedulerBlock />
+
+    case "system-health":
+      return <SystemHealthBlock />
+
+    // NEW ENTERPRISE PRIMITIVES
+    case "timeline":
+      return <Timeline />
+
+    case "stepper":
+      return <Stepper />
+
+    case "number-input":
+      return <NumberInput />
+
+    case "otp-input":
+      return <OtpInput />
+
+    case "empty-state":
+      return <EmptyState />
+
+    case "description-list":
+      return <DescriptionList />
 
     // TEMPLATES
     case "executive-analytics":
