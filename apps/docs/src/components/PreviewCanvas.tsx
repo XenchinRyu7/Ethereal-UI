@@ -96,6 +96,7 @@ import {
   SecurityPasswordFormBlock,
   TeamRbacTableBlock,
   BillingPlanCardBlock,
+  PromptComposerBlock,
   ExecutiveAnalyticsTemplate,
   ControlTowerTemplate,
   WorkspaceSettingsTemplate,
@@ -801,6 +802,15 @@ export const LiveDemoRenderer: React.FC<{ slug: string; sectionId?: string }> = 
         </div>
       )
 
+    case "prompt-composer":
+      if (sectionId === "attachments") {
+        return <PromptComposerBlock variant="attachments-only" />
+      }
+      if (sectionId === "compact") {
+        return <PromptComposerBlock variant="compact" />
+      }
+      return <PromptComposerBlock />
+
     // TEMPLATES
     case "executive-analytics":
       return <ExecutiveAnalyticsTemplate />
@@ -969,7 +979,7 @@ export const SyntaxHighlightedCodeBox: React.FC<{
             setCopied(true)
             setTimeout(() => setCopied(false), 1800)
           }}
-          className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-white px-2.5 py-1 text-[11px] font-medium text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700 cursor-pointer"
+          className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-white px-2.5 py-1 text-[11px] font-medium text-zinc-600 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700 cursor-pointer"
         >
           {copied ? (
             <>

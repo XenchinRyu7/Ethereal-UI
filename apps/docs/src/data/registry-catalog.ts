@@ -1191,6 +1191,46 @@ export function BillingCardDemo() {
 }`,
     sections: [],
   },
+  {
+    slug: "prompt-composer",
+    title: "AI Prompt Composer",
+    category: "blocks",
+    subcategory: "AI & Agentic",
+    description:
+      "Multi-modal AI prompt composer with floating file attachment tiles, live upload progress bars, model switcher, branch context, and quick prompt chips.",
+    isNew: true,
+    dependencies: ["lucide-react"],
+    sourceFile: "packages/ui/src/blocks/prompt-composer.tsx",
+    code: `import { PromptComposerBlock } from "@etherealui/react"
+
+export function PromptComposerDemo() {
+  return <PromptComposerBlock />
+}`,
+    sections: [
+      {
+        id: "attachments",
+        title: "Composer attachment tiles",
+        description:
+          "File tiles landing above the prompt with live percentage progress bars and one-click removal.",
+        code: `import { PromptComposerBlock } from "@etherealui/react"
+
+export function ComposerAttachmentsDemo() {
+  return <PromptComposerBlock variant="attachments-only" />
+}`,
+      },
+      {
+        id: "compact",
+        title: "Compact inline composer",
+        description:
+          "Streamlined prompt input without the attachment grid for floating command bars and chat sidebars.",
+        code: `import { PromptComposerBlock } from "@etherealui/react"
+
+export function CompactPromptComposerDemo() {
+  return <PromptComposerBlock variant="compact" />
+}`,
+      },
+    ],
+  },
 
   // ============================================================================
   // FULL PAGE TEMPLATES

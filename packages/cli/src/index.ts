@@ -97,6 +97,7 @@ const SOURCE_FILE_MAP: Record<string, string> = {
   "team-members": "blocks/settings-blocks.tsx",
   "security-settings": "blocks/settings-blocks.tsx",
   "billing-card": "blocks/settings-blocks.tsx",
+  "prompt-composer": "blocks/prompt-composer.tsx",
   "executive-analytics": "templates/executive-analytics.tsx",
   "control-tower": "templates/control-tower.tsx",
   "workspace-settings": "templates/workspace-settings.tsx",

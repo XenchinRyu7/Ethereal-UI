@@ -309,7 +309,7 @@ export const LandingBentoShowcase: React.FC = () => {
           </div>
 
           <div className="px-2 pt-3.5 pb-1.5">
-            <a href="/components/file-upload" className="text-sm font-semibold text-zinc-900 hover:underline dark:text-zinc-100">
+            <a href="/blocks/prompt-composer#attachments" className="text-sm font-semibold text-zinc-900 hover:underline dark:text-zinc-100">
               Composer attachments
             </a>
             <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400 line-clamp-2">
@@ -856,7 +856,7 @@ export const LandingBentoShowcase: React.FC = () => {
           </div>
 
           <div className="px-2 pt-3.5 pb-1.5">
-            <a href="/components/textarea" className="text-sm font-semibold text-zinc-900 hover:underline dark:text-zinc-100">
+            <a href="/blocks/prompt-composer" className="text-sm font-semibold text-zinc-900 hover:underline dark:text-zinc-100">
               Prompt composer
             </a>
             <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400 line-clamp-2">
