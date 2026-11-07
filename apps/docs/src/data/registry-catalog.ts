@@ -1231,6 +1231,46 @@ export function CompactPromptComposerDemo() {
       },
     ],
   },
+  {
+    slug: "agent-progress",
+    title: "Agent Progress & Thinking",
+    category: "blocks",
+    subcategory: "AI & Agentic",
+    description:
+      "Autonomous agent workflow tracker with multi-step execution progress, streaming chain-of-thought reasoning traces, and live search citations.",
+    isNew: true,
+    dependencies: ["lucide-react"],
+    sourceFile: "packages/ui/src/blocks/agent-progress.tsx",
+    code: `import { AgentProgressBlock } from "@etherealui/react"
+
+export function AgentProgressDemo() {
+  return <AgentProgressBlock />
+}`,
+    sections: [
+      {
+        id: "reasoning-trace",
+        title: "Streaming reasoning trace",
+        description:
+          "Step-by-step chain-of-thought reasoning indicator (Thinking, Searching docs, Reading tokens, Writing answer) with live telemetry output.",
+        code: `import { AgentProgressBlock } from "@etherealui/react"
+
+export function ReasoningTraceDemo() {
+  return <AgentProgressBlock variant="reasoning" />
+}`,
+      },
+      {
+        id: "search-stream",
+        title: "Command & search query stream",
+        description:
+          "Real-time registry search trace with query latency badge, source citation pills, and indexing status.",
+        code: `import { AgentProgressBlock } from "@etherealui/react"
+
+export function SearchStreamDemo() {
+  return <AgentProgressBlock variant="search-stream" />
+}`,
+      },
+    ],
+  },
 
   // ============================================================================
   // FULL PAGE TEMPLATES

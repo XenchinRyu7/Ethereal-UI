@@ -97,6 +97,7 @@ import {
   TeamRbacTableBlock,
   BillingPlanCardBlock,
   PromptComposerBlock,
+  AgentProgressBlock,
   ExecutiveAnalyticsTemplate,
   ControlTowerTemplate,
   WorkspaceSettingsTemplate,
@@ -810,6 +811,15 @@ export const LiveDemoRenderer: React.FC<{ slug: string; sectionId?: string }> = 
         return <PromptComposerBlock variant="compact" />
       }
       return <PromptComposerBlock />
+
+    case "agent-progress":
+      if (sectionId === "reasoning-trace") {
+        return <AgentProgressBlock variant="reasoning" />
+      }
+      if (sectionId === "search-stream") {
+        return <AgentProgressBlock variant="search-stream" />
+      }
+      return <AgentProgressBlock />
 
     // TEMPLATES
     case "executive-analytics":

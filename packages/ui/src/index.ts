@@ -108,6 +108,7 @@ export * from "./blocks/filter-bar"
 export * from "./blocks/data-table"
 export * from "./blocks/settings-blocks"
 export * from "./blocks/prompt-composer"
+export * from "./blocks/agent-progress"
 
 // Full Page Dashboard Templates
 export * from "./templates/executive-analytics"

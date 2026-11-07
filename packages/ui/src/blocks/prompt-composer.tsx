@@ -336,3 +336,4 @@ export const PromptComposerBlock = React.forwardRef<
 )
 
 PromptComposerBlock.displayName = "PromptComposerBlock"
+

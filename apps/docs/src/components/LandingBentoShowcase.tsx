@@ -363,7 +363,7 @@ export const LandingBentoShowcase: React.FC = () => {
           </div>
 
           <div className="px-2 pt-3.5 pb-1.5">
-            <a href="/components/command-palette" className="text-sm font-semibold text-zinc-900 hover:underline dark:text-zinc-100">
+            <a href="/blocks/agent-progress#search-stream" className="text-sm font-semibold text-zinc-900 hover:underline dark:text-zinc-100">
               Command &amp; search stream
             </a>
             <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400 line-clamp-2">
@@ -799,7 +799,7 @@ export const LandingBentoShowcase: React.FC = () => {
           </div>
 
           <div className="px-2 pt-3.5 pb-1.5">
-            <a href="/components/progress" className="text-sm font-semibold text-zinc-900 hover:underline dark:text-zinc-100">
+            <a href="/blocks/agent-progress" className="text-sm font-semibold text-zinc-900 hover:underline dark:text-zinc-100">
               Agent workflow progress
             </a>
             <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400 line-clamp-2">
@@ -900,7 +900,7 @@ export const LandingBentoShowcase: React.FC = () => {
           </div>
 
           <div className="px-2 pt-3.5 pb-1.5">
-            <a href="/components/skeleton" className="text-sm font-semibold text-zinc-900 hover:underline dark:text-zinc-100">
+            <a href="/blocks/agent-progress#reasoning-trace" className="text-sm font-semibold text-zinc-900 hover:underline dark:text-zinc-100">
               Streaming reasoning trace
             </a>
             <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400 line-clamp-2">
