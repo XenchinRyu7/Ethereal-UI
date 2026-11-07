@@ -11,6 +11,10 @@ import {
   ChevronRight,
 } from "lucide-react"
 import { cn } from "../utils/cn"
+import { Button } from "../primitives/button"
+import { Badge } from "../primitives/badge"
+import { Input } from "../primitives/input"
+import { Progress } from "../primitives/progress"
 
 export interface AgentWorkflowStep {
   id: string
@@ -147,17 +151,18 @@ export const AgentProgressBlock = React.forwardRef<
                 Streaming Reasoning Trace
               </span>
             </div>
-            <button
+            <Button
               type="button"
+              variant="outline"
+              size="xs"
               onClick={() => setIsPlaying(!isPlaying)}
-              className="inline-flex items-center gap-1 rounded-lg border border-zinc-200 bg-zinc-50 px-2 py-1 text-[10px] font-medium text-zinc-600 hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 cursor-pointer"
             >
               {isPlaying ? <Pause className="h-2.5 w-2.5" /> : <Play className="h-2.5 w-2.5" />}
               <span>{isPlaying ? "Live" : "Paused"}</span>
-            </button>
+            </Button>
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-1.5">
             {reasoningSteps.map((item, idx) => {
               const isCurrent = activeReasoningIdx === idx
               return (
@@ -169,10 +174,10 @@ export const AgentProgressBlock = React.forwardRef<
                     setActiveReasoningIdx(idx)
                   }}
                   className={cn(
-                    "flex w-full items-center justify-between rounded-xl px-3 py-2 text-xs transition-all cursor-pointer text-left",
+                    "flex w-full items-center justify-between rounded-xl px-3 py-2 text-xs transition-colors cursor-pointer text-left",
                     isCurrent
-                      ? "bg-zinc-100 text-zinc-900 font-semibold dark:bg-zinc-900 dark:text-white"
-                      : "text-zinc-400 hover:bg-zinc-50 dark:text-zinc-500 dark:hover:bg-zinc-900/40"
+                      ? "bg-zinc-100 text-zinc-900 font-semibold dark:bg-zinc-800 dark:text-white"
+                      : "text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800/70 dark:hover:text-zinc-100"
                   )}
                 >
                   <span className="flex items-center gap-2.5">
@@ -218,33 +223,32 @@ export const AgentProgressBlock = React.forwardRef<
               <Search className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
               <span>Ran 3 registry queries</span>
             </span>
-            <span className="rounded-md bg-emerald-500/10 px-2 py-0.5 font-mono text-[10px] text-emerald-600 dark:text-emerald-400">
+            <Badge variant="emerald" className="font-mono text-[10px]">
               18ms
-            </span>
+            </Badge>
           </div>
 
           <div className="ml-1.5 border-l-2 border-zinc-200 pl-3.5 space-y-3 text-xs dark:border-zinc-800">
-            <div className="space-y-1.5">
-              <input
-                type="text"
+            <div className="space-y-2">
+              <Input
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full rounded-lg border border-zinc-200 bg-zinc-50 px-2.5 py-1 text-xs text-zinc-700 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200"
+                className="h-8 text-xs"
               />
               <div className="flex flex-wrap items-center gap-1.5">
                 <span className="text-[10px] text-zinc-400">Sources</span>
-                <span className="inline-flex h-4 items-center rounded bg-blue-500/10 px-1.5 font-mono text-[10px] text-blue-600 dark:text-blue-400">
+                <Badge variant="blue" className="px-1.5 py-0 text-[10px] font-mono">
                   Radix
-                </span>
-                <span className="inline-flex h-4 items-center rounded bg-emerald-500/10 px-1.5 font-mono text-[10px] text-emerald-600 dark:text-emerald-400">
+                </Badge>
+                <Badge variant="emerald" className="px-1.5 py-0 text-[10px] font-mono">
                   TW v4
-                </span>
-                <span className="inline-flex h-4 items-center rounded bg-amber-500/10 px-1.5 font-mono text-[10px] text-amber-600 dark:text-amber-400">
+                </Badge>
+                <Badge variant="amber" className="px-1.5 py-0 text-[10px] font-mono">
                   ARIA
-                </span>
-                <span className="inline-flex h-4 items-center rounded bg-violet-500/10 px-1.5 font-mono text-[10px] text-violet-600 dark:text-violet-400">
+                </Badge>
+                <Badge variant="default" className="px-1.5 py-0 text-[10px] font-mono">
                   CLI Registry
-                </span>
+                </Badge>
               </div>
             </div>
 
@@ -285,9 +289,9 @@ export const AgentProgressBlock = React.forwardRef<
                   ? "All agent steps completed"
                   : `Executing step ${activeStep} of ${steps.length}...`}
               </span>
-              <span className="rounded-md bg-blue-500/10 px-2 py-0.5 font-mono text-[11px] font-semibold text-blue-600 dark:text-blue-400">
+              <Badge variant="blue" className="font-mono text-[11px]">
                 {percent}%
-              </span>
+              </Badge>
             </div>
             <p className="text-[11px] text-zinc-400 mt-0.5">
               Click any step below to inspect execution logs
@@ -295,54 +299,53 @@ export const AgentProgressBlock = React.forwardRef<
           </div>
 
           <div className="flex items-center gap-1.5">
-            <button
+            <Button
               type="button"
+              variant="outline"
+              size="xs"
               onClick={() => setIsPlaying(!isPlaying)}
-              className="inline-flex h-7 items-center gap-1 rounded-lg border border-zinc-200 bg-zinc-50 px-2.5 text-[11px] font-medium text-zinc-700 hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 cursor-pointer"
             >
               {isPlaying ? <Pause className="h-3 w-3" /> : <Play className="h-3 w-3" />}
               <span>{isPlaying ? "Pause" : "Resume"}</span>
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
+              variant="outline"
+              size="xs"
               onClick={() => {
                 setActiveStep(1)
                 setIsPlaying(true)
               }}
               aria-label="Restart workflow"
-              className="inline-flex h-7 w-7 items-center justify-center rounded-lg border border-zinc-200 bg-zinc-50 text-zinc-600 hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 cursor-pointer"
+              className="px-2"
             >
               <RotateCcw className="h-3 w-3" />
-            </button>
+            </Button>
           </div>
         </div>
 
         {/* Progress Bar */}
-        <div className="h-1.5 w-full overflow-hidden rounded-full bg-zinc-100 dark:bg-zinc-800">
-          <div
-            style={{ width: `${percent}%` }}
-            className="h-full rounded-full bg-blue-600 transition-all duration-500"
-          />
-        </div>
+        <Progress value={percent} size="sm" variant="blue" />
 
         {/* Step Checklist */}
-        <div className="space-y-2">
+        <div className="space-y-1.5">
           {steps.map((step, idx) => {
             const stepNum = idx + 1
             const done = stepNum <= activeStep
             const isCurrent = stepNum === activeStep
             return (
-              <div
+              <button
                 key={step.id}
+                type="button"
                 onClick={() => {
                   setIsPlaying(false)
                   setActiveStep(stepNum)
                 }}
                 className={cn(
-                  "flex items-center justify-between rounded-xl px-3 py-2 text-xs transition-colors cursor-pointer",
+                  "flex w-full items-center justify-between rounded-xl px-3 py-2 text-xs transition-colors cursor-pointer text-left",
                   isCurrent
-                    ? "bg-blue-50/70 dark:bg-blue-500/10"
-                    : "hover:bg-zinc-50 dark:hover:bg-zinc-900/60"
+                    ? "bg-blue-50/80 text-zinc-900 dark:bg-blue-500/15 dark:text-white"
+                    : "hover:bg-zinc-100 text-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800/70 dark:hover:text-white"
                 )}
               >
                 <div className="flex items-center gap-2.5 min-w-0">
@@ -361,7 +364,7 @@ export const AgentProgressBlock = React.forwardRef<
                       "truncate transition-all",
                       done && !isCurrent
                         ? "line-through text-zinc-400 dark:text-zinc-500"
-                        : "font-medium text-zinc-800 dark:text-zinc-200"
+                        : "font-medium text-zinc-800 dark:text-zinc-100"
                     )}
                   >
                     {step.label}
@@ -371,7 +374,7 @@ export const AgentProgressBlock = React.forwardRef<
                 <span className="font-mono text-[10px] text-zinc-400 shrink-0 ml-2">
                   {step.duration}
                 </span>
-              </div>
+              </button>
             )
           })}
         </div>
@@ -392,4 +395,3 @@ export const AgentProgressBlock = React.forwardRef<
 )
 
 AgentProgressBlock.displayName = "AgentProgressBlock"
-

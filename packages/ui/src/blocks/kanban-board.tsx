@@ -11,6 +11,9 @@ import {
   GripVertical,
 } from "lucide-react"
 import { cn } from "../utils/cn"
+import { Button, ToggleGroup } from "../primitives/button"
+import { Badge } from "../primitives/badge"
+import { Input } from "../primitives/input"
 
 export type KanbanColumnId = "backlog" | "in-progress" | "agent-review" | "shipped"
 
@@ -114,14 +117,14 @@ const DEFAULT_TASKS: KanbanTaskItem[] = [
   },
 ]
 
-const TAG_STYLES: Record<KanbanTaskItem["tag"], string> = {
-  Agentic:
-    "bg-violet-500/10 text-violet-600 dark:text-violet-400 border-violet-500/20",
-  "UI Kit":
-    "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20",
-  CLI: "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20",
-  Analytics:
-    "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20",
+const TAG_BADGE_VARIANT: Record<
+  KanbanTaskItem["tag"],
+  "blue" | "emerald" | "amber" | "default"
+> = {
+  Agentic: "blue",
+  "UI Kit": "default",
+  CLI: "amber",
+  Analytics: "emerald",
 }
 
 export const KanbanBoardBlock = React.forwardRef<
@@ -230,9 +233,9 @@ export const KanbanBoardBlock = React.forwardRef<
                 ? "Autonomous Agent Task Queue"
                 : "Sprint & Agentic Kanban Board"}
             </h3>
-            <span className="rounded-full bg-blue-500/10 px-2 py-0.5 font-mono text-[10px] font-semibold text-blue-600 dark:text-blue-400">
+            <Badge variant="blue" className="font-mono text-[10px]">
               {filteredTasks.length} tasks
-            </span>
+            </Badge>
           </div>
           <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
             Drag cards across columns or use arrow buttons to update workflow state.
@@ -241,39 +244,29 @@ export const KanbanBoardBlock = React.forwardRef<
 
         {/* Filter Pills & Quick Add Input */}
         <div className="flex flex-wrap items-center gap-2">
-          <div className="inline-flex items-center rounded-xl border border-zinc-200 bg-zinc-50 p-0.5 dark:border-zinc-800 dark:bg-zinc-900">
-            {["All", "Agentic", "UI Kit", "CLI"].map((tag) => (
-              <button
-                key={tag}
-                type="button"
-                onClick={() => setFilterTag(tag)}
-                className={cn(
-                  "rounded-lg px-2.5 py-1 text-[11px] font-medium transition-colors cursor-pointer",
-                  filterTag === tag
-                    ? "bg-white text-zinc-900 shadow-2xs dark:bg-zinc-800 dark:text-white"
-                    : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200"
-                )}
-              >
-                {tag}
-              </button>
-            ))}
-          </div>
+          <ToggleGroup
+            size="sm"
+            value={filterTag}
+            onValueChange={setFilterTag}
+            items={[
+              { value: "All", label: "All" },
+              { value: "Agentic", label: "Agentic" },
+              { value: "UI Kit", label: "UI Kit" },
+              { value: "CLI", label: "CLI" },
+            ]}
+          />
 
           <form onSubmit={handleAddTask} className="flex items-center gap-1.5">
-            <input
-              type="text"
+            <Input
               value={newTaskTitle}
               onChange={(e) => setNewTaskTitle(e.target.value)}
               placeholder="New sprint task..."
-              className="h-8 w-36 sm:w-44 rounded-xl border border-zinc-200 bg-zinc-50 px-2.5 text-xs text-zinc-800 placeholder:text-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200"
+              className="h-8 w-36 sm:w-44 text-xs"
             />
-            <button
-              type="submit"
-              className="inline-flex h-8 items-center gap-1 rounded-xl bg-blue-600 px-3 text-xs font-semibold text-white hover:bg-blue-700 transition-colors cursor-pointer"
-            >
+            <Button type="submit" variant="primary" size="sm">
               <Plus className="h-3.5 w-3.5" />
               <span>Add</span>
-            </button>
+            </Button>
           </form>
         </div>
       </div>
@@ -315,9 +308,9 @@ export const KanbanBoardBlock = React.forwardRef<
                     {col.title}
                   </span>
                 </div>
-                <span className="rounded-md bg-zinc-200/70 px-1.5 py-0.5 font-mono text-[10px] font-medium text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
+                <Badge variant="mono" className="px-1.5 py-0 text-[10px]">
                   {colTasks.length}
-                </span>
+                </Badge>
               </div>
 
               {/* Column Cards */}
@@ -339,24 +332,19 @@ export const KanbanBoardBlock = React.forwardRef<
                         <span className="font-mono text-[10px] font-medium text-zinc-400">
                           {task.code}
                         </span>
-                        <span
-                          className={cn(
-                            "rounded border px-1.5 py-0.2 text-[9px] font-semibold",
-                            TAG_STYLES[task.tag]
-                          )}
+                        <Badge
+                          variant={TAG_BADGE_VARIANT[task.tag]}
+                          className="px-1.5 py-0 text-[9px]"
                         >
                           {task.tag}
-                        </span>
+                        </Badge>
                       </div>
 
                       {task.isAgentAssigned && (
-                        <span
-                          className="inline-flex items-center gap-1 rounded-full bg-violet-500/10 px-1.5 py-0.5 text-[9px] font-semibold text-violet-600 dark:text-violet-400"
-                          title="Autonomous AI Agent assigned"
-                        >
+                        <Badge variant="blue" className="px-1.5 py-0 text-[9px]">
                           <Bot className="h-2.5 w-2.5" />
                           Agent
-                        </span>
+                        </Badge>
                       )}
                     </div>
 
@@ -380,29 +368,31 @@ export const KanbanBoardBlock = React.forwardRef<
                       </div>
 
                       <div className="flex items-center gap-1">
-                        <button
+                        <Button
                           type="button"
+                          variant="outline"
+                          size="icon-xs"
                           disabled={colIdx === 0}
                           onClick={() => moveTask(task.id, -1)}
                           aria-label="Move task left"
-                          className="inline-flex h-5 w-5 items-center justify-center rounded border border-zinc-200 text-zinc-500 hover:bg-zinc-100 disabled:opacity-30 dark:border-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800 cursor-pointer disabled:cursor-not-allowed"
                         >
                           <ChevronLeft className="h-3 w-3" />
-                        </button>
-                        <button
+                        </Button>
+                        <Button
                           type="button"
+                          variant="outline"
+                          size="icon-xs"
                           disabled={colIdx === visibleColumns.length - 1}
                           onClick={() => moveTask(task.id, 1)}
                           aria-label="Move task right"
-                          className="inline-flex h-5 w-5 items-center justify-center rounded border border-zinc-200 text-zinc-500 hover:bg-zinc-100 disabled:opacity-30 dark:border-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800 cursor-pointer disabled:cursor-not-allowed"
                         >
                           <ChevronRight className="h-3 w-3" />
-                        </button>
+                        </Button>
                         <span
                           className={cn(
-                            "ml-1 flex h-5 w-5 items-center justify-center rounded-full text-[9px] font-bold",
+                            "ml-1 flex h-6 w-6 items-center justify-center rounded-full text-[9px] font-bold",
                             task.isAgentAssigned
-                              ? "bg-violet-600 text-white"
+                              ? "bg-blue-600 text-white"
                               : "bg-zinc-200 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-200"
                           )}
                         >

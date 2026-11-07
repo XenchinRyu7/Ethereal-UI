@@ -7,12 +7,14 @@ import {
   FileCode2,
   FolderKanban,
   ArrowUpRight,
-  X,
   Paperclip,
   Check,
   Cpu,
 } from "lucide-react"
 import { cn } from "../utils/cn"
+import { Button, CloseButton } from "../primitives/button"
+import { Badge } from "../primitives/badge"
+import { Progress } from "../primitives/progress"
 
 export interface PromptAttachment {
   id: string
@@ -170,24 +172,26 @@ export const PromptComposerBlock = React.forwardRef<
           </div>
 
           <div className="flex items-center gap-2">
-            <button
+            <Button
               type="button"
+              variant="outline"
+              size="xs"
               onClick={cycleModel}
-              className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-zinc-50 px-2.5 py-1 text-[11px] font-medium text-zinc-700 transition-colors hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800 cursor-pointer"
               title="Click to switch AI model"
             >
               <Cpu className="h-3 w-3 text-blue-600 dark:text-blue-400" />
               <span>{model}</span>
-            </button>
+            </Button>
 
-            <button
+            <Button
               type="button"
+              variant="outline"
+              size="xs"
               onClick={addSampleAttachment}
-              className="inline-flex items-center gap-1 rounded-lg border border-zinc-200 bg-white px-2 py-1 text-[11px] font-medium text-zinc-600 transition-colors hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800 cursor-pointer"
             >
               <Paperclip className="h-3 w-3" />
               <span>Attach</span>
-            </button>
+            </Button>
           </div>
         </div>
 
@@ -210,27 +214,21 @@ export const PromptComposerBlock = React.forwardRef<
                     <FileCode2 className="h-3.5 w-3.5 text-emerald-500" />
                   )}
 
-                  <div className="flex items-center gap-1.5">
-                    <span
-                      className={cn(
-                        "font-mono text-[10px]",
-                        file.progress === 100
-                          ? "text-emerald-600 dark:text-emerald-400"
-                          : "text-amber-600 dark:text-amber-400"
-                      )}
+                  <div className="flex items-center gap-1">
+                    <Badge
+                      variant={file.progress === 100 ? "emerald" : "amber"}
+                      className="px-1.5 py-0 text-[9px] font-mono"
                     >
                       {file.type === "code" && file.progress === 100
                         ? "TSX"
                         : `${file.progress}%`}
-                    </span>
-                    <button
-                      type="button"
+                    </Badge>
+                    <CloseButton
+                      size="sm"
                       onClick={() => removeAttachment(file.id)}
                       aria-label={`Remove ${file.name}`}
-                      className="rounded p-0.5 text-zinc-400 opacity-70 hover:bg-zinc-200 hover:text-zinc-700 group-hover:opacity-100 dark:hover:bg-zinc-800 dark:hover:text-zinc-200 cursor-pointer"
-                    >
-                      <X className="h-3 w-3" />
-                    </button>
+                      className="h-5 w-5"
+                    />
                   </div>
                 </div>
 
@@ -239,12 +237,12 @@ export const PromptComposerBlock = React.forwardRef<
                 </p>
 
                 {file.progress < 100 ? (
-                  <div className="mt-1.5 h-1 w-full overflow-hidden rounded-full bg-zinc-200 dark:bg-zinc-800">
-                    <div
-                      style={{ width: `${file.progress}%` }}
-                      className="h-full rounded-full bg-blue-600 animate-pulse"
-                    />
-                  </div>
+                  <Progress
+                    value={file.progress}
+                    size="sm"
+                    variant="blue"
+                    className="mt-1.5"
+                  />
                 ) : (
                   <p className="text-[10px] text-zinc-400">{file.size}</p>
                 )}
@@ -257,15 +255,17 @@ export const PromptComposerBlock = React.forwardRef<
         {variant !== "attachments-only" && suggestions.length > 0 && (
           <div className="mb-3 flex flex-wrap gap-1.5">
             {suggestions.map((chip) => (
-              <button
+              <Button
                 key={chip}
                 type="button"
+                variant="outline"
+                size="xs"
                 onClick={() => setPrompt(chip)}
-                className="inline-flex items-center gap-1 rounded-lg border border-zinc-200/80 bg-zinc-50 px-2.5 py-1 text-[11px] text-zinc-600 transition-colors hover:border-blue-500/40 hover:bg-blue-50/50 hover:text-blue-600 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:border-blue-500/40 dark:hover:text-blue-400 cursor-pointer"
+                className="h-6 px-2 text-[11px] font-normal"
               >
                 <Sparkles className="h-2.5 w-2.5 text-blue-500" />
                 <span>{chip}</span>
-              </button>
+              </Button>
             ))}
           </div>
         )}
@@ -290,23 +290,19 @@ export const PromptComposerBlock = React.forwardRef<
 
           <div className="mt-2.5 flex flex-wrap items-center justify-between gap-2 border-t border-zinc-200/70 pt-2.5 dark:border-zinc-800">
             <div className="flex items-center gap-2">
-              <button
+              <Button
                 type="button"
+                variant={autoSyncTokens ? "secondary" : "outline"}
+                size="xs"
                 onClick={() => setAutoSyncTokens(!autoSyncTokens)}
-                className={cn(
-                  "inline-flex items-center gap-1.5 rounded-lg border px-2.5 py-1 text-[11px] font-medium transition-colors cursor-pointer",
-                  autoSyncTokens
-                    ? "border-blue-500/30 bg-blue-500/10 text-blue-600 dark:text-blue-400"
-                    : "border-zinc-200 bg-white text-zinc-600 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
-                )}
               >
                 {autoSyncTokens ? (
-                  <Check className="h-3 w-3" />
+                  <Check className="h-3 w-3 text-blue-600 dark:text-blue-400" />
                 ) : (
                   <Plus className="h-3 w-3" />
                 )}
                 <span>{autoSyncTokens ? "Auto-sync tokens" : "Manual tokens"}</span>
-              </button>
+              </Button>
 
               <span className="hidden sm:inline-block font-mono text-[10px] text-zinc-400">
                 ⌘ + Enter to send
@@ -319,14 +315,10 @@ export const PromptComposerBlock = React.forwardRef<
                   {submittedMessage}
                 </span>
               )}
-              <button
-                type="submit"
-                aria-label="Send prompt"
-                className="inline-flex h-7 items-center gap-1.5 rounded-xl bg-blue-600 px-3 text-xs font-semibold text-white shadow-2xs transition-colors hover:bg-blue-700 cursor-pointer"
-              >
+              <Button type="submit" variant="primary" size="xs">
                 <span>Run Agent</span>
                 <ArrowUpRight className="h-3.5 w-3.5" />
-              </button>
+              </Button>
             </div>
           </div>
         </form>
@@ -336,4 +328,3 @@ export const PromptComposerBlock = React.forwardRef<
 )
 
 PromptComposerBlock.displayName = "PromptComposerBlock"
-

@@ -8,6 +8,9 @@ import {
   ShieldCheck,
 } from "lucide-react"
 import { cn } from "../utils/cn"
+import { Button } from "../primitives/button"
+import { Badge } from "../primitives/badge"
+import { Progress } from "../primitives/progress"
 
 export interface TokenSegmentItem {
   id: string
@@ -23,7 +26,7 @@ export interface RateLimitQuotaItem {
   label: string
   resetText: string
   percent: number
-  barClass: string
+  variant: "blue" | "emerald" | "amber" | "rose"
 }
 
 export interface TokenUsageBlockProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -94,14 +97,14 @@ const DEFAULT_QUOTAS: RateLimitQuotaItem[] = [
     label: "5-hour burst",
     resetText: "Resets in 2 hr 46 min",
     percent: 38,
-    barClass: "bg-blue-600",
+    variant: "blue",
   },
   {
     id: "weekly",
     label: "Weekly - all models",
     resetText: "Resets Tue 9:00 PM",
     percent: 64,
-    barClass: "bg-emerald-500",
+    variant: "emerald",
   },
 ]
 
@@ -160,10 +163,11 @@ export const TokenUsageBlock = React.forwardRef<
                     ({totalPercent}%)
                   </strong>
                 </span>
-                <button
+                <Button
                   type="button"
+                  variant="outline"
+                  size="xs"
                   onClick={() => setCompacted(!compacted)}
-                  className="inline-flex items-center gap-1 rounded-lg border border-zinc-200 bg-zinc-50 px-2 py-0.5 text-[10px] font-medium text-zinc-600 hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 cursor-pointer"
                   title={compacted ? "Restore full context" : "Compact context window"}
                 >
                   {compacted ? (
@@ -177,7 +181,7 @@ export const TokenUsageBlock = React.forwardRef<
                       <span>Compact</span>
                     </>
                   )}
-                </button>
+                </Button>
               </div>
             </div>
 
@@ -210,10 +214,10 @@ export const TokenUsageBlock = React.forwardRef<
                     setActiveSegmentId(activeSegmentId === seg.id ? null : seg.id)
                   }
                   className={cn(
-                    "rounded-xl border p-2 text-left transition-all cursor-pointer",
+                    "rounded-xl border p-2 text-left transition-colors cursor-pointer",
                     activeSegmentId === seg.id
-                      ? "border-blue-500/40 bg-blue-50/50 dark:bg-blue-500/10"
-                      : "border-zinc-200/70 bg-zinc-50/60 hover:bg-zinc-100/70 dark:border-zinc-800/80 dark:bg-zinc-900/50"
+                      ? "border-blue-500/40 bg-blue-50/70 text-zinc-900 dark:border-blue-500/40 dark:bg-blue-500/15 dark:text-white"
+                      : "border-zinc-200/80 bg-zinc-50/60 hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900/60 dark:hover:bg-zinc-800"
                   )}
                 >
                   <div className="flex items-center justify-between">
@@ -245,9 +249,9 @@ export const TokenUsageBlock = React.forwardRef<
                 <Zap className="h-3.5 w-3.5 text-amber-500" />
                 <span>{planName}</span>
               </span>
-              <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 px-2 py-0.5 text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">
+              <Badge variant="emerald">
                 <ShieldCheck className="h-3 w-3" /> Active
-              </span>
+              </Badge>
             </div>
 
             <div className="space-y-3">
@@ -265,15 +269,11 @@ export const TokenUsageBlock = React.forwardRef<
                       </strong>
                     </span>
                   </div>
-                  <div className="h-2 w-full overflow-hidden rounded-full bg-zinc-100 dark:bg-zinc-800">
-                    <div
-                      style={{ width: `${quota.percent}%` }}
-                      className={cn(
-                        "h-full rounded-full transition-all duration-500",
-                        quota.barClass
-                      )}
-                    />
-                  </div>
+                  <Progress
+                    value={quota.percent}
+                    variant={quota.variant}
+                    size="default"
+                  />
                 </div>
               ))}
             </div>
@@ -285,4 +285,3 @@ export const TokenUsageBlock = React.forwardRef<
 )
 
 TokenUsageBlock.displayName = "TokenUsageBlock"
-

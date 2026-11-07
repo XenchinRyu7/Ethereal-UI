@@ -24,6 +24,7 @@ import {
 } from "lucide-react"
 import {
   cn,
+  Button,
   KanbanBoardBlock,
   PromptComposerBlock,
   AgentProgressBlock,
@@ -1229,34 +1230,23 @@ export const LandingBentoShowcase: React.FC = () => {
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
-            <a
-              href="/blocks/prompt-composer"
-              className="rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-xs font-semibold text-zinc-700 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200 dark:hover:bg-zinc-900"
+            <Button asChild variant="outline" size="sm">
+              <a href="/blocks/prompt-composer">Prompt Composer &rarr;</a>
+            </Button>
+            <Button asChild variant="outline" size="sm">
+              <a href="/blocks/agent-progress">Agent Progress &rarr;</a>
+            </Button>
+            <Button asChild variant="outline" size="sm">
+              <a href="/blocks/token-usage">Token Usage &rarr;</a>
+            </Button>
+            <Button
+              asChild
+              variant="primary"
+              size="sm"
+              className={cn(theme.bg, theme.bgHover)}
             >
-              Prompt Composer &rarr;
-            </a>
-            <a
-              href="/blocks/agent-progress"
-              className="rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-xs font-semibold text-zinc-700 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200 dark:hover:bg-zinc-900"
-            >
-              Agent Progress &rarr;
-            </a>
-            <a
-              href="/blocks/token-usage"
-              className="rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-xs font-semibold text-zinc-700 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200 dark:hover:bg-zinc-900"
-            >
-              Token Usage &rarr;
-            </a>
-            <a
-              href="/blocks/kanban-board"
-              className={cn(
-                "rounded-xl px-3 py-1.5 text-xs font-semibold text-white shadow-2xs",
-                theme.bg,
-                theme.bgHover
-              )}
-            >
-              Kanban Board &rarr;
-            </a>
+              <a href="/blocks/kanban-board">Kanban Board &rarr;</a>
+            </Button>
           </div>
         </div>
 

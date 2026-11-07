@@ -291,14 +291,16 @@ export const HeaderNavbar: React.FC<HeaderNavbarProps> = ({
       >
         <div className="flex items-center gap-2 min-w-0">
           {onToggleMobileMenu && (
-            <button
+            <Button
               type="button"
+              variant="outline"
+              size="icon"
               onClick={onToggleMobileMenu}
               aria-label="Toggle workspace navigation"
-              className="flex md:hidden h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-zinc-200 bg-white text-zinc-600 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 cursor-pointer"
+              className="flex md:hidden shrink-0"
             >
               <Menu className="h-4 w-4" />
-            </button>
+            </Button>
           )}
 
           {/* Breadcrumb Trail */}
