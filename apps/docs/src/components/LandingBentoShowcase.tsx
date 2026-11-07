@@ -200,7 +200,7 @@ export const LandingBentoShowcase: React.FC = () => {
               setCopiedInstall(true)
               setTimeout(() => setCopiedInstall(false), 1800)
             }}
-            className="inline-flex h-10 items-center gap-2.5 rounded-xl border border-zinc-200/90 bg-zinc-50 px-3.5 font-mono text-xs text-zinc-600 transition-colors hover:border-zinc-300 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-900/60 dark:text-zinc-300 dark:hover:border-zinc-700 cursor-pointer"
+            className="inline-flex h-10 items-center gap-2.5 rounded-xl border border-zinc-200/90 bg-zinc-50 px-3.5 font-mono text-xs text-zinc-600 transition-colors hover:border-zinc-300 hover:text-zinc-500 dark:border-zinc-800 dark:bg-zinc-900/60 dark:text-zinc-300 dark:hover:border-zinc-700 cursor-pointer"
           >
             <Terminal className={cn("h-3.5 w-3.5", theme.text)} />
             <span>npx @etherealui/cli@latest init</span>

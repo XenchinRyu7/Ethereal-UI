@@ -11,14 +11,21 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props
-const { Content } = await render(entry)
+const { Content, headings } = await render(entry)
+
+const toc = [
+  { id: "overview", label: entry.data.title },
+  ...headings
+    .filter((h) => h.depth >= 2 && h.depth <= 3)
+    .map((h) => ({ id: h.slug, label: h.text })),
+]
 ---
 
 <DocsLayout
   title={entry.data.title}
   description={entry.data.description}
   categoryLabel="Documentation"
-  toc={[{ id: "overview", label: entry.data.title }]}
+  toc={toc}
 >
   <article id="overview" class="space-y-6">
     <div class="space-y-2 border-b border-zinc-200 pb-6 dark:border-zinc-800">
