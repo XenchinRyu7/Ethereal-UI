@@ -1311,6 +1311,46 @@ export function RateLimitsDemo() {
       },
     ],
   },
+  {
+    slug: "kanban-board",
+    title: "Kanban Board",
+    category: "blocks",
+    subcategory: "AI & Agentic",
+    description:
+      "Interactive 4-column SaaS and autonomous agent Kanban board with HTML5 drag-and-drop, one-click column transitions, category filtering, and inline task creation.",
+    isNew: true,
+    dependencies: ["lucide-react"],
+    sourceFile: "packages/ui/src/blocks/kanban-board.tsx",
+    code: `import { KanbanBoardBlock } from "@etherealui/react"
+
+export function KanbanBoardDemo() {
+  return <KanbanBoardBlock />
+}`,
+    sections: [
+      {
+        id: "compact-board",
+        title: "Compact 3-column sprint board",
+        description:
+          "Focused 3-column layout (In Progress, Agent Review, Shipped) ideal for embedded project views.",
+        code: `import { KanbanBoardBlock } from "@etherealui/react"
+
+export function CompactKanbanDemo() {
+  return <KanbanBoardBlock variant="compact" />
+}`,
+      },
+      {
+        id: "agent-tasks",
+        title: "Autonomous agent task queue",
+        description:
+          "Filtered Kanban board displaying only tasks actively assigned to autonomous AI agents.",
+        code: `import { KanbanBoardBlock } from "@etherealui/react"
+
+export function AgentQueueKanbanDemo() {
+  return <KanbanBoardBlock variant="agent-queue" />
+}`,
+      },
+    ],
+  },
 
   // ============================================================================
   // FULL PAGE TEMPLATES

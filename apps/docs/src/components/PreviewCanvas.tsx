@@ -99,6 +99,7 @@ import {
   PromptComposerBlock,
   AgentProgressBlock,
   TokenUsageBlock,
+  KanbanBoardBlock,
   ExecutiveAnalyticsTemplate,
   ControlTowerTemplate,
   WorkspaceSettingsTemplate,
@@ -830,6 +831,15 @@ export const LiveDemoRenderer: React.FC<{ slug: string; sectionId?: string }> = 
         return <TokenUsageBlock variant="limits-only" />
       }
       return <TokenUsageBlock />
+
+    case "kanban-board":
+      if (sectionId === "compact-board") {
+        return <KanbanBoardBlock variant="compact" />
+      }
+      if (sectionId === "agent-tasks") {
+        return <KanbanBoardBlock variant="agent-queue" />
+      }
+      return <KanbanBoardBlock />
 
     // TEMPLATES
     case "executive-analytics":

@@ -22,7 +22,13 @@ import {
   ShieldCheck,
   Zap,
 } from "lucide-react"
-import { cn } from "@etherealui/react"
+import {
+  cn,
+  KanbanBoardBlock,
+  PromptComposerBlock,
+  AgentProgressBlock,
+  TokenUsageBlock,
+} from "@etherealui/react"
 
 type AccentColor = "blue" | "orange" | "violet" | "emerald" | "rose" | "cyan"
 
@@ -157,9 +163,9 @@ export const LandingBentoShowcase: React.FC = () => {
               theme.bg
             )}
           >
-            <Sparkles className="h-2.5 w-2.5" /> v1.0
+            <Sparkles className="h-2.5 w-2.5" /> v0.0.4
           </span>
-          <span>37+ Components, 10 Statistical &amp; SaaS Blocks, Light &amp; Dark Mode</span>
+          <span>37+ Components, 14 AI, Statistical &amp; SaaS Blocks, Light &amp; Dark Mode</span>
           <ChevronRight className="h-3.5 w-3.5 text-zinc-400" />
         </div>
 
@@ -1204,6 +1210,63 @@ export const LandingBentoShowcase: React.FC = () => {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* 4. Dedicated Interactive AI, Agentic & Kanban Blocks Showcase */}
+      <div className="rounded-3xl border border-zinc-200/90 bg-zinc-50/60 p-5 sm:p-8 dark:border-zinc-800/90 dark:bg-zinc-900/40 space-y-6">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-zinc-200 pb-6 dark:border-zinc-800">
+          <div>
+            <div className="inline-flex items-center gap-2 text-xs font-semibold text-violet-600 dark:text-violet-400 mb-1">
+              <Sparkles className="h-3.5 w-3.5" />
+              <span>AI, AGENTIC &amp; KANBAN WORKFLOW BLOCKS</span>
+            </div>
+            <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+              Prompt Composer, Agent Progress, Token Quotas &amp; Kanban Board
+            </h2>
+            <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400">
+              100% free &amp; open-source blocks ready to install via <code className="font-mono text-xs text-blue-600 dark:text-blue-400">npx @etherealui/cli@latest add &lt;block&gt;</code>.
+            </p>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2">
+            <a
+              href="/blocks/prompt-composer"
+              className="rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-xs font-semibold text-zinc-700 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200 dark:hover:bg-zinc-900"
+            >
+              Prompt Composer &rarr;
+            </a>
+            <a
+              href="/blocks/agent-progress"
+              className="rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-xs font-semibold text-zinc-700 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200 dark:hover:bg-zinc-900"
+            >
+              Agent Progress &rarr;
+            </a>
+            <a
+              href="/blocks/token-usage"
+              className="rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-xs font-semibold text-zinc-700 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200 dark:hover:bg-zinc-900"
+            >
+              Token Usage &rarr;
+            </a>
+            <a
+              href="/blocks/kanban-board"
+              className={cn(
+                "rounded-xl px-3 py-1.5 text-xs font-semibold text-white shadow-2xs",
+                theme.bg,
+                theme.bgHover
+              )}
+            >
+              Kanban Board &rarr;
+            </a>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
+          <PromptComposerBlock className="max-w-none" variant="compact" />
+          <AgentProgressBlock className="max-w-none" />
+          <TokenUsageBlock className="max-w-none" />
+        </div>
+
+        <KanbanBoardBlock variant="compact" />
       </div>
     </div>
   )

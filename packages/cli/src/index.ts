@@ -100,6 +100,7 @@ const SOURCE_FILE_MAP: Record<string, string> = {
   "prompt-composer": "blocks/prompt-composer.tsx",
   "agent-progress": "blocks/agent-progress.tsx",
   "token-usage": "blocks/token-usage.tsx",
+  "kanban-board": "blocks/kanban-board.tsx",
   "executive-analytics": "templates/executive-analytics.tsx",
   "control-tower": "templates/control-tower.tsx",
   "workspace-settings": "templates/workspace-settings.tsx",

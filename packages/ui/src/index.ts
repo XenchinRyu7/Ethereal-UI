@@ -110,6 +110,7 @@ export * from "./blocks/settings-blocks"
 export * from "./blocks/prompt-composer"
 export * from "./blocks/agent-progress"
 export * from "./blocks/token-usage"
+export * from "./blocks/kanban-board"
 
 // Full Page Dashboard Templates
 export * from "./templates/executive-analytics"
