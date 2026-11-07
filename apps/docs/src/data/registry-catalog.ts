@@ -1271,6 +1271,46 @@ export function SearchStreamDemo() {
       },
     ],
   },
+  {
+    slug: "token-usage",
+    title: "Token Usage & Limits",
+    category: "blocks",
+    subcategory: "AI & Agentic",
+    description:
+      "Multi-segment AI context window meter with interactive token breakdown, context compaction toggle, and enterprise burst/weekly rate limit bars.",
+    isNew: true,
+    dependencies: ["lucide-react"],
+    sourceFile: "packages/ui/src/blocks/token-usage.tsx",
+    code: `import { TokenUsageBlock } from "@etherealui/react"
+
+export function TokenUsageDemo() {
+  return <TokenUsageBlock />
+}`,
+    sections: [
+      {
+        id: "context-window",
+        title: "Context window multi-segment breakdown",
+        description:
+          "Interactive token distribution across System & MCP Tools, Workspace Files, and Reasoning Output with one-click context compaction.",
+        code: `import { TokenUsageBlock } from "@etherealui/react"
+
+export function ContextWindowDemo() {
+  return <TokenUsageBlock variant="context-only" />
+}`,
+      },
+      {
+        id: "rate-limits",
+        title: "Plan burst & weekly rate limits",
+        description:
+          "Enterprise rate limit telemetry bars with countdown reset timers and active SLA status badge.",
+        code: `import { TokenUsageBlock } from "@etherealui/react"
+
+export function RateLimitsDemo() {
+  return <TokenUsageBlock variant="limits-only" />
+}`,
+      },
+    ],
+  },
 
   // ============================================================================
   // FULL PAGE TEMPLATES

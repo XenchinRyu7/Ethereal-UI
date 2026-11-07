@@ -98,6 +98,7 @@ import {
   BillingPlanCardBlock,
   PromptComposerBlock,
   AgentProgressBlock,
+  TokenUsageBlock,
   ExecutiveAnalyticsTemplate,
   ControlTowerTemplate,
   WorkspaceSettingsTemplate,
@@ -820,6 +821,15 @@ export const LiveDemoRenderer: React.FC<{ slug: string; sectionId?: string }> = 
         return <AgentProgressBlock variant="search-stream" />
       }
       return <AgentProgressBlock />
+
+    case "token-usage":
+      if (sectionId === "context-window") {
+        return <TokenUsageBlock variant="context-only" />
+      }
+      if (sectionId === "rate-limits") {
+        return <TokenUsageBlock variant="limits-only" />
+      }
+      return <TokenUsageBlock />
 
     // TEMPLATES
     case "executive-analytics":

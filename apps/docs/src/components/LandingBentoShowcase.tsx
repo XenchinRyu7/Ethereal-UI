@@ -422,7 +422,7 @@ export const LandingBentoShowcase: React.FC = () => {
           </div>
 
           <div className="px-2 pt-3.5 pb-1.5">
-            <a href="/blocks/billing-card" className="text-sm font-semibold text-zinc-900 hover:underline dark:text-zinc-100">
+            <a href="/blocks/token-usage" className="text-sm font-semibold text-zinc-900 hover:underline dark:text-zinc-100">
               Usage &amp; quota statistics
             </a>
             <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400 line-clamp-2">
