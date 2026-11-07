@@ -1197,21 +1197,69 @@ export function BillingCardDemo() {
     category: "blocks",
     subcategory: "AI & Agentic",
     description:
-      "Multi-modal AI prompt composer with floating file attachment tiles, live upload progress bars, model switcher, branch context, and quick prompt chips.",
+      "Multi-modal AI prompt composer with device & preset attachment menu (Image, Video, Document/CSV, Code), controlled model selector dropdown (Gemini, Claude, GPT), and typed submit callbacks.",
     isNew: true,
-    dependencies: ["lucide-react"],
+    dependencies: ["@radix-ui/react-dropdown-menu", "@radix-ui/react-select", "lucide-react"],
     sourceFile: "packages/ui/src/blocks/prompt-composer.tsx",
-    code: `import { PromptComposerBlock } from "@etherealui/react"
+    code: `import * as React from "react"
+import { PromptComposerBlock, type PromptSubmitPayload } from "@etherealui/react"
 
 export function PromptComposerDemo() {
-  return <PromptComposerBlock />
+  const [modelId, setModelId] = React.useState("gemini-3.1-pro")
+
+  const handlePromptSubmit = (payload: PromptSubmitPayload) => {
+    // Receive selected modelId ("gemini-3.1-pro"), prompt text, and attachments:
+    console.log("Model:", payload.modelId, payload.model.provider)
+    console.log("Attachments:", payload.attachments)
+    console.log("Prompt:", payload.prompt)
+  }
+
+  return (
+    <PromptComposerBlock
+      selectedModel={modelId}
+      onModelChange={(id) => setModelId(id)}
+      onSubmitPrompt={handlePromptSubmit}
+    />
+  )
 }`,
     sections: [
       {
-        id: "attachments",
-        title: "Composer attachment tiles",
+        id: "controlled-api",
+        title: "Controlled model & backend callback integration",
         description:
-          "File tiles landing above the prompt with live percentage progress bars and one-click removal.",
+          "Pass selectedModel, onModelChange, onAttach, and onSubmitPrompt to receive the active AI model (e.g. Gemini 3.1 Pro), uploaded files, and prompt text in your application state.",
+        code: `import * as React from "react"
+import {
+  PromptComposerBlock,
+  type PromptModelOption,
+  type PromptSubmitPayload,
+} from "@etherealui/react"
+
+const CUSTOM_MODELS: PromptModelOption[] = [
+  { id: "gemini-3.1-pro", name: "Gemini 3.1 Pro", provider: "Google", badge: "2M Context" },
+  { id: "gemini-3.1-flash", name: "Gemini 3.1 Flash", provider: "Google", badge: "Fast" },
+  { id: "claude-4.6-sonnet", name: "Claude 4.6 Sonnet", provider: "Anthropic", badge: "Coding" },
+]
+
+export function ControlledGeminiComposer() {
+  const [selectedModel, setSelectedModel] = React.useState("gemini-3.1-pro")
+  const [lastPayload, setLastPayload] = React.useState<PromptSubmitPayload | null>(null)
+
+  return (
+    <PromptComposerBlock
+      models={CUSTOM_MODELS}
+      selectedModel={selectedModel}
+      onModelChange={(modelId) => setSelectedModel(modelId)}
+      onSubmitPrompt={(payload) => setLastPayload(payload)}
+    />
+  )
+}`,
+      },
+      {
+        id: "attachments",
+        title: "Multi-modal attachments (Image, Video, CSV, Code)",
+        description:
+          "Use the Attach dropdown menu to upload real files from disk (PNG, MP4, PDF/CSV, TSX) or test with quick presets.",
         code: `import { PromptComposerBlock } from "@etherealui/react"
 
 export function ComposerAttachmentsDemo() {
@@ -1317,16 +1365,85 @@ export function RateLimitsDemo() {
     category: "blocks",
     subcategory: "AI & Agentic",
     description:
-      "Interactive 4-column SaaS and autonomous agent Kanban board with HTML5 drag-and-drop, one-click column transitions, category filtering, and inline task creation.",
+      "Configurable SaaS & Agentic Kanban board with custom columns, custom category tags, search input, HTML5 drag-and-drop, and a full New Task modal dialog.",
     isNew: true,
-    dependencies: ["lucide-react"],
+    dependencies: ["@radix-ui/react-dialog", "@radix-ui/react-select", "@radix-ui/react-switch", "lucide-react"],
     sourceFile: "packages/ui/src/blocks/kanban-board.tsx",
     code: `import { KanbanBoardBlock } from "@etherealui/react"
 
 export function KanbanBoardDemo() {
-  return <KanbanBoardBlock />
+  return (
+    <KanbanBoardBlock
+      onTaskCreate={(task) => console.log("Created task:", task)}
+      onTaskMove={(id, from, to) => console.log("Moved:", id, from, "->", to)}
+    />
+  )
 }`,
     sections: [
+      {
+        id: "custom-config",
+        title: "Custom columns, categories & callbacks",
+        description:
+          "Pass custom columns, categories, taskCodePrefix, and callbacks (onTaskCreate, onTaskMove, onTaskDelete) to adapt the board to any domain.",
+        code: `import { KanbanBoardBlock } from "@etherealui/react"
+
+export function CustomDomainKanbanDemo() {
+  return (
+    <KanbanBoardBlock
+      title="Product Engineering Roadmap"
+      taskCodePrefix="ENG"
+      columns={[
+        { id: "todo", title: "To Do", dotClass: "bg-zinc-400" },
+        { id: "review", title: "Code Review", dotClass: "bg-amber-500" },
+        { id: "production", title: "Production", dotClass: "bg-emerald-500" },
+      ]}
+      categories={[
+        { id: "Frontend", label: "Frontend", badgeVariant: "blue" },
+        { id: "Backend", label: "Backend", badgeVariant: "emerald" },
+        { id: "DevOps", label: "DevOps", badgeVariant: "amber" },
+      ]}
+      initialTasks={[
+        {
+          id: "eng-1",
+          code: "ENG-201",
+          title: "Migrate authentication session store to Redis Cluster",
+          tag: "Backend",
+          priority: "Urgent",
+          column: "review",
+          assignee: "SR",
+          isAgentAssigned: false,
+          completedSubtasks: 3,
+          totalSubtasks: 4,
+        },
+        {
+          id: "eng-2",
+          code: "ENG-204",
+          title: "Automated Lighthouse CI performance budget check",
+          tag: "DevOps",
+          priority: "High",
+          column: "todo",
+          assignee: "AI",
+          isAgentAssigned: true,
+          completedSubtasks: 1,
+          totalSubtasks: 3,
+        },
+        {
+          id: "eng-3",
+          code: "ENG-209",
+          title: "Ship accessible Dialog and Select primitives",
+          tag: "Frontend",
+          priority: "Medium",
+          column: "production",
+          assignee: "SR",
+          isAgentAssigned: false,
+          completedSubtasks: 5,
+          totalSubtasks: 5,
+        },
+      ]}
+    />
+  )
+}`,
+      },
       {
         id: "compact-board",
         title: "Compact 3-column sprint board",

@@ -104,8 +104,49 @@ import {
   ControlTowerTemplate,
   WorkspaceSettingsTemplate,
   cn,
+  type PromptSubmitPayload,
 } from "@etherealui/react"
 import type { RegistryVariantSection } from "../data/registry-catalog"
+
+const ControlledPromptComposerDemo: React.FC = () => {
+  const [selectedModel, setSelectedModel] = React.useState("gemini-3.1-pro")
+  const [selectedProvider, setSelectedProvider] = React.useState("Google")
+  const [lastPayload, setLastPayload] = React.useState<PromptSubmitPayload | null>(null)
+
+  return (
+    <div className="w-full max-w-xl space-y-3">
+      <PromptComposerBlock
+        selectedModel={selectedModel}
+        onModelChange={(modelId, modelObj) => {
+          setSelectedModel(modelId)
+          setSelectedProvider(modelObj.provider)
+        }}
+        onSubmitPrompt={(payload) => setLastPayload(payload)}
+      />
+
+      <div className="rounded-2xl border border-zinc-200 bg-white p-3.5 text-xs dark:border-zinc-800 dark:bg-zinc-950 space-y-1.5">
+        <div className="flex items-center justify-between">
+          <span className="font-mono text-[11px] font-semibold text-blue-600 dark:text-blue-400">
+            Parent State Callback Receiver
+          </span>
+          <Badge variant="emerald" className="font-mono text-[10px]">
+            Active: {selectedModel} ({selectedProvider})
+          </Badge>
+        </div>
+        {lastPayload ? (
+          <p className="font-mono text-[11px] text-zinc-600 dark:text-zinc-300">
+            onSubmitPrompt &rarr; modelId: &quot;{lastPayload.modelId}&quot;, attachments:{" "}
+            {lastPayload.attachments.length}, prompt: &quot;{lastPayload.prompt}&quot;
+          </p>
+        ) : (
+          <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
+            Switch the AI model dropdown above or click <strong>Run Agent</strong> to inspect the callback payload received by your parent component.
+          </p>
+        )}
+      </div>
+    </div>
+  )
+}
 
 export const LiveDemoRenderer: React.FC<{ slug: string; sectionId?: string }> = ({
   slug,
@@ -806,6 +847,9 @@ export const LiveDemoRenderer: React.FC<{ slug: string; sectionId?: string }> = 
       )
 
     case "prompt-composer":
+      if (sectionId === "controlled-api") {
+        return <ControlledPromptComposerDemo />
+      }
       if (sectionId === "attachments") {
         return <PromptComposerBlock variant="attachments-only" />
       }
@@ -833,6 +877,62 @@ export const LiveDemoRenderer: React.FC<{ slug: string; sectionId?: string }> = 
       return <TokenUsageBlock />
 
     case "kanban-board":
+      if (sectionId === "custom-config") {
+        return (
+          <KanbanBoardBlock
+            title="Product Engineering Roadmap"
+            taskCodePrefix="ENG"
+            columns={[
+              { id: "todo", title: "To Do", dotClass: "bg-zinc-400" },
+              { id: "review", title: "Code Review", dotClass: "bg-amber-500" },
+              { id: "production", title: "Production", dotClass: "bg-emerald-500" },
+            ]}
+            categories={[
+              { id: "Frontend", label: "Frontend", badgeVariant: "blue" },
+              { id: "Backend", label: "Backend", badgeVariant: "emerald" },
+              { id: "DevOps", label: "DevOps", badgeVariant: "amber" },
+            ]}
+            initialTasks={[
+              {
+                id: "eng-1",
+                code: "ENG-201",
+                title: "Migrate authentication session store to Redis Cluster",
+                tag: "Backend",
+                priority: "Urgent",
+                column: "review",
+                assignee: "SR",
+                isAgentAssigned: false,
+                completedSubtasks: 3,
+                totalSubtasks: 4,
+              },
+              {
+                id: "eng-2",
+                code: "ENG-204",
+                title: "Automated Lighthouse CI performance budget check",
+                tag: "DevOps",
+                priority: "High",
+                column: "todo",
+                assignee: "AI",
+                isAgentAssigned: true,
+                completedSubtasks: 1,
+                totalSubtasks: 3,
+              },
+              {
+                id: "eng-3",
+                code: "ENG-209",
+                title: "Ship accessible Dialog and Select primitives",
+                tag: "Frontend",
+                priority: "Medium",
+                column: "production",
+                assignee: "SR",
+                isAgentAssigned: false,
+                completedSubtasks: 5,
+                totalSubtasks: 5,
+              },
+            ]}
+          />
+        )
+      }
       if (sectionId === "compact-board") {
         return <KanbanBoardBlock variant="compact" />
       }
