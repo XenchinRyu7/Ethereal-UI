@@ -243,6 +243,10 @@ export interface OrgDirectoryBlockProps
   departments?: string[];
   /** Initial or controlled employees */
   employees?: EmployeeProfileItem[];
+  /** Optional controlled selected employee ID */
+  selectedEmployeeId?: string;
+  /** Callback fired when an employee row is selected */
+  onEmployeeSelect?: (emp: EmployeeProfileItem) => void;
   /** Callback fired when a new employee is added */
   onEmployeeCreate?: (emp: EmployeeProfileItem) => void;
 }
@@ -314,15 +318,18 @@ export function OrgDirectoryBlock({
   variant = "default",
   departments = DEFAULT_DEPARTMENTS,
   employees: initialEmployees = DEFAULT_EMPLOYEES,
+  selectedEmployeeId,
+  onEmployeeSelect,
   onEmployeeCreate,
   className,
   ...props
 }: OrgDirectoryBlockProps) {
   const [employees, setEmployees] =
     React.useState<EmployeeProfileItem[]>(initialEmployees);
-  const [selectedId, setSelectedId] = React.useState<string>(
+  const [internalSelectedId, setInternalSelectedId] = React.useState<string>(
     initialEmployees[0]?.id ?? "emp-1"
   );
+  const selectedId = selectedEmployeeId ?? internalSelectedId;
   const [search, setSearch] = React.useState("");
   const [dialogOpen, setDialogOpen] = React.useState(false);
 
@@ -362,7 +369,8 @@ export function OrgDirectoryBlock({
     };
 
     setEmployees((prev) => [created, ...prev]);
-    setSelectedId(created.id);
+    setInternalSelectedId(created.id);
+    onEmployeeSelect?.(created);
     onEmployeeCreate?.(created);
     setNewName("");
     setNewRole("");
@@ -506,7 +514,10 @@ export function OrgDirectoryBlock({
                   key={emp.id}
                   employee={emp}
                   selected={emp.id === activeEmployee?.id}
-                  onClick={() => setSelectedId(emp.id)}
+                  onClick={() => {
+                    setInternalSelectedId(emp.id);
+                    onEmployeeSelect?.(emp);
+                  }}
                 />
               ))}
             </div>

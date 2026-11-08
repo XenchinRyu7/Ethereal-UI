@@ -1580,15 +1580,48 @@ export function AgentQueueKanbanDemo() {
     isNew: true,
     dependencies: ["lucide-react"],
     sourceFile: "packages/ui/src/blocks/ai-chat-thread.tsx",
-    code: `import { AiChatThreadBlock } from "@etherealui/react"
+    code: `import * as React from "react"
+import { AiChatThreadBlock, type ChatTurnMessage } from "@etherealui/react"
 
 export function AiChatThreadDemo() {
+  const [messages, setMessages] = React.useState<ChatTurnMessage[]>([
+    {
+      id: "msg-1",
+      role: "user",
+      author: "Saeful Rohman",
+      timestamp: "10:14 AM",
+      content: "Audit the Q4 SWIFT settlement anomalies in USD Nostro.",
+    },
+    {
+      id: "msg-2",
+      role: "assistant",
+      author: "Copilot",
+      timestamp: "10:14 AM",
+      modelBadge: "claude-4.6-sonnet",
+      content: "Inspected the ISO-20022 ledger. One wire is held in Maker-Checker review.",
+      toolCalls: [
+        {
+          id: "tc-1",
+          toolName: "core_banking.query_swift_ledger",
+          durationMs: 184,
+          status: "success",
+          inputSummary: '{ "currency": "USD", "minAmount": 100000 }',
+          outputJson: '{ "matched": 2, "pendingDualControl": ["SWFT-2026-8819"] }',
+        },
+      ],
+    },
+  ])
+
   return (
     <AiChatThreadBlock
-      title="Copilot Execution Thread"
-      subtitle="MCP Tool Orchestrator"
+      title="Agentic Thread & Tool Execution"
+      subtitle="Multi-turn workspace thread with inspectable tool calls and code output."
       statusLabel="Connected"
-      onSendMessage={(msg) => console.log("Follow-up prompt:", msg)}
+      messages={messages}
+      onSendMessage={(text, newUserMessage) => {
+        // Receive the user's prompt & append or send to your LLM backend
+        setMessages((prev) => [...prev, newUserMessage])
+      }}
     />
   )
 }`,
@@ -1639,16 +1672,48 @@ export function CustomCopilotComposition() {
     isNew: true,
     dependencies: ["@radix-ui/react-dialog", "@radix-ui/react-select", "lucide-react"],
     sourceFile: "packages/ui/src/blocks/approval-workflow.tsx",
-    code: `import { ApprovalWorkflowBlock } from "@etherealui/react"
+    code: `import * as React from "react"
+import { ApprovalWorkflowBlock, type ApprovalRequestItem } from "@etherealui/react"
 
 export function ApprovalWorkflowDemo() {
+  const [requests, setRequests] = React.useState<ApprovalRequestItem[]>([
+    {
+      id: "req-1",
+      code: "TRX-9941",
+      title: "SWIFT Outbound Wire — Cloud Infrastructure Settlement",
+      category: "wire-transfer",
+      requesterName: "Nadia Kusuma",
+      requesterRole: "VP Treasury • Finance",
+      amountOrDuration: "$148,500.00 USD",
+      submittedAt: "14m ago",
+      riskLevel: "high",
+      status: "pending",
+      approversRequired: 2,
+      approversSigned: 1,
+      notes: "Dual-control sign-off required for wires exceeding $100,000 USD.",
+    },
+  ])
+
   return (
     <ApprovalWorkflowBlock
-      title="Maker-Checker Approval Center"
-      subtitle="Dual-control authorization queue for Wire Transfers, HRMS Leave & Access"
-      onApprove={(id, req) => console.log("Approved:", id, req)}
-      onReject={(id, req) => console.log("Rejected:", id, req)}
-      onRequestCreate={(req) => console.log("Created request:", req)}
+      title="Maker-Checker Approvals"
+      subtitle="Dual-authorization queue for treasury wires, HRMS leave, and access grants."
+      categories={[
+        { id: "wire-transfer", label: "Treasury Wire", codePrefix: "TRX" },
+        { id: "leave-request", label: "HRMS Leave", codePrefix: "HR" },
+      ]}
+      requests={requests}
+      onApprove={(id, updatedReq) => {
+        // Send approval to your API & sync state
+        setRequests((prev) => prev.map((r) => (r.id === id ? updatedReq : r)))
+      }}
+      onReject={(id, updatedReq) => {
+        setRequests((prev) => prev.map((r) => (r.id === id ? updatedReq : r)))
+      }}
+      onRequestCreate={(newReq) => {
+        // Receive new request created from the modal Dialog
+        setRequests((prev) => [newReq, ...prev])
+      }}
     />
   )
 }`,
@@ -1698,14 +1763,56 @@ export function StandaloneApprovalCardDemo() {
     isNew: true,
     dependencies: ["@radix-ui/react-dialog", "@radix-ui/react-select", "lucide-react"],
     sourceFile: "packages/ui/src/blocks/transaction-ledger.tsx",
-    code: `import { TransactionLedgerBlock } from "@etherealui/react"
+    code: `import * as React from "react"
+import {
+  TransactionLedgerBlock,
+  type TreasuryAccountBalance,
+  type LedgerTransactionItem,
+} from "@etherealui/react"
 
 export function TransactionLedgerDemo() {
+  const accounts: TreasuryAccountBalance[] = [
+    {
+      currency: "USD",
+      name: "JPMorgan Chase • Operating",
+      ibanOrAccount: "US89 0021 4491 8820",
+      balance: "$2,845,920.00",
+      change24h: "+$142,000 today",
+    },
+    {
+      currency: "IDR",
+      name: "Bank Mandiri • BI-FAST Clearing",
+      ibanOrAccount: "ID44 0081 9920 1104",
+      balance: "Rp 18.450.000.000",
+      change24h: "-Rp 420jt payroll",
+    },
+  ]
+
+  const [transactions, setTransactions] = React.useState<LedgerTransactionItem[]>([
+    {
+      id: "tx-1",
+      reference: "SWFT-2026-8841",
+      counterparty: "Stripe Global Payouts Ltd",
+      bankOrRail: "SWIFT",
+      direction: "inbound",
+      amount: "+$184,250.00",
+      currency: "USD",
+      status: "settled",
+      timestamp: "Today, 14:22 UTC",
+      category: "Merchant Settlement",
+    },
+  ])
+
   return (
     <TransactionLedgerBlock
-      title="Core Banking Treasury & ISO-20022 Ledger"
-      rails={["SWIFT", "BI-FAST", "SEPA", "RTGS"]}
-      onInitiateTransfer={(tx) => console.log("Dispatched wire:", tx)}
+      title="Treasury & Settlement Ledger"
+      rails={["SWIFT", "RTGS", "BI-FAST", "SEPA"]}
+      accounts={accounts}
+      transactions={transactions}
+      onInitiateTransfer={(newWireTx) => {
+        // Receive new outbound wire from the modal Dialog & dispatch to your API
+        setTransactions((prev) => [newWireTx, ...prev])
+      }}
     />
   )
 }`,
@@ -1754,13 +1861,43 @@ export function CustomTreasuryVaultsDemo() {
     isNew: true,
     dependencies: ["@radix-ui/react-dialog", "@radix-ui/react-select", "lucide-react"],
     sourceFile: "packages/ui/src/blocks/org-directory.tsx",
-    code: `import { OrgDirectoryBlock } from "@etherealui/react"
+    code: `import * as React from "react"
+import { OrgDirectoryBlock, type EmployeeProfileItem } from "@etherealui/react"
 
 export function OrgDirectoryDemo() {
+  const [employees, setEmployees] = React.useState<EmployeeProfileItem[]>([
+    {
+      id: "emp-1",
+      employeeCode: "EMP-0042",
+      name: "Saeful Rohman",
+      handle: "@xenchinryu7",
+      role: "Principal Staff Architect",
+      department: "Core Platform",
+      location: "Jakarta, ID (Hybrid)",
+      status: "active",
+      mrrOrKpiValue: "$7,402",
+      mrrOrKpiLabel: "MRR Impact • +15.8%",
+      commitsOrTasks: "1,428",
+      attendanceScore: "99.4%",
+      heatmapLevels: [
+        3, 3, 2, 3, 3, 2, 3, 1, 2, 3, 3, 3, 2, 3, 3, 3, 2, 3,
+        3, 2, 3, 3, 1, 2, 3, 3, 3, 2, 3, 3, 2, 3, 3, 3, 2, 3,
+      ],
+    },
+  ])
+
   return (
     <OrgDirectoryBlock
-      departments={["Engineering", "Product", "Treasury", "Security"]}
-      onEmployeeCreate={(emp) => console.log("Onboarded:", emp)}
+      title="People Directory & Contributor Telemetry"
+      departments={["Core Platform", "Core Banking Operations", "People & HRMS"]}
+      employees={employees}
+      onEmployeeSelect={(selectedEmp) => {
+        console.log("Selected employee:", selectedEmp)
+      }}
+      onEmployeeCreate={(newEmp) => {
+        // Receive newly onboarded employee from the modal Dialog
+        setEmployees((prev) => [newEmp, ...prev])
+      }}
     />
   )
 }`,
@@ -1810,13 +1947,37 @@ export function ContributorSpotlightDemo() {
     isNew: true,
     dependencies: ["@radix-ui/react-dialog", "@radix-ui/react-select", "lucide-react"],
     sourceFile: "packages/ui/src/blocks/event-scheduler.tsx",
-    code: `import { EventSchedulerBlock } from "@etherealui/react"
+    code: `import * as React from "react"
+import { EventSchedulerBlock, type ScheduledEventItem } from "@etherealui/react"
 
 export function EventSchedulerDemo() {
+  const [events, setEvents] = React.useState<ScheduledEventItem[]>([
+    {
+      id: "ev-1",
+      day: 5,
+      title: "Release v2.4",
+      time: "02:00 PM",
+      category: "release",
+      owner: "Release Train",
+    },
+    {
+      id: "ev-2",
+      day: 12,
+      title: "ISO Audit",
+      time: "10:00 AM",
+      category: "audit",
+      owner: "Compliance",
+    },
+  ])
+
   return (
     <EventSchedulerBlock
       monthLabel="November 2026"
-      onEventCreate={(ev) => console.log("Scheduled event:", ev)}
+      events={events}
+      onEventCreate={(newEvent) => {
+        // Receive newly scheduled event from the modal Dialog
+        setEvents((prev) => [...prev, newEvent])
+      }}
     />
   )
 }`,
@@ -1868,13 +2029,32 @@ export function CustomDayAgendaDemo() {
     isNew: true,
     dependencies: ["@radix-ui/react-progress", "lucide-react"],
     sourceFile: "packages/ui/src/blocks/system-health.tsx",
-    code: `import { SystemHealthBlock } from "@etherealui/react"
+    code: `import * as React from "react"
+import { SystemHealthBlock, type SystemAlertItem } from "@etherealui/react"
 
 export function SystemHealthDemo() {
+  const [alerts, setAlerts] = React.useState<SystemAlertItem[]>([
+    {
+      id: "al-1",
+      title: "High P99 Latency (142ms) — Payment Gateway",
+      regionOrCluster: "us-east-1 • Edge Cluster",
+      timestamp: "14m ago",
+      severity: "warning",
+      acknowledged: false,
+    },
+  ])
+
   return (
     <SystemHealthBlock
+      title="System SLA Health & Incident Telemetry"
       score={98}
-      onAcknowledgeAlert={(id) => console.log("Acknowledged alert:", id)}
+      alerts={alerts}
+      onAcknowledgeAlert={(alertId) => {
+        // Mark incident acknowledged in your monitoring backend
+        setAlerts((prev) =>
+          prev.map((a) => (a.id === alertId ? { ...a, acknowledged: true } : a))
+        )
+      }}
     />
   )
 }`,
