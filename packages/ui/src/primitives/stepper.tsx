@@ -74,13 +74,13 @@ export const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
       <div
         ref={ref}
         className={cn(
-          "w-full max-w-2xl rounded-2xl border border-zinc-200 bg-white p-5 space-y-5 dark:border-zinc-800 dark:bg-zinc-900",
+          "w-full max-w-2xl rounded-xl border border-zinc-200 bg-white p-4 sm:p-5 space-y-4 dark:border-zinc-800 dark:bg-zinc-900",
           className
         )}
         {...props}
       >
         {/* Horizontal Step Indicators */}
-        <div className="grid grid-cols-1 gap-2 sm:grid-cols-4">
+        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-4">
           {steps.map((step, idx) => {
             const isCompleted = idx < activeIdx
             const isCurrent = idx === activeIdx
@@ -92,15 +92,13 @@ export const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
                 className={cn(
                   "flex items-start gap-2.5 rounded-xl border p-2.5 text-left transition-colors cursor-pointer",
                   isCurrent
-                    ? "border-blue-500/50 bg-blue-50/60 dark:border-blue-500/40 dark:bg-blue-500/10"
-                    : isCompleted
-                      ? "border-emerald-500/30 bg-emerald-50/30 hover:bg-emerald-50/60 dark:border-emerald-500/20 dark:bg-emerald-500/5 dark:hover:bg-emerald-500/10"
-                      : "border-zinc-200/80 bg-zinc-50/50 hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-950/50 dark:hover:bg-zinc-800"
+                    ? "border-blue-500/60 bg-blue-50/40 dark:border-blue-500/50 dark:bg-blue-500/10"
+                    : "border-zinc-200 bg-white hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:bg-zinc-800/50"
                 )}
               >
                 <span
                   className={cn(
-                    "flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[11px] font-bold transition-colors",
+                    "flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[11px] font-semibold transition-colors",
                     isCompleted
                       ? "bg-emerald-600 text-white"
                       : isCurrent
@@ -111,7 +109,7 @@ export const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
                   {isCompleted ? <Check className="h-3.5 w-3.5 stroke-[2.5]" /> : idx + 1}
                 </span>
                 <div className="min-w-0">
-                  <p className="truncate text-xs font-semibold text-zinc-900 dark:text-zinc-100">
+                  <p className="truncate text-xs font-medium text-zinc-900 dark:text-zinc-100">
                     {step.title}
                   </p>
                   <p className="truncate text-[10px] text-zinc-500 dark:text-zinc-400">
@@ -124,9 +122,9 @@ export const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
         </div>
 
         {/* Active Step Content Box */}
-        <div className="rounded-xl border border-zinc-200/80 bg-zinc-50/60 p-4 dark:border-zinc-800 dark:bg-zinc-950/60 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <div className="space-y-1">
-            <div className="flex items-center gap-2">
+        <div className="rounded-xl border border-zinc-200 bg-zinc-50/50 p-3.5 sm:p-4 dark:border-zinc-800 dark:bg-zinc-950/50 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="space-y-1 min-w-0">
+            <div className="flex flex-wrap items-center gap-2">
               <Badge variant="blue" className="font-mono text-[10px]">
                 Step {activeIdx + 1} of {steps.length}
               </Badge>
@@ -153,10 +151,11 @@ export const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
               type="button"
               variant="primary"
               size="xs"
-              onClick={() => setStep(activeIdx < steps.length - 1 ? activeIdx + 1 : 0)}
+              disabled={activeIdx === steps.length - 1}
+              onClick={() => setStep(activeIdx + 1)}
             >
-              <span>{activeIdx === steps.length - 1 ? "Complete" : "Next Step"}</span>
-              <ChevronRight className="h-3.5 w-3.5" />
+              <span>Next</span>
+              <ChevronRight className="h-3 w-3" />
             </Button>
           </div>
         </div>
@@ -166,4 +165,3 @@ export const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
 )
 
 Stepper.displayName = "Stepper"
-

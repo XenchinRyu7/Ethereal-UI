@@ -2,7 +2,6 @@ import * as React from "react"
 import {
   Check,
   Search,
-  Sparkles,
   Play,
   Pause,
   RotateCcw,
@@ -146,7 +145,7 @@ export const AgentProgressBlock = React.forwardRef<
         >
           <div className="flex items-center justify-between border-b border-zinc-100 pb-3 dark:border-zinc-800">
             <div className="flex items-center gap-2">
-              <Sparkles className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+              <Terminal className="h-4 w-4 text-blue-600 dark:text-blue-400" />
               <span className="text-xs font-semibold text-zinc-900 dark:text-zinc-100">
                 Streaming Reasoning Trace
               </span>
@@ -176,7 +175,7 @@ export const AgentProgressBlock = React.forwardRef<
                   className={cn(
                     "flex w-full items-center justify-between rounded-xl px-3 py-2 text-xs transition-colors cursor-pointer text-left",
                     isCurrent
-                      ? "bg-zinc-100 text-zinc-900 font-semibold dark:bg-zinc-800 dark:text-white"
+                      ? "bg-blue-50/80 text-blue-600 font-semibold dark:bg-blue-500/15 dark:text-blue-400"
                       : "text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800/70 dark:hover:text-zinc-100"
                   )}
                 >

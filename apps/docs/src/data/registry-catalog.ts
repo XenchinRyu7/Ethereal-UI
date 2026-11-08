@@ -1585,11 +1585,49 @@ export function AgentQueueKanbanDemo() {
 export function AiChatThreadDemo() {
   return (
     <AiChatThreadBlock
+      title="Copilot Execution Thread"
+      subtitle="MCP Tool Orchestrator"
+      statusLabel="Connected"
       onSendMessage={(msg) => console.log("Follow-up prompt:", msg)}
     />
   )
 }`,
-    sections: [],
+    sections: [
+      {
+        id: "modular-composition",
+        title: "Modular sub-component composition",
+        description:
+          "Build your own custom AI interface by composing standalone ChatMessageBubble, ToolCallExecutionCard, and CodeArtifactCard components with custom parameters.",
+        code: `import {
+  ToolCallExecutionCard,
+  CodeArtifactCard,
+} from "@etherealui/react"
+
+export function CustomCopilotComposition() {
+  return (
+    <div className="w-full max-w-2xl space-y-4 rounded-2xl border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900">
+      <ToolCallExecutionCard
+        defaultExpanded
+        toolCall={{
+          id: "tc-custom",
+          toolName: "stripe.invoices.list_overdue",
+          durationMs: 184,
+          status: "success",
+          inputSummary: '{ "status": "past_due", "limit": 10 }',
+          outputJson: '{ "overdue_accounts": 2, "total_amount": "$14,200.00" }',
+        }}
+      />
+      <CodeArtifactCard
+        title="reconcile-ledger.ts"
+        code={\`export async function reconcileInvoice(id: string) {
+  return await db.invoices.update({ where: { id }, data: { reconciled: true } })
+}\`}
+      />
+    </div>
+  )
+}`,
+      },
+    ],
   },
   {
     slug: "approval-workflow",
@@ -1606,13 +1644,49 @@ export function AiChatThreadDemo() {
 export function ApprovalWorkflowDemo() {
   return (
     <ApprovalWorkflowBlock
+      title="Maker-Checker Approval Center"
+      subtitle="Dual-control authorization queue for Wire Transfers, HRMS Leave & Access"
       onApprove={(id, req) => console.log("Approved:", id, req)}
       onReject={(id, req) => console.log("Rejected:", id, req)}
       onRequestCreate={(req) => console.log("Created request:", req)}
     />
   )
 }`,
-    sections: [],
+    sections: [
+      {
+        id: "modular-composition",
+        title: "Standalone ApprovalRequestCard composition",
+        description:
+          "Render individual approval cards anywhere in your app using ApprovalRequestCard with custom approve/reject handlers.",
+        code: `import { ApprovalRequestCard } from "@etherealui/react"
+
+export function StandaloneApprovalCardDemo() {
+  return (
+    <div className="w-full max-w-2xl overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800">
+      <ApprovalRequestCard
+        item={{
+          id: "apr-custom",
+          code: "APR-9901",
+          category: "wire",
+          title: "Treasury Liquidity Sweep — JPMorgan Chase NY",
+          requesterName: "Elena Rostova",
+          requesterRole: "VP Finance",
+          amountOrDuration: "$450,000.00",
+          submittedAt: "Just now",
+          riskLevel: "high",
+          notes: "Requires 2 of 3 Executive Signers (Dual-Control)",
+          status: "pending",
+          approversSigned: 1,
+          approversRequired: 2,
+        }}
+        onApprove={(id) => console.log("Approved:", id)}
+        onReject={(id) => console.log("Rejected:", id)}
+      />
+    </div>
+  )
+}`,
+      },
+    ],
   },
   {
     slug: "transaction-ledger",
@@ -1629,11 +1703,46 @@ export function ApprovalWorkflowDemo() {
 export function TransactionLedgerDemo() {
   return (
     <TransactionLedgerBlock
+      title="Core Banking Treasury & ISO-20022 Ledger"
+      rails={["SWIFT", "BI-FAST", "SEPA", "RTGS"]}
       onInitiateTransfer={(tx) => console.log("Dispatched wire:", tx)}
     />
   )
 }`,
-    sections: [],
+    sections: [
+      {
+        id: "modular-composition",
+        title: "Modular TreasuryVaultCard & TransactionLedgerTable",
+        description:
+          "Compose standalone Nostro currency vault cards or the responsive ledger table independently with your own banking data.",
+        code: `import { TreasuryVaultCard } from "@etherealui/react"
+
+export function CustomTreasuryVaultsDemo() {
+  return (
+    <div className="grid w-full max-w-2xl grid-cols-1 gap-3 sm:grid-cols-2">
+      <TreasuryVaultCard
+        account={{
+          currency: "SGD",
+          name: "DBS Bank Singapore Nostro",
+          ibanOrAccount: "**** 7741",
+          balance: "S$ 3,840,200.00",
+          change24h: "+4.2% (24h)",
+        }}
+      />
+      <TreasuryVaultCard
+        account={{
+          currency: "GBP",
+          name: "Barclays London Clearing",
+          ibanOrAccount: "**** 1094",
+          balance: "£ 1,920,500.00",
+          change24h: "+1.8% (24h)",
+        }}
+      />
+    </div>
+  )
+}`,
+      },
+    ],
   },
   {
     slug: "org-directory",
@@ -1650,6 +1759,7 @@ export function TransactionLedgerDemo() {
 export function OrgDirectoryDemo() {
   return (
     <OrgDirectoryBlock
+      departments={["Engineering", "Product", "Treasury", "Security"]}
       onEmployeeCreate={(emp) => console.log("Onboarded:", emp)}
     />
   )
@@ -1657,13 +1767,35 @@ export function OrgDirectoryDemo() {
     sections: [
       {
         id: "spotlight",
-        title: "Contributor & metric profile spotlight",
+        title: "Standalone ContributorProfileCard spotlight",
         description:
-          "Standalone contributor KPI profile card with 36-cell activity and attendance heatmap.",
-        code: `import { OrgDirectoryBlock } from "@etherealui/react"
+          "Import ContributorProfileCard directly to render an employee KPI card and 36-cell activity matrix anywhere.",
+        code: `import { ContributorProfileCard } from "@etherealui/react"
 
 export function ContributorSpotlightDemo() {
-  return <OrgDirectoryBlock variant="spotlight" />
+  return (
+    <ContributorProfileCard
+      className="w-full max-w-md"
+      employee={{
+        id: "emp-01",
+        employeeCode: "EMP-001",
+        name: "Saeful Rohman",
+        handle: "@saefulrohman",
+        role: "Principal Systems Architect",
+        department: "Engineering",
+        location: "Jakarta, ID (GMT+7)",
+        status: "active",
+        mrrOrKpiValue: "99.8%",
+        mrrOrKpiLabel: "Architecture SLA",
+        commitsOrTasks: "418 PRs",
+        attendanceScore: "99.4%",
+        heatmapLevels: [
+          3, 3, 2, 3, 3, 2, 3, 1, 2, 3, 3, 3, 2, 3, 3, 3, 2, 3,
+          3, 2, 3, 3, 1, 2, 3, 3, 3, 2, 3, 3, 2, 3, 3, 3, 2, 3,
+        ],
+      }}
+    />
+  )
 }`,
       },
     ],
@@ -1688,7 +1820,43 @@ export function EventSchedulerDemo() {
     />
   )
 }`,
-    sections: [],
+    sections: [
+      {
+        id: "modular-composition",
+        title: "Standalone DayAgendaCard composition",
+        description:
+          "Use DayAgendaCard and CalendarDayCell independently to build custom sidebar agendas or shift rosters.",
+        code: `import { DayAgendaCard } from "@etherealui/react"
+
+export function CustomDayAgendaDemo() {
+  return (
+    <div className="w-full max-w-lg">
+      <DayAgendaCard
+        day={24}
+        events={[
+          {
+            id: "ev-1",
+            day: 24,
+            title: "Core Banking ISO-20022 Cutover Window",
+            time: "02:00 UTC",
+            category: "release",
+            owner: "SR",
+          },
+          {
+            id: "ev-2",
+            day: 24,
+            title: "APAC Primary SRE On-Call Handover",
+            time: "08:00 UTC",
+            category: "shift",
+            owner: "DK",
+          },
+        ]}
+      />
+    </div>
+  )
+}`,
+      },
+    ],
   },
   {
     slug: "system-health",
@@ -1710,7 +1878,32 @@ export function SystemHealthDemo() {
     />
   )
 }`,
-    sections: [],
+    sections: [
+      {
+        id: "modular-composition",
+        title: "Standalone SlaRingGaugeCard & IncidentAlertRow",
+        description:
+          "Compose the concentric SVG ring gauge card or individual incident alert rows in custom monitoring layouts.",
+        code: `import { SlaRingGaugeCard } from "@etherealui/react"
+
+export function CustomSlaRingDemo() {
+  return (
+    <div className="w-full max-w-md">
+      <SlaRingGaugeCard
+        score={99}
+        title="Global Edge Network"
+        subtitle="Multi-region telemetry"
+        statusLabel="Operational"
+        metrics={[
+          { id: "api", label: "API Availability", valueLabel: "99.99%", percent: 99 },
+          { id: "cache", label: "Cache Hit Ratio", valueLabel: "96.4%", percent: 96 },
+        ]}
+      />
+    </div>
+  )
+}`,
+      },
+    ],
   },
 
   // ============================================================================

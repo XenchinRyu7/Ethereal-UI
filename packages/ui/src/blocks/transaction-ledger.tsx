@@ -1,13 +1,10 @@
 import * as React from "react";
 import {
-  Landmark,
   ArrowUpRight,
   ArrowDownLeft,
   Search,
-  Send,
-  CheckCircle2,
-  Clock,
-  AlertCircle,
+  Plus,
+  Landmark,
 } from "lucide-react";
 import { cn } from "../utils/cn";
 import { Button, ToggleGroup } from "../primitives/button";
@@ -37,14 +34,13 @@ export interface TreasuryAccountBalance {
   ibanOrAccount: string;
   balance: string;
   change24h: string;
-  flag: string;
 }
 
 export interface LedgerTransactionItem {
   id: string;
   reference: string;
   counterparty: string;
-  bankOrRail: "SWIFT" | "RTGS" | "BI-FAST" | "ACH" | "SEPA";
+  bankOrRail: string;
   direction: "inbound" | "outbound";
   amount: string;
   currency: string;
@@ -53,14 +49,247 @@ export interface LedgerTransactionItem {
   category: string;
 }
 
+/* -------------------------------------------------------------------------- */
+/* Modular Sub-Component 1: TreasuryVaultCard                                 */
+/* -------------------------------------------------------------------------- */
+
+export interface TreasuryVaultCardProps
+  extends React.HTMLAttributes<HTMLDivElement> {
+  account: TreasuryAccountBalance;
+}
+
+export const TreasuryVaultCard = React.forwardRef<
+  HTMLDivElement,
+  TreasuryVaultCardProps
+>(({ account, className, ...props }, ref) => {
+  const isPositive = account.change24h.trim().startsWith("+");
+
+  return (
+    <div
+      ref={ref}
+      className={cn(
+        "rounded-2xl border border-zinc-200/90 bg-zinc-50/70 p-4 transition-all hover:-translate-y-0.5 hover:border-zinc-300 dark:border-zinc-800 dark:bg-zinc-900/70 dark:hover:border-zinc-700",
+        className
+      )}
+      {...props}
+    >
+      <div className="flex items-center justify-between gap-2">
+        <Badge variant="blue" className="font-mono">
+          {account.currency}
+        </Badge>
+        <span className="font-mono text-[11px] text-zinc-400 dark:text-zinc-500 truncate">
+          {account.ibanOrAccount}
+        </span>
+      </div>
+      <div className="mt-2.5 text-base sm:text-lg font-semibold font-mono text-zinc-900 dark:text-zinc-100 truncate">
+        {account.balance}
+      </div>
+      <div className="mt-1 flex items-center justify-between gap-2 text-[11px] text-zinc-500 dark:text-zinc-400">
+        <span className="truncate">{account.name}</span>
+        <span
+          className={cn(
+            "font-mono font-medium shrink-0",
+            isPositive
+              ? "text-emerald-600 dark:text-emerald-400"
+              : "text-zinc-500 dark:text-zinc-400"
+          )}
+        >
+          {account.change24h}
+        </span>
+      </div>
+    </div>
+  );
+});
+TreasuryVaultCard.displayName = "TreasuryVaultCard";
+
+/* -------------------------------------------------------------------------- */
+/* Modular Sub-Component 2: TransactionLedgerTable                            */
+/* -------------------------------------------------------------------------- */
+
+export interface TransactionLedgerTableProps
+  extends React.HTMLAttributes<HTMLDivElement> {
+  transactions: LedgerTransactionItem[];
+}
+
+export const TransactionLedgerTable = React.forwardRef<
+  HTMLDivElement,
+  TransactionLedgerTableProps
+>(({ transactions, className, ...props }, ref) => {
+  const renderStatusBadge = (status: LedgerTransactionItem["status"]) => {
+    if (status === "settled") {
+      return (
+        <Badge variant="emerald" dot>
+          Settled
+        </Badge>
+      );
+    }
+    if (status === "processing") {
+      return (
+        <Badge variant="blue" dot>
+          Clearing
+        </Badge>
+      );
+    }
+    return (
+      <Badge variant="rose" dot>
+        Review
+      </Badge>
+    );
+  };
+
+  return (
+    <div
+      ref={ref}
+      className={cn(
+        "rounded-2xl border border-zinc-200/90 dark:border-zinc-800 overflow-hidden",
+        className
+      )}
+      {...props}
+    >
+      {/* Mobile Stacked Card View (< sm) */}
+      <div className="divide-y divide-zinc-200 dark:divide-zinc-800 sm:hidden">
+        {transactions.map((tx) => (
+          <div
+            key={tx.id}
+            className="p-3.5 space-y-2 bg-white dark:bg-zinc-950"
+          >
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center gap-2 min-w-0">
+                <span
+                  className={cn(
+                    "flex h-6 w-6 shrink-0 items-center justify-center rounded-md border",
+                    tx.direction === "inbound"
+                      ? "border-emerald-500/20 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+                      : "border-blue-500/20 bg-blue-500/10 text-blue-600 dark:text-blue-400"
+                  )}
+                >
+                  {tx.direction === "inbound" ? (
+                    <ArrowDownLeft className="h-3.5 w-3.5" />
+                  ) : (
+                    <ArrowUpRight className="h-3.5 w-3.5" />
+                  )}
+                </span>
+                <span className="font-mono text-xs font-medium text-zinc-900 dark:text-zinc-100 truncate">
+                  {tx.reference}
+                </span>
+              </div>
+              <span
+                className={cn(
+                  "font-mono text-xs font-semibold shrink-0",
+                  tx.direction === "inbound"
+                    ? "text-emerald-600 dark:text-emerald-400"
+                    : "text-zinc-900 dark:text-zinc-100"
+                )}
+              >
+                {tx.amount}
+              </span>
+            </div>
+
+            <div className="text-xs font-medium text-zinc-800 dark:text-zinc-200">
+              {tx.counterparty}
+            </div>
+
+            <div className="flex flex-wrap items-center justify-between gap-2 pt-0.5">
+              <span className="text-[11px] text-zinc-400 dark:text-zinc-500">
+                {tx.bankOrRail} • {tx.category} • {tx.timestamp}
+              </span>
+              {renderStatusBadge(tx.status)}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Desktop / Tablet Table View (sm+) */}
+      <div className="hidden sm:block overflow-x-auto">
+        <table className="w-full text-left border-collapse">
+          <thead>
+            <tr className="border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50/70 dark:bg-zinc-900/50 text-[11px] font-medium text-zinc-500 dark:text-zinc-400">
+              <th className="py-2.5 px-3.5">Reference</th>
+              <th className="py-2.5 px-3.5">Counterparty</th>
+              <th className="py-2.5 px-3.5">Category</th>
+              <th className="py-2.5 px-3.5">Status</th>
+              <th className="py-2.5 px-3.5 text-right">Amount</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800 text-xs">
+            {transactions.map((tx) => (
+              <tr
+                key={tx.id}
+                className="transition-colors hover:bg-zinc-50/80 dark:hover:bg-zinc-900/50"
+              >
+                <td className="py-3 px-3.5 whitespace-nowrap">
+                  <div className="flex items-center gap-2.5">
+                    <span
+                      className={cn(
+                        "flex h-6 w-6 items-center justify-center rounded-md border",
+                        tx.direction === "inbound"
+                          ? "border-emerald-500/20 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+                          : "border-blue-500/20 bg-blue-500/10 text-blue-600 dark:text-blue-400"
+                      )}
+                    >
+                      {tx.direction === "inbound" ? (
+                        <ArrowDownLeft className="h-3.5 w-3.5" />
+                      ) : (
+                        <ArrowUpRight className="h-3.5 w-3.5" />
+                      )}
+                    </span>
+                    <div>
+                      <div className="font-mono font-medium text-zinc-900 dark:text-zinc-100">
+                        {tx.reference}
+                      </div>
+                      <div className="text-[10px] text-zinc-400 dark:text-zinc-500">
+                        {tx.bankOrRail} • {tx.timestamp}
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td className="py-3 px-3.5 font-medium text-zinc-800 dark:text-zinc-200">
+                  {tx.counterparty}
+                </td>
+                <td className="py-3 px-3.5 text-zinc-500 dark:text-zinc-400">
+                  {tx.category}
+                </td>
+                <td className="py-3 px-3.5 whitespace-nowrap">
+                  {renderStatusBadge(tx.status)}
+                </td>
+                <td
+                  className={cn(
+                    "py-3 px-3.5 text-right font-mono font-semibold whitespace-nowrap",
+                    tx.direction === "inbound"
+                      ? "text-emerald-600 dark:text-emerald-400"
+                      : "text-zinc-900 dark:text-zinc-100"
+                  )}
+                >
+                  {tx.amount}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+});
+TransactionLedgerTable.displayName = "TransactionLedgerTable";
+
+/* -------------------------------------------------------------------------- */
+/* Composed Block: TransactionLedgerBlock                                     */
+/* -------------------------------------------------------------------------- */
+
 export interface TransactionLedgerBlockProps
   extends React.HTMLAttributes<HTMLDivElement> {
+  /** Custom header title */
+  title?: string;
+  /** Custom header subtitle */
+  subtitle?: string;
   /**
    * Visual mode:
    * - "default": Full Multi-Currency Treasury + Settlement Ledger
    * - "ledger-only": Compact ledger table view
    */
   variant?: "default" | "ledger-only";
+  /** Supported clearing rails */
+  rails?: string[];
   /** Multi-currency accounts */
   accounts?: TreasuryAccountBalance[];
   /** Initial or controlled transactions */
@@ -69,30 +298,29 @@ export interface TransactionLedgerBlockProps
   onInitiateTransfer?: (tx: LedgerTransactionItem) => void;
 }
 
+const DEFAULT_RAILS = ["SWIFT", "RTGS", "BI-FAST", "SEPA"];
+
 const DEFAULT_ACCOUNTS: TreasuryAccountBalance[] = [
   {
     currency: "USD",
-    name: "JPMorgan Chase — Operating Treasury",
+    name: "JPMorgan Chase • Operating",
     ibanOrAccount: "US89 0021 4491 8820",
     balance: "$2,845,920.00",
     change24h: "+$142,000 today",
-    flag: "🇺🇸",
   },
   {
     currency: "IDR",
-    name: "Bank Mandiri — Payroll & BI-FAST Clearing",
+    name: "Bank Mandiri • BI-FAST Clearing",
     ibanOrAccount: "ID44 0081 9920 1104",
     balance: "Rp 18.450.000.000",
     change24h: "-Rp 420jt payroll",
-    flag: "🇮🇩",
   },
   {
     currency: "EUR",
-    name: "Deutsche Bank — SEPA Settlement Vault",
+    name: "Deutsche Bank • SEPA Settlement",
     ibanOrAccount: "DE89 3704 0044 0532",
     balance: "€940,120.50",
     change24h: "+€38,400 today",
-    flag: "🇪🇺",
   },
 ];
 
@@ -112,14 +340,14 @@ const DEFAULT_TRANSACTIONS: LedgerTransactionItem[] = [
   {
     id: "tx-2",
     reference: "BIFAST-992014",
-    counterparty: "PT Karya Digital Nusantara (Payroll Batch #11)",
+    counterparty: "PT Karya Digital Nusantara (Payroll #11)",
     bankOrRail: "BI-FAST",
     direction: "outbound",
     amount: "-Rp 420.000.000",
     currency: "IDR",
     status: "settled",
     timestamp: "Today, 11:05 WIB",
-    category: "HRMS Monthly Payroll",
+    category: "HRMS Payroll",
   },
   {
     id: "tx-3",
@@ -148,7 +376,10 @@ const DEFAULT_TRANSACTIONS: LedgerTransactionItem[] = [
 ];
 
 export function TransactionLedgerBlock({
+  title = "Treasury & Settlement Ledger",
+  subtitle = "Multi-currency nostro balances and real-time clearing across SWIFT, BI-FAST, and SEPA.",
   variant = "default",
+  rails = DEFAULT_RAILS,
   accounts = DEFAULT_ACCOUNTS,
   transactions: initialTransactions = DEFAULT_TRANSACTIONS,
   onInitiateTransfer,
@@ -163,10 +394,16 @@ export function TransactionLedgerBlock({
 
   // Wire Transfer Modal Form State
   const [beneficiary, setBeneficiary] = React.useState("");
-  const [rail, setRail] = React.useState<LedgerTransactionItem["bankOrRail"]>("SWIFT");
-  const [currency, setCurrency] = React.useState("USD");
+  const [rail, setRail] = React.useState<string>(rails[0] || "SWIFT");
+  const [currency, setCurrency] = React.useState(
+    accounts[0]?.currency || "USD"
+  );
   const [amount, setAmount] = React.useState("50,000.00");
   const [category, setCategory] = React.useState("Vendor Settlement");
+
+  React.useEffect(() => {
+    setTransactions(initialTransactions);
+  }, [initialTransactions]);
 
   const handleCreateWire = (e: React.FormEvent) => {
     e.preventDefault();
@@ -205,175 +442,146 @@ export function TransactionLedgerBlock({
   return (
     <div
       className={cn(
-        "w-full rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white dark:bg-zinc-950 p-5 sm:p-6 shadow-sm",
+        "w-full rounded-3xl border border-zinc-200/90 bg-white p-4 sm:p-6 shadow-xs dark:border-zinc-800 dark:bg-zinc-950 space-y-5",
         className
       )}
       {...props}
     >
-      {/* Header */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between pb-5 border-b border-zinc-100 dark:border-zinc-800/80">
-        <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
-            <Landmark className="h-5 w-5" />
+      {/* Header matching KanbanBoard & PromptComposer */}
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between pb-4 border-b border-zinc-200/80 dark:border-zinc-800">
+        <div>
+          <div className="flex flex-wrap items-center gap-2">
+            <Landmark className="h-4 w-4 text-blue-600 dark:text-blue-400 shrink-0" />
+            <h3 className="text-sm sm:text-base font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+              {title}
+            </h3>
+            <Badge variant="emerald" dot>
+              ISO-20022
+            </Badge>
           </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-50 tracking-tight">
-                Core Banking Treasury & RTGS Ledger
-              </h3>
-              <Badge variant="emerald" dot>
-                ISO-20022 Live
-              </Badge>
-            </div>
-            <p className="text-xs text-zinc-500 dark:text-zinc-400">
-              Multi-currency nostro balances, real-time SWIFT / BI-FAST rails & AML screening
+          {subtitle && (
+            <p className="mt-0.5 text-xs text-zinc-500 dark:text-zinc-400">
+              {subtitle}
             </p>
-          </div>
+          )}
         </div>
 
-        <div className="flex items-center gap-2">
-          <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-            <DialogTrigger asChild>
-              <Button variant="primary" size="sm">
-                <Send className="h-3.5 w-3.5" />
-                Initiate Wire
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Initiate ISO-20022 Outbound Wire</DialogTitle>
-                <DialogDescription>
-                  Dispatch a real-time treasury wire via SWIFT, RTGS, BI-FAST, or SEPA rails.
-                </DialogDescription>
-              </DialogHeader>
-              <form onSubmit={handleCreateWire} className="space-y-4 pt-2">
+        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+          <DialogTrigger asChild>
+            <Button variant="primary" size="sm" className="w-full sm:w-auto">
+              <Plus className="h-3.5 w-3.5" />
+              <span>Initiate Wire</span>
+            </Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Initiate Outbound Wire</DialogTitle>
+              <DialogDescription>
+                Dispatch a treasury wire via SWIFT, RTGS, BI-FAST, or SEPA rails.
+              </DialogDescription>
+            </DialogHeader>
+            <form onSubmit={handleCreateWire} className="space-y-4 pt-2">
+              <div className="space-y-1.5">
+                <Label htmlFor="wire-beneficiary">Beneficiary entity</Label>
+                <Input
+                  id="wire-beneficiary"
+                  placeholder="e.g., Cloudflare Inc. or PT Bank Central Asia"
+                  value={beneficiary}
+                  onChange={(e) => setBeneficiary(e.target.value)}
+                  required
+                />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="space-y-1.5">
-                  <Label htmlFor="wire-beneficiary">Beneficiary Legal Entity</Label>
+                  <Label>Clearing rail</Label>
+                  <Select value={rail} onValueChange={setRail}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {rails.map((r) => (
+                        <SelectItem key={r} value={r}>
+                          {r}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-1.5">
+                  <Label>Source account</Label>
+                  <Select value={currency} onValueChange={setCurrency}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {accounts.map((acc) => (
+                        <SelectItem key={acc.currency} value={acc.currency}>
+                          {acc.currency} — {acc.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="space-y-1.5">
+                  <Label htmlFor="wire-amount">Amount</Label>
                   <Input
-                    id="wire-beneficiary"
-                    placeholder="e.g., Cloudflare Inc. or PT Bank Central Asia"
-                    value={beneficiary}
-                    onChange={(e) => setBeneficiary(e.target.value)}
-                    required
+                    id="wire-amount"
+                    value={amount}
+                    onChange={(e) => setAmount(e.target.value)}
                   />
                 </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div className="space-y-1.5">
-                    <Label>Clearing Rail</Label>
-                    <Select
-                      value={rail}
-                      onValueChange={(v) =>
-                        setRail(v as LedgerTransactionItem["bankOrRail"])
-                      }
-                    >
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="SWIFT">SWIFT Cross-Border</SelectItem>
-                        <SelectItem value="RTGS">BI-RTGS High Value</SelectItem>
-                        <SelectItem value="BI-FAST">BI-FAST Instant (IDR)</SelectItem>
-                        <SelectItem value="SEPA">SEPA Instant (EUR)</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div className="space-y-1.5">
-                    <Label>Source Nostro Currency</Label>
-                    <Select value={currency} onValueChange={setCurrency}>
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="USD">USD — JPMorgan Operating</SelectItem>
-                        <SelectItem value="IDR">IDR — Mandiri Clearing</SelectItem>
-                        <SelectItem value="EUR">EUR — Deutsche SEPA</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="wire-cat">Purpose category</Label>
+                  <Input
+                    id="wire-cat"
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
+                  />
                 </div>
+              </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div className="space-y-1.5">
-                    <Label htmlFor="wire-amount">Transfer Amount</Label>
-                    <Input
-                      id="wire-amount"
-                      value={amount}
-                      onChange={(e) => setAmount(e.target.value)}
-                    />
-                  </div>
-                  <div className="space-y-1.5">
-                    <Label htmlFor="wire-cat">Ledger Purpose Code</Label>
-                    <Input
-                      id="wire-cat"
-                      value={category}
-                      onChange={(e) => setCategory(e.target.value)}
-                    />
-                  </div>
-                </div>
-
-                <DialogFooter className="pt-2">
-                  <DialogClose asChild>
-                    <Button type="button" variant="outline" size="sm">
-                      Cancel
-                    </Button>
-                  </DialogClose>
-                  <Button type="submit" variant="primary" size="sm">
-                    Dispatch Wire Transfer
+              <DialogFooter className="pt-2">
+                <DialogClose asChild>
+                  <Button type="button" variant="outline" size="sm">
+                    Cancel
                   </Button>
-                </DialogFooter>
-              </form>
-            </DialogContent>
-          </Dialog>
-        </div>
+                </DialogClose>
+                <Button type="submit" variant="default" size="sm">
+                  Dispatch Wire
+                </Button>
+              </DialogFooter>
+            </form>
+          </DialogContent>
+        </Dialog>
       </div>
 
       {/* Multi-currency Nostro Balance Cards */}
       {variant === "default" && (
-        <div className="mt-5 grid grid-cols-1 gap-3.5 md:grid-cols-3">
+        <div className="mt-4 sm:mt-5 grid grid-cols-1 gap-3.5 md:grid-cols-3">
           {accounts.map((acc) => (
-            <div
-              key={acc.currency}
-              className="rounded-xl border border-zinc-200/80 dark:border-zinc-800/80 bg-zinc-50/70 dark:bg-zinc-900/50 p-4"
-            >
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold text-zinc-500 dark:text-zinc-400">
-                  {acc.flag} {acc.currency} Vault
-                </span>
-                <span className="font-mono text-[11px] text-zinc-400 dark:text-zinc-500">
-                  {acc.ibanOrAccount}
-                </span>
-              </div>
-              <div className="mt-2 text-lg font-bold font-mono text-zinc-900 dark:text-zinc-50">
-                {acc.balance}
-              </div>
-              <div className="mt-1 flex items-center justify-between text-[11px]">
-                <span className="text-zinc-500 dark:text-zinc-400 truncate max-w-[180px]">
-                  {acc.name}
-                </span>
-                <span className="font-medium text-emerald-600 dark:text-emerald-400">
-                  {acc.change24h}
-                </span>
-              </div>
-            </div>
+            <TreasuryVaultCard key={acc.currency} account={acc} />
           ))}
         </div>
       )}
 
       {/* Filter & Search Bar */}
-      <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <ToggleGroup
-          size="sm"
-          value={railFilter}
-          onValueChange={(v) => v && setRailFilter(v)}
-          items={[
-            { value: "all", label: "All Rails" },
-            { value: "SWIFT", label: "SWIFT" },
-            { value: "BI-FAST", label: "BI-FAST" },
-            { value: "SEPA", label: "SEPA" },
-          ]}
-        />
+      <div className="mt-4 sm:mt-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="overflow-x-auto pb-1 sm:pb-0">
+          <ToggleGroup
+            size="sm"
+            value={railFilter}
+            onValueChange={(v) => v && setRailFilter(v)}
+            items={[
+              { value: "all", label: "All Rails" },
+              ...rails.map((r) => ({ value: r, label: r })),
+            ]}
+          />
+        </div>
 
         <div className="w-full sm:w-64">
           <Input
@@ -386,90 +594,9 @@ export function TransactionLedgerBlock({
         </div>
       </div>
 
-      {/* Settlement Ledger Table */}
-      <div className="mt-4 overflow-x-auto rounded-xl border border-zinc-200/80 dark:border-zinc-800/80">
-        <table className="w-full text-left border-collapse">
-          <thead>
-            <tr className="border-b border-zinc-200/80 dark:border-zinc-800/80 bg-zinc-50/80 dark:bg-zinc-900/60 text-[11px] font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
-              <th className="py-2.5 px-3.5">Reference & Rail</th>
-              <th className="py-2.5 px-3.5">Counterparty</th>
-              <th className="py-2.5 px-3.5">Category</th>
-              <th className="py-2.5 px-3.5">Status</th>
-              <th className="py-2.5 px-3.5 text-right">Amount</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-zinc-200/60 dark:divide-zinc-800/60 text-xs">
-            {filteredTx.map((tx) => (
-              <tr
-                key={tx.id}
-                className="transition-colors hover:bg-zinc-50/90 dark:hover:bg-zinc-900/50"
-              >
-                <td className="py-3 px-3.5 whitespace-nowrap">
-                  <div className="flex items-center gap-2">
-                    <span
-                      className={cn(
-                        "flex h-6 w-6 items-center justify-center rounded-md",
-                        tx.direction === "inbound"
-                          ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
-                          : "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300"
-                      )}
-                    >
-                      {tx.direction === "inbound" ? (
-                        <ArrowDownLeft className="h-3.5 w-3.5" />
-                      ) : (
-                        <ArrowUpRight className="h-3.5 w-3.5" />
-                      )}
-                    </span>
-                    <div>
-                      <div className="font-mono font-semibold text-zinc-900 dark:text-zinc-100">
-                        {tx.reference}
-                      </div>
-                      <div className="text-[10px] text-zinc-400 dark:text-zinc-500">
-                        {tx.bankOrRail} • {tx.timestamp}
-                      </div>
-                    </div>
-                  </div>
-                </td>
-                <td className="py-3 px-3.5 font-medium text-zinc-800 dark:text-zinc-200">
-                  {tx.counterparty}
-                </td>
-                <td className="py-3 px-3.5 text-zinc-500 dark:text-zinc-400">
-                  {tx.category}
-                </td>
-                <td className="py-3 px-3.5 whitespace-nowrap">
-                  {tx.status === "settled" && (
-                    <Badge variant="emerald">
-                      <CheckCircle2 className="h-3 w-3 mr-1" />
-                      Settled
-                    </Badge>
-                  )}
-                  {tx.status === "processing" && (
-                    <Badge variant="default">
-                      <Clock className="h-3 w-3 mr-1" />
-                      Clearing
-                    </Badge>
-                  )}
-                  {tx.status === "aml-review" && (
-                    <Badge variant="amber">
-                      <AlertCircle className="h-3 w-3 mr-1" />
-                      AML Hold
-                    </Badge>
-                  )}
-                </td>
-                <td
-                  className={cn(
-                    "py-3 px-3.5 text-right font-mono font-bold whitespace-nowrap",
-                    tx.direction === "inbound"
-                      ? "text-emerald-600 dark:text-emerald-400"
-                      : "text-zinc-900 dark:text-zinc-100"
-                  )}
-                >
-                  {tx.amount}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      {/* Composed Settlement Ledger Table */}
+      <div className="mt-4">
+        <TransactionLedgerTable transactions={filteredTx} />
       </div>
     </div>
   );

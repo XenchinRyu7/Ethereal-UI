@@ -1,9 +1,5 @@
 import * as React from "react";
-import {
-  Calendar as CalendarIcon,
-  Plus,
-  Clock,
-} from "lucide-react";
+import { Plus, Clock, Calendar } from "lucide-react";
 import { cn } from "../utils/cn";
 import { Button } from "../primitives/button";
 import { Badge } from "../primitives/badge";
@@ -31,14 +27,214 @@ export interface ScheduledEventItem {
   day: number;
   title: string;
   time: string;
-  category: "release" | "sync" | "audit" | "shift";
+  category: string;
   owner: string;
 }
 
+export interface SchedulerCategoryOption {
+  id: string;
+  label: string;
+  pillClass: string;
+  dotClass: string;
+}
+
+const DEFAULT_CATEGORIES: SchedulerCategoryOption[] = [
+  {
+    id: "release",
+    label: "Release Milestone",
+    pillClass:
+      "bg-blue-600 text-white dark:bg-blue-500 dark:text-white font-medium",
+    dotClass: "bg-blue-600 dark:bg-blue-400",
+  },
+  {
+    id: "sync",
+    label: "Team Sync",
+    pillClass:
+      "bg-blue-50 text-blue-700 border border-blue-200/80 dark:bg-blue-500/15 dark:text-blue-300 dark:border-blue-500/30 font-medium",
+    dotClass: "bg-blue-500",
+  },
+  {
+    id: "audit",
+    label: "Compliance Audit",
+    pillClass:
+      "bg-emerald-50 text-emerald-700 border border-emerald-200/80 dark:bg-emerald-500/15 dark:text-emerald-300 dark:border-emerald-500/30 font-medium",
+    dotClass: "bg-emerald-500",
+  },
+  {
+    id: "shift",
+    label: "On-Call Shift",
+    pillClass:
+      "bg-violet-50 text-violet-700 border border-violet-200/80 dark:bg-violet-500/15 dark:text-violet-300 dark:border-violet-500/30 font-medium",
+    dotClass: "bg-violet-500",
+  },
+];
+
+/* -------------------------------------------------------------------------- */
+/* Modular Sub-Component 1: CalendarDayCell                                   */
+/* -------------------------------------------------------------------------- */
+
+export interface CalendarDayCellProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  day: number;
+  events: ScheduledEventItem[];
+  selected?: boolean;
+  categoryMap?: Record<string, SchedulerCategoryOption>;
+}
+
+export const CalendarDayCell = React.forwardRef<
+  HTMLButtonElement,
+  CalendarDayCellProps
+>(
+  (
+    {
+      day,
+      events,
+      selected = false,
+      categoryMap = {},
+      className,
+      ...props
+    },
+    ref
+  ) => {
+    return (
+      <button
+        ref={ref}
+        type="button"
+        className={cn(
+          "min-h-[48px] sm:min-h-[72px] rounded-xl p-1.5 sm:p-2 text-left border transition-all flex flex-col justify-between cursor-pointer",
+          selected
+            ? "border-blue-500/70 bg-blue-50/40 shadow-2xs dark:border-blue-500/50 dark:bg-blue-500/10"
+            : events.length > 0
+              ? "border-zinc-200/90 bg-zinc-50/50 hover:border-zinc-300 hover:bg-zinc-100/70 dark:border-zinc-800 dark:bg-zinc-900/50 dark:hover:border-zinc-700 dark:hover:bg-zinc-800/60"
+              : "border-zinc-200/60 bg-white hover:bg-zinc-50 dark:border-zinc-800/60 dark:bg-zinc-950 dark:hover:bg-zinc-900/50",
+          className
+        )}
+        {...props}
+      >
+        <span
+          className={cn(
+            "text-[11px] font-mono font-semibold",
+            selected
+              ? "text-blue-600 dark:text-blue-400"
+              : "text-zinc-500 dark:text-zinc-400"
+          )}
+        >
+          {day}
+        </span>
+
+        {/* Mobile (< sm): Compact Dots so 7 columns never overflow */}
+        {events.length > 0 && (
+          <div className="flex items-center gap-1 sm:hidden mt-1">
+            {events.slice(0, 3).map((ev) => {
+              const cat = categoryMap[ev.category];
+              return (
+                <span
+                  key={ev.id}
+                  className={cn(
+                    "h-1.5 w-1.5 rounded-full",
+                    cat?.dotClass || "bg-zinc-500"
+                  )}
+                />
+              );
+            })}
+          </div>
+        )}
+
+        {/* Desktop / Tablet (sm+): Crisp Event Pills */}
+        <div className="hidden sm:block space-y-1 w-full mt-1">
+          {events.slice(0, 2).map((ev) => {
+            const cat = categoryMap[ev.category];
+            return (
+              <div
+                key={ev.id}
+                className={cn(
+                  "truncate rounded px-1.5 py-0.5 text-[10px]",
+                  cat?.pillClass ||
+                    "bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
+                )}
+              >
+                {ev.title}
+              </div>
+            );
+          })}
+        </div>
+      </button>
+    );
+  }
+);
+CalendarDayCell.displayName = "CalendarDayCell";
+
+/* -------------------------------------------------------------------------- */
+/* Modular Sub-Component 2: DayAgendaCard                                     */
+/* -------------------------------------------------------------------------- */
+
+export interface DayAgendaCardProps
+  extends React.HTMLAttributes<HTMLDivElement> {
+  day: number;
+  events: ScheduledEventItem[];
+  categoryMap?: Record<string, SchedulerCategoryOption>;
+}
+
+export const DayAgendaCard = React.forwardRef<
+  HTMLDivElement,
+  DayAgendaCardProps
+>(({ day, events, categoryMap = {}, className, ...props }, ref) => {
+  return (
+    <div
+      ref={ref}
+      className={cn(
+        "rounded-xl border border-zinc-200 bg-zinc-50/50 p-3.5 dark:border-zinc-800 dark:bg-zinc-950/40",
+        className
+      )}
+      {...props}
+    >
+      <div className="flex flex-col gap-2.5 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-wrap items-center gap-2.5">
+          <Badge variant="mono">Day {day}</Badge>
+          {events.length > 0 ? (
+            <div className="flex flex-wrap items-center gap-3 text-xs">
+              {events.map((ev) => {
+                const cat = categoryMap[ev.category];
+                return (
+                  <span
+                    key={ev.id}
+                    className="font-medium text-zinc-800 dark:text-zinc-200 flex items-center gap-1.5"
+                  >
+                    <Clock className="h-3.5 w-3.5 text-zinc-400 shrink-0" />
+                    <span>{ev.title}</span>
+                    <span className="text-zinc-400 dark:text-zinc-500">
+                      ({ev.time} • {cat?.label || ev.owner})
+                    </span>
+                  </span>
+                );
+              })}
+            </div>
+          ) : (
+            <span className="text-xs text-zinc-500 dark:text-zinc-400">
+              No events scheduled on Day {day}.
+            </span>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+});
+DayAgendaCard.displayName = "DayAgendaCard";
+
+/* -------------------------------------------------------------------------- */
+/* Composed Block: EventSchedulerBlock                                        */
+/* -------------------------------------------------------------------------- */
+
 export interface EventSchedulerBlockProps
   extends React.HTMLAttributes<HTMLDivElement> {
+  /** Custom block header title */
+  title?: string;
+  /** Custom block header subtitle */
+  subtitle?: string;
   /** Month label displayed in the header */
   monthLabel?: string;
+  /** Customizable event categories */
+  categories?: SchedulerCategoryOption[];
   /** Initial or controlled calendar events */
   events?: ScheduledEventItem[];
   /** Callback fired when a new event is scheduled via the modal */
@@ -96,30 +292,11 @@ const DEFAULT_EVENTS: ScheduledEventItem[] = [
   },
 ];
 
-const CATEGORY_STYLES: Record<
-  ScheduledEventItem["category"],
-  { pill: string; label: string }
-> = {
-  release: {
-    pill: "bg-amber-500 text-zinc-950 font-bold",
-    label: "Release Milestone",
-  },
-  sync: {
-    pill: "bg-amber-500/15 text-amber-700 dark:text-amber-300 border border-amber-500/30 font-semibold",
-    label: "Team Sync",
-  },
-  audit: {
-    pill: "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30 font-semibold",
-    label: "Compliance Audit",
-  },
-  shift: {
-    pill: "bg-zinc-200/80 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-200 font-medium",
-    label: "HRMS Roster Shift",
-  },
-};
-
 export function EventSchedulerBlock({
+  title,
+  subtitle = "Release train calendar, shift roster, and compliance audit windows.",
   monthLabel = "November 2026",
+  categories = DEFAULT_CATEGORIES,
   events: initialEvents = DEFAULT_EVENTS,
   onEventCreate,
   className,
@@ -133,9 +310,22 @@ export function EventSchedulerBlock({
   const [newTitle, setNewTitle] = React.useState("");
   const [newDay, setNewDay] = React.useState("16");
   const [newTime, setNewTime] = React.useState("10:30 AM");
-  const [newCategory, setNewCategory] =
-    React.useState<ScheduledEventItem["category"]>("release");
+  const [newCategory, setNewCategory] = React.useState<string>(
+    categories[0]?.id || "release"
+  );
   const [newOwner, setNewOwner] = React.useState("Core Engineering");
+
+  React.useEffect(() => {
+    setEvents(initialEvents);
+  }, [initialEvents]);
+
+  const categoryMap = React.useMemo(() => {
+    const map: Record<string, SchedulerCategoryOption> = {};
+    categories.forEach((c) => {
+      map[c.id] = c;
+    });
+    return map;
+  }, [categories]);
 
   const handleCreateEvent = (e: React.FormEvent) => {
     e.preventDefault();
@@ -164,49 +354,47 @@ export function EventSchedulerBlock({
   return (
     <div
       className={cn(
-        "w-full rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white dark:bg-zinc-950 p-5 sm:p-6 shadow-sm",
+        "w-full rounded-3xl border border-zinc-200/90 bg-white p-4 sm:p-6 shadow-xs dark:border-zinc-800 dark:bg-zinc-950 space-y-5",
         className
       )}
       {...props}
     >
-      {/* Header */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between pb-5 border-b border-zinc-100 dark:border-zinc-800/80">
-        <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
-            <CalendarIcon className="h-5 w-5" />
+      {/* Header matching KanbanBoard & PromptComposer */}
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between pb-4 border-b border-zinc-200/80 dark:border-zinc-800">
+        <div>
+          <div className="flex flex-wrap items-center gap-2">
+            <Calendar className="h-4 w-4 text-blue-600 dark:text-blue-400 shrink-0" />
+            <h3 className="text-sm sm:text-base font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+              {title || `${monthLabel} — Release & Shift Scheduler`}
+            </h3>
+            <Badge variant="blue" className="font-mono text-[10px]">
+              {events.length} scheduled
+            </Badge>
           </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-50 tracking-tight">
-                {monthLabel} — Enterprise Release & Shift Scheduler
-              </h3>
-              <Badge variant="amber">
-                {events.length} Scheduled
-              </Badge>
-            </div>
-            <p className="text-xs text-zinc-500 dark:text-zinc-400">
-              Interactive release train calendar, HRMS shift roster & compliance audit windows
+          {subtitle && (
+            <p className="mt-0.5 text-xs text-zinc-500 dark:text-zinc-400">
+              {subtitle}
             </p>
-          </div>
+          )}
         </div>
 
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogTrigger asChild>
-            <Button variant="primary" size="sm">
+            <Button variant="primary" size="sm" className="w-full sm:w-auto">
               <Plus className="h-3.5 w-3.5" />
-              New Event
+              <span>New Event</span>
             </Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Schedule New Calendar Event or Shift</DialogTitle>
+              <DialogTitle>Schedule Event or Shift</DialogTitle>
               <DialogDescription>
-                Add a release window, team sync, compliance audit, or HRMS on-call shift to the schedule.
+                Add a release window, team sync, compliance audit, or on-call shift.
               </DialogDescription>
             </DialogHeader>
             <form onSubmit={handleCreateEvent} className="space-y-4 pt-2">
               <div className="space-y-1.5">
-                <Label htmlFor="ev-title">Event / Shift Name</Label>
+                <Label htmlFor="ev-title">Event title</Label>
                 <Input
                   id="ev-title"
                   placeholder="e.g., Core Banking DR Drill"
@@ -218,7 +406,7 @@ export function EventSchedulerBlock({
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="space-y-1.5">
-                  <Label htmlFor="ev-day">Day of Month (1 – 21)</Label>
+                  <Label htmlFor="ev-day">Day of month (1 – 21)</Label>
                   <Input
                     id="ev-day"
                     type="number"
@@ -229,7 +417,7 @@ export function EventSchedulerBlock({
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <Label htmlFor="ev-time">Time Slot (WIB / UTC)</Label>
+                  <Label htmlFor="ev-time">Time slot</Label>
                   <Input
                     id="ev-time"
                     value={newTime}
@@ -240,26 +428,22 @@ export function EventSchedulerBlock({
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="space-y-1.5">
-                  <Label>Event Category</Label>
-                  <Select
-                    value={newCategory}
-                    onValueChange={(v) =>
-                      setNewCategory(v as ScheduledEventItem["category"])
-                    }
-                  >
+                  <Label>Category</Label>
+                  <Select value={newCategory} onValueChange={setNewCategory}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="release">Release Milestone</SelectItem>
-                      <SelectItem value="sync">Team Sync</SelectItem>
-                      <SelectItem value="audit">Compliance Audit</SelectItem>
-                      <SelectItem value="shift">HRMS Roster Shift</SelectItem>
+                      {categories.map((cat) => (
+                        <SelectItem key={cat.id} value={cat.id}>
+                          {cat.label}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </div>
                 <div className="space-y-1.5">
-                  <Label htmlFor="ev-owner">Assigned Squad / Owner</Label>
+                  <Label htmlFor="ev-owner">Assigned squad</Label>
                   <Input
                     id="ev-owner"
                     value={newOwner}
@@ -274,8 +458,8 @@ export function EventSchedulerBlock({
                     Cancel
                   </Button>
                 </DialogClose>
-                <Button type="submit" variant="primary" size="sm">
-                  Add to Calendar
+                <Button type="submit" variant="default" size="sm">
+                  Save Event
                 </Button>
               </DialogFooter>
             </form>
@@ -283,88 +467,45 @@ export function EventSchedulerBlock({
         </Dialog>
       </div>
 
-      {/* Weekday Headers */}
-      <div className="mt-5 grid grid-cols-7 gap-1.5 text-center text-[11px] font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
-        {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((d) => (
-          <div key={d} className="py-1">
-            {d}
+      {/* Weekday Headers — Short on mobile, 3-letter on sm+ */}
+      <div className="mt-4 sm:mt-5 grid grid-cols-7 gap-1 sm:gap-1.5 text-center text-[10px] sm:text-[11px] font-medium uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
+        {[
+          { short: "M", full: "Mon" },
+          { short: "T", full: "Tue" },
+          { short: "W", full: "Wed" },
+          { short: "T", full: "Thu" },
+          { short: "F", full: "Fri" },
+          { short: "S", full: "Sat" },
+          { short: "S", full: "Sun" },
+        ].map((d, idx) => (
+          <div key={idx} className="py-1">
+            <span className="sm:hidden">{d.short}</span>
+            <span className="hidden sm:inline">{d.full}</span>
           </div>
         ))}
       </div>
 
       {/* 21-Day Interactive Grid */}
-      <div className="mt-1.5 grid grid-cols-7 gap-1.5">
-        {days.map((day) => {
-          const dayEvents = events.filter((e) => e.day === day);
-          const isSelected = selectedDay === day;
-
-          return (
-            <button
-              key={day}
-              type="button"
-              onClick={() => setSelectedDay(day)}
-              className={cn(
-                "min-h-[68px] rounded-xl p-2 text-left border transition-all flex flex-col justify-between cursor-pointer",
-                isSelected
-                  ? "border-amber-500 bg-amber-500/10 dark:bg-amber-500/15 ring-2 ring-amber-500/20"
-                  : dayEvents.length > 0
-                    ? "border-zinc-200/90 dark:border-zinc-800 bg-zinc-50/70 dark:bg-zinc-900/60 hover:bg-zinc-100 dark:hover:bg-zinc-800/80"
-                    : "border-zinc-200/50 dark:border-zinc-800/50 bg-white dark:bg-zinc-950 hover:bg-zinc-50 dark:hover:bg-zinc-900"
-              )}
-            >
-              <span
-                className={cn(
-                  "text-[11px] font-mono font-bold",
-                  isSelected
-                    ? "text-amber-600 dark:text-amber-400"
-                    : "text-zinc-500 dark:text-zinc-400"
-                )}
-              >
-                {day}
-              </span>
-
-              <div className="space-y-1 w-full">
-                {dayEvents.slice(0, 2).map((ev) => (
-                  <div
-                    key={ev.id}
-                    className={cn(
-                      "truncate rounded px-1.5 py-0.5 text-[10px]",
-                      CATEGORY_STYLES[ev.category].pill
-                    )}
-                  >
-                    {ev.title}
-                  </div>
-                ))}
-              </div>
-            </button>
-          );
-        })}
+      <div className="mt-1 grid grid-cols-7 gap-1 sm:gap-1.5">
+        {days.map((day) => (
+          <CalendarDayCell
+            key={day}
+            day={day}
+            events={events.filter((e) => e.day === day)}
+            selected={selectedDay === day}
+            categoryMap={categoryMap}
+            onClick={() => setSelectedDay(day)}
+          />
+        ))}
       </div>
 
-      {/* Selected Day Agenda Bar */}
-      <div className="mt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-xl border border-zinc-200/80 dark:border-zinc-800/80 bg-zinc-50/70 dark:bg-zinc-900/50 p-3.5">
-        <div className="flex items-center gap-3">
-          <Badge variant="default">
-            Day {selectedDay} Agenda
-          </Badge>
-          {selectedDayEvents.length > 0 ? (
-            <div className="flex flex-wrap items-center gap-3 text-xs">
-              {selectedDayEvents.map((ev) => (
-                <span
-                  key={ev.id}
-                  className="font-medium text-zinc-800 dark:text-zinc-200 flex items-center gap-1.5"
-                >
-                  <Clock className="h-3.5 w-3.5 text-amber-500" />
-                  <strong>{ev.title}</strong> ({ev.time} • {ev.owner})
-                </span>
-              ))}
-            </div>
-          ) : (
-            <span className="text-xs text-zinc-500 dark:text-zinc-400">
-              No events scheduled on Day {selectedDay}. Click &ldquo;New Event&rdquo; to book this slot.
-            </span>
-          )}
-        </div>
+      {/* Selected Day Agenda Card */}
+      <div className="mt-4">
+        <DayAgendaCard
+          day={selectedDay}
+          events={selectedDayEvents}
+          categoryMap={categoryMap}
+        />
       </div>
     </div>
   );

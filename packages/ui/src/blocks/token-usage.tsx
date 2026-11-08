@@ -1,7 +1,6 @@
 import * as React from "react"
 import {
   Zap,
-  Sparkles,
   RotateCcw,
   Layers,
   Clock,
@@ -176,10 +175,7 @@ export const TokenUsageBlock = React.forwardRef<
                       <span>Restore</span>
                     </>
                   ) : (
-                    <>
-                      <Sparkles className="h-2.5 w-2.5 text-blue-500" />
-                      <span>Compact</span>
-                    </>
+                    <span>Compact</span>
                   )}
                 </Button>
               </div>

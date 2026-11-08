@@ -100,7 +100,7 @@ export {
   type LineStatisticChartProps,
   type DonutSegment,
 } from "./primitives/chart"
-export { Timeline, type TimelineEventItem, type TimelineItemStatus, type TimelineProps } from "./primitives/timeline"
+export { Timeline, TimelineItem, type TimelineEventItem, type TimelineItemStatus, type TimelineItemProps, type TimelineProps } from "./primitives/timeline"
 export { Stepper, type StepperStepItem, type StepperProps } from "./primitives/stepper"
 export { NumberInput, type NumberInputProps } from "./primitives/number-input"
 export { OtpInput, type OtpInputProps } from "./primitives/otp-input"

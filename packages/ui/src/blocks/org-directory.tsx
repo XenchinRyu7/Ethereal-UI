@@ -1,11 +1,5 @@
 import * as React from "react";
-import {
-  Users,
-  UserPlus,
-  Search,
-  MapPin,
-  Building2,
-} from "lucide-react";
+import { Plus, Search, Users } from "lucide-react";
 import { cn } from "../utils/cn";
 import { Button } from "../primitives/button";
 import { Badge } from "../primitives/badge";
@@ -46,14 +40,207 @@ export interface EmployeeProfileItem {
   heatmapLevels: number[]; // 36 cells (0..3)
 }
 
+/* -------------------------------------------------------------------------- */
+/* Modular Sub-Component 1: EmployeeRosterItem                                */
+/* -------------------------------------------------------------------------- */
+
+export interface EmployeeRosterItemProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  employee: EmployeeProfileItem;
+  selected?: boolean;
+}
+
+export const EmployeeRosterItem = React.forwardRef<
+  HTMLButtonElement,
+  EmployeeRosterItemProps
+>(({ employee, selected = false, className, ...props }, ref) => {
+  return (
+    <button
+      ref={ref}
+      type="button"
+      className={cn(
+        "w-full text-left rounded-2xl border p-3 transition-all flex items-center justify-between gap-3 cursor-pointer",
+        selected
+          ? "border-blue-500/60 bg-blue-50/40 shadow-2xs dark:border-blue-500/50 dark:bg-blue-500/10"
+          : "border-zinc-200/90 bg-white hover:border-zinc-300 hover:bg-zinc-50/80 dark:border-zinc-800 dark:bg-zinc-950 dark:hover:border-zinc-700 dark:hover:bg-zinc-900/60",
+        className
+      )}
+      {...props}
+    >
+      <div className="flex items-center gap-3 min-w-0">
+        <Avatar
+          src={employee.avatar}
+          fallback={employee.name.slice(0, 2).toUpperCase()}
+          size="sm"
+          tint={selected ? "blue" : "neutral"}
+        />
+        <div className="min-w-0">
+          <div className="flex items-center gap-1.5">
+            <span className="text-xs font-semibold text-zinc-900 dark:text-zinc-100 truncate">
+              {employee.name}
+            </span>
+            <span className="font-mono text-[10px] text-zinc-400 dark:text-zinc-500 shrink-0">
+              {employee.employeeCode}
+            </span>
+          </div>
+          <p className="text-[11px] text-zinc-500 dark:text-zinc-400 truncate">
+            {employee.role}
+          </p>
+        </div>
+      </div>
+
+      <Badge
+        variant={
+          employee.status === "active"
+            ? "emerald"
+            : employee.status === "remote"
+              ? "blue"
+              : "default"
+        }
+        dot
+        className="shrink-0"
+      >
+        {employee.status}
+      </Badge>
+    </button>
+  );
+});
+EmployeeRosterItem.displayName = "EmployeeRosterItem";
+
+/* -------------------------------------------------------------------------- */
+/* Modular Sub-Component 2: ContributorProfileCard                            */
+/* -------------------------------------------------------------------------- */
+
+export interface ContributorProfileCardProps
+  extends React.HTMLAttributes<HTMLDivElement> {
+  employee: EmployeeProfileItem;
+}
+
+export const ContributorProfileCard = React.forwardRef<
+  HTMLDivElement,
+  ContributorProfileCardProps
+>(({ employee, className, ...props }, ref) => {
+  return (
+    <div
+      ref={ref}
+      className={cn(
+        "rounded-2xl border border-zinc-200/90 bg-zinc-50/60 p-4 sm:p-5 flex flex-col justify-between dark:border-zinc-800 dark:bg-zinc-900/50",
+        className
+      )}
+      {...props}
+    >
+      <div>
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div className="flex items-center gap-3.5 min-w-0">
+            <Avatar
+              src={employee.avatar}
+              fallback={employee.name.slice(0, 2).toUpperCase()}
+              size="lg"
+              tint="blue"
+            />
+            <div className="min-w-0">
+              <div className="flex flex-wrap items-center gap-2">
+                <h4 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 truncate">
+                  {employee.name}
+                </h4>
+                <Badge variant="blue" className="font-mono text-[10px]">
+                  {employee.employeeCode}
+                </Badge>
+              </div>
+              <p className="text-xs text-zinc-500 dark:text-zinc-400 truncate">
+                {employee.role} •{" "}
+                <span className="font-mono text-blue-600 dark:text-blue-400">
+                  {employee.handle}
+                </span>
+              </p>
+              <p className="mt-1 text-[11px] text-zinc-400 dark:text-zinc-500 truncate">
+                {employee.department} • {employee.location}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* 3 Metric KPI Tiles — Responsive stack on mobile, 3 cols on sm+ */}
+        <div className="mt-4 sm:mt-5 grid grid-cols-1 gap-2.5 sm:grid-cols-3">
+          <div className="rounded-xl border border-zinc-200/90 bg-white p-3 shadow-2xs dark:border-zinc-800 dark:bg-zinc-950">
+            <div className="text-base font-semibold font-mono text-zinc-900 dark:text-zinc-100">
+              {employee.mrrOrKpiValue}
+            </div>
+            <div className="mt-0.5 text-[11px] font-medium text-emerald-600 dark:text-emerald-400">
+              {employee.mrrOrKpiLabel}
+            </div>
+          </div>
+          <div className="rounded-xl border border-zinc-200/90 bg-white p-3 shadow-2xs dark:border-zinc-800 dark:bg-zinc-950">
+            <div className="text-base font-semibold font-mono text-zinc-900 dark:text-zinc-100">
+              {employee.commitsOrTasks}
+            </div>
+            <div className="mt-0.5 text-[11px] text-zinc-500 dark:text-zinc-400">
+              Deliverables (90d)
+            </div>
+          </div>
+          <div className="rounded-xl border border-zinc-200/90 bg-white p-3 shadow-2xs dark:border-zinc-800 dark:bg-zinc-950">
+            <div className="text-base font-semibold font-mono text-blue-600 dark:text-blue-400">
+              {employee.attendanceScore}
+            </div>
+            <div className="mt-0.5 text-[11px] text-zinc-500 dark:text-zinc-400">
+              Attendance SLA
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 36-cell Activity & Attendance Heatmap */}
+      <div className="mt-5 pt-4 border-t border-zinc-200/80 dark:border-zinc-800">
+        <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
+          <span className="text-[11px] font-medium text-zinc-600 dark:text-zinc-300">
+            90-Day Attendance & Output Consistency
+          </span>
+          <span className="font-mono text-[10px] text-emerald-600 dark:text-emerald-400">
+            98.4% active
+          </span>
+        </div>
+        <div className="grid grid-cols-12 gap-1 sm:gap-1.5">
+          {employee.heatmapLevels.map((lvl, idx) => (
+            <div
+              key={idx}
+              className={cn(
+                "h-2.5 sm:h-3 rounded-[3px] transition-transform hover:scale-110",
+                lvl === 3
+                  ? "bg-emerald-500 dark:bg-emerald-400"
+                  : lvl === 2
+                    ? "bg-emerald-500/65 dark:bg-emerald-500/70"
+                    : lvl === 1
+                      ? "bg-emerald-500/30 dark:bg-emerald-500/35"
+                      : "bg-zinc-200/80 dark:bg-zinc-800"
+              )}
+              title={`Day ${idx + 1}: Level ${lvl}/3`}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+});
+ContributorProfileCard.displayName = "ContributorProfileCard";
+
+/* -------------------------------------------------------------------------- */
+/* Composed Block: OrgDirectoryBlock                                          */
+/* -------------------------------------------------------------------------- */
+
 export interface OrgDirectoryBlockProps
   extends React.HTMLAttributes<HTMLDivElement> {
+  /** Custom header title */
+  title?: string;
+  /** Custom header subtitle */
+  subtitle?: string;
   /**
    * Visual variant:
    * - "default": Full HRMS Employee Directory + Featured Contributor & Heatmap Spotlight
    * - "spotlight": Single Contributor & Metric Profile Card (matches Landing Bento Card 7)
    */
   variant?: "default" | "spotlight";
+  /** Customizable departments list */
+  departments?: string[];
   /** Initial or controlled employees */
   employees?: EmployeeProfileItem[];
   /** Callback fired when a new employee is added */
@@ -66,6 +253,13 @@ const DEFAULT_HEATMAP: number[] = [
   3, 2, 3, 3, 3, 2, 3, 3, 2, 3, 3, 3,
 ];
 
+const DEFAULT_DEPARTMENTS = [
+  "Core Platform",
+  "Core Banking Operations",
+  "People & HRMS",
+  "Platform Engineering",
+];
+
 const DEFAULT_EMPLOYEES: EmployeeProfileItem[] = [
   {
     id: "emp-1",
@@ -75,7 +269,6 @@ const DEFAULT_EMPLOYEES: EmployeeProfileItem[] = [
     role: "Principal Staff Architect",
     department: "Design Systems & Core Platform",
     location: "Jakarta, ID (Hybrid)",
-    avatar: "https://i.pravatar.cc/120?img=11",
     status: "active",
     mrrOrKpiValue: "$7,402",
     mrrOrKpiLabel: "MRR Impact • +15.8%",
@@ -91,7 +284,6 @@ const DEFAULT_EMPLOYEES: EmployeeProfileItem[] = [
     role: "VP of Treasury & Risk",
     department: "Core Banking Operations",
     location: "Singapore, SG",
-    avatar: "https://i.pravatar.cc/120?img=5",
     status: "remote",
     mrrOrKpiValue: "$14.2M",
     mrrOrKpiLabel: "Daily Liquidity Managed",
@@ -104,12 +296,11 @@ const DEFAULT_EMPLOYEES: EmployeeProfileItem[] = [
     employeeCode: "EMP-0154",
     name: "Rizky Pratama",
     handle: "@rizkydev",
-    role: "Senior Rust Ledger Engineer",
+    role: "Senior Ledger Engineer",
     department: "Settlement Engine",
     location: "Bandung, ID",
-    avatar: "https://i.pravatar.cc/120?img=12",
     status: "on-leave",
-    mrrOrKpiValue: "99.999%",
+    mrrOrKpiValue: "99.99%",
     mrrOrKpiLabel: "RTGS Uptime SLA",
     commitsOrTasks: "984",
     attendanceScore: "98.1%",
@@ -118,7 +309,10 @@ const DEFAULT_EMPLOYEES: EmployeeProfileItem[] = [
 ];
 
 export function OrgDirectoryBlock({
+  title = "People Directory & Contributor Telemetry",
+  subtitle = "Employee KPI dossier, 90-day attendance matrix, and organizational placement.",
   variant = "default",
+  departments = DEFAULT_DEPARTMENTS,
   employees: initialEmployees = DEFAULT_EMPLOYEES,
   onEmployeeCreate,
   className,
@@ -135,8 +329,14 @@ export function OrgDirectoryBlock({
   // Add Employee Form
   const [newName, setNewName] = React.useState("");
   const [newRole, setNewRole] = React.useState("");
-  const [newDept, setNewDept] = React.useState("Core Platform");
+  const [newDept, setNewDept] = React.useState(
+    departments[0] || "Core Platform"
+  );
   const [newLoc, setNewLoc] = React.useState("Jakarta, ID");
+
+  React.useEffect(() => {
+    setEmployees(initialEmployees);
+  }, [initialEmployees]);
 
   const activeEmployee =
     employees.find((e) => e.id === selectedId) || employees[0];
@@ -181,49 +381,47 @@ export function OrgDirectoryBlock({
   return (
     <div
       className={cn(
-        "w-full rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white dark:bg-zinc-950 p-5 sm:p-6 shadow-sm",
+        "w-full rounded-3xl border border-zinc-200/90 bg-white p-4 sm:p-6 shadow-xs dark:border-zinc-800 dark:bg-zinc-950 space-y-5",
         className
       )}
       {...props}
     >
-      {/* Header */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between pb-5 border-b border-zinc-100 dark:border-zinc-800/80">
-        <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
-            <Users className="h-5 w-5" />
+      {/* Header matching KanbanBoard & PromptComposer */}
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between pb-4 border-b border-zinc-200/80 dark:border-zinc-800">
+        <div>
+          <div className="flex flex-wrap items-center gap-2">
+            <Users className="h-4 w-4 text-blue-600 dark:text-blue-400 shrink-0" />
+            <h3 className="text-sm sm:text-base font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+              {title}
+            </h3>
+            <Badge variant="blue" className="font-mono text-[10px]">
+              {employees.length} members
+            </Badge>
           </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-50 tracking-tight">
-                HRMS People Directory & Contributor Telemetry
-              </h3>
-              <Badge variant="default">
-                {employees.length} Active Staff
-              </Badge>
-            </div>
-            <p className="text-xs text-zinc-500 dark:text-zinc-400">
-              Employee KPI dossier, 90-day attendance/contribution heatmap & org placement
+          {subtitle && (
+            <p className="mt-0.5 text-xs text-zinc-500 dark:text-zinc-400">
+              {subtitle}
             </p>
-          </div>
+          )}
         </div>
 
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogTrigger asChild>
-            <Button variant="primary" size="sm">
-              <UserPlus className="h-3.5 w-3.5" />
-              Onboard Employee
+            <Button variant="primary" size="sm" className="w-full sm:w-auto">
+              <Plus className="h-3.5 w-3.5" />
+              <span>Add Member</span>
             </Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Onboard New Employee to HRMS</DialogTitle>
+              <DialogTitle>Onboard Team Member</DialogTitle>
               <DialogDescription>
-                Register a new team member into the organizational directory and KPI tracker.
+                Register a new employee into the organizational directory.
               </DialogDescription>
             </DialogHeader>
             <form onSubmit={handleAddEmployee} className="space-y-4 pt-2">
               <div className="space-y-1.5">
-                <Label htmlFor="emp-name">Full Legal Name</Label>
+                <Label htmlFor="emp-name">Full name</Label>
                 <Input
                   id="emp-name"
                   placeholder="e.g., Dimas Anggara"
@@ -235,7 +433,7 @@ export function OrgDirectoryBlock({
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="space-y-1.5">
-                  <Label htmlFor="emp-role">Job Title / Role</Label>
+                  <Label htmlFor="emp-role">Role</Label>
                   <Input
                     id="emp-role"
                     placeholder="e.g., Product Designer"
@@ -251,19 +449,18 @@ export function OrgDirectoryBlock({
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="Core Platform">Core Platform</SelectItem>
-                      <SelectItem value="Core Banking Operations">
-                        Core Banking Operations
-                      </SelectItem>
-                      <SelectItem value="People & HRMS">People & HRMS</SelectItem>
-                      <SelectItem value="AI & Agentic R&D">AI & Agentic R&D</SelectItem>
+                      {departments.map((d) => (
+                        <SelectItem key={d} value={d}>
+                          {d}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </div>
               </div>
 
               <div className="space-y-1.5">
-                <Label htmlFor="emp-loc">Office / Work Arrangement</Label>
+                <Label htmlFor="emp-loc">Location</Label>
                 <Input
                   id="emp-loc"
                   value={newLoc}
@@ -277,8 +474,8 @@ export function OrgDirectoryBlock({
                     Cancel
                   </Button>
                 </DialogClose>
-                <Button type="submit" variant="primary" size="sm">
-                  Complete Onboarding
+                <Button type="submit" variant="default" size="sm">
+                  Save Member
                 </Button>
               </DialogFooter>
             </form>
@@ -288,7 +485,7 @@ export function OrgDirectoryBlock({
 
       <div
         className={cn(
-          "mt-5 grid gap-5",
+          "mt-4 sm:mt-5 grid gap-5",
           variant === "default" ? "grid-cols-1 lg:grid-cols-12" : "grid-cols-1"
         )}
       >
@@ -296,172 +493,32 @@ export function OrgDirectoryBlock({
         {variant === "default" && (
           <div className="lg:col-span-5 space-y-3">
             <Input
-              placeholder="Search employee name, role, code..."
+              placeholder="Search name, role, or ID..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               leftIcon={<Search className="h-3.5 w-3.5" />}
               className="h-8 text-xs"
             />
 
-            <div className="space-y-2">
-              {filteredEmployees.map((emp) => {
-                const isSelected = emp.id === activeEmployee?.id;
-                return (
-                  <button
-                    key={emp.id}
-                    type="button"
-                    onClick={() => setSelectedId(emp.id)}
-                    className={cn(
-                      "w-full text-left rounded-xl border p-3 transition-all flex items-center justify-between gap-3 cursor-pointer",
-                      isSelected
-                        ? "border-amber-500/50 bg-amber-500/5 dark:bg-amber-500/10"
-                        : "border-zinc-200/70 dark:border-zinc-800/70 bg-zinc-50/50 dark:bg-zinc-900/40 hover:bg-zinc-100 dark:hover:bg-zinc-800/70"
-                    )}
-                  >
-                    <div className="flex items-center gap-3 min-w-0">
-                      <Avatar
-                        src={emp.avatar}
-                        fallback={emp.name.slice(0, 2).toUpperCase()}
-                        size="sm"
-                      />
-                      <div className="min-w-0">
-                        <div className="flex items-center gap-1.5">
-                          <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100 truncate">
-                            {emp.name}
-                          </span>
-                          <span className="font-mono text-[10px] text-zinc-400 dark:text-zinc-500">
-                            {emp.employeeCode}
-                          </span>
-                        </div>
-                        <p className="text-[11px] text-zinc-500 dark:text-zinc-400 truncate">
-                          {emp.role}
-                        </p>
-                      </div>
-                    </div>
-
-                    <Badge
-                      variant={
-                        emp.status === "active"
-                          ? "emerald"
-                          : emp.status === "remote"
-                            ? "default"
-                            : "amber"
-                      }
-                    >
-                      {emp.status}
-                    </Badge>
-                  </button>
-                );
-              })}
+            <div className="space-y-1.5">
+              {filteredEmployees.map((emp) => (
+                <EmployeeRosterItem
+                  key={emp.id}
+                  employee={emp}
+                  selected={emp.id === activeEmployee?.id}
+                  onClick={() => setSelectedId(emp.id)}
+                />
+              ))}
             </div>
           </div>
         )}
 
-        {/* Right Spotlight: Contributor & Metric Profile + Heatmap (Landing Card 7) */}
+        {/* Right Spotlight: Contributor & Metric Profile + Heatmap */}
         {activeEmployee && (
-          <div
-            className={cn(
-              "rounded-xl border border-zinc-200/80 dark:border-zinc-800/80 bg-zinc-50/60 dark:bg-zinc-900/40 p-5 flex flex-col justify-between",
-              variant === "default" ? "lg:col-span-7" : "col-span-1"
-            )}
-          >
-            <div>
-              <div className="flex flex-wrap items-start justify-between gap-3">
-                <div className="flex items-center gap-3.5">
-                  <Avatar
-                    src={activeEmployee.avatar}
-                    fallback={activeEmployee.name.slice(0, 2).toUpperCase()}
-                    size="lg"
-                  />
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <h4 className="text-base font-bold text-zinc-900 dark:text-zinc-50">
-                        {activeEmployee.name}
-                      </h4>
-                      <Badge variant="amber">
-                        Top 1% Core
-                      </Badge>
-                    </div>
-                    <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                      {activeEmployee.role} • {activeEmployee.handle}
-                    </p>
-                    <div className="mt-1 flex flex-wrap items-center gap-3 text-[11px] text-zinc-500 dark:text-zinc-400">
-                      <span className="flex items-center gap-1">
-                        <Building2 className="h-3 w-3 text-amber-500" />
-                        {activeEmployee.department}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <MapPin className="h-3 w-3 text-amber-500" />
-                        {activeEmployee.location}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                <span className="font-mono text-xs font-semibold text-zinc-500 dark:text-zinc-400 bg-white dark:bg-zinc-900 px-2.5 py-1 rounded-lg border border-zinc-200/70 dark:border-zinc-800">
-                  {activeEmployee.employeeCode}
-                </span>
-              </div>
-
-              {/* 3 Metric KPI Tiles */}
-              <div className="mt-5 grid grid-cols-3 gap-3">
-                <div className="rounded-xl border border-zinc-200/70 dark:border-zinc-800/80 bg-white dark:bg-zinc-950 p-3">
-                  <div className="text-lg font-extrabold font-mono text-zinc-900 dark:text-zinc-50">
-                    {activeEmployee.mrrOrKpiValue}
-                  </div>
-                  <div className="text-[11px] font-medium text-emerald-600 dark:text-emerald-400">
-                    {activeEmployee.mrrOrKpiLabel}
-                  </div>
-                </div>
-                <div className="rounded-xl border border-zinc-200/70 dark:border-zinc-800/80 bg-white dark:bg-zinc-950 p-3">
-                  <div className="text-lg font-extrabold font-mono text-zinc-900 dark:text-zinc-50">
-                    {activeEmployee.commitsOrTasks}
-                  </div>
-                  <div className="text-[11px] text-zinc-500 dark:text-zinc-400">
-                    Deliverables • 90d
-                  </div>
-                </div>
-                <div className="rounded-xl border border-zinc-200/70 dark:border-zinc-800/80 bg-white dark:bg-zinc-950 p-3">
-                  <div className="text-lg font-extrabold font-mono text-amber-600 dark:text-amber-400">
-                    {activeEmployee.attendanceScore}
-                  </div>
-                  <div className="text-[11px] text-zinc-500 dark:text-zinc-400">
-                    Attendance & SLA
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* 36-cell Activity & Attendance Heatmap */}
-            <div className="mt-5 pt-4 border-t border-zinc-200/70 dark:border-zinc-800/70">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-[11px] font-semibold text-zinc-600 dark:text-zinc-300">
-                  90-Day Attendance & Engineering Velocity Matrix
-                </span>
-                <span className="text-[10px] text-zinc-400 dark:text-zinc-500">
-                  Verified by HRMS Biometric & Git Telemetry
-                </span>
-              </div>
-              <div className="grid grid-cols-12 gap-1.5">
-                {activeEmployee.heatmapLevels.map((lvl, idx) => (
-                  <div
-                    key={idx}
-                    className={cn(
-                      "h-3.5 rounded-[4px] transition-transform hover:scale-110",
-                      lvl === 3
-                        ? "bg-amber-500 shadow-xs shadow-amber-500/30"
-                        : lvl === 2
-                          ? "bg-amber-500/60"
-                          : lvl === 1
-                            ? "bg-amber-500/30"
-                            : "bg-zinc-200 dark:bg-zinc-800"
-                    )}
-                    title={`Day ${idx + 1}: Level ${lvl}/3`}
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
+          <ContributorProfileCard
+            employee={activeEmployee}
+            className={variant === "default" ? "lg:col-span-7" : "col-span-1"}
+          />
         )}
       </div>
     </div>

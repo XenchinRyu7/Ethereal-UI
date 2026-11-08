@@ -101,11 +101,18 @@ import {
   TokenUsageBlock,
   KanbanBoardBlock,
   ApprovalWorkflowBlock,
+  ApprovalRequestCard,
   TransactionLedgerBlock,
+  TreasuryVaultCard,
   OrgDirectoryBlock,
+  ContributorProfileCard,
   EventSchedulerBlock,
+  DayAgendaCard,
   SystemHealthBlock,
+  SlaRingGaugeCard,
   AiChatThreadBlock,
+  ToolCallExecutionCard,
+  CodeArtifactCard,
   Timeline,
   Stepper,
   NumberInput,
@@ -954,24 +961,167 @@ export const LiveDemoRenderer: React.FC<{ slug: string; sectionId?: string }> = 
       return <KanbanBoardBlock />
 
     case "ai-chat-thread":
+      if (sectionId === "modular-composition") {
+        return (
+          <div className="w-full max-w-2xl space-y-4 rounded-2xl border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900">
+            <ToolCallExecutionCard
+              defaultExpanded
+              toolCall={{
+                id: "tc-custom",
+                toolName: "stripe.invoices.list_overdue",
+                durationMs: 184,
+                status: "success",
+                inputSummary: '{ "status": "past_due", "limit": 10 }',
+                outputJson: '{ "overdue_accounts": 2, "total_amount": "$14,200.00" }',
+              }}
+            />
+            <CodeArtifactCard
+              title="reconcile-ledger.ts"
+              code={`export async function reconcileInvoice(id: string) {\n  return await db.invoices.update({ where: { id }, data: { reconciled: true } })\n}`}
+            />
+          </div>
+        )
+      }
       return <AiChatThreadBlock />
 
     case "approval-workflow":
+      if (sectionId === "modular-composition") {
+        return (
+          <div className="w-full max-w-2xl overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800">
+            <ApprovalRequestCard
+              item={{
+                id: "apr-custom",
+                code: "APR-9901",
+                category: "wire",
+                title: "Treasury Liquidity Sweep — JPMorgan Chase NY",
+                requesterName: "Elena Rostova",
+                requesterRole: "VP Finance",
+                amountOrDuration: "$450,000.00",
+                submittedAt: "Just now",
+                riskLevel: "high",
+                notes: "Requires 2 of 3 Executive Signers (Dual-Control)",
+                status: "pending",
+                approversSigned: 1,
+                approversRequired: 2,
+              }}
+            />
+          </div>
+        )
+      }
       return <ApprovalWorkflowBlock />
 
     case "transaction-ledger":
+      if (sectionId === "modular-composition") {
+        return (
+          <div className="grid w-full max-w-2xl grid-cols-1 gap-3 sm:grid-cols-2">
+            <TreasuryVaultCard
+              account={{
+                currency: "SGD",
+                name: "DBS Bank Singapore Nostro",
+                ibanOrAccount: "**** 7741",
+                balance: "S$ 3,840,200.00",
+                change24h: "+4.2% (24h)",
+              }}
+            />
+            <TreasuryVaultCard
+              account={{
+                currency: "GBP",
+                name: "Barclays London Clearing",
+                ibanOrAccount: "**** 1094",
+                balance: "£ 1,920,500.00",
+                change24h: "+1.8% (24h)",
+              }}
+            />
+          </div>
+        )
+      }
       return <TransactionLedgerBlock />
 
     case "org-directory":
       if (sectionId === "spotlight") {
-        return <OrgDirectoryBlock variant="spotlight" />
+        return (
+          <ContributorProfileCard
+            className="w-full max-w-md"
+            employee={{
+              id: "emp-01",
+              employeeCode: "EMP-001",
+              name: "Saeful Rohman",
+              handle: "@saefulrohman",
+              role: "Principal Systems Architect",
+              department: "Engineering",
+              location: "Jakarta, ID (GMT+7)",
+              status: "active",
+              mrrOrKpiValue: "99.8%",
+              mrrOrKpiLabel: "Architecture SLA",
+              commitsOrTasks: "418 PRs",
+              attendanceScore: "99.4%",
+              heatmapLevels: [
+                3, 3, 2, 3, 3, 2, 3, 1, 2, 3, 3, 3, 2, 3, 3, 3, 2, 3,
+                3, 2, 3, 3, 1, 2, 3, 3, 3, 2, 3, 3, 2, 3, 3, 3, 2, 3,
+              ],
+            }}
+          />
+        )
       }
       return <OrgDirectoryBlock />
 
     case "event-scheduler":
+      if (sectionId === "modular-composition") {
+        return (
+          <div className="w-full max-w-lg">
+            <DayAgendaCard
+              day={24}
+              events={[
+                {
+                  id: "ev-1",
+                  day: 24,
+                  title: "Core Banking ISO-20022 Cutover Window",
+                  time: "02:00 UTC",
+                  category: "release",
+                  owner: "SR",
+                },
+                {
+                  id: "ev-2",
+                  day: 24,
+                  title: "APAC Primary SRE On-Call Handover",
+                  time: "08:00 UTC",
+                  category: "shift",
+                  owner: "DK",
+                },
+              ]}
+            />
+          </div>
+        )
+      }
       return <EventSchedulerBlock />
 
     case "system-health":
+      if (sectionId === "modular-composition") {
+        return (
+          <div className="w-full max-w-md">
+            <SlaRingGaugeCard
+              score={99}
+              title="Global Edge Network"
+              subtitle="Multi-region telemetry"
+              statusLabel="Operational"
+              metrics={[
+                {
+                  id: "api",
+                  label: "API Availability",
+                  valueLabel: "99.99%",
+                  percent: 99,
+                },
+                {
+                  id: "cache",
+                  label: "Cache Hit Ratio",
+                  valueLabel: "96.4%",
+                  percent: 96,
+                },
+              ]}
+            />
+          </div>
+        )
+      }
       return <SystemHealthBlock />
 
     // NEW ENTERPRISE PRIMITIVES

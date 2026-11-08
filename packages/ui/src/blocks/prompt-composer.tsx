@@ -1,7 +1,6 @@
 import * as React from "react"
 import {
   Plus,
-  Sparkles,
   FileText,
   Image as ImageIcon,
   FileCode2,
@@ -497,9 +496,8 @@ export const PromptComposerBlock = React.forwardRef<
                 variant="outline"
                 size="xs"
                 onClick={() => setPrompt(chip)}
-                className="h-6 px-2 text-[11px] font-normal"
+                className="h-6 px-2.5 text-[11px] font-normal"
               >
-                <Sparkles className="h-2.5 w-2.5 text-blue-500" />
                 <span>{chip}</span>
               </Button>
             ))}

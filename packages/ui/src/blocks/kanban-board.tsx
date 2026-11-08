@@ -1,7 +1,6 @@
 import * as React from "react"
 import {
   Plus,
-  Sparkles,
   CheckCircle2,
   Clock,
   ChevronLeft,
@@ -719,12 +718,12 @@ export const KanbanBoardBlock = React.forwardRef<
                             className={cn(
                               "ml-1 flex h-6 w-6 items-center justify-center rounded-full text-[9px] font-bold",
                               task.isAgentAssigned
-                                ? "bg-blue-600 text-white"
+                                ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900"
                                 : "bg-zinc-200 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-200"
                             )}
                           >
                             {task.isAgentAssigned ? (
-                              <Sparkles className="h-2.5 w-2.5" />
+                              <Bot className="h-3 w-3" />
                             ) : (
                               task.assignee
                             )}

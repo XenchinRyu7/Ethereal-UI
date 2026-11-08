@@ -1,26 +1,25 @@
 import * as React from "react";
 import {
-  Sparkles,
   Terminal,
-  Code2,
   Send,
   Copy,
   Check,
   ChevronDown,
-  ChevronUp,
-  Bot,
-  User,
+  ChevronRight,
+  Cpu,
+  FileCode2,
 } from "lucide-react";
 import { cn } from "../utils/cn";
 import { Button } from "../primitives/button";
 import { Badge } from "../primitives/badge";
 import { Input } from "../primitives/input";
+import { Avatar } from "../primitives/avatar";
 
 export interface AgentToolCallItem {
   id: string;
   toolName: string;
   durationMs: number;
-  status: "success" | "running";
+  status: "success" | "running" | "error";
   inputSummary: string;
   outputJson: string;
 }
@@ -37,12 +36,245 @@ export interface ChatTurnMessage {
   artifactCode?: string;
 }
 
+/* -------------------------------------------------------------------------- */
+/* Modular Sub-Component 1: ToolCallExecutionCard                             */
+/* -------------------------------------------------------------------------- */
+
+export interface ToolCallExecutionCardProps
+  extends React.HTMLAttributes<HTMLDivElement> {
+  toolCall: AgentToolCallItem;
+  defaultExpanded?: boolean;
+}
+
+export const ToolCallExecutionCard = React.forwardRef<
+  HTMLDivElement,
+  ToolCallExecutionCardProps
+>(({ toolCall, defaultExpanded = false, className, ...props }, ref) => {
+  const [expanded, setExpanded] = React.useState(defaultExpanded);
+
+  return (
+    <div
+      ref={ref}
+      className={cn(
+        "rounded-xl border border-zinc-200/90 bg-zinc-50/70 dark:border-zinc-800 dark:bg-zinc-900/70 overflow-hidden transition-colors hover:border-zinc-300 dark:hover:border-zinc-700",
+        className
+      )}
+      {...props}
+    >
+      <button
+        type="button"
+        onClick={() => setExpanded((prev) => !prev)}
+        className="w-full flex items-center justify-between gap-2 px-3 py-2 text-left text-xs transition-colors hover:bg-zinc-100/80 dark:hover:bg-zinc-800/70 cursor-pointer"
+      >
+        <div className="flex items-center gap-2 min-w-0">
+          {expanded ? (
+            <ChevronDown className="h-3.5 w-3.5 text-zinc-400 shrink-0" />
+          ) : (
+            <ChevronRight className="h-3.5 w-3.5 text-zinc-400 shrink-0" />
+          )}
+          <Terminal className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400 shrink-0" />
+          <span className="font-mono text-[11px] font-medium text-zinc-800 dark:text-zinc-200 truncate">
+            {toolCall.toolName}
+          </span>
+        </div>
+        <div className="flex items-center gap-2 shrink-0">
+          <Badge
+            variant={
+              toolCall.status === "error"
+                ? "rose"
+                : toolCall.status === "running"
+                  ? "blue"
+                  : "emerald"
+            }
+            dot
+            className="font-mono text-[10px] px-1.5 py-0"
+          >
+            {toolCall.durationMs}ms
+          </Badge>
+        </div>
+      </button>
+
+      {expanded && (
+        <div className="px-3 py-2.5 border-t border-zinc-200/80 dark:border-zinc-800 bg-white dark:bg-zinc-950 font-mono text-[11px] space-y-1.5 overflow-x-auto">
+          <div className="text-zinc-600 dark:text-zinc-400 break-all sm:break-normal">
+            <span className="text-blue-600 dark:text-blue-400 font-semibold select-none">
+              input:{" "}
+            </span>
+            {toolCall.inputSummary}
+          </div>
+          <div className="text-zinc-800 dark:text-zinc-200 break-all sm:break-normal">
+            <span className="text-emerald-600 dark:text-emerald-400 font-semibold select-none">
+              output:{" "}
+            </span>
+            {toolCall.outputJson}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+});
+ToolCallExecutionCard.displayName = "ToolCallExecutionCard";
+
+/* -------------------------------------------------------------------------- */
+/* Modular Sub-Component 2: CodeArtifactCard                                  */
+/* -------------------------------------------------------------------------- */
+
+export interface CodeArtifactCardProps
+  extends React.HTMLAttributes<HTMLDivElement> {
+  title?: string;
+  code: string;
+}
+
+export const CodeArtifactCard = React.forwardRef<
+  HTMLDivElement,
+  CodeArtifactCardProps
+>(({ title = "artifact.ts", code, className, ...props }, ref) => {
+  const [copied, setCopied] = React.useState(false);
+
+  const handleCopy = () => {
+    if (typeof navigator !== "undefined" && navigator.clipboard) {
+      navigator.clipboard.writeText(code);
+    }
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1600);
+  };
+
+  return (
+    <div
+      ref={ref}
+      className={cn(
+        "rounded-xl border border-zinc-200/90 dark:border-zinc-800 overflow-hidden bg-zinc-50/80 dark:bg-zinc-950",
+        className
+      )}
+      {...props}
+    >
+      <div className="flex items-center justify-between gap-2 px-3.5 py-2 border-b border-zinc-200/80 dark:border-zinc-800 bg-zinc-100/70 dark:bg-zinc-900/80">
+        <div className="flex items-center gap-2 min-w-0">
+          <FileCode2 className="h-3.5 w-3.5 text-emerald-500 shrink-0" />
+          <span className="text-[11px] font-mono font-medium text-zinc-800 dark:text-zinc-200 truncate">
+            {title}
+          </span>
+        </div>
+        <Button variant="outline" size="xs" onClick={handleCopy}>
+          {copied ? (
+            <>
+              <Check className="h-3 w-3 text-emerald-500" />
+              <span>Copied</span>
+            </>
+          ) : (
+            <>
+              <Copy className="h-3 w-3" />
+              <span>Copy</span>
+            </>
+          )}
+        </Button>
+      </div>
+      <pre className="p-3.5 text-[11px] font-mono leading-relaxed overflow-x-auto text-zinc-800 dark:text-zinc-200">
+        <code>{code}</code>
+      </pre>
+    </div>
+  );
+});
+CodeArtifactCard.displayName = "CodeArtifactCard";
+
+/* -------------------------------------------------------------------------- */
+/* Modular Sub-Component 3: ChatMessageBubble                                 */
+/* -------------------------------------------------------------------------- */
+
+export interface ChatMessageBubbleProps
+  extends React.HTMLAttributes<HTMLDivElement> {
+  message: ChatTurnMessage;
+  defaultExpandFirstTool?: boolean;
+}
+
+export const ChatMessageBubble = React.forwardRef<
+  HTMLDivElement,
+  ChatMessageBubbleProps
+>(({ message, defaultExpandFirstTool = false, className, ...props }, ref) => {
+  return (
+    <div
+      ref={ref}
+      className={cn(
+        "rounded-2xl border p-3.5 sm:p-4 transition-colors",
+        message.role === "user"
+          ? "border-zinc-200/80 bg-zinc-50/60 dark:border-zinc-800/80 dark:bg-zinc-900/40"
+          : "border-zinc-200/90 bg-white shadow-2xs dark:border-zinc-800 dark:bg-zinc-950",
+        className
+      )}
+      {...props}
+    >
+      <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
+        <div className="flex flex-wrap items-center gap-2 min-w-0">
+          <Avatar
+            fallback={
+              message.role === "user"
+                ? message.author.slice(0, 2).toUpperCase()
+                : "AI"
+            }
+            size="xs"
+            tint={message.role === "assistant" ? "blue" : "neutral"}
+          />
+          <span className="text-xs font-semibold text-zinc-900 dark:text-zinc-100 truncate">
+            {message.author}
+          </span>
+          {message.modelBadge && (
+            <Badge variant="blue" className="font-mono text-[10px]">
+              {message.modelBadge}
+            </Badge>
+          )}
+        </div>
+        <span className="font-mono text-[11px] text-zinc-400 dark:text-zinc-500">
+          {message.timestamp}
+        </span>
+      </div>
+
+      <p className="text-xs sm:text-sm leading-relaxed text-zinc-700 dark:text-zinc-300">
+        {message.content}
+      </p>
+
+      {message.toolCalls && message.toolCalls.length > 0 && (
+        <div className="mt-3.5 space-y-2">
+          {message.toolCalls.map((tc, idx) => (
+            <ToolCallExecutionCard
+              key={tc.id}
+              toolCall={tc}
+              defaultExpanded={defaultExpandFirstTool && idx === 0}
+            />
+          ))}
+        </div>
+      )}
+
+      {message.artifactCode && (
+        <div className="mt-3.5">
+          <CodeArtifactCard
+            title={message.artifactTitle}
+            code={message.artifactCode}
+          />
+        </div>
+      )}
+    </div>
+  );
+});
+ChatMessageBubble.displayName = "ChatMessageBubble";
+
+/* -------------------------------------------------------------------------- */
+/* Composed Block: AiChatThreadBlock                                          */
+/* -------------------------------------------------------------------------- */
+
 export interface AiChatThreadBlockProps
   extends React.HTMLAttributes<HTMLDivElement> {
+  /** Custom block header title */
+  title?: string;
+  /** Custom block header subtitle */
+  subtitle?: string;
+  /** Status badge label in header */
+  statusLabel?: string;
+  /** Input placeholder text */
+  placeholder?: string;
   /** Initial or controlled conversation turns */
   messages?: ChatTurnMessage[];
   /** Callback fired when the user sends a follow-up message */
-  onSendMessage?: (text: string) => void;
+  onSendMessage?: (text: string, message: ChatTurnMessage) => void;
 }
 
 const DEFAULT_MESSAGES: ChatTurnMessage[] = [
@@ -57,15 +289,15 @@ const DEFAULT_MESSAGES: ChatTurnMessage[] = [
   {
     id: "msg-2",
     role: "assistant",
-    author: "Ethereal Copilot",
+    author: "Assistant",
     timestamp: "10:14 AM",
-    modelBadge: "Gemini 3.1 Pro • Thinking",
+    modelBadge: "claude-4.6-sonnet",
     content:
-      "I inspected the ISO-20022 ledger and verified all high-value outbound wires. Only 1 transaction (`SWFT-2026-8819` for `$250,000.00`) is currently held in Maker-Checker AML review. Below is the automated dual-control guard.",
+      "Inspected the ISO-20022 ledger and verified all high-value outbound wires. One transaction (SWFT-2026-8819 for $250,000.00) is held in Maker-Checker review. Below is the dual-control validation guard.",
     toolCalls: [
       {
         id: "tc-1",
-        toolName: "mcp.core_banking.query_swift_ledger",
+        toolName: "core_banking.query_swift_ledger",
         durationMs: 184,
         status: "success",
         inputSummary: '{ "currency": "USD", "minAmount": 100000, "window": "24h" }',
@@ -74,10 +306,10 @@ const DEFAULT_MESSAGES: ChatTurnMessage[] = [
       },
       {
         id: "tc-2",
-        toolName: "mcp.hrms.verify_approver_signature",
+        toolName: "hrms.verify_approver_quorum",
         durationMs: 92,
         status: "success",
-        inputSummary: '{ "role": "VP_TRERASURY", "quorum": 2 }',
+        inputSummary: '{ "role": "VP_TREASURY", "quorum": 2 }',
         outputJson: '{ "status": "VALID_QUORUM", "signers": ["EMP-0108", "EMP-0042"] }',
       },
     ],
@@ -92,6 +324,10 @@ const DEFAULT_MESSAGES: ChatTurnMessage[] = [
 ];
 
 export function AiChatThreadBlock({
+  title = "Agentic Thread & Tool Execution",
+  subtitle = "Multi-turn workspace thread with inspectable tool calls and code output.",
+  statusLabel = "Connected",
+  placeholder = "Send a follow-up instruction...",
   messages: initialMessages = DEFAULT_MESSAGES,
   onSendMessage,
   className,
@@ -99,23 +335,11 @@ export function AiChatThreadBlock({
 }: AiChatThreadBlockProps) {
   const [messages, setMessages] =
     React.useState<ChatTurnMessage[]>(initialMessages);
-  const [expandedTools, setExpandedTools] = React.useState<Record<string, boolean>>({
-    "tc-1": true,
-  });
-  const [copiedId, setCopiedId] = React.useState<string | null>(null);
   const [replyText, setReplyText] = React.useState("");
 
-  const toggleTool = (id: string) => {
-    setExpandedTools((prev) => ({ ...prev, [id]: !prev[id] }));
-  };
-
-  const handleCopy = (id: string, text: string) => {
-    if (typeof navigator !== "undefined" && navigator.clipboard) {
-      navigator.clipboard.writeText(text);
-    }
-    setCopiedId(id);
-    setTimeout(() => setCopiedId(null), 1600);
-  };
+  React.useEffect(() => {
+    setMessages(initialMessages);
+  }, [initialMessages]);
 
   const handleSend = (e: React.FormEvent) => {
     e.preventDefault();
@@ -132,202 +356,88 @@ export function AiChatThreadBlock({
     const botReply: ChatTurnMessage = {
       id: `msg-${Date.now() + 1}`,
       role: "assistant",
-      author: "Ethereal Copilot",
+      author: "Assistant",
       timestamp: "Just now",
-      modelBadge: "Gemini 3.1 Pro",
-      content: `Executed verification for "${replyText.trim()}". All Maker-Checker and HRMS compliance policies passed with zero drift.`,
+      modelBadge: "claude-4.6-sonnet",
+      content: `Completed verification for "${replyText.trim()}". All Maker-Checker and compliance policies passed without anomalies.`,
       toolCalls: [
         {
           id: `tc-${Date.now()}`,
-          toolName: "mcp.policy_engine.evaluate",
+          toolName: "policy_engine.evaluate",
           durationMs: 112,
           status: "success",
-          inputSummary: JSON.stringify({ prompt: replyText.trim() }),
+          inputSummary: JSON.stringify({ query: replyText.trim() }),
           outputJson: '{ "compliant": true, "riskScore": 0.02 }',
         },
       ],
     };
 
     setMessages((prev) => [...prev, userMsg, botReply]);
-    onSendMessage?.(replyText.trim());
+    onSendMessage?.(replyText.trim(), userMsg);
     setReplyText("");
   };
 
   return (
     <div
       className={cn(
-        "w-full rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white dark:bg-zinc-950 p-5 sm:p-6 shadow-sm",
+        "w-full rounded-3xl border border-zinc-200/90 bg-white p-4 sm:p-6 shadow-xs dark:border-zinc-800 dark:bg-zinc-950 space-y-5",
         className
       )}
       {...props}
     >
-      {/* Header */}
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between pb-4 border-b border-zinc-100 dark:border-zinc-800/80">
-        <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
-            <Sparkles className="h-5 w-5" />
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-50 tracking-tight">
-                Agentic Copilot Thread & Tool-Call Artifacts
-              </h3>
-              <Badge variant="amber" dot>
-                MCP Connected
+      {/* Header matching PromptComposer & KanbanBoard */}
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between pb-4 border-b border-zinc-200/80 dark:border-zinc-800">
+        <div>
+          <div className="flex flex-wrap items-center gap-2">
+            <Cpu className="h-4 w-4 text-blue-600 dark:text-blue-400 shrink-0" />
+            <h3 className="text-sm sm:text-base font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+              {title}
+            </h3>
+            {statusLabel && (
+              <Badge variant="emerald" dot>
+                {statusLabel}
               </Badge>
-            </div>
-            <p className="text-xs text-zinc-500 dark:text-zinc-400">
-              Multi-turn agentic conversation with expandable MCP tool calls & code artifacts
-            </p>
+            )}
           </div>
+          {subtitle && (
+            <p className="mt-0.5 text-xs text-zinc-500 dark:text-zinc-400">
+              {subtitle}
+            </p>
+          )}
         </div>
       </div>
 
-      {/* Conversation Stream */}
-      <div className="mt-5 space-y-5">
-        {messages.map((msg) => (
-          <div
+      {/* Composed Conversation Stream */}
+      <div className="space-y-3.5">
+        {messages.map((msg, idx) => (
+          <ChatMessageBubble
             key={msg.id}
-            className={cn(
-              "rounded-xl border p-4",
-              msg.role === "user"
-                ? "border-zinc-200/70 dark:border-zinc-800/70 bg-zinc-50/70 dark:bg-zinc-900/40"
-                : "border-amber-500/25 bg-amber-500/[0.03] dark:bg-amber-500/[0.04]"
-            )}
-          >
-            <div className="flex items-center justify-between gap-2 mb-2">
-              <div className="flex items-center gap-2">
-                <span
-                  className={cn(
-                    "flex h-6 w-6 items-center justify-center rounded-lg text-xs font-bold",
-                    msg.role === "user"
-                      ? "bg-zinc-200 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200"
-                      : "bg-amber-500 text-zinc-950"
-                  )}
-                >
-                  {msg.role === "user" ? (
-                    <User className="h-3.5 w-3.5" />
-                  ) : (
-                    <Bot className="h-3.5 w-3.5" />
-                  )}
-                </span>
-                <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
-                  {msg.author}
-                </span>
-                {msg.modelBadge && (
-                  <Badge variant="default">
-                    {msg.modelBadge}
-                  </Badge>
-                )}
-              </div>
-              <span className="text-[11px] text-zinc-400 dark:text-zinc-500">
-                {msg.timestamp}
-              </span>
-            </div>
-
-            <p className="text-xs sm:text-sm leading-relaxed text-zinc-700 dark:text-zinc-300">
-              {msg.content}
-            </p>
-
-            {/* Expandable MCP Tool Calls */}
-            {msg.toolCalls && msg.toolCalls.length > 0 && (
-              <div className="mt-3.5 space-y-2">
-                {msg.toolCalls.map((tc) => {
-                  const isOpen = !!expandedTools[tc.id];
-                  return (
-                    <div
-                      key={tc.id}
-                      className="rounded-lg border border-zinc-200/80 dark:border-zinc-800/80 bg-white dark:bg-zinc-950 overflow-hidden"
-                    >
-                      <button
-                        type="button"
-                        onClick={() => toggleTool(tc.id)}
-                        className="w-full flex items-center justify-between px-3 py-2 text-left text-xs transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-900 cursor-pointer"
-                      >
-                        <div className="flex items-center gap-2 min-w-0">
-                          <Terminal className="h-3.5 w-3.5 text-amber-500 shrink-0" />
-                          <span className="font-mono font-semibold text-zinc-800 dark:text-zinc-200 truncate">
-                            {tc.toolName}
-                          </span>
-                          <Badge variant="emerald">
-                            {tc.durationMs}ms
-                          </Badge>
-                        </div>
-                        {isOpen ? (
-                          <ChevronUp className="h-3.5 w-3.5 text-zinc-400" />
-                        ) : (
-                          <ChevronDown className="h-3.5 w-3.5 text-zinc-400" />
-                        )}
-                      </button>
-
-                      {isOpen && (
-                        <div className="px-3 py-2.5 border-t border-zinc-100 dark:border-zinc-800/80 bg-zinc-50/80 dark:bg-zinc-900/60 font-mono text-[11px] space-y-1.5">
-                          <div className="text-zinc-500 dark:text-zinc-400">
-                            <span className="font-bold text-zinc-700 dark:text-zinc-300">
-                              args:{" "}
-                            </span>
-                            {tc.inputSummary}
-                          </div>
-                          <div className="text-emerald-600 dark:text-emerald-400">
-                            <span className="font-bold">return: </span>
-                            {tc.outputJson}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-
-            {/* Generated Code Artifact Card */}
-            {msg.artifactCode && (
-              <div className="mt-3.5 rounded-xl border border-zinc-200/80 dark:border-zinc-800 overflow-hidden bg-zinc-950 text-zinc-100">
-                <div className="flex items-center justify-between px-3.5 py-2 border-b border-zinc-800 bg-zinc-900/90">
-                  <div className="flex items-center gap-2 text-xs font-mono text-amber-400">
-                    <Code2 className="h-3.5 w-3.5" />
-                    <span>{msg.artifactTitle || "artifact.ts"}</span>
-                  </div>
-                  <Button
-                    variant="ghost"
-                    size="xs"
-                    onClick={() => handleCopy(msg.id, msg.artifactCode!)}
-                    className="text-zinc-300 hover:text-white hover:bg-zinc-800"
-                  >
-                    {copiedId === msg.id ? (
-                      <>
-                        <Check className="h-3 w-3 text-emerald-400" />
-                        Copied
-                      </>
-                    ) : (
-                      <>
-                        <Copy className="h-3 w-3" />
-                        Copy Artifact
-                      </>
-                    )}
-                  </Button>
-                </div>
-                <pre className="p-3.5 text-[11px] font-mono leading-relaxed overflow-x-auto text-zinc-200">
-                  <code>{msg.artifactCode}</code>
-                </pre>
-              </div>
-            )}
-          </div>
+            message={msg}
+            defaultExpandFirstTool={idx === 1}
+          />
         ))}
       </div>
 
       {/* Follow-up Input Bar */}
-      <form onSubmit={handleSend} className="mt-4 flex items-center gap-2">
-        <div className="flex-1">
+      <form
+        onSubmit={handleSend}
+        className="flex flex-col gap-2 sm:flex-row sm:items-center pt-1"
+      >
+        <div className="flex-1 min-w-0">
           <Input
-            placeholder="Ask Copilot to inspect another SWIFT batch or HRMS policy..."
+            placeholder={placeholder}
             value={replyText}
             onChange={(e) => setReplyText(e.target.value)}
           />
         </div>
-        <Button type="submit" variant="primary" size="default">
+        <Button
+          type="submit"
+          variant="primary"
+          size="default"
+          className="w-full sm:w-auto shrink-0"
+        >
           <Send className="h-3.5 w-3.5" />
-          Send
+          <span>Send</span>
         </Button>
       </form>
     </div>
