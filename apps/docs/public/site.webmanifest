@@ -1,0 +1,17 @@
+{
+  "name": "Ethereal UI — Modern React Components & Dashboard Blocks",
+  "short_name": "Ethereal UI",
+  "description": "Free, open-source React components, AI & Agentic blocks, statistical charts, and FinTech/HRMS dashboard templates built with Tailwind CSS v4 and Radix UI.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#09090b",
+  "theme_color": "#2563eb",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
+

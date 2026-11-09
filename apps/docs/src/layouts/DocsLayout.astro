@@ -24,9 +24,28 @@ const {
     { id: "installation", label: "Installation" },
   ],
 } = Astro.props
+
+const seoCategorySuffix =
+  categoryLabel === "Blocks"
+    ? "React Dashboard & Agentic Block"
+    : categoryLabel === "Charts"
+      ? "React Statistical SVG Chart"
+      : categoryLabel === "Templates"
+        ? "Full-Page React SaaS Template"
+        : categoryLabel === "Documentation"
+          ? "Documentation & Setup Guide"
+          : "React UI Component"
+
+const seoKeywords = `${title}, ${title} React, ${title} Tailwind CSS, @etherealui/react ${title.toLowerCase()}, Ethereal UI ${categoryLabel.toLowerCase()}, Radix UI, Tailwind v4`
 ---
 
-<BaseLayout title={`${title} - React Component — Ethereal UI`} description={description}>
+<BaseLayout
+  title={`${title} — ${seoCategorySuffix} | Ethereal UI`}
+  description={description}
+  keywords={seoKeywords}
+  categoryLabel={categoryLabel}
+  ogType="article"
+>
   <div class="mx-auto p-3 sm:p-4">
     <div class="flex flex-col lg:flex-row gap-8 xl:gap-12">
       <!-- 1. Left Floating Sidebar Card (BoardUI style) -->

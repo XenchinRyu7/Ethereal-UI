@@ -1,0 +1,25 @@
+User-agent: *
+Allow: /
+
+# Explicitly allow AI Search & Coding Assistant Crawlers
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+Host: https://ethereal-ui.saefulrohman.dev
+Sitemap: https://ethereal-ui.saefulrohman.dev/sitemap.xml
+

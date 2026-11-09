@@ -5,12 +5,95 @@ import { ThemeToggle } from "../components/ThemeToggle"
 interface Props {
   title?: string
   description?: string
+  keywords?: string
+  ogImage?: string
+  ogType?: "website" | "article"
+  categoryLabel?: string
 }
 
+const SITE_URL = "https://ethereal-ui.saefulrohman.dev"
+
 const {
-  title = "Ethereal UI — Modern React Components & Dashboard Blocks",
-  description = "Clean, accessible light & dark mode React components and dashboard blocks built with Tailwind CSS v4 and Radix UI.",
+  title = "Ethereal UI — Modern React Components, Agentic Blocks & Enterprise Dashboard Kit",
+  description = "Free, open-source React component library, AI & Agentic blocks, Core Banking & HRMS enterprise widgets, and statistical charts built with Tailwind CSS v4 and Radix UI.",
+  keywords = "Ethereal UI, @etherealui/react, @etherealui/cli, React UI library, Tailwind CSS v4 components, Radix UI, shadcn alternative, AI prompt composer react, agentic UI blocks, enterprise dashboard components, core banking UI, HRMS dashboard react, dark mode UI kit",
+  ogImage = "/og-image.svg",
+  ogType = "website",
+  categoryLabel,
 } = Astro.props
+
+const canonicalPath =
+  Astro.url.pathname === "/"
+    ? "/"
+    : Astro.url.pathname.replace(/\/+$/, "")
+const canonicalUrl = new URL(canonicalPath, SITE_URL).toString()
+const fullOgImageUrl = new URL(ogImage, SITE_URL).toString()
+
+const pathSegments = canonicalPath.split("/").filter(Boolean)
+const breadcrumbItems = [
+  {
+    "@type": "ListItem",
+    position: 1,
+    name: "Ethereal UI",
+    item: SITE_URL,
+  },
+  ...pathSegments.map((seg, index) => ({
+    "@type": "ListItem",
+    position: index + 2,
+    name:
+      index === pathSegments.length - 1 && categoryLabel
+        ? title.split("—")[0].split("-")[0].trim()
+        : seg
+            .replace(/-/g, " ")
+            .replace(/\b\w/g, (char) => char.toUpperCase()),
+    item: `${SITE_URL}/${pathSegments.slice(0, index + 1).join("/")}`,
+  })),
+]
+
+const jsonLdSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
+      url: SITE_URL,
+      name: "Ethereal UI",
+      alternateName: ["@etherealui/react", "@etherealui/cli", "Ethereal UI React"],
+      description:
+        "Open-source React components, AI & Agentic blocks, statistical SVG charts, and enterprise FinTech/HRMS dashboard templates built on Tailwind CSS v4 and Radix UI.",
+      publisher: {
+        "@type": "Person",
+        name: "Saeful Rohman",
+        url: "https://saefulrohman.dev",
+      },
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": `${SITE_URL}/#software`,
+      name: "Ethereal UI (@etherealui/react)",
+      applicationCategory: "DeveloperApplication",
+      operatingSystem: "Any",
+      softwareVersion: "0.0.5",
+      license: "https://opensource.org/licenses/MIT",
+      url: SITE_URL,
+      downloadUrl: "https://www.npmjs.com/package/@etherealui/react",
+      author: {
+        "@type": "Person",
+        name: "Saeful Rohman",
+        url: "https://saefulrohman.dev",
+      },
+      offers: {
+        "@type": "Offer",
+        price: "0",
+        priceCurrency: "USD",
+      },
+    },
+    {
+      "@type": "BreadcrumbList",
+      itemListElement: breadcrumbItems,
+    },
+  ],
+}
 ---
 
 <!doctype html>
@@ -19,8 +102,51 @@ const {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml" />
+
     <title>{title}</title>
     <meta name="description" content={description} />
+    <meta name="keywords" content={keywords} />
+    <meta name="author" content="Saeful Rohman (https://saefulrohman.dev)" />
+    <meta name="generator" content={Astro.generator} />
+    <meta
+      name="robots"
+      content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+    />
+    <meta name="googlebot" content="index, follow" />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#09090b" media="(prefers-color-scheme: dark)" />
+
+    <!-- Open Graph / Facebook / LinkedIn / Discord -->
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content="Ethereal UI" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={fullOgImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={title} />
+
+    <!-- Twitter / X Large Summary Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@saefulrdevs" />
+    <meta name="twitter:creator" content="@saefulrdevs" />
+    <meta name="twitter:url" content={canonicalUrl} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={fullOgImageUrl} />
+
+    <!-- JSON-LD Structured Data for Google Rich Results -->
+    <script
+      type="application/ld+json"
+      is:inline
+      set:html={JSON.stringify(jsonLdSchema)}
+    />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link

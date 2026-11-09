@@ -12,11 +12,12 @@ const TEMPLATE_ITEMS = getRegistryByCategory("templates")
 ---
 
 <BaseLayout
-  title="Ethereal UI — Modern React Components, Statistical Blocks & SaaS Templates"
-  description="Agentic components, statistical blocks, data tables, calendars, and SaaS dashboards built with Tailwind CSS v4 and Radix UI. Light & Dark mode ready."
+  title="Ethereal UI — Modern React Components, Agentic Blocks, Statistical Charts & SaaS Templates"
+  description="Open-source React UI library featuring 43 accessible Radix primitives, 20 AI/Agentic & Core Banking/HRMS enterprise blocks, 6 SVG charts, and SaaS dashboard templates for Tailwind CSS v4."
 >
   <LandingNav />
 
+  <main>
   <!-- Hero + BoardUI Interactive Visual Bento Showcase + Statistical Blocks -->
   <section class="border-b border-zinc-200/80 py-12 sm:py-16 dark:border-zinc-800/80">
     <div class="mx-auto max-w-[1400px] px-4 sm:px-6">
@@ -60,7 +61,7 @@ const TEMPLATE_ITEMS = getRegistryByCategory("templates")
             Base Primitives
           </span>
           <h2 class="mt-1 text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
-            37 Accessible Components
+            {PRIMITIVE_ITEMS.length} Accessible Components
           </h2>
           <p class="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
             Every component is documented individually with live Light &amp; Dark mode previews, variant sections, and CLI/Manual installation.
@@ -156,7 +157,7 @@ const TEMPLATE_ITEMS = getRegistryByCategory("templates")
                   </p>
                 </div>
                 <div class="mt-4 flex items-center justify-between border-t border-zinc-100 pt-3 text-[11px] font-mono text-zinc-400 dark:border-zinc-800/80">
-                  <span>npx ethereal-ui add {item.slug}</span>
+                  <span>npx @etherealui/cli@latest add {item.slug}</span>
                   <span>&rarr;</span>
                 </div>
               </a>
@@ -165,18 +166,18 @@ const TEMPLATE_ITEMS = getRegistryByCategory("templates")
         </div>
       </div>
 
-      <!-- 10 Blocks -->
+      <!-- Enterprise & Agentic Blocks -->
       <div class="space-y-6">
         <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <span class="text-xs font-semibold uppercase tracking-wider text-blue-600 dark:text-blue-400">
-              Enterprise Blocks
+              Enterprise &amp; Agentic Blocks
             </span>
             <h2 class="mt-1 text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
-              10 Dashboard &amp; SaaS Blocks
+              {BLOCK_ITEMS.length} Dashboard, AI &amp; FinTech/HRMS Blocks
             </h2>
             <p class="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
-              Multi-component organisms for sidebars, KPI grids, filterable data tables, RBAC directories, and billing plans.
+              Composable production blocks for AI Prompt Composers, Agent Progress, Kanban Boards, Core Banking Ledgers, HRMS Directories, and Maker-Checker Approvals.
             </p>
           </div>
           <a
@@ -211,7 +212,7 @@ const TEMPLATE_ITEMS = getRegistryByCategory("templates")
                   </p>
                 </div>
                 <div class="mt-4 flex items-center justify-between border-t border-zinc-100 pt-3 text-[11px] font-mono text-zinc-400 dark:border-zinc-800/80">
-                  <span>npx ethereal-ui add {item.slug}</span>
+                  <span>npx @etherealui/cli@latest add {item.slug}</span>
                   <span>&rarr;</span>
                 </div>
               </a>
@@ -268,16 +269,20 @@ const TEMPLATE_ITEMS = getRegistryByCategory("templates")
       </div>
     </div>
   </section>
+  </main>
 
   <footer class="border-t border-zinc-200 py-8 dark:border-zinc-800">
     <div class="mx-auto flex max-w-[1400px] flex-col items-center justify-between gap-4 px-4 sm:flex-row sm:px-6 text-xs text-zinc-500 dark:text-zinc-400">
       <p>Built by Saeful Rohman (@saefulrdevs). Open-source MIT License.</p>
-      <div class="flex items-center gap-5">
+      <div class="flex flex-wrap items-center justify-center gap-5">
         <a href="/docs/introduction" class="hover:text-zinc-900 dark:hover:text-zinc-100">Docs</a>
         <a href="/components/avatar" class="hover:text-zinc-900 dark:hover:text-zinc-100">Components</a>
         <a href="/blocks" class="hover:text-zinc-900 dark:hover:text-zinc-100">Blocks</a>
+        <a href="/charts" class="hover:text-zinc-900 dark:hover:text-zinc-100">Charts</a>
         <a href="/templates" class="hover:text-zinc-900 dark:hover:text-zinc-100">Templates</a>
         <a href="/blog" class="hover:text-zinc-900 dark:hover:text-zinc-100">Blog</a>
+        <a href="/sitemap.xml" class="hover:text-zinc-900 dark:hover:text-zinc-100">Sitemap</a>
+        <a href="/llms.txt" class="hover:text-zinc-900 dark:hover:text-zinc-100">llms.txt</a>
       </div>
     </div>
   </footer>
