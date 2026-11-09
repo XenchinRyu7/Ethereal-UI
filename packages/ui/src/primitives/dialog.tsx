@@ -32,13 +32,13 @@ const DialogContent = React.forwardRef<
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
-        "fixed left-1/2 top-1/2 z-50 grid w-full max-w-lg -translate-x-1/2 -translate-y-1/2 gap-4 rounded-2xl border border-zinc-200 bg-white p-6 text-zinc-900 shadow-2xl focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100",
+        "fixed left-1/2 top-1/2 z-50 grid w-full max-w-lg -translate-x-1/2 -translate-y-1/2 gap-4 rounded-2xl border border-border bg-card p-6 text-card-foreground shadow-2xl focus:outline-none",
         className
       )}
       {...props}
     >
       {children}
-      <DialogPrimitive.Close className="absolute right-4 top-4 rounded-lg p-1.5 text-zinc-400 transition-colors hover:bg-zinc-100 hover:text-zinc-700 focus:outline-none dark:hover:bg-zinc-800 dark:hover:text-zinc-200 cursor-pointer">
+      <DialogPrimitive.Close className="absolute right-4 top-4 rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus:outline-none cursor-pointer">
         <X className="h-4 w-4" />
         <span className="sr-only">Close</span>
       </DialogPrimitive.Close>
@@ -64,7 +64,7 @@ const DialogFooter = ({
 }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
     className={cn(
-      "flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 pt-3 border-t border-zinc-200 dark:border-zinc-800",
+      "flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 pt-3 border-t border-border",
       className
     )}
     {...props}
@@ -78,7 +78,7 @@ const DialogTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DialogPrimitive.Title
     ref={ref}
-    className={cn("text-base font-semibold leading-none tracking-tight text-zinc-900 dark:text-zinc-100", className)}
+    className={cn("text-base font-semibold leading-none tracking-tight text-foreground", className)}
     {...props}
   />
 ))
@@ -90,7 +90,7 @@ const DialogDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DialogPrimitive.Description
     ref={ref}
-    className={cn("text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed", className)}
+    className={cn("text-xs text-muted-foreground leading-relaxed", className)}
     {...props}
   />
 ))
@@ -114,7 +114,7 @@ export const Accordion: React.FC<{
   return (
     <div
       className={cn(
-        "w-full divide-y divide-zinc-200 rounded-xl border border-zinc-200 bg-white dark:divide-zinc-800 dark:border-zinc-800 dark:bg-zinc-900",
+        "w-full divide-y divide-border rounded-xl border border-border bg-card text-card-foreground shadow-2xs",
         className
       )}
     >
@@ -125,18 +125,18 @@ export const Accordion: React.FC<{
             <button
               type="button"
               onClick={() => setOpenId(isOpen ? null : item.id)}
-              className="flex w-full items-center justify-between px-4 py-3.5 text-left text-xs font-medium text-zinc-900 hover:bg-zinc-50 dark:text-zinc-100 dark:hover:bg-zinc-800/50 cursor-pointer"
+              className="flex w-full items-center justify-between px-4 py-3.5 text-left text-xs font-medium text-foreground hover:bg-accent/50 cursor-pointer"
             >
               <span>{item.title}</span>
               <ChevronDown
                 className={cn(
-                  "h-4 w-4 text-zinc-400 transition-transform",
+                  "h-4 w-4 text-muted-foreground transition-transform",
                   isOpen && "rotate-180"
                 )}
               />
             </button>
             {isOpen && (
-              <div className="px-4 pb-3.5 text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
+              <div className="px-4 pb-3.5 text-xs text-muted-foreground leading-relaxed">
                 {item.content}
               </div>
             )}
@@ -157,15 +157,15 @@ export const Announcement: React.FC<{
   <a
     href={href}
     className={cn(
-      "inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-3 py-1 text-xs text-zinc-700 shadow-2xs transition-colors hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800",
+      "inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-xs text-foreground shadow-2xs transition-colors hover:bg-accent",
       className
     )}
   >
-    <span className="rounded-full bg-blue-100 px-2 py-0.5 text-[10px] font-semibold text-blue-700 dark:bg-blue-500/20 dark:text-blue-300">
+    <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-semibold text-primary">
       {tag}
     </span>
     <span className="font-medium">{title}</span>
-    <ArrowRight className="h-3 w-3 text-zinc-400" />
+    <ArrowRight className="h-3 w-3 text-muted-foreground" />
   </a>
 )
 
@@ -230,7 +230,7 @@ export const Pagination: React.FC<{
         type="button"
         disabled={page <= 1}
         onClick={() => setPage((p) => Math.max(1, p - 1))}
-        className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-zinc-200 bg-white text-zinc-600 hover:bg-zinc-50 disabled:opacity-40 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800 cursor-pointer"
+        className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-border bg-card text-foreground hover:bg-accent disabled:opacity-40 cursor-pointer shadow-2xs"
       >
         <ChevronLeft className="h-3.5 w-3.5" />
       </button>
@@ -245,8 +245,8 @@ export const Pagination: React.FC<{
             className={cn(
               "inline-flex h-8 w-8 items-center justify-center rounded-lg text-xs font-medium transition-colors cursor-pointer",
               active
-                ? "bg-blue-600 text-white"
-                : "border border-zinc-200 bg-white text-zinc-600 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
+                ? "bg-primary text-primary-foreground shadow-xs"
+                : "border border-border bg-card text-foreground hover:bg-accent shadow-2xs"
             )}
           >
             {num}
@@ -257,7 +257,7 @@ export const Pagination: React.FC<{
         type="button"
         disabled={page >= totalPages}
         onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-        className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-zinc-200 bg-white text-zinc-600 hover:bg-zinc-50 disabled:opacity-40 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800 cursor-pointer"
+        className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-border bg-card text-foreground hover:bg-accent disabled:opacity-40 cursor-pointer shadow-2xs"
       >
         <ChevronRight className="h-3.5 w-3.5" />
       </button>

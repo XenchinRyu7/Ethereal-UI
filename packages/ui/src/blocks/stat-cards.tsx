@@ -16,11 +16,11 @@ export interface StatMetricCardProps {
 }
 
 const strokeColors = {
-  blue: "#2563eb",
-  indigo: "#2563eb",
-  emerald: "#10b981",
-  amber: "#f59e0b",
-  rose: "#f43f5e",
+  blue: "var(--primary)",
+  indigo: "var(--primary)",
+  emerald: "var(--chart-3, #10b981)",
+  amber: "var(--chart-4, #f59e0b)",
+  rose: "var(--destructive, #f43f5e)",
 }
 
 export const StatMetricCard: React.FC<StatMetricCardProps> = ({

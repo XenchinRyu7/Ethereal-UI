@@ -163,7 +163,11 @@ const jsonLdSchema = {
       }
 
       // Restore saved Ethereal UI Color Theme preset immediately to avoid FOUC
-      const savedColorTheme = localStorage.getItem("ethereal-color-theme")
+      let savedColorTheme = localStorage.getItem("ethereal-color-theme")
+      if (savedColorTheme === "claude+.css") {
+        savedColorTheme = "claude-plus.css"
+        localStorage.setItem("ethereal-color-theme", "claude-plus.css")
+      }
       if (savedColorTheme && savedColorTheme !== "default") {
         document.documentElement.setAttribute("data-color-theme", savedColorTheme)
         let themeLink = document.getElementById("ethereal-active-theme-css")
@@ -171,15 +175,20 @@ const jsonLdSchema = {
           themeLink = document.createElement("link")
           themeLink.id = "ethereal-active-theme-css"
           themeLink.rel = "stylesheet"
-          document.head.appendChild(themeLink)
         }
-        themeLink.href = "/themes/" + encodeURIComponent(savedColorTheme)
+        themeLink.href = "/themes/" + savedColorTheme
+        document.head.appendChild(themeLink)
+        document.addEventListener("DOMContentLoaded", function () {
+          if (themeLink && themeLink.parentNode === document.head) {
+            document.head.appendChild(themeLink)
+          }
+        })
       } else {
         document.documentElement.setAttribute("data-color-theme", "default")
       }
     </script>
   </head>
-  <body class="min-h-screen overflow-x-hidden bg-white text-zinc-900 antialiased dark:bg-[#09090b] dark:text-zinc-100">
+  <body class="min-h-screen overflow-x-hidden bg-background text-foreground antialiased">
     <slot />
     <ThemeToggle floating client:load />
   </body>

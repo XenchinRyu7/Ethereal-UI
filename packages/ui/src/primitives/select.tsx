@@ -15,14 +15,14 @@ const SelectTrigger = React.forwardRef<
   <SelectPrimitive.Trigger
     ref={ref}
     className={cn(
-      "flex h-9 w-full items-center justify-between gap-2 rounded-lg border border-zinc-200 bg-white px-3 py-2 text-xs text-zinc-900 placeholder:text-zinc-400 transition-colors hover:bg-zinc-50 focus:outline-none focus:ring-2 focus:ring-blue-500/20 disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:bg-zinc-800/60 [&>span]:line-clamp-1 cursor-pointer",
+      "flex h-9 w-full items-center justify-between gap-2 rounded-lg border border-input bg-background px-3 py-2 text-xs text-foreground placeholder:text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus:outline-none focus:ring-2 focus:ring-ring/20 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1 cursor-pointer shadow-2xs",
       className
     )}
     {...props}
   >
     {children}
     <SelectPrimitive.Icon asChild>
-      <ChevronDown className="h-3.5 w-3.5 text-zinc-400 shrink-0" />
+      <ChevronDown className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
     </SelectPrimitive.Icon>
   </SelectPrimitive.Trigger>
 ))
@@ -36,7 +36,7 @@ const SelectContent = React.forwardRef<
     <SelectPrimitive.Content
       ref={ref}
       className={cn(
-        "relative z-50 max-h-72 min-w-[8rem] overflow-hidden rounded-xl border border-zinc-200 bg-white text-zinc-900 shadow-lg dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100",
+        "relative z-50 max-h-72 min-w-[8rem] overflow-hidden rounded-xl border border-border bg-popover text-popover-foreground shadow-lg",
         position === "popper" &&
           "data-[side=bottom]:translate-y-1 data-[side=top]:-translate-y-1",
         className
@@ -65,14 +65,14 @@ const SelectItem = React.forwardRef<
   <SelectPrimitive.Item
     ref={ref}
     className={cn(
-      "relative flex w-full cursor-pointer select-none items-center rounded-lg py-1.5 pl-8 pr-2.5 text-xs text-zinc-700 outline-none transition-colors focus:bg-zinc-100 focus:text-zinc-900 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 dark:text-zinc-200 dark:focus:bg-zinc-800 dark:focus:text-white",
+      "relative flex w-full cursor-pointer select-none items-center rounded-lg py-1.5 pl-8 pr-2.5 text-xs text-popover-foreground outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
       className
     )}
     {...props}
   >
     <span className="absolute left-2.5 flex h-3.5 w-3.5 items-center justify-center">
       <SelectPrimitive.ItemIndicator>
-        <Check className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
+        <Check className="h-3.5 w-3.5 text-primary" />
       </SelectPrimitive.ItemIndicator>
     </span>
     <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
@@ -120,35 +120,35 @@ const Combobox: React.FC<ComboboxProps> = ({
         <button
           type="button"
           className={cn(
-            "flex h-9 w-full items-center justify-between gap-2 rounded-lg border border-zinc-200 bg-white px-3 py-2 text-xs text-zinc-900 transition-colors hover:bg-zinc-50 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:bg-zinc-800/60 cursor-pointer",
+            "flex h-9 w-full items-center justify-between gap-2 rounded-lg border border-input bg-background px-3 py-2 text-xs text-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus:outline-none focus:ring-2 focus:ring-ring/20 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer shadow-2xs",
             className
           )}
         >
-          <span className={cn("truncate", !selected && "text-zinc-400")}>
+          <span className={cn("truncate", !selected && "text-muted-foreground")}>
             {selected ? selected.label : placeholder}
           </span>
-          <ChevronsUpDown className="h-3.5 w-3.5 text-zinc-400 shrink-0" />
+          <ChevronsUpDown className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
         </button>
       </PopoverPrimitive.Trigger>
       <PopoverPrimitive.Portal>
         <PopoverPrimitive.Content
           align="start"
           sideOffset={6}
-          className="z-50 w-64 rounded-xl border border-zinc-200 bg-white p-1.5 text-zinc-900 shadow-lg focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+          className="z-50 w-64 rounded-xl border border-border bg-popover p-1.5 text-popover-foreground shadow-lg focus:outline-none"
         >
-          <div className="flex items-center gap-2 border-b border-zinc-200 px-2.5 py-1.5 dark:border-zinc-800">
-            <Search className="h-3.5 w-3.5 text-zinc-400" />
+          <div className="flex items-center gap-2 border-b border-border px-2.5 py-1.5">
+            <Search className="h-3.5 w-3.5 text-muted-foreground" />
             <input
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder={searchPlaceholder}
-              className="w-full bg-transparent text-xs text-zinc-900 placeholder:text-zinc-400 focus:outline-none dark:text-zinc-100"
+              className="w-full bg-transparent text-xs text-popover-foreground placeholder:text-muted-foreground focus:outline-none"
             />
           </div>
           <div className="mt-1 max-h-52 overflow-y-auto space-y-0.5">
             {filtered.length === 0 ? (
-              <div className="py-4 text-center text-xs text-zinc-400">
+              <div className="py-4 text-center text-xs text-muted-foreground">
                 No matching items found.
               </div>
             ) : (
@@ -166,21 +166,21 @@ const Combobox: React.FC<ComboboxProps> = ({
                     className={cn(
                       "flex w-full items-center justify-between rounded-lg px-2.5 py-1.5 text-xs transition-colors cursor-pointer",
                       isSelected
-                        ? "bg-blue-50 text-blue-700 dark:bg-blue-500/15 dark:text-blue-300"
-                        : "text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800"
+                        ? "bg-primary/10 text-primary"
+                        : "text-popover-foreground hover:bg-accent hover:text-accent-foreground"
                     )}
                   >
                     <span className="flex items-center gap-2">
                       <Check
                         className={cn(
                           "h-3.5 w-3.5",
-                          isSelected ? "opacity-100 text-blue-600 dark:text-blue-400" : "opacity-0"
+                          isSelected ? "opacity-100 text-primary" : "opacity-0"
                         )}
                       />
                       {opt.label}
                     </span>
                     {opt.badge && (
-                      <span className="rounded bg-zinc-100 px-1.5 py-0.5 font-mono text-[10px] text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400">
+                      <span className="rounded bg-muted px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">
                         {opt.badge}
                       </span>
                     )}

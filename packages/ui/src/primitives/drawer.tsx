@@ -21,14 +21,14 @@ const DrawerContent = React.forwardRef<
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
-        "fixed inset-y-0 z-50 flex h-full w-full max-w-md flex-col border-zinc-200 bg-white p-6 text-zinc-900 shadow-2xl focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100",
+        "fixed inset-y-0 z-50 flex h-full w-full max-w-md flex-col border-border bg-card p-6 text-card-foreground shadow-2xl focus:outline-none",
         side === "right" ? "right-0 border-l" : "left-0 border-r",
         className
       )}
       {...props}
     >
       {children}
-      <DialogPrimitive.Close className="absolute right-4 top-4 rounded-lg p-1.5 text-zinc-400 transition-colors hover:bg-zinc-100 hover:text-zinc-700 focus:outline-none dark:hover:bg-zinc-800 dark:hover:text-zinc-200 cursor-pointer">
+      <DialogPrimitive.Close className="absolute right-4 top-4 rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus:outline-none cursor-pointer">
         <X className="h-4 w-4" />
         <span className="sr-only">Close drawer</span>
       </DialogPrimitive.Close>
@@ -42,7 +42,7 @@ const DrawerHeader = ({
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
-    className={cn("flex flex-col space-y-1.5 border-b border-zinc-200 pb-4 dark:border-zinc-800", className)}
+    className={cn("flex flex-col space-y-1.5 border-b border-border pb-4", className)}
     {...props}
   />
 )
@@ -54,7 +54,7 @@ const DrawerTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DialogPrimitive.Title
     ref={ref}
-    className={cn("text-base font-semibold text-zinc-900 dark:text-zinc-100", className)}
+    className={cn("text-base font-semibold text-foreground", className)}
     {...props}
   />
 ))
@@ -66,7 +66,7 @@ const DrawerDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DialogPrimitive.Description
     ref={ref}
-    className={cn("text-xs text-zinc-500 dark:text-zinc-400", className)}
+    className={cn("text-xs text-muted-foreground", className)}
     {...props}
   />
 ))
@@ -77,7 +77,7 @@ const DrawerFooter = ({
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
-    className={cn("mt-auto flex items-center justify-end gap-2 border-t border-zinc-200 pt-4 dark:border-zinc-800", className)}
+    className={cn("mt-auto flex items-center justify-end gap-2 border-t border-border pt-4", className)}
     {...props}
   />
 )

@@ -21,6 +21,7 @@ import {
   getSavedDarkMode,
   applyColorTheme,
   setDarkModePreference,
+  syncThemeGoogleFonts,
 } from "../utils/theme-manager"
 
 const QUICK_TAGS = [
@@ -52,7 +53,12 @@ export const ThemeToggle: React.FC<{ floating?: boolean }> = ({
 
   React.useEffect(() => {
     setDark(getSavedDarkMode())
-    setActiveFileName(getSavedColorTheme())
+    const initialTheme = getSavedColorTheme()
+    setActiveFileName(initialTheme)
+    if (initialTheme && initialTheme !== "default") {
+      applyColorTheme(initialTheme)
+    }
+    syncThemeGoogleFonts()
 
     loadThemesManifest().then((loaded) => {
       setThemes(loaded)

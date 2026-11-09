@@ -23,6 +23,13 @@ import {
   applyColorTheme,
   setDarkModePreference,
 } from "../utils/theme-manager"
+import {
+  Button,
+  Badge,
+  Progress,
+  Switch,
+  AreaStatisticChart,
+} from "@etherealui/react"
 
 const POPULAR_TAGS = [
   "all",
@@ -338,6 +345,64 @@ export const ThemeExplorerShowcase: React.FC = () => {
               )
             })}
           </div>
+        </div>
+      </div>
+
+      {/* Live Component, Shadow, Radius & Chart Preview Strip */}
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+        <div className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-md dark:border-zinc-800 dark:bg-zinc-900">
+          <div className="flex items-center justify-between">
+            <div>
+              <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400">
+                Primitives & Shadow Token
+              </span>
+              <h3 className="mt-0.5 text-sm font-bold text-zinc-900 dark:text-zinc-100">
+                Interactive Controls
+              </h3>
+            </div>
+            <Badge variant="default">Active Theme</Badge>
+          </div>
+          <p className="mt-2 text-xs text-zinc-500 dark:text-zinc-400">
+            Buttons, badges, switches, border-radius (<code className="font-mono">--radius</code>), and elevation shadows (<code className="font-mono">--shadow-*</code>) adapt automatically.
+          </p>
+          <div className="mt-4 flex flex-wrap items-center gap-2">
+            <Button size="sm" variant="primary">
+              Primary Action
+            </Button>
+            <Button size="sm" variant="secondary">
+              Secondary
+            </Button>
+            <Button size="sm" variant="outline">
+              Outline
+            </Button>
+          </div>
+          <div className="mt-4 space-y-2 border-t border-zinc-200/80 pt-3 dark:border-zinc-800">
+            <div className="flex items-center justify-between text-xs">
+              <span className="font-medium text-zinc-700 dark:text-zinc-300">
+                Theme Token Sync
+              </span>
+              <Switch defaultChecked aria-label="Theme token sync" />
+            </div>
+            <Progress value={78} size="sm" />
+          </div>
+        </div>
+
+        <div className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-md dark:border-zinc-800 dark:bg-zinc-900 lg:col-span-2">
+          <AreaStatisticChart
+            title="Theme-Aware Telemetry & Chart Tokens"
+            subtitle="Live SVG chart bound to var(--primary) & var(--chart-2)"
+            value="99.98%"
+            change="+14.2%"
+            data={[
+              { label: "Mon", value: 48, secondary: 34 },
+              { label: "Tue", value: 64, secondary: 42 },
+              { label: "Wed", value: 58, secondary: 49 },
+              { label: "Thu", value: 82, secondary: 56 },
+              { label: "Fri", value: 76, secondary: 61 },
+              { label: "Sat", value: 94, secondary: 68 },
+              { label: "Sun", value: 108, secondary: 74 },
+            ]}
+          />
         </div>
       </div>
 

@@ -15,18 +15,18 @@ const avatarVariants = cva(
       },
       tint: {
         neutral:
-          "bg-zinc-200/80 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-200",
+          "bg-secondary text-secondary-foreground",
         blue:
-          "bg-blue-100 text-blue-700 dark:bg-blue-500/20 dark:text-blue-300",
+          "bg-primary/10 text-primary",
         emerald:
-          "bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-300",
+          "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
         amber:
-          "bg-amber-100 text-amber-700 dark:bg-amber-500/20 dark:text-amber-300",
+          "bg-amber-500/10 text-amber-600 dark:text-amber-400",
       },
       ring: {
         none: "",
-        subtle: "ring-1 ring-zinc-200 dark:ring-zinc-800",
-        glow: "ring-2 ring-blue-500/40",
+        subtle: "ring-1 ring-border",
+        glow: "ring-2 ring-primary/40",
         emerald: "ring-2 ring-emerald-500/40",
       },
     },

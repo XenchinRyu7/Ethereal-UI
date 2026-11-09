@@ -15,7 +15,7 @@ const DropdownMenuContent = React.forwardRef<
       ref={ref}
       sideOffset={sideOffset}
       className={cn(
-        "z-50 min-w-[11rem] overflow-hidden rounded-xl border border-zinc-200 bg-white p-1 text-zinc-900 shadow-lg focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100",
+        "z-50 min-w-[11rem] overflow-hidden rounded-xl border border-border bg-popover p-1 text-popover-foreground shadow-lg focus:outline-none",
         className
       )}
       {...props}
@@ -36,15 +36,15 @@ const DropdownMenuItem = React.forwardRef<
     className={cn(
       "relative flex cursor-pointer select-none items-center justify-between gap-3 rounded-lg px-2.5 py-1.5 text-xs outline-none transition-colors data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
       destructive
-        ? "text-rose-600 focus:bg-rose-50 dark:text-rose-400 dark:focus:bg-rose-500/15"
-        : "text-zinc-700 focus:bg-zinc-100 focus:text-zinc-900 dark:text-zinc-200 dark:focus:bg-zinc-800 dark:focus:text-white",
+        ? "text-destructive focus:bg-destructive/10 focus:text-destructive"
+        : "text-popover-foreground focus:bg-accent focus:text-accent-foreground",
       className
     )}
     {...props}
   >
     <span className="flex items-center gap-2">{children}</span>
     {shortcut && (
-      <span className="font-mono text-[10px] text-zinc-400">{shortcut}</span>
+      <span className="font-mono text-[10px] text-muted-foreground">{shortcut}</span>
     )}
   </DropdownMenuPrimitive.Item>
 ))
@@ -56,7 +56,7 @@ const DropdownMenuSeparator = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DropdownMenuPrimitive.Separator
     ref={ref}
-    className={cn("-mx-1 my-1 h-px bg-zinc-200 dark:bg-zinc-800", className)}
+    className={cn("-mx-1 my-1 h-px bg-border", className)}
     {...props}
   />
 ))
@@ -68,7 +68,7 @@ const DropdownMenuLabel = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DropdownMenuPrimitive.Label
     ref={ref}
-    className={cn("px-2.5 py-1.5 text-[11px] font-semibold text-zinc-400", className)}
+    className={cn("px-2.5 py-1.5 text-[11px] font-semibold text-muted-foreground", className)}
     {...props}
   />
 ))

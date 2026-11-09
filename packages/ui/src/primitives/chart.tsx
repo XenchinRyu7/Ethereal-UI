@@ -177,8 +177,8 @@ export const AreaStatisticChart: React.FC<AreaStatisticChartProps> = ({
         >
           <defs>
             <linearGradient id="etherealAreaGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#2563eb" stopOpacity="0.28" />
-              <stop offset="100%" stopColor="#2563eb" stopOpacity="0.0" />
+              <stop offset="0%" stopColor="var(--primary)" stopOpacity="0.28" />
+              <stop offset="100%" stopColor="var(--primary)" stopOpacity="0.0" />
             </linearGradient>
           </defs>
 
@@ -208,7 +208,7 @@ export const AreaStatisticChart: React.FC<AreaStatisticChartProps> = ({
           <path
             d={linePath}
             fill="none"
-            stroke="#2563eb"
+            stroke="var(--primary)"
             strokeWidth="2.5"
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -228,7 +228,7 @@ export const AreaStatisticChart: React.FC<AreaStatisticChartProps> = ({
                     x2={pt.x}
                     y1={padY}
                     y2={height - padY}
-                    stroke="#2563eb"
+                    stroke="var(--primary)"
                     strokeWidth="1"
                     strokeDasharray="2 2"
                   />
@@ -464,7 +464,7 @@ export const LineStatisticChart: React.FC<LineStatisticChartProps> = ({
           <path
             d={p95Path}
             fill="none"
-            stroke="#2563eb"
+            stroke="var(--primary)"
             strokeWidth="2.25"
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -472,7 +472,7 @@ export const LineStatisticChart: React.FC<LineStatisticChartProps> = ({
           <path
             d={p50Path}
             fill="none"
-            stroke="#10b981"
+            stroke="var(--chart-2, #10b981)"
             strokeWidth="2.25"
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -532,9 +532,9 @@ export interface DonutSegment {
 }
 
 const DEFAULT_DONUT_SEGMENTS: DonutSegment[] = [
-  { label: "Enterprise Cloud", value: 48, color: "#2563eb", dotClass: "bg-blue-600" },
-  { label: "Growth Team", value: 32, color: "#8b5cf6", dotClass: "bg-violet-500" },
-  { label: "Self-Serve Pro", value: 20, color: "#10b981", dotClass: "bg-emerald-500" },
+  { label: "Enterprise Cloud", value: 48, color: "var(--primary)", dotClass: "bg-blue-600" },
+  { label: "Growth Team", value: 32, color: "var(--chart-2, #8b5cf6)", dotClass: "bg-violet-500" },
+  { label: "Self-Serve Pro", value: 20, color: "var(--chart-3, #10b981)", dotClass: "bg-emerald-500" },
 ]
 
 export const DonutStatisticChart: React.FC<{
@@ -687,7 +687,7 @@ export const RadialStatisticChart: React.FC<{
               cy="64"
               r="52"
               fill="none"
-              stroke="#2563eb"
+              stroke="var(--primary)"
               strokeWidth="10"
               strokeDasharray="326"
               strokeDashoffset="22"
@@ -707,7 +707,7 @@ export const RadialStatisticChart: React.FC<{
               cy="64"
               r="38"
               fill="none"
-              stroke="#10b981"
+              stroke="var(--chart-2, #10b981)"
               strokeWidth="10"
               strokeDasharray="238"
               strokeDashoffset="28"

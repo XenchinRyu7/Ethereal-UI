@@ -1,9 +1,9 @@
 /**
- * Ethereal UI Theme: CLAUDE PLUS
- * Author: Khoản Huỳnh Đức
- * Theme ID: cmnfqx6rs000004jpcbdehgqb
- * Tags: minimal, professional, cool
- * Likes: 18
+ * Ethereal UI Theme: Claude +
+ * Author: Luis Llanes
+ * Theme ID: cmdght103000n04lh3e2ae93r
+ * Tags: minimal, professional, corporate, startup
+ * Likes: 381
  */
 
 :root {
@@ -39,10 +39,10 @@
   --sidebar-accent-foreground: oklch(0.3250 0 0);
   --sidebar-border: oklch(0.9401 0 0);
   --sidebar-ring: oklch(0.7731 0 0);
-  --font-sans: Space Grotesk, ui-sans-serif, sans-serif, system-ui;
+  --font-sans: Outfit, sans-serif;
   --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
-  --font-mono: JetBrains Mono, ui-monospace, monospace;
-  --radius: 0rem;
+  --font-mono: Geist Mono, ui-monospace, monospace;
+  --radius: 1rem;
   --shadow-x: 0;
   --shadow-y: 1px;
   --shadow-blur: 3px;
@@ -69,7 +69,7 @@
   --popover: oklch(0.3085 0.0035 106.6039);
   --popover-foreground: oklch(0.9211 0.0040 106.4783);
   --primary: oklch(0.6724 0.1308 38.7559);
-  --primary-foreground: oklch(0.9881 0 0);
+  --primary-foreground: oklch(0.1908 0.0020 106.5860);
   --secondary: oklch(0.9818 0.0054 95.0986);
   --secondary-foreground: oklch(0.3085 0.0035 106.6039);
   --muted: oklch(0.2213 0.0038 106.7070);
@@ -83,9 +83,9 @@
   --ring: oklch(0.6724 0.1308 38.7559);
   --chart-1: oklch(0.5583 0.1276 42.9956);
   --chart-2: oklch(0.6898 0.1581 290.4107);
-  --chart-3: oklch(0.6368 0.2078 25.3313);
-  --chart-4: oklch(0.6724 0.1308 38.7559);
-  --chart-5: oklch(0.4336 0.0113 100.2196);
+  --chart-3: oklch(0.2130 0.0078 95.4245);
+  --chart-4: oklch(0.3074 0.0516 289.3230);
+  --chart-5: oklch(0.5608 0.1348 42.0584);
   --sidebar: oklch(0.2357 0.0024 67.7076);
   --sidebar-foreground: oklch(0.8074 0.0142 93.0137);
   --sidebar-primary: oklch(0.3250 0 0);
@@ -94,10 +94,10 @@
   --sidebar-accent-foreground: oklch(0.8074 0.0142 93.0137);
   --sidebar-border: oklch(0.9401 0 0);
   --sidebar-ring: oklch(0.7731 0 0);
-  --font-sans: Space Grotesk, ui-sans-serif, sans-serif, system-ui;
+  --font-sans: Outfit, sans-serif;
   --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
-  --font-mono: JetBrains Mono, ui-monospace, monospace;
-  --radius: 0rem;
+  --font-mono: Geist Mono, ui-monospace, monospace;
+  --radius: 1rem;
   --shadow-x: 0;
   --shadow-y: 1px;
   --shadow-blur: 3px;

@@ -21,99 +21,45 @@ import {
   Layers,
   ShieldCheck,
   Zap,
+  Palette,
+  Shuffle,
 } from "lucide-react"
 import {
   cn,
   Button,
+  Badge,
+  Avatar,
+  Checkbox,
+  Progress,
+  CircularProgress,
+  Chip,
   KanbanBoardBlock,
   PromptComposerBlock,
   AgentProgressBlock,
   TokenUsageBlock,
 } from "@etherealui/react"
+import {
+  getSavedColorTheme,
+  applyColorTheme,
+  loadThemesManifest,
+  type ThemeManifestItem,
+} from "../utils/theme-manager"
 
-type AccentColor = "blue" | "orange" | "violet" | "emerald" | "rose" | "cyan"
-
-const ACCENT_PALETTE: Record<
-  AccentColor,
-  {
-    name: string
-    dot: string
-    bg: string
-    bgHover: string
-    softBg: string
-    text: string
-    border: string
-    ring: string
-    hex: string
-  }
-> = {
-  blue: {
-    name: "Electric Blue",
-    dot: "bg-blue-600",
-    bg: "bg-blue-600",
-    bgHover: "hover:bg-blue-700",
-    softBg: "bg-blue-500/10",
-    text: "text-blue-600 dark:text-blue-400",
-    border: "border-blue-500/30",
-    ring: "ring-blue-500/30",
-    hex: "#2563eb",
-  },
-  orange: {
-    name: "Board Amber",
-    dot: "bg-amber-500",
-    bg: "bg-amber-500",
-    bgHover: "hover:bg-amber-600",
-    softBg: "bg-amber-500/10",
-    text: "text-amber-600 dark:text-amber-400",
-    border: "border-amber-500/30",
-    ring: "ring-amber-500/30",
-    hex: "#f59e0b",
-  },
-  violet: {
-    name: "Royal Violet",
-    dot: "bg-violet-600",
-    bg: "bg-violet-600",
-    bgHover: "hover:bg-violet-700",
-    softBg: "bg-violet-500/10",
-    text: "text-violet-600 dark:text-violet-400",
-    border: "border-violet-500/30",
-    ring: "ring-violet-500/30",
-    hex: "#7c3aed",
-  },
-  emerald: {
-    name: "Emerald Pulse",
-    dot: "bg-emerald-600",
-    bg: "bg-emerald-600",
-    bgHover: "hover:bg-emerald-700",
-    softBg: "bg-emerald-500/10",
-    text: "text-emerald-600 dark:text-emerald-400",
-    border: "border-emerald-500/30",
-    ring: "ring-emerald-500/30",
-    hex: "#059669",
-  },
-  rose: {
-    name: "Crimson Rose",
-    dot: "bg-rose-600",
-    bg: "bg-rose-600",
-    bgHover: "hover:bg-rose-700",
-    softBg: "bg-rose-500/10",
-    text: "text-rose-600 dark:text-rose-400",
-    border: "border-rose-500/30",
-    ring: "ring-rose-500/30",
-    hex: "#e11d48",
-  },
-  cyan: {
-    name: "Cyber Cyan",
-    dot: "bg-cyan-600",
-    bg: "bg-cyan-600",
-    bgHover: "hover:bg-cyan-700",
-    softBg: "bg-cyan-500/10",
-    text: "text-cyan-600 dark:text-cyan-400",
-    border: "border-cyan-500/30",
-    ring: "ring-cyan-500/30",
-    hex: "#0891b2",
-  },
+interface QuickThemePreset {
+  fileName: string
+  name: string
+  color: string
 }
+
+const QUICK_THEME_PRESETS: QuickThemePreset[] = [
+  { fileName: "default", name: "Ethereal Default", color: "#2563eb" },
+  { fileName: "claude-plus.css", name: "Claude +", color: "#c96442" },
+  { fileName: "light-green.css", name: "Light Green", color: "#84cc16" },
+  { fileName: "astrovista.css", name: "AstroVista", color: "#df6035" },
+  { fileName: "tiesen.css", name: "Tiesen Indigo", color: "#1f42d0" },
+  { fileName: "qrafthive.css", name: "Qrafthive Warm", color: "#d87943" },
+  { fileName: "zen-inspired-theme.css", name: "Zen Monochrome", color: "#2e2e2e" },
+]
 
 const HEATMAP_LEVELS = [
   0, 1, 2, 3, 2, 1, 3, 4, 2, 1, 0, 2, 3, 4, 3, 2, 1, 4, 3, 2, 4, 3, 1, 2,
@@ -122,7 +68,8 @@ const HEATMAP_LEVELS = [
 ]
 
 export const LandingBentoShowcase: React.FC = () => {
-  const [accent, setAccent] = React.useState<AccentColor>("blue")
+  const [activeThemeFile, setActiveThemeFile] = React.useState("default")
+  const [allThemes, setAllThemes] = React.useState<ThemeManifestItem[]>([])
   const [copiedInstall, setCopiedInstall] = React.useState(false)
   const [activeStep, setActiveStep] = React.useState(3)
   const [selectedRows, setSelectedRows] = React.useState<string[]>(["c1"])
@@ -131,7 +78,18 @@ export const LandingBentoShowcase: React.FC = () => {
   const [selectedDay, setSelectedDay] = React.useState(14)
   const [statRange, setStatRange] = React.useState<"24h" | "7d" | "30d">("30d")
 
-  const theme = ACCENT_PALETTE[accent]
+  React.useEffect(() => {
+    setActiveThemeFile(getSavedColorTheme())
+    loadThemesManifest().then((items) => setAllThemes(items))
+
+    const handleThemeChange = (e: Event) => {
+      const custom = e as CustomEvent<{ colorTheme: string }>
+      setActiveThemeFile(custom.detail?.colorTheme || getSavedColorTheme())
+    }
+    window.addEventListener("ethereal-theme-change", handleThemeChange)
+    return () =>
+      window.removeEventListener("ethereal-theme-change", handleThemeChange)
+  }, [])
 
   // Auto-animate step progress like a live agentic workflow
   React.useEffect(() => {
@@ -140,6 +98,19 @@ export const LandingBentoShowcase: React.FC = () => {
     }, 2200)
     return () => clearInterval(timer)
   }, [])
+
+  const selectThemePreset = (fileName: string) => {
+    setActiveThemeFile(fileName)
+    applyColorTheme(fileName)
+  }
+
+  const pickRandomTheme = () => {
+    if (allThemes.length === 0) return
+    const chosen = allThemes[Math.floor(Math.random() * allThemes.length)]
+    if (chosen) {
+      selectThemePreset(chosen.fileName)
+    }
+  }
 
   const toggleRow = (id: string) => {
     setSelectedRows((prev) =>
@@ -155,18 +126,13 @@ export const LandingBentoShowcase: React.FC = () => {
 
   return (
     <div className="space-y-16">
-      {/* 1. Hero Action & Interactive CLI + Theme Accent Bar */}
+      {/* 1. Hero Action & Interactive CLI + Live Theme Preset Bar */}
       <div className="mx-auto flex max-w-3xl flex-col items-center text-center space-y-6">
         <div className="inline-flex items-center gap-2 rounded-full border border-zinc-200/90 bg-zinc-50/90 px-3.5 py-1.5 text-xs font-medium text-zinc-700 shadow-2xs backdrop-blur-xs dark:border-zinc-800 dark:bg-zinc-900/90 dark:text-zinc-300">
-          <span
-            className={cn(
-              "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-semibold text-white",
-              theme.bg
-            )}
-          >
-            <Sparkles className="h-2.5 w-2.5" /> v0.0.4
-          </span>
-          <span>37+ Components, 14 AI, Statistical &amp; SaaS Blocks, Light &amp; Dark Mode</span>
+          <Badge variant="blue" className="rounded-full px-2 py-0.5 text-[10px] font-semibold">
+            <Sparkles className="h-2.5 w-2.5" /> v0.0.5
+          </Badge>
+          <span>42 Components, 16 Agentic &amp; Enterprise Blocks, 870+ Themes</span>
           <ChevronRight className="h-3.5 w-3.5 text-zinc-400" />
         </div>
 
@@ -180,26 +146,20 @@ export const LandingBentoShowcase: React.FC = () => {
           <strong className="font-medium text-zinc-900 dark:text-zinc-100">Radix UI</strong>.
         </p>
 
-        {/* BoardUI-style dual CTA buttons */}
+        {/* CTA Buttons using @etherealui/react Button Primitive */}
         <div className="flex flex-wrap items-center justify-center gap-3 pt-1">
-          <a
-            href="/docs/installation"
-            className={cn(
-              "inline-flex h-10 items-center gap-2 rounded-xl px-5 text-xs font-semibold text-white shadow-sm transition-all cursor-pointer",
-              theme.bg,
-              theme.bgHover
-            )}
-          >
-            <Zap className="h-3.5 w-3.5" />
-            Install for free
-          </a>
-          <a
-            href="/components/avatar"
-            className="inline-flex h-10 items-center gap-2 rounded-xl border border-zinc-200 bg-white px-5 text-xs font-semibold text-zinc-800 shadow-2xs transition-colors hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:bg-zinc-800"
-          >
-            <Layers className="h-3.5 w-3.5 text-zinc-500 dark:text-zinc-400" />
-            Browse all components
-          </a>
+          <Button asChild variant="primary" size="lg" className="rounded-xl">
+            <a href="/docs/installation">
+              <Zap className="h-3.5 w-3.5" />
+              Install for free
+            </a>
+          </Button>
+          <Button asChild variant="outline" size="lg" className="rounded-xl">
+            <a href="/components/avatar">
+              <Layers className="h-3.5 w-3.5 text-zinc-500 dark:text-zinc-400" />
+              Browse all components
+            </a>
+          </Button>
           <button
             type="button"
             onClick={() => {
@@ -207,9 +167,9 @@ export const LandingBentoShowcase: React.FC = () => {
               setCopiedInstall(true)
               setTimeout(() => setCopiedInstall(false), 1800)
             }}
-            className="inline-flex h-10 items-center gap-2.5 rounded-xl border border-zinc-200/90 bg-zinc-50 px-3.5 font-mono text-xs text-zinc-600 transition-colors hover:border-zinc-300 hover:text-zinc-500 dark:border-zinc-800 dark:bg-zinc-900/60 dark:text-zinc-300 dark:hover:border-zinc-700 cursor-pointer"
+            className="inline-flex h-10 items-center gap-2.5 rounded-xl border border-zinc-200/90 bg-zinc-50 px-3.5 font-mono text-xs text-zinc-600 transition-colors hover:border-zinc-300 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-900/60 dark:text-zinc-300 dark:hover:border-zinc-700 cursor-pointer"
           >
-            <Terminal className={cn("h-3.5 w-3.5", theme.text)} />
+            <Terminal className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
             <span>npx @etherealui/cli@latest init</span>
             {copiedInstall ? (
               <Check className="h-3.5 w-3.5 text-emerald-500" />
@@ -219,51 +179,65 @@ export const LandingBentoShowcase: React.FC = () => {
           </button>
         </div>
 
-        {/* Interactive Accent Color Switcher Pill (BoardUI style) */}
-        <div className="inline-flex items-center gap-2 rounded-full border border-zinc-200/90 bg-white/90 px-3 py-1.5 shadow-sm backdrop-blur-md dark:border-zinc-800 dark:bg-zinc-900/90">
-          <span className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400 pr-1">
-            Live Accent:
+        {/* Live Ethereal UI Theme Switcher Pill Bar */}
+        <div className="inline-flex flex-wrap items-center justify-center gap-2 rounded-full border border-zinc-200/90 bg-white/90 px-3.5 py-1.5 shadow-sm backdrop-blur-md dark:border-zinc-800 dark:bg-zinc-900/90">
+          <span className="inline-flex items-center gap-1 text-[11px] font-medium text-zinc-500 dark:text-zinc-400 pr-1">
+            <Palette className="h-3 w-3 text-blue-600 dark:text-blue-400" />
+            Live Theme:
           </span>
-          {(Object.keys(ACCENT_PALETTE) as AccentColor[]).map((key) => {
-            const item = ACCENT_PALETTE[key]
-            const active = accent === key
+          {QUICK_THEME_PRESETS.map((preset) => {
+            const active = activeThemeFile === preset.fileName
             return (
               <button
-                key={key}
+                key={preset.fileName}
                 type="button"
-                onClick={() => setAccent(key)}
-                title={item.name}
-                aria-label={`Select ${item.name} theme`}
+                onClick={() => selectThemePreset(preset.fileName)}
+                title={preset.name}
+                aria-label={`Apply ${preset.name} theme`}
+                style={{ backgroundColor: preset.color }}
                 className={cn(
-                  "h-5 w-5 rounded-full transition-transform cursor-pointer",
-                  item.dot,
+                  "h-5 w-5 rounded-full border border-black/15 transition-transform cursor-pointer dark:border-white/20",
                   active
-                    ? "scale-110 ring-2 ring-offset-2 ring-zinc-900 dark:ring-white dark:ring-offset-zinc-950"
-                    : "opacity-75 hover:opacity-100 hover:scale-105"
+                    ? "scale-115 ring-2 ring-offset-2 ring-zinc-900 dark:ring-white dark:ring-offset-zinc-950"
+                    : "opacity-80 hover:opacity-100 hover:scale-105"
                 )}
               />
             )
           })}
+          <button
+            type="button"
+            onClick={pickRandomTheme}
+            title="Random Theme from 870+ Presets"
+            className="inline-flex h-6 items-center gap-1 rounded-full border border-zinc-200 bg-zinc-50 px-2.5 text-[10px] font-semibold text-zinc-700 hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200 cursor-pointer"
+          >
+            <Shuffle className="h-2.5 w-2.5" />
+            <span>Random</span>
+          </button>
+          <a
+            href="/themes"
+            className="text-[11px] font-semibold text-blue-600 hover:underline dark:text-blue-400 pl-1"
+          >
+            870+ Themes &rarr;
+          </a>
         </div>
       </div>
 
-      {/* 2. BoardUI-Style 4-Column Interactive Visual Bento Grid (8 Live Widget Cards) */}
+      {/* 2. Interactive Visual Bento Grid Composed with @etherealui/react Primitives */}
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {/* Card 1: Composer Attachments & Upload Tile */}
         <div className="group flex flex-col justify-between rounded-3xl border border-zinc-200/90 bg-zinc-50/50 p-3 transition-all duration-200 hover:border-zinc-300 hover:shadow-md dark:border-zinc-800/90 dark:bg-zinc-900/40 dark:hover:border-zinc-700">
           <div className="relative h-52 overflow-hidden rounded-2xl border border-zinc-200/80 bg-white p-3.5 shadow-2xs dark:border-zinc-800 dark:bg-zinc-950">
             <div className="flex items-center gap-1.5 text-[11px] text-zinc-400 mb-2.5">
-              <FolderKanban className="h-3 w-3" />
+              <FolderKanban className="h-3 w-3 text-blue-600 dark:text-blue-400" />
               <span>main</span>
               <span>/</span>
               <span className="font-medium text-zinc-700 dark:text-zinc-300">ethereal-ui</span>
             </div>
 
-            {/* Animated Floating Attachment Tiles */}
             <div className="grid grid-cols-3 gap-2 mb-3">
               <div className="rounded-xl border border-zinc-200 bg-zinc-50 p-2 transition-transform duration-300 group-hover:-translate-y-0.5 dark:border-zinc-800 dark:bg-zinc-900">
                 <div className="flex items-center justify-between">
-                  <ImageIcon className={cn("h-3.5 w-3.5", theme.text)} />
+                  <ImageIcon className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
                   <span className="text-[9px] font-mono text-emerald-600 dark:text-emerald-400">100%</span>
                 </div>
                 <p className="mt-1.5 truncate text-[10px] font-medium text-zinc-700 dark:text-zinc-200">
@@ -274,15 +248,13 @@ export const LandingBentoShowcase: React.FC = () => {
 
               <div className="rounded-xl border border-zinc-200 bg-zinc-50 p-2 transition-transform duration-300 delay-75 group-hover:-translate-y-0.5 dark:border-zinc-800 dark:bg-zinc-900">
                 <div className="flex items-center justify-between">
-                  <FileText className="h-3.5 w-3.5 text-amber-500" />
-                  <span className="text-[9px] font-mono text-amber-600 dark:text-amber-400">84%</span>
+                  <FileText className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
+                  <span className="text-[9px] font-mono text-blue-600 dark:text-blue-400">84%</span>
                 </div>
-                <p className="mt-1.5 truncate text-[10px] font-medium text-zinc-700 dark:text-zinc-200">
+                <p className="mt-1.5 truncate text-[10px] font-medium text-zinc-700 dark:text-zinc-200 mb-1">
                   payroll.csv
                 </p>
-                <div className="mt-1 h-1 w-full overflow-hidden rounded-full bg-zinc-200 dark:bg-zinc-800">
-                  <div className={cn("h-full w-4/5 rounded-full animate-pulse", theme.bg)} />
-                </div>
+                <Progress value={84} size="sm" variant="blue" />
               </div>
 
               <div className="rounded-xl border border-zinc-200 bg-zinc-50 p-2 transition-transform duration-300 delay-150 group-hover:-translate-y-0.5 dark:border-zinc-800 dark:bg-zinc-900">
@@ -302,15 +274,16 @@ export const LandingBentoShowcase: React.FC = () => {
                 Generate a dark &amp; light mode KPI card...
               </p>
               <div className="mt-2 flex items-center justify-between">
-                <button
+                <Button
                   type="button"
+                  variant="outline"
+                  size="xs"
                   onClick={() => setBypassMode(!bypassMode)}
-                  className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-white px-2 py-0.5 text-[10px] font-medium text-zinc-600 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 cursor-pointer"
                 >
                   <Plus className="h-3 w-3" />
                   <span>{bypassMode ? "Auto-sync tokens" : "Manual tokens"}</span>
-                </button>
-                <span className={cn("h-2 w-2 rounded-full animate-ping", theme.dot)} />
+                </Button>
+                <span className="h-2 w-2 rounded-full animate-ping bg-blue-600" />
               </div>
             </div>
           </div>
@@ -330,12 +303,12 @@ export const LandingBentoShowcase: React.FC = () => {
           <div className="relative h-52 overflow-hidden rounded-2xl border border-zinc-200/80 bg-white p-3.5 shadow-2xs dark:border-zinc-800 dark:bg-zinc-950">
             <div className="flex items-center justify-between text-xs font-medium text-zinc-700 dark:text-zinc-200">
               <span className="flex items-center gap-1.5">
-                <Search className={cn("h-3.5 w-3.5", theme.text)} />
+                <Search className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
                 Ran 3 registry queries
               </span>
-              <span className="rounded bg-emerald-500/10 px-1.5 py-0.5 font-mono text-[10px] text-emerald-600 dark:text-emerald-400">
+              <Badge variant="emerald" className="font-mono text-[10px]">
                 18ms
-              </span>
+              </Badge>
             </div>
 
             <div className="mt-3 ml-1.5 border-l-2 border-zinc-200 pl-3 space-y-2.5 text-[11px] dark:border-zinc-800">
@@ -345,15 +318,15 @@ export const LandingBentoShowcase: React.FC = () => {
                 </p>
                 <div className="flex items-center gap-1.5">
                   <span className="text-[10px] text-zinc-400">Sources</span>
-                  <span className="inline-flex h-4 items-center rounded bg-blue-500/10 px-1 font-mono text-[9px] text-blue-600 dark:text-blue-400">
+                  <Badge variant="blue" className="px-1.5 py-0 text-[9px] font-mono">
                     Radix
-                  </span>
-                  <span className="inline-flex h-4 items-center rounded bg-emerald-500/10 px-1 font-mono text-[9px] text-emerald-600 dark:text-emerald-400">
+                  </Badge>
+                  <Badge variant="emerald" className="px-1.5 py-0 text-[9px] font-mono">
                     TW v4
-                  </span>
-                  <span className="inline-flex h-4 items-center rounded bg-amber-500/10 px-1 font-mono text-[9px] text-amber-600 dark:text-amber-400">
+                  </Badge>
+                  <Badge variant="default" className="px-1.5 py-0 text-[9px] font-mono">
                     ARIA
-                  </span>
+                  </Badge>
                 </div>
               </div>
 
@@ -363,8 +336,8 @@ export const LandingBentoShowcase: React.FC = () => {
               </div>
 
               <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400">
-                <span className={cn("h-1.5 w-1.5 rounded-full animate-pulse", theme.dot)} />
-                <span className="truncate">Indexing 37 accessible primitives...</span>
+                <span className="h-1.5 w-1.5 rounded-full animate-pulse bg-blue-600" />
+                <span className="truncate">Indexing 42 accessible primitives...</span>
               </div>
             </div>
           </div>
@@ -379,7 +352,7 @@ export const LandingBentoShowcase: React.FC = () => {
           </div>
         </div>
 
-        {/* Card 3: Agent Limits & Statistical Quota Breakdown (Block Statistik) */}
+        {/* Card 3: Agent Limits & Statistical Quota Breakdown */}
         <div className="group flex flex-col justify-between rounded-3xl border border-zinc-200/90 bg-zinc-50/50 p-3 transition-all duration-200 hover:border-zinc-300 hover:shadow-md dark:border-zinc-800/90 dark:bg-zinc-900/40 dark:hover:border-zinc-700">
           <div className="relative h-52 overflow-hidden rounded-2xl border border-zinc-200/80 bg-white p-3.5 shadow-2xs dark:border-zinc-800 dark:bg-zinc-950 space-y-3">
             <div>
@@ -389,7 +362,6 @@ export const LandingBentoShowcase: React.FC = () => {
                   820k / 1M <strong className="text-zinc-900 dark:text-white">(82%)</strong>
                 </span>
               </div>
-              {/* Multi-segment color bar */}
               <div className="mt-1.5 flex h-2 w-full overflow-hidden rounded-full bg-zinc-100 gap-0.5 dark:bg-zinc-800">
                 <div className="h-full w-[42%] bg-blue-600 rounded-l-full" />
                 <div className="h-full w-[24%] bg-violet-500" />
@@ -401,30 +373,9 @@ export const LandingBentoShowcase: React.FC = () => {
               Plan usage limits - Enterprise (5x)
             </div>
 
-            <div className="space-y-2">
-              <div>
-                <div className="flex items-center justify-between text-[10px]">
-                  <span className="font-medium text-zinc-700 dark:text-zinc-300">5-hour burst</span>
-                  <span className="text-zinc-400">
-                    Resets in 2 hr 46 min <strong className="text-zinc-800 dark:text-zinc-200">38%</strong>
-                  </span>
-                </div>
-                <div className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-zinc-100 dark:bg-zinc-800">
-                  <div className={cn("h-full w-[38%] rounded-full transition-all duration-500", theme.bg)} />
-                </div>
-              </div>
-
-              <div>
-                <div className="flex items-center justify-between text-[10px]">
-                  <span className="font-medium text-zinc-700 dark:text-zinc-300">Weekly - all models</span>
-                  <span className="text-zinc-400">
-                    Resets Tue 9:00 PM <strong className="text-zinc-800 dark:text-zinc-200">64%</strong>
-                  </span>
-                </div>
-                <div className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-zinc-100 dark:bg-zinc-800">
-                  <div className="h-full w-[64%] rounded-full bg-emerald-500 transition-all duration-500" />
-                </div>
-              </div>
+            <div className="space-y-2.5">
+              <Progress value={38} size="sm" variant="blue" label="5-hour burst" showValue />
+              <Progress value={64} size="sm" variant="emerald" label="Weekly - all models" showValue />
             </div>
           </div>
 
@@ -438,7 +389,7 @@ export const LandingBentoShowcase: React.FC = () => {
           </div>
         </div>
 
-        {/* Card 4: Interactive Mini Data Table */}
+        {/* Card 4: Interactive Mini Data Table using Checkbox & Avatar Primitives */}
         <div className="group flex flex-col justify-between rounded-3xl border border-zinc-200/90 bg-zinc-50/50 p-3 transition-all duration-200 hover:border-zinc-300 hover:shadow-md dark:border-zinc-800/90 dark:bg-zinc-900/40 dark:hover:border-zinc-700">
           <div className="relative h-52 overflow-hidden rounded-2xl border border-zinc-200/80 bg-white p-3.5 shadow-2xs dark:border-zinc-800 dark:bg-zinc-950">
             <div className="flex items-center justify-between border-b border-zinc-100 pb-2.5 dark:border-zinc-800">
@@ -446,16 +397,16 @@ export const LandingBentoShowcase: React.FC = () => {
                 <p className="text-[10px] text-zinc-400">Total Results</p>
                 <p className="text-xs font-semibold text-zinc-900 dark:text-zinc-100">48 customers</p>
               </div>
-              <span className="rounded-lg border border-zinc-200 bg-zinc-50 px-2 py-0.5 text-[10px] font-medium text-zinc-600 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300">
+              <Badge variant="outline" className="text-[10px]">
                 All ({selectedRows.length} selected)
-              </span>
+              </Badge>
             </div>
 
             <div className="mt-2 space-y-1.5">
               {[
-                { id: "c1", name: "John Clarkson", mrr: "$4,200", badge: "Enterprise", init: "JC" },
-                { id: "c2", name: "Sarah Jenkins", mrr: "$2,850", badge: "Scale", init: "SJ" },
-                { id: "c3", name: "Marcus Vance", mrr: "$1,920", badge: "Pro", init: "MV" },
+                { id: "c1", name: "John Clarkson", mrr: "$4,200", init: "JC" },
+                { id: "c2", name: "Sarah Jenkins", mrr: "$2,850", init: "SJ" },
+                { id: "c3", name: "Marcus Vance", mrr: "$1,920", init: "MV" },
               ].map((row) => {
                 const checked = selectedRows.includes(row.id)
                 return (
@@ -470,19 +421,12 @@ export const LandingBentoShowcase: React.FC = () => {
                     )}
                   >
                     <div className="flex items-center gap-2 min-w-0">
-                      <span
-                        className={cn(
-                          "flex h-4 w-4 shrink-0 items-center justify-center rounded border text-[10px]",
-                          checked
-                            ? cn("border-transparent text-white", theme.bg)
-                            : "border-zinc-300 dark:border-zinc-700"
-                        )}
-                      >
-                        {checked && <Check className="h-2.5 w-2.5 stroke-[3]" />}
-                      </span>
-                      <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-zinc-200 text-[9px] font-semibold text-zinc-700 dark:bg-zinc-800 dark:text-zinc-200">
-                        {row.init}
-                      </span>
+                      <Checkbox
+                        checked={checked}
+                        onCheckedChange={() => toggleRow(row.id)}
+                        onClick={(e) => e.stopPropagation()}
+                      />
+                      <Avatar size="xs" fallback={row.init} />
                       <span className="truncate font-medium text-zinc-800 dark:text-zinc-200">
                         {row.name}
                       </span>
@@ -506,54 +450,17 @@ export const LandingBentoShowcase: React.FC = () => {
           </div>
         </div>
 
-        {/* Card 5: Playful Health & Circular Ring Widgets (Block Statistik) */}
+        {/* Card 5: Health & CircularProgress Ring Widgets */}
         <div className="group flex flex-col justify-between rounded-3xl border border-zinc-200/90 bg-zinc-50/50 p-3 transition-all duration-200 hover:border-zinc-300 hover:shadow-md dark:border-zinc-800/90 dark:bg-zinc-900/40 dark:hover:border-zinc-700">
           <div className="relative h-52 overflow-hidden rounded-2xl border border-zinc-200/80 bg-white p-3.5 shadow-2xs dark:border-zinc-800 dark:bg-zinc-950 grid grid-cols-2 gap-2.5">
-            {/* Left Health Ring Card */}
             <div className="rounded-xl border border-zinc-100 bg-zinc-50/60 p-2.5 flex flex-col items-center justify-between dark:border-zinc-800/80 dark:bg-zinc-900/50">
               <div className="w-full flex items-center justify-between text-[10px]">
                 <span className="font-semibold text-zinc-800 dark:text-zinc-200">Excellent</span>
                 <span className="text-emerald-600 dark:text-emerald-400 font-mono">+4.2%</span>
               </div>
 
-              {/* Multi-color SVG Ring */}
-              <div className="relative flex h-20 w-20 items-center justify-center my-1">
-                <svg className="h-20 w-20 -rotate-90" viewBox="0 0 80 80">
-                  <circle
-                    cx="40"
-                    cy="40"
-                    r="30"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="7"
-                    className="text-zinc-200 dark:text-zinc-800"
-                  />
-                  <circle
-                    cx="40"
-                    cy="40"
-                    r="30"
-                    fill="none"
-                    stroke="#3b82f6"
-                    strokeWidth="7"
-                    strokeDasharray="188"
-                    strokeDashoffset="32"
-                    strokeLinecap="round"
-                  />
-                  <circle
-                    cx="40"
-                    cy="40"
-                    r="30"
-                    fill="none"
-                    stroke="#a855f7"
-                    strokeWidth="7"
-                    strokeDasharray="188"
-                    strokeDashoffset="115"
-                    strokeLinecap="round"
-                  />
-                </svg>
-                <span className="absolute text-base font-bold text-zinc-900 dark:text-white">
-                  98
-                </span>
+              <div className="my-1">
+                <CircularProgress value={98} size={72} strokeWidth={6} variant="blue" />
               </div>
 
               <div className="w-full space-y-0.5 text-[9px] text-zinc-500">
@@ -568,7 +475,6 @@ export const LandingBentoShowcase: React.FC = () => {
               </div>
             </div>
 
-            {/* Right Alerts Feed */}
             <div className="rounded-xl border border-zinc-100 bg-zinc-50/60 p-2.5 flex flex-col justify-between dark:border-zinc-800/80 dark:bg-zinc-900/50">
               <div>
                 <p className="text-[10px] text-zinc-400">Important alerts</p>
@@ -589,12 +495,12 @@ export const LandingBentoShowcase: React.FC = () => {
                 </div>
 
                 <div className="rounded-lg bg-white p-1.5 border border-zinc-200/60 dark:bg-zinc-950 dark:border-zinc-800">
-                  <div className="flex items-center gap-1 text-[9px] font-semibold text-amber-600 dark:text-amber-400">
+                  <div className="flex items-center gap-1 text-[9px] font-semibold text-blue-600 dark:text-blue-400">
                     <Activity className="h-2.5 w-2.5" />
-                    Rate Limit 85%
+                    Auto-Scaling Active
                   </div>
                   <p className="text-[8px] text-zinc-400 truncate mt-0.5">
-                    Auto-scaling worker pool
+                    Worker pool balanced
                   </p>
                 </div>
               </div>
@@ -616,16 +522,14 @@ export const LandingBentoShowcase: React.FC = () => {
           <div className="relative h-52 overflow-hidden rounded-2xl border border-zinc-200/80 bg-white p-3.5 shadow-2xs dark:border-zinc-800 dark:bg-zinc-950 space-y-2.5">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-zinc-200 text-[10px] font-bold text-zinc-700 dark:bg-zinc-800 dark:text-zinc-200">
-                  SR
-                </span>
+                <Avatar size="xs" fallback="SR" status="online" />
                 <span className="text-xs font-semibold text-zinc-900 dark:text-zinc-100">
                   Saeful Rohman
                 </span>
               </div>
-              <span className="rounded border border-zinc-200 px-1.5 py-0.5 text-[9px] text-zinc-400 dark:border-zinc-800">
+              <Badge variant="blue" className="text-[9px]">
                 PRO
-              </span>
+              </Badge>
             </div>
 
             <div className="flex items-center justify-between rounded-xl border border-zinc-200 bg-zinc-50 px-2.5 py-1.5 text-[11px] text-zinc-400 dark:border-zinc-800 dark:bg-zinc-900">
@@ -644,7 +548,7 @@ export const LandingBentoShowcase: React.FC = () => {
                 className={cn(
                   "flex w-full items-center justify-between rounded-xl px-3 py-2 text-xs font-semibold transition-all cursor-pointer",
                   activeNav === "home"
-                    ? cn("text-white shadow-xs", theme.bg)
+                    ? "bg-blue-600 text-white shadow-xs"
                     : "text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-900"
                 )}
               >
@@ -656,7 +560,7 @@ export const LandingBentoShowcase: React.FC = () => {
                   className={cn(
                     "rounded-md px-1.5 py-0.5 font-mono text-[10px]",
                     activeNav === "home"
-                      ? "bg-white/20 text-white"
+                      ? "bg-black/15 text-current"
                       : "bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400"
                   )}
                 >
@@ -670,7 +574,7 @@ export const LandingBentoShowcase: React.FC = () => {
                 className={cn(
                   "flex w-full items-center justify-between rounded-xl px-3 py-2 text-xs font-semibold transition-all cursor-pointer",
                   activeNav === "projects"
-                    ? cn("text-white shadow-xs", theme.bg)
+                    ? "bg-blue-600 text-white shadow-xs"
                     : "text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-900"
                 )}
               >
@@ -693,7 +597,7 @@ export const LandingBentoShowcase: React.FC = () => {
           </div>
         </div>
 
-        {/* Card 7: Contributor Profile & Heatmap Matrix (Block Statistik) */}
+        {/* Card 7: Contributor Profile & Heatmap Matrix */}
         <div className="group flex flex-col justify-between rounded-3xl border border-zinc-200/90 bg-zinc-50/50 p-3 transition-all duration-200 hover:border-zinc-300 hover:shadow-md dark:border-zinc-800/90 dark:bg-zinc-900/40 dark:hover:border-zinc-700">
           <div className="relative h-52 overflow-hidden rounded-2xl border border-zinc-200/80 bg-white p-3.5 shadow-2xs dark:border-zinc-800 dark:bg-zinc-950 flex flex-col justify-between">
             <div className="flex items-center justify-between">
@@ -703,9 +607,9 @@ export const LandingBentoShowcase: React.FC = () => {
                 </p>
                 <p className="text-[10px] text-zinc-400">@saefulrdevs • Lead Architect</p>
               </div>
-              <span className="rounded-lg border border-zinc-200 px-2 py-0.5 text-[10px] font-medium text-zinc-600 dark:border-zinc-800 dark:text-zinc-300">
+              <Button variant="outline" size="xs">
                 Follow
-              </span>
+              </Button>
             </div>
 
             <div className="grid grid-cols-3 gap-1.5 rounded-xl bg-zinc-50 p-2 dark:bg-zinc-900">
@@ -723,7 +627,6 @@ export const LandingBentoShowcase: React.FC = () => {
               </div>
             </div>
 
-            {/* Colorful Heatmap Grid */}
             <div className="grid grid-cols-12 gap-1 pt-1">
               {HEATMAP_LEVELS.slice(0, 36).map((lvl, idx) => (
                 <span
@@ -731,10 +634,10 @@ export const LandingBentoShowcase: React.FC = () => {
                   className={cn(
                     "h-2.5 w-full rounded-[3px] transition-transform hover:scale-125",
                     lvl === 0 && "bg-zinc-100 dark:bg-zinc-800",
-                    lvl === 1 && "bg-violet-200 dark:bg-violet-950",
-                    lvl === 2 && "bg-violet-400 dark:bg-violet-700",
-                    lvl === 3 && "bg-blue-500 dark:bg-blue-500",
-                    lvl === 4 && cn(theme.bg)
+                    lvl === 1 && "bg-blue-200 dark:bg-blue-950",
+                    lvl === 2 && "bg-blue-400 dark:bg-blue-800",
+                    lvl === 3 && "bg-blue-500 dark:bg-blue-600",
+                    lvl === 4 && "bg-blue-600 dark:bg-blue-400"
                   )}
                 />
               ))}
@@ -758,16 +661,16 @@ export const LandingBentoShowcase: React.FC = () => {
               <span className="text-xs font-semibold text-zinc-900 dark:text-zinc-100">
                 {activeStep >= 5 ? "All steps completed" : `Executing step ${activeStep} of 5...`}
               </span>
-              <span className="font-mono text-[10px] text-zinc-400">
+              <Badge variant="blue" className="font-mono text-[10px]">
                 {activeStep * 20}%
-              </span>
+              </Badge>
             </div>
 
             <div className="space-y-2">
               {[
                 "Read workspace configuration",
                 "Install light & dark semantic tokens",
-                "Compile 37 Radix UI primitives",
+                "Compile 42 Radix UI primitives",
                 "Mount statistical dashboard blocks",
                 "Run Husky lint & production build",
               ].map((stepLabel, idx) => {
@@ -783,7 +686,7 @@ export const LandingBentoShowcase: React.FC = () => {
                       className={cn(
                         "flex h-4 w-4 shrink-0 items-center justify-center rounded-full text-[9px] transition-colors",
                         done
-                          ? cn("text-white", theme.bg)
+                          ? "bg-blue-600 text-white"
                           : "border border-zinc-300 text-zinc-400 dark:border-zinc-700"
                       )}
                     >
@@ -815,17 +718,14 @@ export const LandingBentoShowcase: React.FC = () => {
           </div>
         </div>
 
-        {/* Card 9: Interactive Prompt Composer (BoardUI Row 3 Card 1) */}
+        {/* Card 9: Interactive Prompt Composer */}
         <div className="group flex flex-col justify-between rounded-3xl border border-zinc-200/90 bg-zinc-50/50 p-3 transition-all duration-200 hover:border-zinc-300 hover:shadow-md dark:border-zinc-800/90 dark:bg-zinc-900/40 dark:hover:border-zinc-700">
           <div className="relative h-52 overflow-hidden rounded-2xl border border-zinc-200/80 bg-white p-3.5 shadow-2xs dark:border-zinc-800 dark:bg-zinc-950 flex flex-col justify-between">
             <div className="flex flex-wrap gap-1.5">
-              {["Generate KPI block", "Add dark mode", "Export CSV"].map((chip) => (
-                <span
-                  key={chip}
-                  className="rounded-lg border border-zinc-200/80 bg-zinc-50 px-2 py-0.5 text-[10px] text-zinc-500 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400"
-                >
+              {["Generate KPI block", "Switch theme", "Export CSV"].map((chip, i) => (
+                <Chip key={chip} active={i === 0} className="text-[10px] py-0.5 px-2">
                   {chip}
-                </span>
+                </Chip>
               ))}
             </div>
 
@@ -848,14 +748,9 @@ export const LandingBentoShowcase: React.FC = () => {
                     ⑂ main
                   </span>
                   <span>•</span>
-                  <span className="truncate">project-sea ▾</span>
+                  <span className="truncate">ethereal-ui ▾</span>
                 </div>
-                <span
-                  className={cn(
-                    "inline-flex h-5 w-5 items-center justify-center rounded-full text-white",
-                    theme.bg
-                  )}
-                >
+                <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-blue-600 text-white">
                   <ArrowUpRight className="h-3 w-3" />
                 </span>
               </div>
@@ -872,15 +767,15 @@ export const LandingBentoShowcase: React.FC = () => {
           </div>
         </div>
 
-        {/* Card 10: Streaming Reasoning Trace (BoardUI Row 3 Card 2) */}
+        {/* Card 10: Streaming Reasoning Trace */}
         <div className="group flex flex-col justify-between rounded-3xl border border-zinc-200/90 bg-zinc-50/50 p-3 transition-all duration-200 hover:border-zinc-300 hover:shadow-md dark:border-zinc-800/90 dark:bg-zinc-900/40 dark:hover:border-zinc-700">
           <div className="relative h-52 overflow-hidden rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-2xs dark:border-zinc-800 dark:bg-zinc-950 flex flex-col justify-center">
             <div className="space-y-3">
               {[
-                { label: "Thinking", meta: "1.2s", icon: "✦" },
-                { label: "Searching the docs", meta: "37 matches", icon: "⌕" },
-                { label: "Reading token files", meta: "globals.css", icon: "▤" },
-                { label: "Writing the answer", meta: "Streaming...", icon: "✎" },
+                { label: "Analyzing workspace", meta: "1.2s", icon: "01" },
+                { label: "Searching registry", meta: "42 matches", icon: "02" },
+                { label: "Applying OKLCH tokens", meta: "globals.css", icon: "03" },
+                { label: "Streaming output", meta: "Active", icon: "04" },
               ].map((item, idx) => {
                 const isCurrent = (activeStep % 4) === idx
                 return (
@@ -889,12 +784,17 @@ export const LandingBentoShowcase: React.FC = () => {
                     className={cn(
                       "flex items-center justify-between rounded-xl px-2.5 py-1.5 text-xs transition-all",
                       isCurrent
-                        ? "bg-zinc-100 text-zinc-900 font-semibold dark:bg-zinc-900 dark:text-white"
+                        ? "bg-blue-50 text-zinc-900 font-semibold dark:bg-zinc-900 dark:text-white"
                         : "text-zinc-400 dark:text-zinc-500"
                     )}
                   >
                     <span className="flex items-center gap-2.5">
-                      <span className={cn("text-xs", isCurrent && theme.text)}>
+                      <span
+                        className={cn(
+                          "font-mono text-[10px]",
+                          isCurrent && "text-blue-600 dark:text-blue-400 font-bold"
+                        )}
+                      >
                         {item.icon}
                       </span>
                       <span>{item.label}</span>
@@ -916,72 +816,67 @@ export const LandingBentoShowcase: React.FC = () => {
           </div>
         </div>
 
-        {/* Card 11: Interactive Media & Carousel Card (BoardUI Row 3 Card 3) */}
+        {/* Card 11: Interactive Media & Feature Carousel Card */}
         <div className="group flex flex-col justify-between rounded-3xl border border-zinc-200/90 bg-zinc-50/50 p-3 transition-all duration-200 hover:border-zinc-300 hover:shadow-md dark:border-zinc-800/90 dark:bg-zinc-900/40 dark:hover:border-zinc-700">
-          <div className="relative h-52 overflow-hidden rounded-2xl border border-zinc-200/80 bg-gradient-to-br from-blue-600 via-indigo-600 to-violet-700 p-4 text-white shadow-2xs flex flex-col justify-between">
+          <div className="relative h-52 overflow-hidden rounded-2xl border border-zinc-200/80 bg-blue-600 p-4 text-white shadow-2xs flex flex-col justify-between">
             <div className="flex items-center justify-between">
-              <span className="rounded-full bg-white/20 px-2.5 py-0.5 text-[10px] font-semibold backdrop-blur-xs">
-                Featured System
+              <span className="rounded-full bg-black/20 px-2.5 py-0.5 text-[10px] font-semibold backdrop-blur-xs">
+                870+ OKLCH Themes
               </span>
-              <span className="font-mono text-[10px] text-white/80">01 / 04</span>
+              <span className="font-mono text-[10px] opacity-80">01 / 04</span>
             </div>
 
             <div className="space-y-1">
-              <p className="text-xs font-medium text-white/80">Design Token Engine</p>
+              <p className="text-xs font-medium opacity-80">Dynamic Token Engine</p>
               <h4 className="text-base font-bold leading-snug">
-                Zero-Runtime Light &amp; Dark Theme Architecture
+                Real-Time Light &amp; Dark Theme Architecture
               </h4>
             </div>
 
             <div className="flex items-center justify-between pt-1">
               <div className="flex gap-1">
-                <span className="h-1.5 w-5 rounded-full bg-white" />
-                <span className="h-1.5 w-1.5 rounded-full bg-white/40" />
-                <span className="h-1.5 w-1.5 rounded-full bg-white/40" />
+                <span className="h-1.5 w-5 rounded-full bg-current" />
+                <span className="h-1.5 w-1.5 rounded-full bg-current opacity-40" />
+                <span className="h-1.5 w-1.5 rounded-full bg-current opacity-40" />
               </div>
-              <span className="text-[10px] font-medium text-white/90">Explore &rarr;</span>
+              <span className="text-[10px] font-medium opacity-90">Explore &rarr;</span>
             </div>
           </div>
 
           <div className="px-2 pt-3.5 pb-1.5">
-            <a href="/components/carousel" className="text-sm font-semibold text-zinc-900 hover:underline dark:text-zinc-100">
-              Media &amp; feature carousel
+            <a href="/themes" className="text-sm font-semibold text-zinc-900 hover:underline dark:text-zinc-100">
+              870+ Theme presets &amp; carousel
             </a>
             <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400 line-clamp-2">
-              Smooth multi-slide carousels and rich spotlight cards with keyboard controls.
+              Instant OKLCH theme switching across all primitives, blocks, charts, and templates.
             </p>
           </div>
         </div>
 
-        {/* Card 12: Monthly Event Scheduler Calendar (BoardUI Row 3 Card 4) */}
+        {/* Card 12: Monthly Event Scheduler Calendar */}
         <div className="group flex flex-col justify-between rounded-3xl border border-zinc-200/90 bg-zinc-50/50 p-3 transition-all duration-200 hover:border-zinc-300 hover:shadow-md dark:border-zinc-800/90 dark:bg-zinc-900/40 dark:hover:border-zinc-700">
           <div className="relative h-52 overflow-hidden rounded-2xl border border-zinc-200/80 bg-white p-3.5 shadow-2xs dark:border-zinc-800 dark:bg-zinc-950 flex flex-col justify-between">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
-                August 2026
+                November 2026
               </span>
-              <span
-                className={cn(
-                  "inline-flex items-center gap-1 rounded-lg px-2 py-0.5 text-[10px] font-semibold text-white",
-                  theme.bg
-                )}
-              >
+              <Button variant="primary" size="xs">
                 <Plus className="h-2.5 w-2.5" /> New event
-              </span>
+              </Button>
             </div>
 
             <div className="grid grid-cols-5 gap-1 text-[9px]">
               {[
-                { day: "12", tag: "Sync", color: "bg-blue-500/15 text-blue-600 dark:text-blue-400" },
+                { day: "12", tag: "Sync", color: "bg-blue-50 text-blue-700 dark:bg-blue-500/15 dark:text-blue-300" },
                 { day: "13", tag: "", color: "" },
-                { day: "14", tag: "Release", color: "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400" },
-                { day: "15", tag: "Review", color: "bg-violet-500/15 text-violet-600 dark:text-violet-400" },
+                { day: "14", tag: "Release", color: "bg-emerald-50 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300" },
+                { day: "15", tag: "Review", color: "bg-blue-50 text-blue-700 dark:bg-blue-500/15 dark:text-blue-300" },
                 { day: "16", tag: "", color: "" },
-                { day: "17", tag: "Audit", color: "bg-amber-500/15 text-amber-600 dark:text-amber-400" },
+                { day: "17", tag: "Audit", color: "bg-amber-50 text-amber-700 dark:bg-amber-500/15 dark:text-amber-300" },
                 { day: "18", tag: "", color: "" },
-                { day: "19", tag: "Demo", color: "bg-rose-500/15 text-rose-600 dark:text-rose-400" },
+                { day: "19", tag: "Demo", color: "bg-rose-50 text-rose-700 dark:bg-rose-500/15 dark:text-rose-300" },
                 { day: "20", tag: "", color: "" },
-                { day: "21", tag: "Ship", color: "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400" },
+                { day: "21", tag: "Ship", color: "bg-emerald-50 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300" },
               ].map((cell) => (
                 <div
                   key={cell.day}
@@ -1009,31 +904,7 @@ export const LandingBentoShowcase: React.FC = () => {
         </div>
       </div>
 
-      {/* Floating Bottom-Center Accent Color Dock (BoardUI style) */}
-      <div className="fixed bottom-4 left-1/2 z-40 -translate-x-1/2 flex items-center gap-2 rounded-full border border-zinc-200/90 bg-white/90 px-3 py-1.5 shadow-lg backdrop-blur-md dark:border-zinc-800 dark:bg-zinc-900/90">
-        {(Object.keys(ACCENT_PALETTE) as AccentColor[]).map((key) => {
-          const item = ACCENT_PALETTE[key]
-          const active = accent === key
-          return (
-            <button
-              key={key}
-              type="button"
-              onClick={() => setAccent(key)}
-              title={`Theme: ${item.name}`}
-              aria-label={`Theme: ${item.name}`}
-              className={cn(
-                "h-5 w-5 rounded-full transition-transform cursor-pointer",
-                item.dot,
-                active
-                  ? "scale-115 ring-2 ring-offset-2 ring-zinc-900 dark:ring-white dark:ring-offset-zinc-950"
-                  : "opacity-80 hover:opacity-100 hover:scale-105"
-              )}
-            />
-          )
-        })}
-      </div>
-
-      {/* 3. Dedicated Interactive Statistical Block Section (Block Statistik) */}
+      {/* 3. Dedicated Interactive Statistical Block Section */}
       <div className="rounded-3xl border border-zinc-200/90 bg-zinc-50/60 p-5 sm:p-8 dark:border-zinc-800/90 dark:bg-zinc-900/40">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between pb-6 border-b border-zinc-200 dark:border-zinc-800">
           <div>
@@ -1049,7 +920,6 @@ export const LandingBentoShowcase: React.FC = () => {
             </p>
           </div>
 
-          {/* Interactive Timeframe Switcher */}
           <div className="inline-flex items-center rounded-xl border border-zinc-200 bg-white p-1 dark:border-zinc-800 dark:bg-zinc-950 self-start">
             {(["24h", "7d", "30d"] as const).map((t) => (
               <button
@@ -1059,7 +929,7 @@ export const LandingBentoShowcase: React.FC = () => {
                 className={cn(
                   "rounded-lg px-3 py-1 text-xs font-semibold uppercase transition-all cursor-pointer",
                   statRange === t
-                    ? cn("text-white shadow-2xs", theme.bg)
+                    ? "bg-blue-600 text-white shadow-2xs"
                     : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
                 )}
               >
@@ -1069,7 +939,6 @@ export const LandingBentoShowcase: React.FC = () => {
           </div>
         </div>
 
-        {/* 4 Interactive Statistical Blocks */}
         <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
           {/* Stat Block 1: Net Revenue with Live Bar Chart */}
           <div className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-2xs dark:border-zinc-800 dark:bg-zinc-950 flex flex-col justify-between">
@@ -1078,9 +947,9 @@ export const LandingBentoShowcase: React.FC = () => {
                 <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400">
                   Net Settled Revenue
                 </span>
-                <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 px-2 py-0.5 text-[11px] font-semibold text-emerald-600 dark:text-emerald-400">
+                <Badge variant="emerald" className="text-[11px]">
                   <ArrowUpRight className="h-3 w-3" /> +18.4%
-                </span>
+                </Badge>
               </div>
               <div className="mt-2 text-2xl font-bold tracking-tight text-zinc-900 dark:text-white">
                 {statMultipliers.mrr}
@@ -1097,7 +966,7 @@ export const LandingBentoShowcase: React.FC = () => {
                   style={{ height: `${val}%` }}
                   className={cn(
                     "flex-1 rounded-t-sm transition-all duration-500",
-                    i >= 7 ? theme.bg : "bg-zinc-200 dark:bg-zinc-800"
+                    i >= 7 ? "bg-blue-600" : "bg-zinc-200 dark:bg-zinc-800"
                   )}
                 />
               ))}
@@ -1111,7 +980,7 @@ export const LandingBentoShowcase: React.FC = () => {
                 <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400">
                   Active Workspace Users
                 </span>
-                <Users className={cn("h-4 w-4", theme.text)} />
+                <Users className="h-4 w-4 text-blue-600 dark:text-blue-400" />
               </div>
               <div className="mt-2 text-2xl font-bold tracking-tight text-zinc-900 dark:text-white">
                 {statMultipliers.users}
@@ -1121,14 +990,8 @@ export const LandingBentoShowcase: React.FC = () => {
               </p>
             </div>
 
-            <div className="mt-5 space-y-2">
-              <div className="flex justify-between text-[11px]">
-                <span className="text-zinc-500">Enterprise Tier</span>
-                <span className="font-mono font-semibold text-zinc-900 dark:text-zinc-100">68%</span>
-              </div>
-              <div className="h-2 w-full overflow-hidden rounded-full bg-zinc-100 dark:bg-zinc-800">
-                <div className={cn("h-full w-[68%] rounded-full transition-all duration-500", theme.bg)} />
-              </div>
+            <div className="mt-5">
+              <Progress value={68} variant="blue" label="Enterprise Tier" showValue />
             </div>
           </div>
 
@@ -1139,9 +1002,9 @@ export const LandingBentoShowcase: React.FC = () => {
                 <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400">
                   Global Edge P95 Latency
                 </span>
-                <span className="inline-flex items-center gap-1 rounded-full bg-blue-500/10 px-2 py-0.5 text-[10px] font-semibold text-blue-600 dark:text-blue-400">
+                <Badge variant="blue" className="text-[10px]">
                   99.99% SLA
-                </span>
+                </Badge>
               </div>
               <div className="mt-2 text-2xl font-bold tracking-tight text-zinc-900 dark:text-white">
                 {statMultipliers.latency}
@@ -1151,7 +1014,6 @@ export const LandingBentoShowcase: React.FC = () => {
               </p>
             </div>
 
-            {/* 24-node uptime bar */}
             <div className="mt-5 space-y-1.5">
               <div className="grid grid-cols-16 gap-1">
                 {Array.from({ length: 16 }).map((_, idx) => (
@@ -1175,7 +1037,7 @@ export const LandingBentoShowcase: React.FC = () => {
           <div className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-2xs dark:border-zinc-800 dark:bg-zinc-950 flex flex-col justify-between">
             <div className="flex items-center justify-between">
               <span className="text-xs font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-1.5">
-                <CalendarIcon className={cn("h-3.5 w-3.5", theme.text)} />
+                <CalendarIcon className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
                 Release Schedule
               </span>
               <span className="text-[10px] font-mono text-zinc-400">Nov 2026</span>
@@ -1192,7 +1054,7 @@ export const LandingBentoShowcase: React.FC = () => {
                     className={cn(
                       "h-7 rounded-lg font-medium transition-all cursor-pointer",
                       active
-                        ? cn("text-white shadow-2xs", theme.bg)
+                        ? "bg-blue-600 text-white shadow-2xs"
                         : "text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-900"
                     )}
                   >
@@ -1205,7 +1067,7 @@ export const LandingBentoShowcase: React.FC = () => {
             <div className="flex items-center justify-between rounded-xl bg-zinc-50 px-3 py-2 text-[11px] dark:bg-zinc-900">
               <span className="flex items-center gap-1.5 font-medium text-zinc-700 dark:text-zinc-200">
                 <ShieldCheck className="h-3.5 w-3.5 text-emerald-500" />
-                Nov {selectedDay}: v1.0 Audit
+                Nov {selectedDay}: v0.0.5 Audit
               </span>
               <span className="font-mono text-[10px] text-zinc-400">14:00 UTC</span>
             </div>
@@ -1217,7 +1079,7 @@ export const LandingBentoShowcase: React.FC = () => {
       <div className="rounded-3xl border border-zinc-200/90 bg-zinc-50/60 p-5 sm:p-8 dark:border-zinc-800/90 dark:bg-zinc-900/40 space-y-6">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-zinc-200 pb-6 dark:border-zinc-800">
           <div>
-            <div className="inline-flex items-center gap-2 text-xs font-semibold text-violet-600 dark:text-violet-400 mb-1">
+            <div className="inline-flex items-center gap-2 text-xs font-semibold text-blue-600 dark:text-blue-400 mb-1">
               <Sparkles className="h-3.5 w-3.5" />
               <span>AI, AGENTIC &amp; KANBAN WORKFLOW BLOCKS</span>
             </div>
@@ -1242,12 +1104,7 @@ export const LandingBentoShowcase: React.FC = () => {
             <Button asChild variant="outline" size="sm">
               <a href="/blocks/transaction-ledger">Banking Ledger &rarr;</a>
             </Button>
-            <Button
-              asChild
-              variant="primary"
-              size="sm"
-              className={cn(theme.bg, theme.bgHover)}
-            >
+            <Button asChild variant="primary" size="sm">
               <a href="/blocks/kanban-board">Kanban Board &rarr;</a>
             </Button>
           </div>
@@ -1264,4 +1121,3 @@ export const LandingBentoShowcase: React.FC = () => {
     </div>
   )
 }
-

@@ -9,21 +9,23 @@ const badgeVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-zinc-100 text-zinc-700 border border-zinc-200/80 dark:bg-zinc-800 dark:text-zinc-200 dark:border-zinc-700/80",
+          "bg-secondary text-secondary-foreground border border-border/80",
         blue:
-          "bg-blue-50 text-blue-700 border border-blue-200/80 dark:bg-blue-500/15 dark:text-blue-300 dark:border-blue-500/30",
+          "bg-primary/10 text-primary border border-primary/25",
+        primary:
+          "bg-primary text-primary-foreground border border-transparent shadow-2xs",
         glow:
-          "bg-blue-50 text-blue-700 border border-blue-200/80 dark:bg-blue-500/15 dark:text-blue-300 dark:border-blue-500/30",
+          "bg-primary/15 text-primary border border-primary/30 shadow-2xs",
         emerald:
-          "bg-emerald-50 text-emerald-700 border border-emerald-200/80 dark:bg-emerald-500/15 dark:text-emerald-300 dark:border-emerald-500/30",
+          "bg-emerald-500/10 text-emerald-600 border border-emerald-500/25 dark:text-emerald-400",
         amber:
-          "bg-amber-50 text-amber-700 border border-amber-200/80 dark:bg-amber-500/15 dark:text-amber-300 dark:border-amber-500/30",
+          "bg-amber-500/10 text-amber-600 border border-amber-500/25 dark:text-amber-400",
         rose:
-          "bg-rose-50 text-rose-700 border border-rose-200/80 dark:bg-rose-500/15 dark:text-rose-300 dark:border-rose-500/30",
+          "bg-destructive/10 text-destructive border border-destructive/25",
         outline:
-          "bg-transparent text-zinc-600 border border-zinc-200 dark:text-zinc-400 dark:border-zinc-800",
+          "bg-transparent text-foreground border border-border",
         mono:
-          "bg-zinc-100 text-zinc-700 border border-zinc-200 dark:bg-zinc-900 dark:text-zinc-300 dark:border-zinc-800 font-mono text-[11px]",
+          "bg-muted text-muted-foreground border border-border font-mono text-[11px]",
       },
     },
     defaultVariants: {
@@ -33,14 +35,15 @@ const badgeVariants = cva(
 )
 
 const dotColorMap: Record<string, string> = {
-  default: "bg-zinc-400",
-  blue: "bg-blue-500",
-  glow: "bg-blue-500",
+  default: "bg-muted-foreground",
+  blue: "bg-primary",
+  primary: "bg-primary-foreground",
+  glow: "bg-primary",
   emerald: "bg-emerald-500",
   amber: "bg-amber-500",
-  rose: "bg-rose-500",
-  outline: "bg-zinc-400",
-  mono: "bg-blue-500",
+  rose: "bg-destructive",
+  outline: "bg-muted-foreground",
+  mono: "bg-primary",
 }
 
 export interface BadgeProps
@@ -84,8 +87,8 @@ const Chip = React.forwardRef<HTMLSpanElement, ChipProps>(
       className={cn(
         "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium transition-colors",
         active
-          ? "border-blue-200 bg-blue-50 text-blue-700 dark:border-blue-500/30 dark:bg-blue-500/15 dark:text-blue-300"
-          : "border-zinc-200 bg-white text-zinc-700 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800",
+          ? "border-primary/30 bg-primary/10 text-primary"
+          : "border-border bg-background text-foreground hover:bg-accent hover:text-accent-foreground",
         className
       )}
       {...props}

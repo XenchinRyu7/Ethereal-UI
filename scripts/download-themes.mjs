@@ -529,7 +529,8 @@ async function fetchCommunityThemesPage(actionId, { sort, cursor, limit, tags, t
 }
 
 /**
- * Clean, readable filename formatting that preserves symbols like `+` (e.g. "Claude +" -> "claude+.css")
+ * Clean, URL-safe filename formatting (e.g. "Claude +" -> "claude-plus.css")
+ * Avoids `+` and parentheses which can cause 404s on static file servers.
  */
 function formatThemeFileNameBase(str) {
   let s = String(str || "theme")
@@ -537,9 +538,9 @@ function formatThemeFileNameBase(str) {
     .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase()
     .trim()
-    .replace(/\s*\+\s*/g, "+") // "Claude +" -> "claude+"
+    .replace(/\+/g, "-plus-")
     .replace(/\s+/g, "-")
-    .replace(/[^a-z0-9+._()-]+/g, "-")
+    .replace(/[^a-z0-9-]+/g, "-")
     .replace(/-+/g, "-")
     .replace(/^-+|-+$/g, "");
 

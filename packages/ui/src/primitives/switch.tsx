@@ -10,7 +10,7 @@ const Switch = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <SwitchPrimitives.Root
     className={cn(
-      "peer inline-flex h-5 w-9 shrink-0 cursor-pointer items-center rounded-full border border-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/30 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-blue-600 data-[state=unchecked]:bg-zinc-200 dark:data-[state=unchecked]:bg-zinc-800",
+      "peer inline-flex h-5 w-9 shrink-0 cursor-pointer items-center rounded-full border border-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=unchecked]:bg-input",
       className
     )}
     {...props}
@@ -18,7 +18,7 @@ const Switch = React.forwardRef<
   >
     <SwitchPrimitives.Thumb
       className={cn(
-        "pointer-events-none block h-4 w-4 rounded-full bg-white shadow-xs ring-0 transition-transform data-[state=checked]:translate-x-4 data-[state=unchecked]:translate-x-0.5"
+        "pointer-events-none block h-4 w-4 rounded-full bg-background shadow-xs ring-0 transition-transform data-[state=checked]:translate-x-4 data-[state=unchecked]:translate-x-0.5"
       )}
     />
   </SwitchPrimitives.Root>
@@ -32,7 +32,7 @@ const Checkbox = React.forwardRef<
   <CheckboxPrimitive.Root
     ref={ref}
     className={cn(
-      "peer h-4 w-4 shrink-0 rounded border border-zinc-300 bg-white transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/30 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-blue-600 data-[state=checked]:border-blue-600 data-[state=checked]:text-white dark:border-zinc-700 dark:bg-zinc-900 dark:data-[state=checked]:bg-blue-600 cursor-pointer",
+      "peer h-4 w-4 shrink-0 rounded border border-input bg-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:border-primary data-[state=checked]:text-primary-foreground cursor-pointer",
       className
     )}
     {...props}
@@ -75,26 +75,26 @@ const RadioGroup: React.FC<RadioGroupProps> = ({
           className={cn(
             "flex items-start gap-3 rounded-xl border p-3.5 transition-colors cursor-pointer",
             checked
-              ? "border-blue-500/50 bg-blue-50/40 dark:border-blue-500/40 dark:bg-blue-500/10"
-              : "border-zinc-200 bg-white hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900/60 dark:hover:bg-zinc-800/50"
+              ? "border-primary/50 bg-primary/10"
+              : "border-border bg-card hover:bg-accent/50"
           )}
         >
           <span
             className={cn(
               "mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full border",
               checked
-                ? "border-blue-600 bg-blue-600 text-white"
-                : "border-zinc-300 dark:border-zinc-700"
+                ? "border-primary bg-primary text-primary-foreground"
+                : "border-input"
             )}
           >
-            {checked && <span className="h-1.5 w-1.5 rounded-full bg-white" />}
+            {checked && <span className="h-1.5 w-1.5 rounded-full bg-primary-foreground" />}
           </span>
           <div className="space-y-0.5 text-xs">
-            <div className="font-medium text-zinc-900 dark:text-zinc-100">
+            <div className="font-medium text-foreground">
               {opt.label}
             </div>
             {opt.description && (
-              <div className="text-zinc-500 dark:text-zinc-400">
+              <div className="text-muted-foreground">
                 {opt.description}
               </div>
             )}
@@ -127,8 +127,8 @@ const Slider: React.FC<SliderProps> = ({
   <div className={cn("space-y-2", className)}>
     {label && (
       <div className="flex items-center justify-between text-xs">
-        <span className="font-medium text-zinc-700 dark:text-zinc-300">{label}</span>
-        <span className="font-mono text-zinc-500">{value}%</span>
+        <span className="font-medium text-foreground">{label}</span>
+        <span className="font-mono text-muted-foreground">{value}%</span>
       </div>
     )}
     <input
@@ -138,7 +138,7 @@ const Slider: React.FC<SliderProps> = ({
       step={step}
       value={value}
       onChange={(e) => onValueChange?.(Number(e.target.value))}
-      className="h-1.5 w-full cursor-pointer appearance-none rounded-lg bg-zinc-200 accent-blue-600 dark:bg-zinc-800"
+      className="h-1.5 w-full cursor-pointer appearance-none rounded-lg bg-muted accent-primary"
     />
   </div>
 )
