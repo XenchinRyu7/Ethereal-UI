@@ -1,6 +1,6 @@
 {
   "name": "@etherealui/cli",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "description": "Official CLI for Ethereal UI (@etherealui/react) — scaffold enterprise React components, charts, and dashboard blocks from the JSON Registry.",
   "license": "MIT",
   "author": "Saeful Rohman <saefulrohmandevelopers@gmail.com> (https://saefulrohman.dev)",
