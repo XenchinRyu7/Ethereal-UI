@@ -83,13 +83,13 @@ export const NavbarSearchModal: React.FC = () => {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="flex h-9 w-full items-center justify-between rounded-xl border border-zinc-200/80 bg-zinc-100/80 px-3 text-xs text-zinc-500 transition-colors hover:border-zinc-300 hover:text-zinc-800 dark:border-zinc-800 dark:bg-zinc-800/70 dark:text-zinc-400 dark:hover:text-zinc-200 cursor-pointer"
+        className="flex h-9 w-full items-center justify-between rounded-xl border border-sidebar-border bg-sidebar-accent/50 px-3 text-xs text-sidebar-foreground/75 transition-colors hover:border-sidebar-border hover:bg-sidebar-accent hover:text-sidebar-accent-foreground cursor-pointer"
       >
         <span className="flex items-center gap-2 truncate">
-          <Search className="h-3.5 w-3.5 text-zinc-400 shrink-0" />
+          <Search className="h-3.5 w-3.5 text-sidebar-foreground/60 shrink-0" />
           <span className="truncate">Quick Search</span>
         </span>
-        <kbd className="rounded bg-zinc-200/90 px-1.5 py-0.5 font-mono text-[10px] font-medium text-zinc-600 dark:bg-zinc-700 dark:text-zinc-300 shrink-0">
+        <kbd className="rounded border border-sidebar-border bg-sidebar px-1.5 py-0.5 font-mono text-[10px] font-medium text-sidebar-foreground/80 shrink-0">
           ⌘K
         </kbd>
       </button>

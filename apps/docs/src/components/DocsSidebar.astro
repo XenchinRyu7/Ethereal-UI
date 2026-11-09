@@ -17,19 +17,19 @@ const templates = getRegistryByCategory("templates")
 
 <aside
   id="docs-sidebar-drawer"
-  class="fixed inset-y-0 left-0 z-50 w-[276px] -translate-x-full transition-transform duration-200 ease-out lg:static lg:z-auto lg:w-[248px] lg:translate-x-0 shrink-0 lg:sticky lg:top-3 lg:h-[calc(100vh-1.5rem)] flex flex-col lg:rounded-2xl border-r lg:border border-zinc-200/80 bg-white lg:bg-zinc-50/70 p-3 dark:border-zinc-800 dark:bg-zinc-950 lg:dark:bg-zinc-900/60 select-none shadow-2xl lg:shadow-none"
+  class="fixed inset-y-0 left-0 z-50 w-[276px] -translate-x-full transition-transform duration-200 ease-out lg:static lg:z-auto lg:w-[248px] lg:translate-x-0 shrink-0 lg:sticky lg:top-3 lg:h-[calc(100vh-1.5rem)] flex flex-col lg:rounded-2xl border-r lg:border border-sidebar-border bg-sidebar text-sidebar-foreground p-3 select-none shadow-2xl lg:shadow-none"
 >
   <!-- Brand Header -->
   <div class="flex items-center justify-between px-1.5 pt-1 pb-3">
     <a href="/" class="flex items-center gap-2.5">
-      <div class="flex h-7 w-7 items-center justify-center rounded-lg bg-blue-600 text-white shadow-2xs">
+      <div class="flex h-7 w-7 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground shadow-2xs">
         <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
           <rect width="18" height="18" x="3" y="3" rx="3"/>
           <path d="M9 3v18"/>
           <path d="M9 9h12"/>
         </svg>
       </div>
-      <span class="text-base font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+      <span class="text-base font-bold tracking-tight text-sidebar-foreground">
         EtherealUI
       </span>
     </a>
@@ -38,7 +38,7 @@ const templates = getRegistryByCategory("templates")
       id="docs-sidebar-close-btn"
       type="button"
       aria-label="Close sidebar"
-      class="inline-flex lg:hidden h-7 w-7 items-center justify-center rounded-lg text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100 cursor-pointer"
+      class="inline-flex lg:hidden h-7 w-7 items-center justify-center rounded-lg text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground cursor-pointer"
     >
       <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M18 6 6 18"/>
@@ -55,36 +55,38 @@ const templates = getRegistryByCategory("templates")
   <!-- Scrollable Tree Navigation -->
   <div id="docs-sidebar-scroll" class="flex-1 overflow-y-auto px-1 space-y-5 pr-1">
     <!-- Top-level Overview / Blocks / Templates -->
-    <ul class="ml-2 border-l border-zinc-200 dark:border-zinc-800 space-y-0.5 text-xs">
+    <ul class="ml-2 border-l border-sidebar-border/60 space-y-0.5 text-xs">
       <li class="relative pl-3">
-        <span class="absolute left-0 top-1/2 w-2 -translate-y-1/2 border-t border-zinc-200 dark:border-zinc-800"></span>
+        <span class="absolute left-0 top-1/2 w-2 -translate-y-1/2 border-t border-sidebar-border/60"></span>
         <a
           href="/docs/introduction"
+          data-active={pathname.startsWith("/docs") ? "true" : undefined}
           class:list={[
             "flex items-center gap-2 rounded-lg px-2.5 py-1.5 transition-colors",
             pathname.startsWith("/docs")
-              ? "bg-zinc-200/80 text-zinc-900 font-medium dark:bg-zinc-800 dark:text-white"
-              : "text-zinc-600 hover:bg-zinc-200/40 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800/50 dark:hover:text-zinc-200",
+              ? "bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-2xs"
+              : "text-sidebar-foreground/75 hover:bg-sidebar-accent/70 hover:text-sidebar-accent-foreground",
           ]}
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-zinc-400">
+          <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-sidebar-foreground/60 shrink-0">
             <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20"/>
           </svg>
           <span>Documentation</span>
         </a>
       </li>
       <li class="relative pl-3">
-        <span class="absolute left-0 top-1/2 w-2 -translate-y-1/2 border-t border-zinc-200 dark:border-zinc-800"></span>
+        <span class="absolute left-0 top-1/2 w-2 -translate-y-1/2 border-t border-sidebar-border/60"></span>
         <a
           href="/charts"
+          data-active={(pathname === "/charts" || pathname === "/charts/") ? "true" : undefined}
           class:list={[
             "flex items-center gap-2 rounded-lg px-2.5 py-1.5 transition-colors",
             pathname === "/charts" || pathname === "/charts/"
-              ? "bg-zinc-200/80 text-zinc-900 font-medium dark:bg-zinc-800 dark:text-white"
-              : "text-zinc-600 hover:bg-zinc-200/40 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800/50 dark:hover:text-zinc-200",
+              ? "bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-2xs"
+              : "text-sidebar-foreground/75 hover:bg-sidebar-accent/70 hover:text-sidebar-accent-foreground",
           ]}
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-zinc-400">
+          <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-sidebar-foreground/60 shrink-0">
             <path d="M3 3v16a2 2 0 0 0 2 2h16"/>
             <path d="M18 17V9"/>
             <path d="M13 17V5"/>
@@ -94,17 +96,18 @@ const templates = getRegistryByCategory("templates")
         </a>
       </li>
       <li class="relative pl-3">
-        <span class="absolute left-0 top-1/2 w-2 -translate-y-1/2 border-t border-zinc-200 dark:border-zinc-800"></span>
+        <span class="absolute left-0 top-1/2 w-2 -translate-y-1/2 border-t border-sidebar-border/60"></span>
         <a
           href="/blocks"
+          data-active={(pathname === "/blocks" || pathname === "/blocks/") ? "true" : undefined}
           class:list={[
             "flex items-center gap-2 rounded-lg px-2.5 py-1.5 transition-colors",
             pathname === "/blocks" || pathname === "/blocks/"
-              ? "bg-zinc-200/80 text-zinc-900 font-medium dark:bg-zinc-800 dark:text-white"
-              : "text-zinc-600 hover:bg-zinc-200/40 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800/50 dark:hover:text-zinc-200",
+              ? "bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-2xs"
+              : "text-sidebar-foreground/75 hover:bg-sidebar-accent/70 hover:text-sidebar-accent-foreground",
           ]}
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-zinc-400">
+          <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-sidebar-foreground/60 shrink-0">
             <rect width="7" height="7" x="3" y="3" rx="1"/>
             <rect width="7" height="7" x="14" y="3" rx="1"/>
             <rect width="7" height="7" x="14" y="14" rx="1"/>
@@ -114,17 +117,18 @@ const templates = getRegistryByCategory("templates")
         </a>
       </li>
       <li class="relative pl-3">
-        <span class="absolute left-0 top-1/2 w-2 -translate-y-1/2 border-t border-zinc-200 dark:border-zinc-800"></span>
+        <span class="absolute left-0 top-1/2 w-2 -translate-y-1/2 border-t border-sidebar-border/60"></span>
         <a
           href="/templates"
+          data-active={(pathname === "/templates" || pathname === "/templates/") ? "true" : undefined}
           class:list={[
             "flex items-center gap-2 rounded-lg px-2.5 py-1.5 transition-colors",
             pathname === "/templates" || pathname === "/templates/"
-              ? "bg-zinc-200/80 text-zinc-900 font-medium dark:bg-zinc-800 dark:text-white"
-              : "text-zinc-600 hover:bg-zinc-200/40 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800/50 dark:hover:text-zinc-200",
+              ? "bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-2xs"
+              : "text-sidebar-foreground/75 hover:bg-sidebar-accent/70 hover:text-sidebar-accent-foreground",
           ]}
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-zinc-400">
+          <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-sidebar-foreground/60 shrink-0">
             <rect width="18" height="18" x="3" y="3" rx="2"/>
             <path d="M3 9h18"/>
             <path d="M9 21V9"/>
@@ -133,18 +137,19 @@ const templates = getRegistryByCategory("templates")
         </a>
       </li>
       <li class="relative pl-3">
-        <span class="absolute left-0 top-1/2 w-2 -translate-y-1/2 border-t border-zinc-200 dark:border-zinc-800"></span>
+        <span class="absolute left-0 top-1/2 w-2 -translate-y-1/2 border-t border-sidebar-border/60"></span>
         <a
           href="/themes"
+          data-active={(pathname === "/themes" || pathname === "/themes/") ? "true" : undefined}
           class:list={[
             "flex items-center justify-between rounded-lg px-2.5 py-1.5 transition-colors",
             pathname === "/themes" || pathname === "/themes/"
-              ? "bg-zinc-200/80 text-zinc-900 font-medium dark:bg-zinc-800 dark:text-white"
-              : "text-zinc-600 hover:bg-zinc-200/40 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800/50 dark:hover:text-zinc-200",
+              ? "bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-2xs"
+              : "text-sidebar-foreground/75 hover:bg-sidebar-accent/70 hover:text-sidebar-accent-foreground",
           ]}
         >
           <span class="flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-zinc-400">
+            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-sidebar-foreground/60 shrink-0">
               <circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/>
               <circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/>
               <circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/>
@@ -153,7 +158,7 @@ const templates = getRegistryByCategory("templates")
             </svg>
             <span>Themes</span>
           </span>
-          <span class="rounded bg-blue-100 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-blue-700 dark:bg-blue-500/20 dark:text-blue-300">
+          <span class="rounded bg-sidebar-primary/20 text-sidebar-primary border border-sidebar-primary/30 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide">
             870+
           </span>
         </a>
@@ -162,32 +167,32 @@ const templates = getRegistryByCategory("templates")
 
     <!-- BASE COMPONENTS (One-by-one like BoardUI) -->
     <div class="space-y-1.5">
-      <div class="flex items-center justify-between px-2 text-[11px] font-semibold uppercase tracking-wider text-zinc-400">
+      <div class="flex items-center justify-between px-2 text-[11px] font-semibold uppercase tracking-wider text-sidebar-foreground/60">
         <span>Base</span>
-        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-sidebar-foreground/40">
           <path d="m6 9 6 6 6-6"/>
         </svg>
       </div>
-      <ul class="ml-2 border-l border-zinc-200 dark:border-zinc-800 space-y-0.5 text-xs">
+      <ul class="ml-2 border-l border-sidebar-border/60 space-y-0.5 text-xs">
         {primitives.map((item) => {
           const href = `/components/${item.slug}`
           const active = pathname === href || pathname === `${href}/`
           return (
             <li class="relative pl-3">
-              <span class="absolute left-0 top-1/2 w-2 -translate-y-1/2 border-t border-zinc-200 dark:border-zinc-800"></span>
+              <span class="absolute left-0 top-1/2 w-2 -translate-y-1/2 border-t border-sidebar-border/60"></span>
               <a
                 href={href}
                 data-active={active ? "true" : undefined}
                 class:list={[
                   "flex items-center justify-between rounded-lg px-2.5 py-1.5 transition-colors",
                   active
-                    ? "bg-zinc-200/80 text-zinc-900 font-medium dark:bg-zinc-800 dark:text-white"
-                    : "text-zinc-600 hover:bg-zinc-200/40 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800/50 dark:hover:text-zinc-200",
+                    ? "bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-2xs"
+                    : "text-sidebar-foreground/75 hover:bg-sidebar-accent/70 hover:text-sidebar-accent-foreground",
                 ]}
               >
                 <span class="truncate">{item.title}</span>
                 {item.isNew && (
-                  <span class="rounded bg-blue-100 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-blue-700 dark:bg-blue-500/20 dark:text-blue-300">
+                  <span class="rounded bg-sidebar-primary/20 text-sidebar-primary border border-sidebar-primary/30 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide">
                     NEW
                   </span>
                 )}
@@ -200,32 +205,32 @@ const templates = getRegistryByCategory("templates")
 
     <!-- CHARTS (One-by-one) -->
     <div class="space-y-1.5">
-      <div class="flex items-center justify-between px-2 text-[11px] font-semibold uppercase tracking-wider text-zinc-400">
+      <div class="flex items-center justify-between px-2 text-[11px] font-semibold uppercase tracking-wider text-sidebar-foreground/60">
         <span>Charts</span>
-        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-sidebar-foreground/40">
           <path d="m6 9 6 6 6-6"/>
         </svg>
       </div>
-      <ul class="ml-2 border-l border-zinc-200 dark:border-zinc-800 space-y-0.5 text-xs">
+      <ul class="ml-2 border-l border-sidebar-border/60 space-y-0.5 text-xs">
         {charts.map((item) => {
           const href = `/charts/${item.slug}`
           const active = pathname === href || pathname === `${href}/`
           return (
             <li class="relative pl-3">
-              <span class="absolute left-0 top-1/2 w-2 -translate-y-1/2 border-t border-zinc-200 dark:border-zinc-800"></span>
+              <span class="absolute left-0 top-1/2 w-2 -translate-y-1/2 border-t border-sidebar-border/60"></span>
               <a
                 href={href}
                 data-active={active ? "true" : undefined}
                 class:list={[
                   "flex items-center justify-between rounded-lg px-2.5 py-1.5 transition-colors",
                   active
-                    ? "bg-zinc-200/80 text-zinc-900 font-medium dark:bg-zinc-800 dark:text-white"
-                    : "text-zinc-600 hover:bg-zinc-200/40 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800/50 dark:hover:text-zinc-200",
+                    ? "bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-2xs"
+                    : "text-sidebar-foreground/75 hover:bg-sidebar-accent/70 hover:text-sidebar-accent-foreground",
                 ]}
               >
                 <span class="truncate">{item.title}</span>
                 {item.isNew && (
-                  <span class="rounded bg-blue-100 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-blue-700 dark:bg-blue-500/20 dark:text-blue-300">
+                  <span class="rounded bg-sidebar-primary/20 text-sidebar-primary border border-sidebar-primary/30 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide">
                     NEW
                   </span>
                 )}
@@ -238,32 +243,32 @@ const templates = getRegistryByCategory("templates")
 
     <!-- BLOCKS (One-by-one) -->
     <div class="space-y-1.5">
-      <div class="flex items-center justify-between px-2 text-[11px] font-semibold uppercase tracking-wider text-zinc-400">
+      <div class="flex items-center justify-between px-2 text-[11px] font-semibold uppercase tracking-wider text-sidebar-foreground/60">
         <span>Blocks</span>
-        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-sidebar-foreground/40">
           <path d="m6 9 6 6 6-6"/>
         </svg>
       </div>
-      <ul class="ml-2 border-l border-zinc-200 dark:border-zinc-800 space-y-0.5 text-xs">
+      <ul class="ml-2 border-l border-sidebar-border/60 space-y-0.5 text-xs">
         {blocks.map((item) => {
           const href = `/blocks/${item.slug}`
           const active = pathname === href || pathname === `${href}/`
           return (
             <li class="relative pl-3">
-              <span class="absolute left-0 top-1/2 w-2 -translate-y-1/2 border-t border-zinc-200 dark:border-zinc-800"></span>
+              <span class="absolute left-0 top-1/2 w-2 -translate-y-1/2 border-t border-sidebar-border/60"></span>
               <a
                 href={href}
                 data-active={active ? "true" : undefined}
                 class:list={[
                   "flex items-center justify-between rounded-lg px-2.5 py-1.5 transition-colors",
                   active
-                    ? "bg-zinc-200/80 text-zinc-900 font-medium dark:bg-zinc-800 dark:text-white"
-                    : "text-zinc-600 hover:bg-zinc-200/40 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800/50 dark:hover:text-zinc-200",
+                    ? "bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-2xs"
+                    : "text-sidebar-foreground/75 hover:bg-sidebar-accent/70 hover:text-sidebar-accent-foreground",
                 ]}
               >
                 <span class="truncate">{item.title}</span>
                 {item.isNew && (
-                  <span class="rounded bg-blue-100 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-blue-700 dark:bg-blue-500/20 dark:text-blue-300">
+                  <span class="rounded bg-sidebar-primary/20 text-sidebar-primary border border-sidebar-primary/30 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide">
                     NEW
                   </span>
                 )}
@@ -276,27 +281,27 @@ const templates = getRegistryByCategory("templates")
 
     <!-- TEMPLATES (One-by-one) -->
     <div class="space-y-1.5 pb-4">
-      <div class="flex items-center justify-between px-2 text-[11px] font-semibold uppercase tracking-wider text-zinc-400">
+      <div class="flex items-center justify-between px-2 text-[11px] font-semibold uppercase tracking-wider text-sidebar-foreground/60">
         <span>Templates</span>
-        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-sidebar-foreground/40">
           <path d="m6 9 6 6 6-6"/>
         </svg>
       </div>
-      <ul class="ml-2 border-l border-zinc-200 dark:border-zinc-800 space-y-0.5 text-xs">
+      <ul class="ml-2 border-l border-sidebar-border/60 space-y-0.5 text-xs">
         {templates.map((item) => {
           const href = `/templates/${item.slug}`
           const active = pathname === href || pathname === `${href}/`
           return (
             <li class="relative pl-3">
-              <span class="absolute left-0 top-1/2 w-2 -translate-y-1/2 border-t border-zinc-200 dark:border-zinc-800"></span>
+              <span class="absolute left-0 top-1/2 w-2 -translate-y-1/2 border-t border-sidebar-border/60"></span>
               <a
                 href={href}
                 data-active={active ? "true" : undefined}
                 class:list={[
                   "flex items-center justify-between rounded-lg px-2.5 py-1.5 transition-colors",
                   active
-                    ? "bg-zinc-200/80 text-zinc-900 font-medium dark:bg-zinc-800 dark:text-white"
-                    : "text-zinc-600 hover:bg-zinc-200/40 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800/50 dark:hover:text-zinc-200",
+                    ? "bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-2xs"
+                    : "text-sidebar-foreground/75 hover:bg-sidebar-accent/70 hover:text-sidebar-accent-foreground",
                 ]}
               >
                 <span class="truncate">{item.title}</span>

@@ -317,11 +317,30 @@ html[data-color-theme]:not([data-color-theme="default"]) :where(button, input, s
 }
 
 /* Sidebar Surface & Border Mapping */
-html[data-color-theme]:not([data-color-theme="default"]) #docs-sidebar-drawer,
-html[data-color-theme]:not([data-color-theme="default"]) aside {
-  background-color: var(--sidebar, var(--card));
+html[data-color-theme]:not([data-color-theme="default"]) #docs-sidebar-drawer {
+  background-color: var(--sidebar, var(--card)) !important;
+  color: var(--sidebar-foreground, var(--foreground)) !important;
+  border-color: var(--sidebar-border, var(--border)) !important;
+}
+
+html[data-color-theme]:not([data-color-theme="default"]) #docs-sidebar-drawer a {
   color: var(--sidebar-foreground, var(--foreground));
-  border-color: var(--sidebar-border, var(--border));
+}
+
+html[data-color-theme]:not([data-color-theme="default"]) #docs-sidebar-drawer a:hover {
+  background-color: var(--sidebar-accent, var(--accent)) !important;
+  color: var(--sidebar-accent-foreground, var(--sidebar-foreground)) !important;
+}
+
+html[data-color-theme]:not([data-color-theme="default"]) #docs-sidebar-drawer a[data-active="true"] {
+  background-color: var(--sidebar-accent, var(--accent)) !important;
+  color: var(--sidebar-accent-foreground, var(--sidebar-foreground)) !important;
+  font-weight: 600 !important;
+}
+
+html[data-color-theme]:not([data-color-theme="default"]) #docs-sidebar-drawer ul[class*="border-l"],
+html[data-color-theme]:not([data-color-theme="default"]) #docs-sidebar-drawer span[class*="border-t"] {
+  border-color: var(--sidebar-border, var(--border)) !important;
 }
 
 /* Popover, Dropdown, Dialog & Modal Surface Mapping */

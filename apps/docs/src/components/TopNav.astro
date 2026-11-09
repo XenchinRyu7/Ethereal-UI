@@ -9,14 +9,14 @@ interface Props {
 const { categoryLabel = "Components", pageTitle } = Astro.props
 ---
 
-<header class="flex h-12 w-full items-center justify-between gap-2 border-b border-zinc-200/70 pb-3 dark:border-zinc-800/80">
+<header class="flex h-12 w-full items-center justify-between gap-2 border-b border-border pb-3">
   <!-- Left Mobile Sidebar Button (< lg) + Breadcrumb Trail -->
   <div class="flex items-center gap-2 min-w-0">
     <button
       id="docs-mobile-menu-btn"
       type="button"
       aria-label="Open documentation sidebar"
-      class="inline-flex lg:hidden h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-zinc-200 bg-white text-zinc-700 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 cursor-pointer"
+      class="inline-flex lg:hidden h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-border bg-card text-foreground hover:bg-accent cursor-pointer"
     >
       <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <line x1="4" x2="20" y1="6" y2="6"/>
@@ -26,13 +26,13 @@ const { categoryLabel = "Components", pageTitle } = Astro.props
     </button>
 
     <nav aria-label="Breadcrumb" class="flex items-center gap-1.5 sm:gap-2 text-xs min-w-0 overflow-hidden">
-      <a href="/" class="flex items-center gap-1.5 shrink-0 text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100">
-        <span class="flex h-4 w-4 items-center justify-center rounded bg-blue-600 text-[9px] font-bold text-white">
+      <a href="/" class="flex items-center gap-1.5 shrink-0 text-muted-foreground hover:text-foreground">
+        <span class="flex h-4 w-4 items-center justify-center rounded bg-primary text-[9px] font-bold text-primary-foreground">
           E
         </span>
         <span class="hidden xs:inline">Ethereal UI</span>
       </a>
-      <span class="text-zinc-300 dark:text-zinc-700 shrink-0">&gt;</span>
+      <span class="text-muted-foreground/40 shrink-0">&gt;</span>
       <a
         href={
           categoryLabel === "Charts"
@@ -43,14 +43,14 @@ const { categoryLabel = "Components", pageTitle } = Astro.props
             ? "/templates"
             : "/components"
         }
-        class="text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 shrink-0"
+        class="text-muted-foreground hover:text-foreground shrink-0"
       >
         {categoryLabel}
       </a>
       {pageTitle && (
         <>
-          <span class="text-zinc-300 dark:text-zinc-700 shrink-0">&gt;</span>
-          <span class="truncate font-medium text-zinc-900 dark:text-zinc-100">
+          <span class="text-muted-foreground/40 shrink-0">&gt;</span>
+          <span class="truncate font-medium text-foreground">
             {pageTitle}
           </span>
         </>
@@ -60,20 +60,20 @@ const { categoryLabel = "Components", pageTitle } = Astro.props
 
   <!-- Right Action Links (Docs, Blog) + Icons & Pills -->
   <div class="flex items-center gap-2 sm:gap-3 shrink-0">
-    <div class="hidden md:flex items-center gap-4 text-xs font-medium text-zinc-500 dark:text-zinc-400 mr-1">
-      <a href="/docs/introduction" class="hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors">
+    <div class="hidden md:flex items-center gap-4 text-xs font-medium text-muted-foreground mr-1">
+      <a href="/docs/introduction" class="hover:text-foreground transition-colors">
         Docs
       </a>
-      <a href="/components/avatar" class="hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors">
+      <a href="/components/avatar" class="hover:text-foreground transition-colors">
         Components
       </a>
-      <a href="/charts" class="hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors">
+      <a href="/charts" class="hover:text-foreground transition-colors">
         Charts
       </a>
-      <a href="/blocks" class="hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors">
+      <a href="/blocks" class="hover:text-foreground transition-colors">
         Blocks
       </a>
-      <a href="/blog" class="hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors">
+      <a href="/blog" class="hover:text-foreground transition-colors">
         Blog
       </a>
     </div>
@@ -86,7 +86,7 @@ const { categoryLabel = "Components", pageTitle } = Astro.props
         target="_blank"
         rel="noreferrer"
         aria-label="X"
-        class="hidden sm:inline-flex h-8 w-8 items-center justify-center rounded-lg text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
+        class="hidden sm:inline-flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:bg-accent hover:text-foreground"
       >
         <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
           <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
@@ -97,7 +97,7 @@ const { categoryLabel = "Components", pageTitle } = Astro.props
         href="https://github.com/XenchinRyu7/Ethereal-UI"
         target="_blank"
         rel="noreferrer"
-        class="inline-flex h-8 items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-2.5 text-xs font-medium text-zinc-700 shadow-2xs hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
+        class="inline-flex h-8 items-center gap-1.5 rounded-xl border border-border bg-card px-2.5 text-xs font-medium text-foreground shadow-2xs hover:bg-accent"
       >
         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
           <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
