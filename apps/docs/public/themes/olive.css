@@ -1,0 +1,115 @@
+/**
+ * Ethereal UI Theme: Olive
+ * Author: Aygün Servet Zurnacı
+ * Theme ID: cmoswkzap000004l25ckq94a3
+ * Tags: nature, soft
+ * Likes: 8
+ */
+
+:root {
+  --background: oklch(1 0.0100 40);
+  --foreground: oklch(0.1450 0 0);
+  --card: oklch(0.9900 0 120);
+  --card-foreground: oklch(0.3450 0.0500 120);
+  --popover: oklch(0.9900 0 120);
+  --popover-foreground: oklch(0.1450 0 0);
+  --primary: oklch(0.4050 0.0500 120);
+  --primary-foreground: oklch(0.9850 0.0500 120);
+  --secondary: oklch(0.9400 0.0500 120);
+  --secondary-foreground: oklch(0.4050 0.0500 120);
+  --muted: oklch(0.9000 0.0100 120);
+  --muted-foreground: oklch(0.5560 0.0100 120);
+  --accent: oklch(0.9000 0.0200 120);
+  --accent-foreground: oklch(0.2050 0.0200 120);
+  --destructive: oklch(0.4770 0.2450 27.3250);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.9220 0.0100 120);
+  --input: oklch(0.8220 0.0100 120);
+  --ring: oklch(0.7080 0.0100 120);
+  --chart-1: oklch(0.8100 0.1000 120);
+  --chart-2: oklch(0.6200 0.1900 122);
+  --chart-3: oklch(0.5500 0.2200 124);
+  --chart-4: oklch(0.4900 0.2200 126);
+  --chart-5: oklch(0.4200 0.1800 128);
+  --sidebar: oklch(0.9750 0.0010 120);
+  --sidebar-foreground: oklch(0.2450 0.0010 120);
+  --sidebar-primary: oklch(0.4050 0.0500 120);
+  --sidebar-primary-foreground: oklch(0.9850 0.0500 120);
+  --sidebar-accent: oklch(0.9000 0.0200 120);
+  --sidebar-accent-foreground: oklch(0.2050 0.0200 120);
+  --sidebar-border: oklch(0.9220 0.0010 120);
+  --sidebar-ring: oklch(0.7080 0.0010 120);
+  --font-sans: Antic, ui-sans-serif, sans-serif, system-ui;
+  --font-serif: Alegreya, ui-serif, serif;
+  --font-mono: JetBrains Mono, ui-monospace, monospace;
+  --radius: 0.75rem;
+  --shadow-x: 0;
+  --shadow-y: 1px;
+  --shadow-blur: 3px;
+  --shadow-spread: 0px;
+  --shadow-opacity: 0.1;
+  --shadow-color: oklch(0 0 0);
+  --shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+  --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+  --shadow-sm: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 1px 2px -1px hsl(0 0% 0% / 0.10);
+  --shadow: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 1px 2px -1px hsl(0 0% 0% / 0.10);
+  --shadow-md: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 2px 4px -1px hsl(0 0% 0% / 0.10);
+  --shadow-lg: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 4px 6px -1px hsl(0 0% 0% / 0.10);
+  --shadow-xl: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 8px 10px -1px hsl(0 0% 0% / 0.10);
+  --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
+  --tracking-normal: 0em;
+  --spacing: 0.25rem;
+}
+
+.dark {
+  --background: oklch(0.1650 0.0100 120);
+  --foreground: oklch(0.9900 0.0100 120);
+  --card: oklch(0.1550 0.0200 120);
+  --card-foreground: oklch(0.9900 0.0200 120);
+  --popover: oklch(0.1550 0.0200 120);
+  --popover-foreground: oklch(0.9900 0 120);
+  --primary: oklch(0.8850 0.1000 120);
+  --primary-foreground: oklch(0.2050 0.0200 120);
+  --secondary: oklch(0.4050 0.0500 120);
+  --secondary-foreground: oklch(0.9400 0.0500 120);
+  --muted: oklch(0.2060 0.0100 120);
+  --muted-foreground: oklch(0.7000 0.0100 120);
+  --accent: oklch(0.3050 0.0200 120);
+  --accent-foreground: oklch(0.9000 0.0200 120);
+  --destructive: oklch(0.7040 0.1910 22.2160);
+  --destructive-foreground: oklch(0.9850 0 0);
+  --border: oklch(0.2450 0.0100 120);
+  --input: oklch(0.2650 0.0100 120);
+  --ring: oklch(0.5560 0.0100 120);
+  --chart-1: oklch(0.8100 0.1000 120);
+  --chart-2: oklch(0.6200 0.1900 122);
+  --chart-3: oklch(0.5500 0.2200 124);
+  --chart-4: oklch(0.4900 0.2200 126);
+  --chart-5: oklch(0.4200 0.1800 128);
+  --sidebar: oklch(0.1850 0.0010 120);
+  --sidebar-foreground: oklch(0.9750 0.0010 120);
+  --sidebar-primary: oklch(0.9850 0.0500 120);
+  --sidebar-primary-foreground: oklch(0.4050 0.0500 120);
+  --sidebar-accent: oklch(0.3050 0.0200 120);
+  --sidebar-accent-foreground: oklch(0.9000 0.0200 120);
+  --sidebar-border: oklch(0.2450 0.0100 120);
+  --sidebar-ring: oklch(0.5560 0.0100 120);
+  --font-sans: Antic, ui-sans-serif, sans-serif, system-ui;
+  --font-serif: Alegreya, ui-serif, serif;
+  --font-mono: JetBrains Mono, ui-monospace, monospace;
+  --radius: 0.75rem;
+  --shadow-x: 0;
+  --shadow-y: 1px;
+  --shadow-blur: 3px;
+  --shadow-spread: 0px;
+  --shadow-opacity: 0.1;
+  --shadow-color: oklch(0 0 0);
+  --shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+  --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+  --shadow-sm: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 1px 2px -1px hsl(0 0% 0% / 0.10);
+  --shadow: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 1px 2px -1px hsl(0 0% 0% / 0.10);
+  --shadow-md: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 2px 4px -1px hsl(0 0% 0% / 0.10);
+  --shadow-lg: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 4px 6px -1px hsl(0 0% 0% / 0.10);
+  --shadow-xl: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 8px 10px -1px hsl(0 0% 0% / 0.10);
+  --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
+}

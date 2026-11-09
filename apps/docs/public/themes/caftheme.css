@@ -1,0 +1,119 @@
+/**
+ * Ethereal UI Theme: CafTheme
+ * Author: th arris
+ * Theme ID: cmrat96da000204jrc6dyccie
+ * Tags: none
+ * Likes: 0
+ */
+
+:root {
+  --background: oklch(0 0 0);
+  --foreground: oklch(0.9197 0.0393 59.8534);
+  --card: oklch(0.0672 0 0);
+  --card-foreground: oklch(0.9197 0.0393 59.8534);
+  --popover: oklch(0.0672 0 0);
+  --popover-foreground: oklch(0.9197 0.0393 59.8534);
+  --primary: oklch(0.7012 0.1711 56.2634);
+  --primary-foreground: oklch(0.1491 0.0194 59.9340);
+  --secondary: oklch(0.5121 0.0947 177.3855);
+  --secondary-foreground: oklch(0.8493 0.0792 180.6654);
+  --muted: oklch(0.1496 0 0);
+  --muted-foreground: oklch(0.6501 0.0400 60.3783);
+  --accent: oklch(0.6009 0.1492 54.7534);
+  --accent-foreground: oklch(0.9491 0.0296 59.3023);
+  --destructive: oklch(0.4991 0.1998 29.9462);
+  --destructive-foreground: oklch(1.0000 0 0);
+  --border: oklch(0.7012 0.1711 56.2634);
+  --input: oklch(0.0969 0 0);
+  --ring: oklch(0.7012 0.1711 56.2634);
+  --chart-1: oklch(0.7012 0.1711 56.2634);
+  --chart-2: oklch(0.5121 0.0947 177.3855);
+  --chart-3: oklch(0.6009 0.1492 54.7534);
+  --chart-4: oklch(0.7947 0.1468 61.2011);
+  --chart-5: oklch(0.6505 0.1505 149.8752);
+  --sidebar: oklch(0 0 0);
+  --sidebar-foreground: oklch(0.8493 0.0401 59.7873);
+  --sidebar-primary: oklch(0.7012 0.1711 56.2634);
+  --sidebar-primary-foreground: oklch(0.1491 0.0194 59.9340);
+  --sidebar-accent: oklch(0.1221 0 0);
+  --sidebar-accent-foreground: oklch(0.8493 0.0401 59.7873);
+  --sidebar-border: oklch(0.7012 0.1711 56.2634);
+  --sidebar-ring: oklch(0.7012 0.1711 56.2634);
+  --font-sans: 'IBM Plex Mono', 'Fira Code', 'VT323',
+               'Courier New', monospace;
+  --font-serif: 'Courier New', monospace;
+  --font-mono: 'IBM Plex Mono', 'Fira Code', 'VT323',
+               'Courier New', monospace;
+  --radius: 0rem;
+  --shadow-x: 0;
+  --shadow-y: 1px;
+  --shadow-blur: 0px;
+  --shadow-spread: 0px;
+  --shadow-opacity: 0;
+  --shadow-color: oklch(0 0 0);
+  --shadow-2xs: 0 1px 0px 0px hsl(0 0% 0% / 0.00);
+  --shadow-xs: 0 1px 0px 0px hsl(0 0% 0% / 0.00);
+  --shadow-sm: 0 1px 0px 0px hsl(0 0% 0% / 0.00), 0 1px 2px -1px hsl(0 0% 0% / 0.00);
+  --shadow: 0 1px 0px 0px hsl(0 0% 0% / 0.00), 0 1px 2px -1px hsl(0 0% 0% / 0.00);
+  --shadow-md: 0 1px 0px 0px hsl(0 0% 0% / 0.00), 0 2px 4px -1px hsl(0 0% 0% / 0.00);
+  --shadow-lg: 0 1px 0px 0px hsl(0 0% 0% / 0.00), 0 4px 6px -1px hsl(0 0% 0% / 0.00);
+  --shadow-xl: 0 1px 0px 0px hsl(0 0% 0% / 0.00), 0 8px 10px -1px hsl(0 0% 0% / 0.00);
+  --shadow-2xl: 0 1px 0px 0px hsl(0 0% 0% / 0.00);
+  --tracking-normal: 0em;
+  --spacing: 0.25rem;
+}
+
+.dark {
+  --background: oklch(0 0 0);
+  --foreground: oklch(0.9197 0.0393 59.8534);
+  --card: oklch(0.0672 0 0);
+  --card-foreground: oklch(0.9197 0.0393 59.8534);
+  --popover: oklch(0.0672 0 0);
+  --popover-foreground: oklch(0.9197 0.0393 59.8534);
+  --primary: oklch(0.7012 0.1711 56.2634);
+  --primary-foreground: oklch(0.1491 0.0194 59.9340);
+  --secondary: oklch(0.5121 0.0947 177.3855);
+  --secondary-foreground: oklch(0.8493 0.0792 180.6654);
+  --muted: oklch(0.1496 0 0);
+  --muted-foreground: oklch(0.6501 0.0400 60.3783);
+  --accent: oklch(0.6009 0.1492 54.7534);
+  --accent-foreground: oklch(0.9491 0.0296 59.3023);
+  --destructive: oklch(0.4991 0.1998 29.9462);
+  --destructive-foreground: oklch(1.0000 0 0);
+  --border: oklch(0.7012 0.1711 56.2634);
+  --input: oklch(0.0969 0 0);
+  --ring: oklch(0.7012 0.1711 56.2634);
+  --chart-1: oklch(0.7012 0.1711 56.2634);
+  --chart-2: oklch(0.5121 0.0947 177.3855);
+  --chart-3: oklch(0.6009 0.1492 54.7534);
+  --chart-4: oklch(0.7947 0.1468 61.2011);
+  --chart-5: oklch(0.6505 0.1505 149.8752);
+  --sidebar: oklch(0 0 0);
+  --sidebar-foreground: oklch(0.8493 0.0401 59.7873);
+  --sidebar-primary: oklch(0.7012 0.1711 56.2634);
+  --sidebar-primary-foreground: oklch(0.1491 0.0194 59.9340);
+  --sidebar-accent: oklch(0.1221 0 0);
+  --sidebar-accent-foreground: oklch(0.8493 0.0401 59.7873);
+  --sidebar-border: oklch(0.7012 0.1711 56.2634);
+  --sidebar-ring: oklch(0.7012 0.1711 56.2634);
+  --font-sans: 'IBM Plex Mono', 'Fira Code', 'VT323',
+               'Courier New', monospace;
+  --font-serif: 'Courier New', monospace;
+  --font-mono: 'IBM Plex Mono', 'Fira Code', 'VT323',
+               'Courier New', monospace;
+  --radius: 0rem;
+  --shadow-x: 0;
+  --shadow-y: 1px;
+  --shadow-blur: 0px;
+  --shadow-spread: 0px;
+  --shadow-opacity: 0;
+  --shadow-color: oklch(0 0 0);
+  --shadow-2xs: 0 1px 0px 0px hsl(0 0% 0% / 0.00);
+  --shadow-xs: 0 1px 0px 0px hsl(0 0% 0% / 0.00);
+  --shadow-sm: 0 1px 0px 0px hsl(0 0% 0% / 0.00), 0 1px 2px -1px hsl(0 0% 0% / 0.00);
+  --shadow: 0 1px 0px 0px hsl(0 0% 0% / 0.00), 0 1px 2px -1px hsl(0 0% 0% / 0.00);
+  --shadow-md: 0 1px 0px 0px hsl(0 0% 0% / 0.00), 0 2px 4px -1px hsl(0 0% 0% / 0.00);
+  --shadow-lg: 0 1px 0px 0px hsl(0 0% 0% / 0.00), 0 4px 6px -1px hsl(0 0% 0% / 0.00);
+  --shadow-xl: 0 1px 0px 0px hsl(0 0% 0% / 0.00), 0 8px 10px -1px hsl(0 0% 0% / 0.00);
+  --shadow-2xl: 0 1px 0px 0px hsl(0 0% 0% / 0.00);
+}

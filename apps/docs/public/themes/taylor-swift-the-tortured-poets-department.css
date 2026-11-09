@@ -1,0 +1,115 @@
+/**
+ * Ethereal UI Theme: taylor swift the tortured poets department
+ * Author: David Sykes
+ * Theme ID: cmn0s3nmu000204k60xtnf8d8
+ * Tags: blog, landing-page, minimal, autumn
+ * Likes: 3
+ */
+
+:root {
+  --background: oklch(0.9641 0.0037 84.5611);
+  --foreground: oklch(0.2691 0.0090 48.3680);
+  --card: oklch(0.9412 0.0039 84.5620);
+  --card-foreground: oklch(0.2691 0.0090 48.3680);
+  --popover: oklch(0.9412 0.0039 84.5620);
+  --popover-foreground: oklch(0.2691 0.0090 48.3680);
+  --primary: oklch(0.3723 0.0136 57.8515);
+  --primary-foreground: oklch(0.9857 0.0015 84.5550);
+  --secondary: oklch(0.8894 0.0105 76.5952);
+  --secondary-foreground: oklch(0.3723 0.0136 57.8515);
+  --muted: oklch(0.9105 0.0056 76.6240);
+  --muted-foreground: oklch(0.5559 0.0111 58.0851);
+  --accent: oklch(0.8657 0.0101 76.5957);
+  --accent-foreground: oklch(0.3225 0.0113 57.8738);
+  --destructive: oklch(0.5298 0.0449 18.6764);
+  --destructive-foreground: oklch(0.9857 0.0015 84.5550);
+  --border: oklch(0.8496 0.0094 76.5989);
+  --input: oklch(0.8496 0.0094 76.5989);
+  --ring: oklch(0.3723 0.0136 57.8515);
+  --chart-1: oklch(0.4205 0.0159 57.8355);
+  --chart-2: oklch(0.6172 0.0377 76.1866);
+  --chart-3: oklch(0.5095 0.0102 48.5140);
+  --chart-4: oklch(0.7355 0.0181 84.5925);
+  --chart-5: oklch(0.8081 0.0091 67.6968);
+  --sidebar: oklch(0.9414 0.0055 76.6252);
+  --sidebar-foreground: oklch(0.3723 0.0136 57.8515);
+  --sidebar-primary: oklch(0.3723 0.0136 57.8515);
+  --sidebar-primary-foreground: oklch(0.9857 0.0015 84.5550);
+  --sidebar-accent: oklch(0.8877 0.0070 76.6153);
+  --sidebar-accent-foreground: oklch(0.3225 0.0113 57.8738);
+  --sidebar-border: oklch(0.8649 0.0085 76.6058);
+  --sidebar-ring: oklch(0.5129 0.0202 57.8140);
+  --font-sans: Garamond, 'Hoefler Text', 'Times New Roman', serif;
+  --font-serif: Garamond, 'Hoefler Text', serif;
+  --font-mono: 'Courier New', Courier, monospace;
+  --radius: 0.125rem;
+  --shadow-x: 0px;
+  --shadow-y: 2px;
+  --shadow-blur: 10px;
+  --shadow-spread: 0px;
+  --shadow-opacity: 0.1;
+  --shadow-color: oklch(0.2164 0.0062 57.9609);
+  --shadow-2xs: 0px 2px 10px 0px hsl(25 10% 10% / 0.05);
+  --shadow-xs: 0px 2px 10px 0px hsl(25 10% 10% / 0.05);
+  --shadow-sm: 0px 2px 10px 0px hsl(25 10% 10% / 0.10), 0px 1px 2px -1px hsl(25 10% 10% / 0.10);
+  --shadow: 0px 2px 10px 0px hsl(25 10% 10% / 0.10), 0px 1px 2px -1px hsl(25 10% 10% / 0.10);
+  --shadow-md: 0px 2px 10px 0px hsl(25 10% 10% / 0.10), 0px 2px 4px -1px hsl(25 10% 10% / 0.10);
+  --shadow-lg: 0px 2px 10px 0px hsl(25 10% 10% / 0.10), 0px 4px 6px -1px hsl(25 10% 10% / 0.10);
+  --shadow-xl: 0px 2px 10px 0px hsl(25 10% 10% / 0.10), 0px 8px 10px -1px hsl(25 10% 10% / 0.10);
+  --shadow-2xl: 0px 2px 10px 0px hsl(25 10% 10% / 0.25);
+  --tracking-normal: -0.02em;
+  --spacing: 0.25rem;
+}
+
+.dark {
+  --background: oklch(0.2373 0.0037 48.5642);
+  --foreground: oklch(0.8890 0.0075 84.5717);
+  --card: oklch(0.2693 0.0045 48.5522);
+  --card-foreground: oklch(0.8890 0.0075 84.5717);
+  --popover: oklch(0.2693 0.0045 48.5522);
+  --popover-foreground: oklch(0.8890 0.0075 84.5717);
+  --primary: oklch(0.8513 0.0100 84.5783);
+  --primary-foreground: oklch(0.2153 0.0031 48.5749);
+  --secondary: oklch(0.3206 0.0057 48.5385);
+  --secondary-foreground: oklch(0.8890 0.0075 84.5717);
+  --muted: oklch(0.3004 0.0052 48.5432);
+  --muted-foreground: oklch(0.6894 0.0106 84.5839);
+  --accent: oklch(0.3700 0.0069 48.5293);
+  --accent-foreground: oklch(0.9264 0.0049 84.5648);
+  --destructive: oklch(0.4737 0.0837 20.6930);
+  --destructive-foreground: oklch(0.9634 0.0024 84.5578);
+  --border: oklch(0.3700 0.0069 48.5293);
+  --input: oklch(0.3700 0.0069 48.5293);
+  --ring: oklch(0.7745 0.0154 84.5893);
+  --chart-1: oklch(0.8513 0.0100 84.5783);
+  --chart-2: oklch(0.6876 0.0099 76.5808);
+  --chart-3: oklch(0.5559 0.0111 58.0851);
+  --chart-4: oklch(0.4642 0.0091 48.5178);
+  --chart-5: oklch(0.3752 0.0077 84.5898);
+  --sidebar: oklch(0.2153 0.0031 48.5749);
+  --sidebar-foreground: oklch(0.8513 0.0100 84.5783);
+  --sidebar-primary: oklch(0.8513 0.0100 84.5783);
+  --sidebar-primary-foreground: oklch(0.2153 0.0031 48.5749);
+  --sidebar-accent: oklch(0.3004 0.0052 48.5432);
+  --sidebar-accent-foreground: oklch(0.9264 0.0049 84.5648);
+  --sidebar-border: oklch(0.3206 0.0057 48.5385);
+  --sidebar-ring: oklch(0.6959 0.0210 84.5930);
+  --font-sans: Garamond, 'Hoefler Text', 'Times New Roman', serif;
+  --font-serif: Garamond, 'Hoefler Text', serif;
+  --font-mono: 'Courier New', Courier, monospace;
+  --radius: 0.125rem;
+  --shadow-x: 0px;
+  --shadow-y: 4px;
+  --shadow-blur: 15px;
+  --shadow-spread: 0px;
+  --shadow-opacity: 0.5;
+  --shadow-color: oklch(0 0 0);
+  --shadow-2xs: 0px 4px 15px 0px hsl(0 0% 0% / 0.25);
+  --shadow-xs: 0px 4px 15px 0px hsl(0 0% 0% / 0.25);
+  --shadow-sm: 0px 4px 15px 0px hsl(0 0% 0% / 0.50), 0px 1px 2px -1px hsl(0 0% 0% / 0.50);
+  --shadow: 0px 4px 15px 0px hsl(0 0% 0% / 0.50), 0px 1px 2px -1px hsl(0 0% 0% / 0.50);
+  --shadow-md: 0px 4px 15px 0px hsl(0 0% 0% / 0.50), 0px 2px 4px -1px hsl(0 0% 0% / 0.50);
+  --shadow-lg: 0px 4px 15px 0px hsl(0 0% 0% / 0.50), 0px 4px 6px -1px hsl(0 0% 0% / 0.50);
+  --shadow-xl: 0px 4px 15px 0px hsl(0 0% 0% / 0.50), 0px 8px 10px -1px hsl(0 0% 0% / 0.50);
+  --shadow-2xl: 0px 4px 15px 0px hsl(0 0% 0% / 1.25);
+}

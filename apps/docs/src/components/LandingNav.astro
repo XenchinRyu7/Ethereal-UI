@@ -82,6 +82,20 @@ const pathname = Astro.url.pathname
           Templates
         </a>
         <a
+          href="/themes"
+          class:list={[
+            "transition-colors flex items-center gap-1.5",
+            pathname.startsWith("/themes")
+              ? "text-zinc-900 dark:text-white font-semibold"
+              : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100",
+          ]}
+        >
+          Themes
+          <span class="rounded bg-blue-100 px-1.5 py-0.5 text-[9px] font-semibold text-blue-700 dark:bg-blue-500/20 dark:text-blue-300">
+            870+
+          </span>
+        </a>
+        <a
           href="/blog"
           class:list={[
             "transition-colors",
@@ -158,6 +172,10 @@ const pathname = Astro.url.pathname
       </a>
       <a href="/templates" class="rounded-lg px-3 py-2 text-zinc-700 hover:bg-zinc-100 dark:text-zinc-200 dark:hover:bg-zinc-900">
         SaaS Templates (3)
+      </a>
+      <a href="/themes" class="flex items-center justify-between rounded-lg px-3 py-2 text-zinc-700 hover:bg-zinc-100 dark:text-zinc-200 dark:hover:bg-zinc-900">
+        <span>Themes Studio</span>
+        <span class="rounded bg-blue-100 px-1.5 py-0.5 text-[9px] font-semibold text-blue-700 dark:bg-blue-500/20 dark:text-blue-300">870+</span>
       </a>
       <a href="/blog" class="rounded-lg px-3 py-2 text-zinc-700 hover:bg-zinc-100 dark:text-zinc-200 dark:hover:bg-zinc-900">
         Blog

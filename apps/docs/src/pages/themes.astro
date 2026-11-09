@@ -1,0 +1,57 @@
+---
+import DocsLayout from "../layouts/DocsLayout.astro"
+import { ThemeExplorerShowcase } from "../components/ThemeExplorerShowcase"
+---
+
+<DocsLayout
+  title="Themes"
+  description="Browse, preview, and copy 870+ community-crafted OKLCH color themes for Ethereal UI and Tailwind CSS v4 with live Light & Dark mode switching."
+  categoryLabel="Themes"
+  toc={[
+    { id: "theme-studio", label: "Theme Explorer" },
+    { id: "how-to-use", label: "How to Use Themes" },
+  ]}
+>
+  <div class="space-y-12">
+    <section id="theme-studio" class="space-y-4 scroll-mt-20">
+      <div class="space-y-2">
+        <div class="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-[11px] font-semibold text-blue-700 dark:border-blue-500/30 dark:bg-blue-500/10 dark:text-blue-300">
+          <span>870+ OKLCH Presets</span>
+          <span>&bull;</span>
+          <span>Live Preview</span>
+        </div>
+        <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+          Ethereal UI Themes
+        </h1>
+        <p class="max-w-3xl text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
+          Click any theme preset below (or use the Theme Dropdown in the top navbar) to transform every component, agentic block, chart, and template across the documentation in real time. Copy the <code class="font-mono text-xs">:root</code> and <code class="font-mono text-xs">.dark</code> CSS variables directly into your project.
+        </p>
+      </div>
+
+      <ThemeExplorerShowcase client:load />
+    </section>
+
+    <section id="how-to-use" class="space-y-4 border-t border-zinc-200 pt-8 dark:border-zinc-800 scroll-mt-20">
+      <h2 class="text-lg font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+        How to Apply an Ethereal UI Theme in Your Project
+      </h2>
+      <p class="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
+        Every theme file in <code class="font-mono text-xs">/themes/*.css</code> defines standard <code class="font-mono text-xs">:root</code> and <code class="font-mono text-xs">.dark</code> OKLCH tokens (<code class="font-mono text-xs">--background</code>, <code class="font-mono text-xs">--foreground</code>, <code class="font-mono text-xs">--card</code>, <code class="font-mono text-xs">--primary</code>, <code class="font-mono text-xs">--secondary</code>, <code class="font-mono text-xs">--accent</code>, <code class="font-mono text-xs">--border</code>). When imported alongside <code class="font-mono text-xs">@etherealui/react/styles.css</code> with <code class="font-mono text-xs">data-color-theme="custom"</code> on <code class="font-mono text-xs">&lt;html&gt;</code>, all Ethereal UI components and blocks automatically adapt to your theme palette.
+      </p>
+      <pre class="overflow-x-auto rounded-2xl border border-zinc-800 bg-zinc-950 p-4 text-xs font-mono text-zinc-100"><code>{`/* globals.css */
+@import "tailwindcss";
+@import "@etherealui/react/styles.css";
+
+/* Paste any copied theme CSS variables below: */
+:root {
+  --background: oklch(0.9818 0.0054 95.0986);
+  --foreground: oklch(0.3438 0.0269 95.7226);
+  --card: oklch(0.9665 0.0067 97.3521);
+  --primary: oklch(0.6171 0.1375 39.0427);
+  --primary-foreground: oklch(1.0000 0 0);
+  --border: oklch(0.8847 0.0069 97.3628);
+}`}</code></pre>
+    </section>
+  </div>
+</DocsLayout>
+

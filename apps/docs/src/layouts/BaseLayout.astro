@@ -161,6 +161,22 @@ const jsonLdSchema = {
       } else {
         document.documentElement.classList.remove("dark")
       }
+
+      // Restore saved Ethereal UI Color Theme preset immediately to avoid FOUC
+      const savedColorTheme = localStorage.getItem("ethereal-color-theme")
+      if (savedColorTheme && savedColorTheme !== "default") {
+        document.documentElement.setAttribute("data-color-theme", savedColorTheme)
+        let themeLink = document.getElementById("ethereal-active-theme-css")
+        if (!themeLink) {
+          themeLink = document.createElement("link")
+          themeLink.id = "ethereal-active-theme-css"
+          themeLink.rel = "stylesheet"
+          document.head.appendChild(themeLink)
+        }
+        themeLink.href = "/themes/" + encodeURIComponent(savedColorTheme)
+      } else {
+        document.documentElement.setAttribute("data-color-theme", "default")
+      }
     </script>
   </head>
   <body class="min-h-screen overflow-x-hidden bg-white text-zinc-900 antialiased dark:bg-[#09090b] dark:text-zinc-100">

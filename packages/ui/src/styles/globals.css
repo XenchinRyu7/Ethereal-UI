@@ -8,6 +8,41 @@
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
 :root {
   --bg-canvas: #ffffff;
   --bg-subtle: #fafafa;
@@ -20,6 +55,27 @@
   --border-subtle: #f4f4f5;
   --accent-primary: #2563eb;
   --accent-soft: #dbeafe;
+
+  --background: #ffffff;
+  --foreground: #09090b;
+  --card: #ffffff;
+  --card-foreground: #09090b;
+  --popover: #ffffff;
+  --popover-foreground: #09090b;
+  --primary: #2563eb;
+  --primary-foreground: #ffffff;
+  --secondary: #f4f4f5;
+  --secondary-foreground: #18181b;
+  --muted: #f4f4f5;
+  --muted-foreground: #71717a;
+  --accent: #f4f4f5;
+  --accent-foreground: #18181b;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: #e4e4e7;
+  --input: #e4e4e7;
+  --ring: #2563eb;
+  --radius: 0.75rem;
   color-scheme: light;
 }
 
@@ -35,7 +91,100 @@
   --border-subtle: #18181b;
   --accent-primary: #3b82f6;
   --accent-soft: rgba(59, 130, 246, 0.15);
+
+  --background: #09090b;
+  --foreground: #fafafa;
+  --card: #121215;
+  --card-foreground: #fafafa;
+  --popover: #18181b;
+  --popover-foreground: #fafafa;
+  --primary: #3b82f6;
+  --primary-foreground: #ffffff;
+  --secondary: #27272a;
+  --secondary-foreground: #fafafa;
+  --muted: #18181b;
+  --muted-foreground: #a1a1aa;
+  --accent: #27272a;
+  --accent-foreground: #fafafa;
+  --destructive: #f43f5e;
+  --destructive-foreground: #ffffff;
+  --border: #27272a;
+  --input: #27272a;
+  --ring: #3b82f6;
   color-scheme: dark;
+}
+
+/* ============================================================================
+ * ETHEREAL UI DYNAMIC THEME ENGINE
+ * Maps active theme CSS variables (--background, --card, --primary, --border, etc.)
+ * to Tailwind v4 utility tokens so all components, blocks, charts, and docs adapt.
+ * ============================================================================ */
+html[data-color-theme]:not([data-color-theme="default"]) {
+  --bg-canvas: var(--background);
+  --bg-subtle: var(--card);
+  --bg-muted: var(--muted);
+  --bg-elevated: var(--card);
+  --fg-primary: var(--foreground);
+  --fg-secondary: var(--muted-foreground);
+  --fg-muted: var(--muted-foreground);
+  --border-default: var(--border);
+  --border-subtle: var(--border);
+  --accent-primary: var(--primary);
+
+  --color-blue-50: color-mix(in oklab, var(--primary) 10%, var(--background));
+  --color-blue-100: color-mix(in oklab, var(--primary) 18%, var(--background));
+  --color-blue-200: color-mix(in oklab, var(--primary) 30%, var(--background));
+  --color-blue-300: color-mix(in oklab, var(--primary) 50%, var(--foreground));
+  --color-blue-400: color-mix(in oklab, var(--primary) 78%, var(--foreground));
+  --color-blue-500: var(--primary);
+  --color-blue-600: var(--primary);
+  --color-blue-700: color-mix(in oklab, var(--primary) 85%, var(--foreground));
+  --color-blue-800: color-mix(in oklab, var(--primary) 70%, var(--background));
+  --color-blue-900: color-mix(in oklab, var(--primary) 45%, var(--background));
+  --color-blue-950: color-mix(in oklab, var(--primary) 22%, var(--background));
+
+  --color-indigo-500: var(--primary);
+  --color-indigo-600: var(--primary);
+}
+
+html[data-color-theme]:not([data-color-theme="default"]):not(.dark) {
+  --color-white: var(--card);
+  --color-zinc-50: color-mix(in oklab, var(--muted) 65%, var(--background));
+  --color-zinc-100: var(--muted);
+  --color-zinc-200: var(--border);
+  --color-zinc-300: var(--input);
+  --color-zinc-400: color-mix(in oklab, var(--muted-foreground) 72%, var(--background));
+  --color-zinc-500: var(--muted-foreground);
+  --color-zinc-600: color-mix(in oklab, var(--foreground) 72%, var(--muted-foreground));
+  --color-zinc-700: color-mix(in oklab, var(--foreground) 85%, var(--background));
+  --color-zinc-800: color-mix(in oklab, var(--foreground) 92%, var(--background));
+  --color-zinc-900: var(--foreground);
+  --color-zinc-950: var(--foreground);
+}
+
+html.dark[data-color-theme]:not([data-color-theme="default"]) {
+  --color-zinc-950: var(--background);
+  --color-zinc-900: var(--card);
+  --color-zinc-800: var(--border);
+  --color-zinc-700: var(--input);
+  --color-zinc-600: color-mix(in oklab, var(--muted-foreground) 65%, var(--background));
+  --color-zinc-500: var(--muted-foreground);
+  --color-zinc-400: var(--muted-foreground);
+  --color-zinc-300: color-mix(in oklab, var(--foreground) 82%, var(--background));
+  --color-zinc-200: color-mix(in oklab, var(--foreground) 92%, var(--background));
+  --color-zinc-100: var(--foreground);
+  --color-zinc-50: var(--foreground);
+}
+
+html[data-color-theme]:not([data-color-theme="default"]) body {
+  background-color: var(--background) !important;
+  color: var(--foreground) !important;
+  font-family: var(--font-sans);
+}
+
+html[data-color-theme]:not([data-color-theme="default"]) .bg-blue-600,
+html[data-color-theme]:not([data-color-theme="default"]) .bg-blue-500 {
+  color: var(--primary-foreground);
 }
 
 @layer base {

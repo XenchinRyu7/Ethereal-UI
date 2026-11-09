@@ -15,11 +15,13 @@
     "clean": "turbo run clean",
     "changeset": "changeset",
     "version-packages": "changeset version",
-    "release": "pnpm --filter @etherealui/react build && changeset publish"
+    "release": "pnpm --filter @etherealui/react build && changeset publish",
+    "themes:download": "node scripts/download-themes.mjs"
   },
   "devDependencies": {
     "@changesets/cli": "^2.28.1",
     "@eslint/js": "^10.0.1",
+    "culori": "^4.0.2",
     "eslint": "^10.14.0",
     "husky": "^9.1.7",
     "turbo": "^2.11.10",

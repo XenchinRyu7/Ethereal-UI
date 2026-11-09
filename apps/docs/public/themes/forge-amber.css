@@ -1,0 +1,115 @@
+/**
+ * Ethereal UI Theme: Forge Amber
+ * Author: Darcy Rose
+ * Theme ID: cmn5y92yc000404l247p33sti
+ * Tags: none
+ * Likes: 3
+ */
+
+:root {
+  --background: oklch(0.9699 0.0076 61.4534);
+  --foreground: oklch(0.1785 0.0193 54.9389);
+  --card: oklch(1.0000 0 0);
+  --card-foreground: oklch(0.1785 0.0193 54.9389);
+  --popover: oklch(1.0000 0 0);
+  --popover-foreground: oklch(0.1785 0.0193 54.9389);
+  --primary: oklch(0.5197 0.1096 75.0573);
+  --primary-foreground: oklch(1.0000 0 0);
+  --secondary: oklch(0.9288 0.0077 48.6494);
+  --secondary-foreground: oklch(0.2992 0.0205 54.2160);
+  --muted: oklch(0.9288 0.0077 48.6494);
+  --muted-foreground: oklch(0.4505 0.0194 58.2659);
+  --accent: oklch(0.9411 0.0101 58.2122);
+  --accent-foreground: oklch(0.1785 0.0193 54.9389);
+  --destructive: oklch(0.5502 0.2200 25.0385);
+  --destructive-foreground: oklch(1.0000 0 0);
+  --border: oklch(0.8710 0.0103 58.1969);
+  --input: oklch(0.8710 0.0103 58.1969);
+  --ring: oklch(0.5197 0.1096 75.0573);
+  --chart-1: oklch(0.5197 0.1096 75.0573);
+  --chart-2: oklch(0.4987 0.0848 200.1824);
+  --chart-3: oklch(0.4799 0.1510 260.2944);
+  --chart-4: oklch(0.5490 0.1793 29.9395);
+  --chart-5: oklch(0.5198 0.1394 319.8581);
+  --sidebar: oklch(0.9595 0.0093 52.1005);
+  --sidebar-foreground: oklch(0.1785 0.0193 54.9389);
+  --sidebar-primary: oklch(0.5197 0.1096 75.0573);
+  --sidebar-primary-foreground: oklch(1.0000 0 0);
+  --sidebar-accent: oklch(0.9411 0.0101 58.2122);
+  --sidebar-accent-foreground: oklch(0.1785 0.0193 54.9389);
+  --sidebar-border: oklch(0.8710 0.0103 58.1969);
+  --sidebar-ring: oklch(0.5197 0.1096 75.0573);
+  --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --radius: 0.625rem;
+  --shadow-x: 0;
+  --shadow-y: 1px;
+  --shadow-blur: 3px;
+  --shadow-spread: 0px;
+  --shadow-opacity: 0.1;
+  --shadow-color: oklch(0 0 0);
+  --shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+  --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+  --shadow-sm: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 1px 2px -1px hsl(0 0% 0% / 0.10);
+  --shadow: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 1px 2px -1px hsl(0 0% 0% / 0.10);
+  --shadow-md: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 2px 4px -1px hsl(0 0% 0% / 0.10);
+  --shadow-lg: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 4px 6px -1px hsl(0 0% 0% / 0.10);
+  --shadow-xl: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 8px 10px -1px hsl(0 0% 0% / 0.10);
+  --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
+  --tracking-normal: 0em;
+  --spacing: 0.25rem;
+}
+
+.dark {
+  --background: oklch(0.1390 0.0091 52.6279);
+  --foreground: oklch(0.8991 0.0197 60.1487);
+  --card: oklch(0.1811 0.0103 67.0942);
+  --card-foreground: oklch(0.8991 0.0197 60.1487);
+  --popover: oklch(0.2095 0.0099 52.9190);
+  --popover-foreground: oklch(0.8991 0.0197 60.1487);
+  --primary: oklch(0.7501 0.1581 75.2208);
+  --primary-foreground: oklch(0.1491 0.0311 78.0247);
+  --secondary: oklch(0.2508 0.0096 67.3680);
+  --secondary-foreground: oklch(0.7002 0.0202 62.3271);
+  --muted: oklch(0.2296 0.0098 67.3078);
+  --muted-foreground: oklch(0.6009 0.0209 62.2419);
+  --accent: oklch(0.2803 0.0196 63.5349);
+  --accent-foreground: oklch(0.8991 0.0197 60.1487);
+  --destructive: oklch(0.5800 0.2202 24.9604);
+  --destructive-foreground: oklch(1.0000 0 0);
+  --border: oklch(0.2793 0.0199 50.1480);
+  --input: oklch(0.2992 0.0205 54.2160);
+  --ring: oklch(0.7501 0.1581 75.2208);
+  --chart-1: oklch(0.7501 0.1581 75.2208);
+  --chart-2: oklch(0.6504 0.1106 200.2071);
+  --chart-3: oklch(0.6008 0.1505 260.1987);
+  --chart-4: oklch(0.6997 0.1801 29.8618);
+  --chart-5: oklch(0.6808 0.1400 319.8048);
+  --sidebar: oklch(0.1598 0.0107 52.9245);
+  --sidebar-foreground: oklch(0.8991 0.0197 60.1487);
+  --sidebar-primary: oklch(0.7501 0.1581 75.2208);
+  --sidebar-primary-foreground: oklch(0.1491 0.0311 78.0247);
+  --sidebar-accent: oklch(0.2603 0.0105 60.9987);
+  --sidebar-accent-foreground: oklch(0.8991 0.0197 60.1487);
+  --sidebar-border: oklch(0.2793 0.0199 50.1480);
+  --sidebar-ring: oklch(0.7501 0.1581 75.2208);
+  --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --radius: 0.375rem;
+  --shadow-x: 0;
+  --shadow-y: 1px;
+  --shadow-blur: 3px;
+  --shadow-spread: 0px;
+  --shadow-opacity: 0.1;
+  --shadow-color: oklch(0 0 0);
+  --shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+  --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+  --shadow-sm: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 1px 2px -1px hsl(0 0% 0% / 0.10);
+  --shadow: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 1px 2px -1px hsl(0 0% 0% / 0.10);
+  --shadow-md: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 2px 4px -1px hsl(0 0% 0% / 0.10);
+  --shadow-lg: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 4px 6px -1px hsl(0 0% 0% / 0.10);
+  --shadow-xl: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 8px 10px -1px hsl(0 0% 0% / 0.10);
+  --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
+}

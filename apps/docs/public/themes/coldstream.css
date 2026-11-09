@@ -1,0 +1,115 @@
+/**
+ * Ethereal UI Theme: Coldstream
+ * Author: Brett Poulin
+ * Theme ID: cmo96qbmv000004jvcdnq9k9a
+ * Tags: none
+ * Likes: 1
+ */
+
+:root {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.3740 0.0100 67.5580);
+  --card: oklch(1.0000 0 0);
+  --card-foreground: oklch(0.3720 0.0440 257.2870);
+  --popover: oklch(1.0000 0 0);
+  --popover-foreground: oklch(0.4460 0.0300 256.8020);
+  --primary: oklch(0.4460 0.0430 257.2810);
+  --primary-foreground: oklch(1.0000 0 0);
+  --secondary: oklch(0.5530 0.0130 58.0710);
+  --secondary-foreground: oklch(1.0000 0 0);
+  --muted: oklch(0.9230 0.0030 48.7170);
+  --muted-foreground: oklch(0.5530 0.0130 58.0710);
+  --accent: oklch(0.7040 0.1910 22.2160);
+  --accent-foreground: oklch(1.0000 0 0);
+  --destructive: oklch(0.5140 0.2220 16.9350);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.9200 0.0040 286.3200);
+  --input: oklch(0.7080 0 0);
+  --ring: oklch(0.6270 0.1940 149.2140);
+  --chart-1: oklch(0.7150 0.1430 215.2210);
+  --chart-2: oklch(0.7680 0.2330 130.8500);
+  --chart-3: oklch(0.7690 0.1880 70.0800);
+  --chart-4: oklch(0.6450 0.2460 16.4390);
+  --chart-5: oklch(0.5560 0 0);
+  --sidebar: oklch(1 0 0);
+  --sidebar-foreground: oklch(0.3740 0.0100 67.5580);
+  --sidebar-primary: oklch(0.4460 0.0430 257.2810);
+  --sidebar-primary-foreground: oklch(1.0000 0 0);
+  --sidebar-accent: oklch(1.0000 0 0);
+  --sidebar-accent-foreground: oklch(0.7040 0.1910 22.2160);
+  --sidebar-border: oklch(0.9200 0.0040 286.3200);
+  --sidebar-ring: oklch(0.6270 0.1940 149.2140);
+  --font-sans: Ubuntu Sans, ui-sans-serif, sans-serif, system-ui;
+  --font-serif: Source Serif 4, serif;
+  --font-mono: Source Code Pro, ui-monospace, monospace;
+  --radius: 0.5rem;
+  --shadow-x: 0;
+  --shadow-y: 1px;
+  --shadow-blur: 3px;
+  --shadow-spread: 0px;
+  --shadow-opacity: 0.1;
+  --shadow-color: oklch(0 0 0);
+  --shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+  --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+  --shadow-sm: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 1px 2px -1px hsl(0 0% 0% / 0.10);
+  --shadow: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 1px 2px -1px hsl(0 0% 0% / 0.10);
+  --shadow-md: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 2px 4px -1px hsl(0 0% 0% / 0.10);
+  --shadow-lg: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 4px 6px -1px hsl(0 0% 0% / 0.10);
+  --shadow-xl: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 8px 10px -1px hsl(0 0% 0% / 0.10);
+  --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
+  --tracking-normal: 0em;
+  --spacing: 0.25rem;
+}
+
+.dark {
+  --background: oklch(0.2303 0.0125 264.2926);
+  --foreground: oklch(0.9219 0 0);
+  --card: oklch(0.3210 0.0078 223.6662);
+  --card-foreground: oklch(0.9219 0 0);
+  --popover: oklch(0.4460 0.0430 257.2810);
+  --popover-foreground: oklch(0.8920 0.0580 10.0010);
+  --primary: oklch(0.4460 0.0430 257.2810);
+  --primary-foreground: oklch(1.0000 0 0);
+  --secondary: oklch(0.5530 0.0130 58.0710);
+  --secondary-foreground: oklch(1.0000 0 0);
+  --muted: oklch(0.3867 0 0);
+  --muted-foreground: oklch(0.7155 0 0);
+  --accent: oklch(0.6370 0.2370 25.3310);
+  --accent-foreground: oklch(0.9710 0.0130 17.3800);
+  --destructive: oklch(0.5050 0.2130 27.5180);
+  --destructive-foreground: oklch(1.0000 0 0);
+  --border: oklch(0.3867 0 0);
+  --input: oklch(0.5103 0 0);
+  --ring: oklch(0.6487 0.1538 150.3071);
+  --chart-1: oklch(0.5398 0.1711 143.7465);
+  --chart-2: oklch(0.4681 0.0929 233.7537);
+  --chart-3: oklch(0.5913 0.1233 107.4034);
+  --chart-4: oklch(0.4170 0.1349 34.5684);
+  --chart-5: oklch(0.3181 0.1750 282.1464);
+  --sidebar: oklch(0.2303 0.0125 264.2926);
+  --sidebar-foreground: oklch(0.9219 0 0);
+  --sidebar-primary: oklch(0.4460 0.0430 257.2810);
+  --sidebar-primary-foreground: oklch(1.0000 0 0);
+  --sidebar-accent: oklch(0.6370 0.2370 25.3310);
+  --sidebar-accent-foreground: oklch(0.9710 0.0130 17.3800);
+  --sidebar-border: oklch(0.3867 0 0);
+  --sidebar-ring: oklch(0.6487 0.1538 150.3071);
+  --font-sans: Ubuntu Sans, ui-sans-serif, sans-serif, system-ui;
+  --font-serif: Source Serif 4, serif;
+  --font-mono: Source Code Pro, ui-monospace, monospace;
+  --radius: 0.5rem;
+  --shadow-x: 0;
+  --shadow-y: 1px;
+  --shadow-blur: 3px;
+  --shadow-spread: 0px;
+  --shadow-opacity: 0.1;
+  --shadow-color: oklch(0 0 0);
+  --shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+  --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+  --shadow-sm: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 1px 2px -1px hsl(0 0% 0% / 0.10);
+  --shadow: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 1px 2px -1px hsl(0 0% 0% / 0.10);
+  --shadow-md: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 2px 4px -1px hsl(0 0% 0% / 0.10);
+  --shadow-lg: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 4px 6px -1px hsl(0 0% 0% / 0.10);
+  --shadow-xl: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 8px 10px -1px hsl(0 0% 0% / 0.10);
+  --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
+}

@@ -1,0 +1,115 @@
+/**
+ * Ethereal UI Theme: Timefence theme
+ * Author: ruzfardev
+ * Theme ID: cmr86qenu000004jjd1nq8beo
+ * Tags: minimal, monochrome, vibrant, elegant
+ * Likes: 0
+ */
+
+:root {
+  --background: oklch(1.0000 0 0);
+  --foreground: oklch(0.1877 0.0120 196.1748);
+  --card: oklch(0.9843 0.0011 197.1407);
+  --card-foreground: oklch(0.1877 0.0120 196.1748);
+  --popover: oklch(1.0000 0 0);
+  --popover-foreground: oklch(0.1877 0.0120 196.1748);
+  --primary: oklch(0.6341 0.1062 194.8069);
+  --primary-foreground: oklch(1.0000 0 0);
+  --secondary: oklch(0.9671 0.0043 197.0867);
+  --secondary-foreground: oklch(0.6341 0.1062 194.8069);
+  --muted: oklch(0.9671 0.0043 197.0867);
+  --muted-foreground: oklch(0.5079 0.0295 196.2605);
+  --accent: oklch(0.9598 0.0148 196.9102);
+  --accent-foreground: oklch(0.6341 0.1062 194.8069);
+  --destructive: oklch(0.6708 0.2165 25.1926);
+  --destructive-foreground: oklch(1.0000 0 0);
+  --border: oklch(0.9264 0.0064 197.0454);
+  --input: oklch(0.9264 0.0064 197.0454);
+  --ring: oklch(0.6341 0.1062 194.8069);
+  --chart-1: oklch(0.6341 0.1062 194.8069);
+  --chart-2: oklch(0.7382 0.1237 194.8073);
+  --chart-3: oklch(0.5350 0.0892 194.8171);
+  --chart-4: oklch(0.7728 0.0996 195.2883);
+  --chart-5: oklch(0.8730 0.0644 196.0340);
+  --sidebar: oklch(0.9843 0.0011 197.1407);
+  --sidebar-foreground: oklch(0.3430 0.0196 196.2762);
+  --sidebar-primary: oklch(0.6341 0.1062 194.8069);
+  --sidebar-primary-foreground: oklch(1.0000 0 0);
+  --sidebar-accent: oklch(0.9598 0.0148 196.9102);
+  --sidebar-accent-foreground: oklch(0.6341 0.1062 194.8069);
+  --sidebar-border: oklch(0.9264 0.0064 197.0454);
+  --sidebar-ring: oklch(0.6341 0.1062 194.8069);
+  --font-sans: "IBM Plex Mono", monospace;
+  --font-serif: Georgia, serif;
+  --font-mono: "IBM Plex Mono", monospace;
+  --radius: 0.25rem;
+  --shadow-x: 0px;
+  --shadow-y: 2px;
+  --shadow-blur: 4px;
+  --shadow-spread: 0px;
+  --shadow-opacity: 0.1;
+  --shadow-color: oklch(0 0 0);
+  --shadow-2xs: 0px 2px 4px 0px hsl(0 0% 0% / 0.05);
+  --shadow-xs: 0px 2px 4px 0px hsl(0 0% 0% / 0.05);
+  --shadow-sm: 0px 2px 4px 0px hsl(0 0% 0% / 0.10), 0px 1px 2px -1px hsl(0 0% 0% / 0.10);
+  --shadow: 0px 2px 4px 0px hsl(0 0% 0% / 0.10), 0px 1px 2px -1px hsl(0 0% 0% / 0.10);
+  --shadow-md: 0px 2px 4px 0px hsl(0 0% 0% / 0.10), 0px 2px 4px -1px hsl(0 0% 0% / 0.10);
+  --shadow-lg: 0px 2px 4px 0px hsl(0 0% 0% / 0.10), 0px 4px 6px -1px hsl(0 0% 0% / 0.10);
+  --shadow-xl: 0px 2px 4px 0px hsl(0 0% 0% / 0.10), 0px 8px 10px -1px hsl(0 0% 0% / 0.10);
+  --shadow-2xl: 0px 2px 4px 0px hsl(0 0% 0% / 0.25);
+  --tracking-normal: -0.02em;
+  --spacing: 0.25rem;
+}
+
+.dark {
+  --background: oklch(0.1524 0.0100 196.1544);
+  --foreground: oklch(0.9705 0.0209 196.8129);
+  --card: oklch(0.1815 0.0147 195.9309);
+  --card-foreground: oklch(0.9705 0.0209 196.8129);
+  --popover: oklch(0.1524 0.0100 196.1544);
+  --popover-foreground: oklch(0.9705 0.0209 196.8129);
+  --primary: oklch(0.6341 0.1062 194.8069);
+  --primary-foreground: oklch(1.0000 0 0);
+  --secondary: oklch(0.2742 0.0225 195.9156);
+  --secondary-foreground: oklch(0.9705 0.0209 196.8129);
+  --muted: oklch(0.2742 0.0225 195.9156);
+  --muted-foreground: oklch(0.7215 0.0288 196.5316);
+  --accent: oklch(0.3895 0.0617 194.9196);
+  --accent-foreground: oklch(1.0000 0 0);
+  --destructive: oklch(0.3958 0.1331 25.7230);
+  --destructive-foreground: oklch(1.0000 0 0);
+  --border: oklch(0.2742 0.0225 195.9156);
+  --input: oklch(0.2742 0.0225 195.9156);
+  --ring: oklch(0.6341 0.1062 194.8069);
+  --chart-1: oklch(0.6341 0.1062 194.8069);
+  --chart-2: oklch(0.5350 0.0892 194.8171);
+  --chart-3: oklch(0.7382 0.1237 194.8073);
+  --chart-4: oklch(0.4212 0.0697 194.8317);
+  --chart-5: oklch(0.3430 0.0196 196.2762);
+  --sidebar: oklch(0.1815 0.0147 195.9309);
+  --sidebar-foreground: oklch(0.9705 0.0209 196.8129);
+  --sidebar-primary: oklch(0.6341 0.1062 194.8069);
+  --sidebar-primary-foreground: oklch(1.0000 0 0);
+  --sidebar-accent: oklch(0.3895 0.0617 194.9196);
+  --sidebar-accent-foreground: oklch(1.0000 0 0);
+  --sidebar-border: oklch(0.2742 0.0225 195.9156);
+  --sidebar-ring: oklch(0.6341 0.1062 194.8069);
+  --font-sans: "IBM Plex Mono", monospace;
+  --font-serif: Georgia, serif;
+  --font-mono: "IBM Plex Mono", monospace;
+  --radius: 0.25rem;
+  --shadow-x: 0px;
+  --shadow-y: 4px;
+  --shadow-blur: 8px;
+  --shadow-spread: 0px;
+  --shadow-opacity: 0.4;
+  --shadow-color: oklch(0 0 0);
+  --shadow-2xs: 0px 4px 8px 0px hsl(0 0% 0% / 0.20);
+  --shadow-xs: 0px 4px 8px 0px hsl(0 0% 0% / 0.20);
+  --shadow-sm: 0px 4px 8px 0px hsl(0 0% 0% / 0.40), 0px 1px 2px -1px hsl(0 0% 0% / 0.40);
+  --shadow: 0px 4px 8px 0px hsl(0 0% 0% / 0.40), 0px 1px 2px -1px hsl(0 0% 0% / 0.40);
+  --shadow-md: 0px 4px 8px 0px hsl(0 0% 0% / 0.40), 0px 2px 4px -1px hsl(0 0% 0% / 0.40);
+  --shadow-lg: 0px 4px 8px 0px hsl(0 0% 0% / 0.40), 0px 4px 6px -1px hsl(0 0% 0% / 0.40);
+  --shadow-xl: 0px 4px 8px 0px hsl(0 0% 0% / 0.40), 0px 8px 10px -1px hsl(0 0% 0% / 0.40);
+  --shadow-2xl: 0px 4px 8px 0px hsl(0 0% 0% / 1.00);
+}

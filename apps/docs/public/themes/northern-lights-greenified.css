@@ -1,0 +1,115 @@
+/**
+ * Ethereal UI Theme: Northern Lights Greenified
+ * Author: JaZer0
+ * Theme ID: cmpgti0jc000604l527rof74a
+ * Tags: pastel, earthy, nature, soft
+ * Likes: 12
+ */
+
+:root {
+  --background: oklch(0.9824 0.0013 286.3753);
+  --foreground: oklch(0.3211 0 0);
+  --card: oklch(1.0000 0 0);
+  --card-foreground: oklch(0.3211 0 0);
+  --popover: oklch(1.0000 0 0);
+  --popover-foreground: oklch(0.3211 0 0);
+  --primary: oklch(0.6487 0.1538 150.3071);
+  --primary-foreground: oklch(0.9747 0.0157 154.4771);
+  --secondary: oklch(0.4448 0.1008 150.6616);
+  --secondary-foreground: oklch(0.9730 0.0181 155.8222);
+  --muted: oklch(0.8828 0.0285 98.1033);
+  --muted-foreground: oklch(0.5382 0 0);
+  --accent: oklch(0.7879 0.0823 164.1803);
+  --accent-foreground: oklch(0.4026 0.0632 162.3045);
+  --destructive: oklch(0.6368 0.2078 25.3313);
+  --destructive-foreground: oklch(1.0000 0 0);
+  --border: oklch(0.8699 0 0);
+  --input: oklch(0.8699 0 0);
+  --ring: oklch(0.6487 0.1538 150.3071);
+  --chart-1: oklch(0.6487 0.1538 150.3071);
+  --chart-2: oklch(0.4448 0.1008 150.6616);
+  --chart-3: oklch(0.7409 0.1652 160.9093);
+  --chart-4: oklch(0.7430 0.0837 35.0208);
+  --chart-5: oklch(0.5905 0.1608 148.2409);
+  --sidebar: oklch(0.9824 0.0013 286.3753);
+  --sidebar-foreground: oklch(0.3211 0 0);
+  --sidebar-primary: oklch(0.6487 0.1538 150.3071);
+  --sidebar-primary-foreground: oklch(1.0000 0 0);
+  --sidebar-accent: oklch(0.7879 0.0823 164.1803);
+  --sidebar-accent-foreground: oklch(0.4026 0.0632 162.3045);
+  --sidebar-border: oklch(0.8699 0 0);
+  --sidebar-ring: oklch(0.6487 0.1538 150.3071);
+  --font-sans: Plus Jakarta Sans, sans-serif;
+  --font-serif: Source Serif 4, serif;
+  --font-mono: JetBrains Mono, monospace;
+  --radius: 0.5rem;
+  --shadow-x: 0;
+  --shadow-y: 1px;
+  --shadow-blur: 3px;
+  --shadow-spread: 0px;
+  --shadow-opacity: 0.1;
+  --shadow-color: oklch(0 0 0);
+  --shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+  --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+  --shadow-sm: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 1px 2px -1px hsl(0 0% 0% / 0.10);
+  --shadow: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 1px 2px -1px hsl(0 0% 0% / 0.10);
+  --shadow-md: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 2px 4px -1px hsl(0 0% 0% / 0.10);
+  --shadow-lg: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 4px 6px -1px hsl(0 0% 0% / 0.10);
+  --shadow-xl: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 8px 10px -1px hsl(0 0% 0% / 0.10);
+  --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
+  --tracking-normal: 0em;
+  --spacing: 0.25rem;
+}
+
+.dark {
+  --background: oklch(0.2303 0.0125 264.2926);
+  --foreground: oklch(0.9219 0 0);
+  --card: oklch(0.3210 0.0078 223.6662);
+  --card-foreground: oklch(0.9219 0 0);
+  --popover: oklch(0.3210 0.0078 223.6662);
+  --popover-foreground: oklch(0.9219 0 0);
+  --primary: oklch(0.6487 0.1538 150.3071);
+  --primary-foreground: oklch(0.9747 0.0157 154.4771);
+  --secondary: oklch(0.4448 0.1008 150.6616);
+  --secondary-foreground: oklch(0.9730 0.0181 155.8222);
+  --muted: oklch(0.3867 0 0);
+  --muted-foreground: oklch(0.7155 0 0);
+  --accent: oklch(0.7879 0.0823 164.1803);
+  --accent-foreground: oklch(0.4026 0.0632 162.3045);
+  --destructive: oklch(0.6368 0.2078 25.3313);
+  --destructive-foreground: oklch(1.0000 0 0);
+  --border: oklch(0.3867 0 0);
+  --input: oklch(0.3867 0 0);
+  --ring: oklch(0.6487 0.1538 150.3071);
+  --chart-1: oklch(0.6487 0.1538 150.3071);
+  --chart-2: oklch(0.7879 0.0823 164.1803);
+  --chart-3: oklch(0.9239 0.1144 171.2216);
+  --chart-4: oklch(0.8860 0.0340 33.7758);
+  --chart-5: oklch(0.5905 0.1608 148.2409);
+  --sidebar: oklch(0.1712 0.0256 156.5401);
+  --sidebar-foreground: oklch(0.9747 0.0157 154.4771);
+  --sidebar-primary: oklch(0.6487 0.1538 150.3071);
+  --sidebar-primary-foreground: oklch(0.9747 0.0157 154.4771);
+  --sidebar-accent: oklch(0.4448 0.1008 150.6616);
+  --sidebar-accent-foreground: oklch(0.9730 0.0181 155.8222);
+  --sidebar-border: oklch(0.3867 0 0);
+  --sidebar-ring: oklch(0.6487 0.1538 150.3071);
+  --font-sans: Plus Jakarta Sans, sans-serif;
+  --font-serif: Source Serif 4, serif;
+  --font-mono: JetBrains Mono, monospace;
+  --radius: 0.5rem;
+  --shadow-x: 0;
+  --shadow-y: 1px;
+  --shadow-blur: 3px;
+  --shadow-spread: 0px;
+  --shadow-opacity: 0.1;
+  --shadow-color: oklch(0 0 0);
+  --shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+  --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+  --shadow-sm: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 1px 2px -1px hsl(0 0% 0% / 0.10);
+  --shadow: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 1px 2px -1px hsl(0 0% 0% / 0.10);
+  --shadow-md: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 2px 4px -1px hsl(0 0% 0% / 0.10);
+  --shadow-lg: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 4px 6px -1px hsl(0 0% 0% / 0.10);
+  --shadow-xl: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 8px 10px -1px hsl(0 0% 0% / 0.10);
+  --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
+}

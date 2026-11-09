@@ -1,0 +1,115 @@
+/**
+ * Ethereal UI Theme: WM Dev
+ * Author: Shinra
+ * Theme ID: cmji6lk13000004l2d9tje4y1
+ * Tags: corporate, startup, professional
+ * Likes: 4
+ */
+
+:root {
+  --background: oklch(0.9821 0 0);
+  --foreground: oklch(0.3211 0 0);
+  --card: oklch(1.0000 0 0);
+  --card-foreground: oklch(0.3211 0 0);
+  --popover: oklch(1.0000 0 0);
+  --popover-foreground: oklch(0.3211 0 0);
+  --primary: oklch(0.5782 0.1834 284.1583);
+  --primary-foreground: oklch(1.0000 0 0);
+  --secondary: oklch(0.8224 0.0650 249.3304);
+  --secondary-foreground: oklch(0.3211 0 0);
+  --muted: oklch(0.8196 0.0197 93.7035);
+  --muted-foreground: oklch(0.5382 0 0);
+  --accent: oklch(0.6426 0.0588 117.0599);
+  --accent-foreground: oklch(1.0000 0 0);
+  --destructive: oklch(0.6325 0.1895 24.3310);
+  --destructive-foreground: oklch(1.0000 0 0);
+  --border: oklch(0.8699 0 0);
+  --input: oklch(0.8699 0 0);
+  --ring: oklch(0.5782 0.1834 284.1583);
+  --chart-1: oklch(0.5782 0.1834 284.1583);
+  --chart-2: oklch(0.5275 0.1566 314.8950);
+  --chart-3: oklch(0.3346 0.1684 303.1695);
+  --chart-4: oklch(0.6788 0.1271 261.4553);
+  --chart-5: oklch(0.5883 0.0902 245.3110);
+  --sidebar: oklch(0.9821 0 0);
+  --sidebar-foreground: oklch(0.3211 0 0);
+  --sidebar-primary: oklch(0.5782 0.1834 284.1583);
+  --sidebar-primary-foreground: oklch(1.0000 0 0);
+  --sidebar-accent: oklch(0.6426 0.0588 117.0599);
+  --sidebar-accent-foreground: oklch(1.0000 0 0);
+  --sidebar-border: oklch(0.8699 0 0);
+  --sidebar-ring: oklch(0.5782 0.1834 284.1583);
+  --font-sans: Montserrat, sans-serif;
+  --font-serif: Playfair Display, serif;
+  --font-mono: Source Code Pro, monospace;
+  --radius: 0rem;
+  --shadow-x: 0px;
+  --shadow-y: 5px;
+  --shadow-blur: 10px;
+  --shadow-spread: -2px;
+  --shadow-opacity: 0.1;
+  --shadow-color: oklch(0.2178 0 0);
+  --shadow-2xs: 0px 5px 10px -2px hsl(0 0% 10.1961% / 0.05);
+  --shadow-xs: 0px 5px 10px -2px hsl(0 0% 10.1961% / 0.05);
+  --shadow-sm: 0px 5px 10px -2px hsl(0 0% 10.1961% / 0.10), 0px 1px 2px -3px hsl(0 0% 10.1961% / 0.10);
+  --shadow: 0px 5px 10px -2px hsl(0 0% 10.1961% / 0.10), 0px 1px 2px -3px hsl(0 0% 10.1961% / 0.10);
+  --shadow-md: 0px 5px 10px -2px hsl(0 0% 10.1961% / 0.10), 0px 2px 4px -3px hsl(0 0% 10.1961% / 0.10);
+  --shadow-lg: 0px 5px 10px -2px hsl(0 0% 10.1961% / 0.10), 0px 4px 6px -3px hsl(0 0% 10.1961% / 0.10);
+  --shadow-xl: 0px 5px 10px -2px hsl(0 0% 10.1961% / 0.10), 0px 8px 10px -3px hsl(0 0% 10.1961% / 0.10);
+  --shadow-2xl: 0px 5px 10px -2px hsl(0 0% 10.1961% / 0.25);
+  --tracking-normal: 0em;
+  --spacing: 0.25rem;
+}
+
+.dark {
+  --background: oklch(0.2303 0.0125 264.2926);
+  --foreground: oklch(0.9219 0 0);
+  --card: oklch(0.3210 0.0078 223.6662);
+  --card-foreground: oklch(0.9219 0 0);
+  --popover: oklch(0.3210 0.0078 223.6662);
+  --popover-foreground: oklch(0.9219 0 0);
+  --primary: oklch(0.5782 0.1834 284.1583);
+  --primary-foreground: oklch(1.0000 0 0);
+  --secondary: oklch(0.3346 0.1684 303.1695);
+  --secondary-foreground: oklch(0.9219 0 0);
+  --muted: oklch(0.3867 0 0);
+  --muted-foreground: oklch(0.7155 0 0);
+  --accent: oklch(0.6788 0.1271 261.4553);
+  --accent-foreground: oklch(0.9219 0 0);
+  --destructive: oklch(0.6325 0.1895 24.3310);
+  --destructive-foreground: oklch(1.0000 0 0);
+  --border: oklch(0.3867 0 0);
+  --input: oklch(0.3867 0 0);
+  --ring: oklch(0.5782 0.1834 284.1583);
+  --chart-1: oklch(0.5782 0.1834 284.1583);
+  --chart-2: oklch(0.5275 0.1566 314.8950);
+  --chart-3: oklch(0.3346 0.1684 303.1695);
+  --chart-4: oklch(0.6788 0.1271 261.4553);
+  --chart-5: oklch(0.5883 0.0902 245.3110);
+  --sidebar: oklch(0.2303 0.0125 264.2926);
+  --sidebar-foreground: oklch(0.9219 0 0);
+  --sidebar-primary: oklch(0.5782 0.1834 284.1583);
+  --sidebar-primary-foreground: oklch(1.0000 0 0);
+  --sidebar-accent: oklch(0.6788 0.1271 261.4553);
+  --sidebar-accent-foreground: oklch(0.9219 0 0);
+  --sidebar-border: oklch(0.3867 0 0);
+  --sidebar-ring: oklch(0.5782 0.1834 284.1583);
+  --font-sans: Montserrat, sans-serif;
+  --font-serif: Playfair Display, serif;
+  --font-mono: Source Code Pro, monospace;
+  --radius: 0rem;
+  --shadow-x: 0px;
+  --shadow-y: 5px;
+  --shadow-blur: 10px;
+  --shadow-spread: -2px;
+  --shadow-opacity: 0.1;
+  --shadow-color: oklch(0.2178 0 0);
+  --shadow-2xs: 0px 5px 10px -2px hsl(0 0% 10.1961% / 0.05);
+  --shadow-xs: 0px 5px 10px -2px hsl(0 0% 10.1961% / 0.05);
+  --shadow-sm: 0px 5px 10px -2px hsl(0 0% 10.1961% / 0.10), 0px 1px 2px -3px hsl(0 0% 10.1961% / 0.10);
+  --shadow: 0px 5px 10px -2px hsl(0 0% 10.1961% / 0.10), 0px 1px 2px -3px hsl(0 0% 10.1961% / 0.10);
+  --shadow-md: 0px 5px 10px -2px hsl(0 0% 10.1961% / 0.10), 0px 2px 4px -3px hsl(0 0% 10.1961% / 0.10);
+  --shadow-lg: 0px 5px 10px -2px hsl(0 0% 10.1961% / 0.10), 0px 4px 6px -3px hsl(0 0% 10.1961% / 0.10);
+  --shadow-xl: 0px 5px 10px -2px hsl(0 0% 10.1961% / 0.10), 0px 8px 10px -3px hsl(0 0% 10.1961% / 0.10);
+  --shadow-2xl: 0px 5px 10px -2px hsl(0 0% 10.1961% / 0.25);
+}

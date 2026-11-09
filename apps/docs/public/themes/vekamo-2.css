@@ -1,0 +1,115 @@
+/**
+ * Ethereal UI Theme: VekaMo 2
+ * Author: moslem salahshour
+ * Theme ID: cmsredxsk000104l7adeeg5vg
+ * Tags: professional, cool, saas, ocean
+ * Likes: 2
+ */
+
+:root {
+  --background: oklch(0.9911 0 0);
+  --foreground: oklch(0.2167 0.0015 197.0427);
+  --card: oklch(1.0000 0 0);
+  --card-foreground: oklch(0.2167 0.0015 197.0427);
+  --popover: oklch(1.0000 0 0);
+  --popover-foreground: oklch(0.2167 0.0015 197.0427);
+  --primary: oklch(0.5195 0.0938 218.7028);
+  --primary-foreground: oklch(1.0000 0 0);
+  --secondary: oklch(0.8820 0.0588 253.9688);
+  --secondary-foreground: oklch(0 0 0);
+  --muted: oklch(0.9702 0 0);
+  --muted-foreground: oklch(0.5555 0 0);
+  --accent: oklch(0.9670 0.0029 264.5420);
+  --accent-foreground: oklch(0 0 0);
+  --destructive: oklch(0.7036 0.1881 22.1462);
+  --destructive-foreground: oklch(1.0000 0 0);
+  --border: oklch(0.9219 0 0);
+  --input: oklch(0.9219 0 0);
+  --ring: oklch(0.7090 0 0);
+  --chart-1: oklch(0.8093 0.0985 252.2024);
+  --chart-2: oklch(0.5195 0.0938 218.7028);
+  --chart-3: oklch(0.5542 0.0460 257.5261);
+  --chart-4: oklch(0.7699 0 0);
+  --chart-5: oklch(0.9276 0.0058 264.5313);
+  --sidebar: oklch(0.9911 0 0);
+  --sidebar-foreground: oklch(0.2167 0.0015 197.0427);
+  --sidebar-primary: oklch(0.5195 0.0938 218.7028);
+  --sidebar-primary-foreground: oklch(1.0000 0 0);
+  --sidebar-accent: oklch(0.9670 0.0029 264.5420);
+  --sidebar-accent-foreground: oklch(0 0 0);
+  --sidebar-border: oklch(0.9219 0 0);
+  --sidebar-ring: oklch(0.7090 0 0);
+  --font-sans: Vazirmatn, ui-sans-serif, sans-serif, system-ui;
+  --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --radius: 0.4rem;
+  --shadow-x: 0;
+  --shadow-y: 1px;
+  --shadow-blur: 3px;
+  --shadow-spread: 0px;
+  --shadow-opacity: 0.1;
+  --shadow-color: oklch(0 0 0);
+  --shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+  --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+  --shadow-sm: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 1px 2px -1px hsl(0 0% 0% / 0.10);
+  --shadow: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 1px 2px -1px hsl(0 0% 0% / 0.10);
+  --shadow-md: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 2px 4px -1px hsl(0 0% 0% / 0.10);
+  --shadow-lg: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 4px 6px -1px hsl(0 0% 0% / 0.10);
+  --shadow-xl: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 8px 10px -1px hsl(0 0% 0% / 0.10);
+  --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
+  --tracking-normal: 0em;
+  --spacing: 0.24rem;
+}
+
+.dark {
+  --background: oklch(0.2138 0.0019 286.2347);
+  --foreground: oklch(0.9851 0 0);
+  --card: oklch(0.2138 0.0019 286.2347);
+  --card-foreground: oklch(0.9851 0 0);
+  --popover: oklch(0.2686 0 0);
+  --popover-foreground: oklch(0.9851 0 0);
+  --primary: oklch(0.5195 0.0938 218.7028);
+  --primary-foreground: oklch(0 0 0);
+  --secondary: oklch(0.8093 0.0985 252.2024);
+  --secondary-foreground: oklch(0 0 0);
+  --muted: oklch(0.2686 0 0);
+  --muted-foreground: oklch(0.7090 0 0);
+  --accent: oklch(0.4955 0.0617 66.4785);
+  --accent-foreground: oklch(1.0000 0 0);
+  --destructive: oklch(0.7036 0.1881 22.1462);
+  --destructive-foreground: oklch(0.2103 0.0059 285.8851);
+  --border: oklch(0.2768 0 0);
+  --input: oklch(0.3250 0 0);
+  --ring: oklch(0.5555 0 0);
+  --chart-1: oklch(0.3015 0.0565 230.1611);
+  --chart-2: oklch(0.7080 0.1555 254.2721);
+  --chart-3: oklch(0.4784 0.0835 187.0180);
+  --chart-4: oklch(0.6828 0.0783 67.1972);
+  --chart-5: oklch(0.7036 0.1881 22.1462);
+  --sidebar: oklch(0.2167 0.0015 197.0427);
+  --sidebar-foreground: oklch(0.9851 0 0);
+  --sidebar-primary: oklch(0.5195 0.0938 218.7028);
+  --sidebar-primary-foreground: oklch(0.9851 0 0);
+  --sidebar-accent: oklch(0.2686 0 0);
+  --sidebar-accent-foreground: oklch(0.9851 0 0);
+  --sidebar-border: oklch(0.2768 0 0);
+  --sidebar-ring: oklch(0.4386 0 0);
+  --font-sans: Vazirmatn, ui-sans-serif, sans-serif, system-ui;
+  --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --radius: 0.4rem;
+  --shadow-x: 0;
+  --shadow-y: 1px;
+  --shadow-blur: 3px;
+  --shadow-spread: 0px;
+  --shadow-opacity: 0.1;
+  --shadow-color: oklch(0 0 0);
+  --shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+  --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+  --shadow-sm: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 1px 2px -1px hsl(0 0% 0% / 0.10);
+  --shadow: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 1px 2px -1px hsl(0 0% 0% / 0.10);
+  --shadow-md: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 2px 4px -1px hsl(0 0% 0% / 0.10);
+  --shadow-lg: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 4px 6px -1px hsl(0 0% 0% / 0.10);
+  --shadow-xl: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 8px 10px -1px hsl(0 0% 0% / 0.10);
+  --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
+}
