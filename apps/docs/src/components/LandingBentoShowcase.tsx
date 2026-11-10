@@ -130,7 +130,7 @@ export const LandingBentoShowcase: React.FC = () => {
       <div className="mx-auto flex max-w-3xl flex-col items-center text-center space-y-6">
         <div className="inline-flex items-center gap-2 rounded-full border border-zinc-200/90 bg-zinc-50/90 px-3.5 py-1.5 text-xs font-medium text-zinc-700 shadow-2xs backdrop-blur-xs dark:border-zinc-800 dark:bg-zinc-900/90 dark:text-zinc-300">
           <Badge variant="blue" className="rounded-full px-2 py-0.5 text-[10px] font-semibold">
-            <Sparkles className="h-2.5 w-2.5" /> v0.0.5
+            <Sparkles className="h-2.5 w-2.5" /> v0.0.6
           </Badge>
           <span>42 Components, 16 Agentic &amp; Enterprise Blocks, 870+ Themes</span>
           <ChevronRight className="h-3.5 w-3.5 text-zinc-400" />
@@ -1067,7 +1067,7 @@ export const LandingBentoShowcase: React.FC = () => {
             <div className="flex items-center justify-between rounded-xl bg-zinc-50 px-3 py-2 text-[11px] dark:bg-zinc-900">
               <span className="flex items-center gap-1.5 font-medium text-zinc-700 dark:text-zinc-200">
                 <ShieldCheck className="h-3.5 w-3.5 text-emerald-500" />
-                Nov {selectedDay}: v0.0.5 Audit
+                Nov {selectedDay}: v0.0.6 Audit
               </span>
               <span className="font-mono text-[10px] text-zinc-400">14:00 UTC</span>
             </div>
