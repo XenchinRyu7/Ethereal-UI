@@ -1,0 +1,421 @@
+# 🌌 Ethereal UI — Complete AI Agent Guide & Rules (`ETHEREAL_AGENT_GUIDE.md`)
+
+> **For AI Coding Agents (Cursor, Claude Code, GitHub Copilot, Gemini, Antigravity):**  
+> This document is the single source of truth for generating, styling, and architecting applications with **Ethereal UI** (`@etherealui/react` and `@etherealui/cli`). Adhere strictly to the token pairing rules, Tailwind CSS v4 conventions, and component patterns outlined below.
+
+---
+
+## 1. Overview & Architecture Philosophy
+
+**Ethereal UI** is a production-grade, dark-first enterprise component library and agentic block system designed specifically for SaaS platforms, AI telemetry consoles, and data-dense dashboards.
+
+### Core Principles
+- **Dark-First Telemetry Canvas:** The default canvas is deep zinc `#09090b` with elevated panels `#121215`, crisp `1px solid rgba(255, 255, 255, 0.08)` borders, and subtle luminous accents.
+- **Tailwind CSS v4 Native:** Pure `@theme inline` CSS variable tokens. **Zero legacy `tailwind.config.js`**.
+- **Radix UI Headless Accessibility:** All overlays, popovers, dropdowns, and dialogs are powered by Radix UI for strict WCAG AA keyboard accessibility and ARIA semantics.
+- **870+ OKLCH Theme Presets:** Real-time dynamic theming powered by OKLCH color spaces and linear Oklab interpolation.
+
+---
+
+## 2. Quickstart & Installation for New Projects
+
+When scaffolding a new project or adding Ethereal UI into an existing React/Next.js/Astro/Vite application:
+
+### Step 1: Install Packages
+```bash
+# Using pnpm (recommended)
+pnpm add @etherealui/react lucide-react clsx tailwind-merge class-variance-authority @radix-ui/react-slot
+
+# Or using npm
+npm install @etherealui/react lucide-react clsx tailwind-merge class-variance-authority @radix-ui/react-slot
+```
+
+### Step 2: Configure Tailwind CSS v4 (`globals.css`)
+In your root CSS file (e.g. `src/styles/globals.css` or `src/app/globals.css`):
+
+```css
+@import "tailwindcss";
+@import "@etherealui/react/styles.css";
+
+/* Optional custom theme overrides */
+:root {
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+```
+
+### Step 3: Scaffold Components via CLI (Optional)
+If you prefer scaffolding individual component source files directly into your project:
+
+```bash
+# Initialize ethereal configuration (creates ethereal.json)
+npx @etherealui/cli init
+
+# Add specific primitives or blocks
+npx @etherealui/cli add button data-table kanban-board stat-card
+```
+
+---
+
+## 3. Strict Theming & Token Pairing Rules (CRITICAL FOR AGENTS)
+
+> [!CAUTION]
+> **THE GOLDEN TOKEN PAIRING RULE (WCAG 2.1 AA COMPLIANCE)**  
+> **NEVER hardcode text colors like `text-white` on variable backgrounds!**  
+> In Ethereal UI, themes like *Light Green*, *Cyberpunk*, or *Pastel* feature bright neon primary colors (lightness > 85%). If you hardcode `text-white`, the text will become completely **invisible**!
+
+### Mandatory Semantic Token Matrix
+
+Always pair background tokens with their corresponding foreground tokens:
+
+| Element / Utility | Background Class | Matching Text Class | Note / Contrast Rule |
+| :--- | :--- | :--- | :--- |
+| **Primary Actions** | `bg-primary` | `text-primary-foreground` | ✅ Adapts to black on neon themes and white on dark themes |
+| **Secondary Controls** | `bg-secondary` | `text-secondary-foreground` | ✅ Secondary buttons, active chips |
+| **Muted Surfaces** | `bg-muted` | `text-muted-foreground` | ✅ Badges, subtle tags, inactive tab pills |
+| **Cards & Panels** | `bg-card` | `text-card-foreground` | ✅ Elevated cards, dialog boxes |
+| **Popovers & Menus** | `bg-popover` | `text-popover-foreground` | ✅ Tooltips, dropdown menus |
+| **Sidebar Root** | `bg-sidebar` | `text-sidebar-foreground` | ✅ Navigation drawers |
+| **Sidebar Accent** | `bg-sidebar-primary` | `text-sidebar-primary-foreground` | ✅ Active badges (e.g. `NEW`, counts) |
+
+### Dynamic Oklab Neutral Scale (`zinc-50` to `zinc-950`)
+Ethereal UI dynamically computes the neutral grayscale using linear Oklab interpolation:
+```css
+--color-zinc-100: color-mix(in oklab, var(--foreground) 6%, var(--background));
+--color-zinc-600: color-mix(in oklab, var(--foreground) 70%, var(--background));
+--color-zinc-700: color-mix(in oklab, var(--foreground) 82%, var(--background));
+```
+- **Rule:** If you use `bg-zinc-100`, pair it with `text-zinc-700` or `text-foreground`.
+- **Prefer:** Use semantic tokens (`bg-muted text-muted-foreground`) over hardcoded color utilities whenever possible.
+
+### Applying One of the 870+ OKLCH Community Themes
+To apply an Ethereal UI theme preset:
+1. Download or fetch any theme from `https://ethereal-ui.saefulrohman.dev/themes/<theme-name>.css`.
+2. Add `data-color-theme="custom"` to the root `<html>` element.
+3. Paste the `:root` and `.dark` variables into your `globals.css` or link the CSS file in `<head>`.
+
+```html
+<!-- Example in index.html or root layout -->
+<html lang="en" class="dark" data-color-theme="custom">
+  <head>
+    <link rel="stylesheet" href="/themes/cyberpunk.css" />
+  </head>
+  <body class="bg-background text-foreground antialiased">
+    <!-- Application Content -->
+  </body>
+</html>
+```
+
+---
+
+## 4. Component Catalog & Import Reference
+
+Import any of the 42 primitives, 6 charts, and 16 enterprise blocks directly from `@etherealui/react`:
+
+```tsx
+import {
+  // 1. Actions & Triggers
+  Button,
+  ButtonGroup,
+  CloseButton,
+  IconButton,
+
+  // 2. Feedback, Indicators & Badges
+  Badge,
+  Chip,
+  Announcement,
+  Progress,
+  Skeleton,
+  EmptyState,
+  Toast,
+
+  // 3. Form & Inputs
+  Input,
+  NumberInput,
+  OtpInput,
+  Textarea,
+  Switch,
+  Checkbox,
+  RadioGroup,
+  Slider,
+  Select,
+  Combobox,
+  DatePicker,
+  DateCalendar,
+  ColorPicker,
+  FileUpload,
+
+  // 4. Navigation & Layout
+  Tabs,
+  Pagination,
+  Stepper,
+  Timeline,
+  Breadcrumb,
+  Divider,
+  Sidebar,
+
+  // 5. Overlays & Dialogs (Radix UI)
+  Modal,
+  Drawer,
+  Popover,
+  Tooltip,
+  Dropdown,
+  ContextMenu,
+  CommandPalette,
+
+  // 6. Data Display & Grouping
+  Table,
+  DescriptionList,
+  Avatar,
+  Carousel,
+  Accordion,
+
+  // 7. Statistical SVG Charts
+  AreaStatisticChart,
+  BarStatisticChart,
+  LineStatisticChart,
+  DonutStatisticChart,
+  RadialStatisticChart,
+  HeatmapStatisticChart,
+
+  // 8. Enterprise & Agentic Blocks
+  StatCardBlock,
+  MultiMetricGrid,
+  SystemHealthBlock,
+  TokenUsageTelemetryBlock,
+  EnterpriseDataTable,
+  AdvancedFilterBar,
+  TransactionLedgerBlock,
+  UserProfileFormBlock,
+  TeamRbacTableBlock,
+  SecurityPasswordFormBlock,
+  BillingPlanCardBlock,
+  PromptComposerBlock,
+  AgentProgressStreamBlock,
+  AiChatThreadBlock,
+  ApprovalWorkflowBlock,
+  KanbanBoardBlock,
+  EventSchedulerBlock,
+  OrgDirectoryBlock,
+
+  // 9. Full Application Shell
+  InteractiveDashboardShell,
+  ExecutiveAnalyticsTemplate,
+  ControlTowerTemplate,
+  WorkspaceSettingsTemplate
+} from "@etherealui/react"
+```
+
+---
+
+## 5. Architectural Code Recipes for AI Agents
+
+### Recipe 1: Executive Analytics Dashboard (Charts + Metric Grid)
+```tsx
+import React, { useState } from "react"
+import {
+  MultiMetricGrid,
+  AreaStatisticChart,
+  BarStatisticChart,
+  Card,
+  Button
+} from "@etherealui/react"
+
+export function AnalyticsView() {
+  const [timeRange, setTimeRange] = useState<"7d" | "30d">("30d")
+
+  return (
+    <div className="space-y-6">
+      {/* 4-KPI Metric Grid with sparkline indicators */}
+      <MultiMetricGrid
+        metrics={[
+          { title: "Monthly Recurring Revenue", value: "$124,590", change: "+14.2%", isPositive: true },
+          { title: "Active API Consumers", value: "8,924", change: "+5.8%", isPositive: true },
+          { title: "Average Latency", value: "42ms", change: "-12.4%", isPositive: true },
+          { title: "Error Rate (5xx)", value: "0.012%", change: "+0.002%", isPositive: false },
+        ]}
+      />
+
+      {/* SVG Telemetry Chart automatically bound to var(--primary) and var(--chart-2) */}
+      <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
+        <div className="flex items-center justify-between pb-4">
+          <div>
+            <h3 className="text-base font-bold text-card-foreground">Throughput Telemetry</h3>
+            <p className="text-xs text-muted-foreground">Real-time requests and edge worker distribution</p>
+          </div>
+          <div className="flex gap-1.5">
+            <Button
+              size="sm"
+              variant={timeRange === "7d" ? "primary" : "outline"}
+              onClick={() => setTimeRange("7d")}
+            >
+              7 Days
+            </Button>
+            <Button
+              size="sm"
+              variant={timeRange === "30d" ? "primary" : "outline"}
+              onClick={() => setTimeRange("30d")}
+            >
+              30 Days
+            </Button>
+          </div>
+        </div>
+
+        <AreaStatisticChart
+          data={[
+            { label: "Mon", value: 4500, secondary: 2100 },
+            { label: "Tue", value: 5200, secondary: 2600 },
+            { label: "Wed", value: 6100, secondary: 3100 },
+            { label: "Thu", value: 5800, secondary: 2900 },
+            { label: "Fri", value: 7400, secondary: 3800 },
+            { label: "Sat", value: 8900, secondary: 4500 },
+            { label: "Sun", value: 9200, secondary: 4900 },
+          ]}
+        />
+      </div>
+    </div>
+  )
+}
+```
+
+---
+
+### Recipe 2: AI Agent Control Room (Progress Stream + Token Telemetry + Prompt Composer)
+```tsx
+import React from "react"
+import {
+  AgentProgressStreamBlock,
+  TokenUsageTelemetryBlock,
+  PromptComposerBlock
+} from "@etherealui/react"
+
+export function AgentWorkflowConsole() {
+  const handlePromptSubmit = (prompt: string, model: string) => {
+    console.log("Dispatching agent job:", { prompt, model })
+  }
+
+  return (
+    <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+      {/* 2-Column: Live Agent Progress Stream & Prompt Composer */}
+      <div className="space-y-6 lg:col-span-2">
+        <AgentProgressStreamBlock
+          agentName="Code Review Agent v2"
+          taskStatus="processing"
+          steps={[
+            { id: "1", title: "Cloning target repository", status: "completed", timestamp: "02:14:01" },
+            { id: "2", title: "AST Parsing & Type Resolution", status: "completed", timestamp: "02:14:15" },
+            { id: "3", title: "Auditing Tailwind v4 CSS variables", status: "active", timestamp: "02:14:32" },
+            { id: "4", title: "Emitting automated refactor patch", status: "pending", timestamp: "Waiting" },
+          ]}
+        />
+
+        <PromptComposerBlock
+          defaultModel="gemini-2.5-pro"
+          onSubmit={handlePromptSubmit}
+        />
+      </div>
+
+      {/* 1-Column: Live Token Telemetry & Budget Quota */}
+      <div className="space-y-6">
+        <TokenUsageTelemetryBlock
+          dailyUsed={412890}
+          dailyQuota={1000000}
+          costEst="$4.12"
+          breakdown={[
+            { model: "gemini-2.5-pro", tokens: 284100, cost: "$2.84" },
+            { model: "claude-3-7-sonnet", tokens: 128790, cost: "$1.28" },
+          ]}
+        />
+      </div>
+    </div>
+  )
+}
+```
+
+---
+
+### Recipe 3: Enterprise Data Table with Filter Bar & Slide-Over Drawer
+```tsx
+import React, { useState } from "react"
+import {
+  AdvancedFilterBar,
+  EnterpriseDataTable,
+  Drawer,
+  Badge,
+  Button
+} from "@etherealui/react"
+
+export function CustomerManagementPage() {
+  const [selectedRecord, setSelectedRecord] = useState<any | null>(null)
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+
+  const handleRowClick = (record: any) => {
+    setSelectedRecord(record)
+    setIsDrawerOpen(true)
+  }
+
+  return (
+    <div className="space-y-4">
+      {/* Search, Filter Pills & List/Grid Mode Switcher */}
+      <AdvancedFilterBar
+        onSearchChange={(query) => console.log("Search:", query)}
+        onFilterChange={(filter) => console.log("Filter:", filter)}
+      />
+
+      {/* Enterprise Data Table with Row Selection & Action Drawer */}
+      <EnterpriseDataTable
+        onRowSelect={handleRowClick}
+      />
+
+      {/* Slide-over Detail Drawer */}
+      <Drawer
+        open={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+        title={selectedRecord?.name || "Record Details"}
+      >
+        {selectedRecord && (
+          <div className="space-y-4 p-4">
+            <div className="flex items-center justify-between">
+              <span className="text-xs text-muted-foreground">Account Status</span>
+              <Badge variant="primary">{selectedRecord.status || "Active"}</Badge>
+            </div>
+            <div className="rounded-xl border border-border bg-muted/40 p-3 text-xs">
+              <p className="font-semibold text-foreground">Plan Allocation</p>
+              <p className="text-muted-foreground">Enterprise Tier &bull; Unlimited seats</p>
+            </div>
+            <Button className="w-full" variant="primary" onClick={() => setIsDrawerOpen(false)}>
+              Close Drawer
+            </Button>
+          </div>
+        )}
+      </Drawer>
+    </div>
+  )
+}
+```
+
+---
+
+## 6. AI Agent Rules & Enforcement Checklist
+
+When writing code that uses Ethereal UI, you **MUST** review your code against this checklist before finishing:
+
+### 1. Token Safety & Contrast
+- [ ] Did you use `text-primary-foreground` on any element with `bg-primary`?
+- [ ] Did you avoid hardcoding `text-white` or `text-zinc-900` on interactive components?
+- [ ] Are badges and pill tags using `bg-muted text-muted-foreground` or `bg-primary text-primary-foreground`?
+- [ ] Are borders using `border-border` or `border-white/10` rather than arbitrary hex borders?
+
+### 2. Styling & Layout
+- [ ] Is dark mode supported natively via semantic classes (`bg-background`, `bg-card`, `text-foreground`, `text-muted-foreground`)?
+- [ ] Are cards styled with `rounded-2xl border border-border bg-card p-6 shadow-sm`?
+- [ ] Is layout responsive across mobile (`< sm`), tablet (`sm` to `lg`), and desktop (`lg+`)?
+
+### 3. Component Reuse
+- [ ] Did you check if an existing Ethereal UI block covers the requirement (`InteractiveDashboardShell`, `KanbanBoardBlock`, `PromptComposerBlock`, etc.) before building from scratch?
+- [ ] Are icons sourced consistently from `lucide-react`?
+- [ ] Are dialogs, modals, and drawers properly controlled via open/close state?
+
+---
+
+*Authored by Ethereal UI Team &bull; Published for AI Agent Systems*

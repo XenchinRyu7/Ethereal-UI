@@ -1,0 +1,19 @@
+# Ethereal UI
+
+> Free, Open-Source, Modern Dark-First Enterprise Dashboard Blocks & Component System for React & Tailwind CSS v4.
+
+## Core Documentation & AI Guides
+- [AI Agent Integration Guide](https://ethereal-ui.saefulrohman.dev/ai-agent-guide.md): The definitive guide for AI agents, including strict token pairing rules, Tailwind v4 setup, component catalog, and architectural SaaS recipes.
+- [Documentation Introduction](https://ethereal-ui.saefulrohman.dev/docs/introduction): Overview, dark-first telemetry philosophy, and package structure.
+- [Installation](https://ethereal-ui.saefulrohman.dev/docs/installation): Quickstart guide with pnpm/npm and Tailwind CSS v4 `@import` setup.
+- [CLI & Registry](https://ethereal-ui.saefulrohman.dev/docs/cli-registry): Using `@etherealui/cli` to scaffold primitives, blocks, and templates.
+- [Themes & OKLCH Tokens](https://ethereal-ui.saefulrohman.dev/docs/theming): 870+ OKLCH theme presets, Oklab interpolation scale, and WCAG AA contrast rules.
+
+## Machine-Readable Registry
+- [Registry Index JSON](https://ethereal-ui.saefulrohman.dev/registry/index.json): JSON catalog of all components, dependencies, and file structures.
+
+## Component Catalog
+- Primitives (42 components): Button, Badge, Modal, Drawer, Table, Tabs, Input, Select, Combobox, DatePicker, FileUpload, Switch, etc.
+- Statistical SVG Charts (6 charts): AreaStatisticChart, BarStatisticChart, LineStatisticChart, DonutStatisticChart, RadialStatisticChart, HeatmapStatisticChart.
+- Enterprise & Agentic Blocks (16 blocks): InteractiveDashboardShell, KanbanBoardBlock, EnterpriseDataTable, AdvancedFilterBar, PromptComposerBlock, AgentProgressStreamBlock, TokenUsageTelemetryBlock, SystemHealthBlock, etc.
+- SaaS Templates (3 templates): ExecutiveAnalyticsTemplate, ControlTowerTemplate, WorkspaceSettingsTemplate.
