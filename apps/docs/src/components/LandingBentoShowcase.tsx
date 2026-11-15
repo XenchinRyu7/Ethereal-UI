@@ -21,8 +21,6 @@ import {
   Layers,
   ShieldCheck,
   Zap,
-  Palette,
-  Shuffle,
 } from "lucide-react"
 import {
   cn,
@@ -38,28 +36,6 @@ import {
   AgentProgressBlock,
   TokenUsageBlock,
 } from "@etherealui/react"
-import {
-  getSavedColorTheme,
-  applyColorTheme,
-  loadThemesManifest,
-  type ThemeManifestItem,
-} from "../utils/theme-manager"
-
-interface QuickThemePreset {
-  fileName: string
-  name: string
-  color: string
-}
-
-const QUICK_THEME_PRESETS: QuickThemePreset[] = [
-  { fileName: "default", name: "Ethereal Default", color: "#2563eb" },
-  { fileName: "claude-plus.css", name: "Claude +", color: "#c96442" },
-  { fileName: "light-green.css", name: "Light Green", color: "#84cc16" },
-  { fileName: "astrovista.css", name: "AstroVista", color: "#df6035" },
-  { fileName: "tiesen.css", name: "Tiesen Indigo", color: "#1f42d0" },
-  { fileName: "qrafthive.css", name: "Qrafthive Warm", color: "#d87943" },
-  { fileName: "zen-inspired-theme.css", name: "Zen Monochrome", color: "#2e2e2e" },
-]
 
 const HEATMAP_LEVELS = [
   0, 1, 2, 3, 2, 1, 3, 4, 2, 1, 0, 2, 3, 4, 3, 2, 1, 4, 3, 2, 4, 3, 1, 2,
@@ -68,8 +44,6 @@ const HEATMAP_LEVELS = [
 ]
 
 export const LandingBentoShowcase: React.FC = () => {
-  const [activeThemeFile, setActiveThemeFile] = React.useState("default")
-  const [allThemes, setAllThemes] = React.useState<ThemeManifestItem[]>([])
   const [copiedInstall, setCopiedInstall] = React.useState(false)
   const [activeStep, setActiveStep] = React.useState(3)
   const [selectedRows, setSelectedRows] = React.useState<string[]>(["c1"])
@@ -78,19 +52,6 @@ export const LandingBentoShowcase: React.FC = () => {
   const [selectedDay, setSelectedDay] = React.useState(14)
   const [statRange, setStatRange] = React.useState<"24h" | "7d" | "30d">("30d")
 
-  React.useEffect(() => {
-    setActiveThemeFile(getSavedColorTheme())
-    loadThemesManifest().then((items) => setAllThemes(items))
-
-    const handleThemeChange = (e: Event) => {
-      const custom = e as CustomEvent<{ colorTheme: string }>
-      setActiveThemeFile(custom.detail?.colorTheme || getSavedColorTheme())
-    }
-    window.addEventListener("ethereal-theme-change", handleThemeChange)
-    return () =>
-      window.removeEventListener("ethereal-theme-change", handleThemeChange)
-  }, [])
-
   // Auto-animate step progress like a live agentic workflow
   React.useEffect(() => {
     const timer = setInterval(() => {
@@ -98,19 +59,6 @@ export const LandingBentoShowcase: React.FC = () => {
     }, 2200)
     return () => clearInterval(timer)
   }, [])
-
-  const selectThemePreset = (fileName: string) => {
-    setActiveThemeFile(fileName)
-    applyColorTheme(fileName)
-  }
-
-  const pickRandomTheme = () => {
-    if (allThemes.length === 0) return
-    const chosen = allThemes[Math.floor(Math.random() * allThemes.length)]
-    if (chosen) {
-      selectThemePreset(chosen.fileName)
-    }
-  }
 
   const toggleRow = (id: string) => {
     setSelectedRows((prev) =>
@@ -177,48 +125,6 @@ export const LandingBentoShowcase: React.FC = () => {
               <Copy className="h-3.5 w-3.5 text-zinc-400" />
             )}
           </button>
-        </div>
-
-        {/* Live Ethereal UI Theme Switcher Pill Bar */}
-        <div className="inline-flex flex-wrap items-center justify-center gap-2 rounded-full border border-zinc-200/90 bg-white/90 px-3.5 py-1.5 shadow-sm backdrop-blur-md dark:border-zinc-800 dark:bg-zinc-900/90">
-          <span className="inline-flex items-center gap-1 text-[11px] font-medium text-zinc-500 dark:text-zinc-400 pr-1">
-            <Palette className="h-3 w-3 text-blue-600 dark:text-blue-400" />
-            Live Theme:
-          </span>
-          {QUICK_THEME_PRESETS.map((preset) => {
-            const active = activeThemeFile === preset.fileName
-            return (
-              <button
-                key={preset.fileName}
-                type="button"
-                onClick={() => selectThemePreset(preset.fileName)}
-                title={preset.name}
-                aria-label={`Apply ${preset.name} theme`}
-                style={{ backgroundColor: preset.color }}
-                className={cn(
-                  "h-5 w-5 rounded-full border border-black/15 transition-transform cursor-pointer dark:border-white/20",
-                  active
-                    ? "scale-115 ring-2 ring-offset-2 ring-zinc-900 dark:ring-white dark:ring-offset-zinc-950"
-                    : "opacity-80 hover:opacity-100 hover:scale-105"
-                )}
-              />
-            )
-          })}
-          <button
-            type="button"
-            onClick={pickRandomTheme}
-            title="Random Theme from 870+ Presets"
-            className="inline-flex h-6 items-center gap-1 rounded-full border border-zinc-200 bg-zinc-50 px-2.5 text-[10px] font-semibold text-zinc-700 hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200 cursor-pointer"
-          >
-            <Shuffle className="h-2.5 w-2.5" />
-            <span>Random</span>
-          </button>
-          <a
-            href="/themes"
-            className="text-[11px] font-semibold text-blue-600 hover:underline dark:text-blue-400 pl-1"
-          >
-            870+ Themes &rarr;
-          </a>
         </div>
       </div>
 

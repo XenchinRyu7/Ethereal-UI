@@ -1,6 +1,5 @@
 ---
 import "../styles/global.css"
-import { ThemeToggle } from "../components/ThemeToggle"
 
 interface Props {
   title?: string
@@ -190,6 +189,5 @@ const jsonLdSchema = {
   </head>
   <body class="min-h-screen overflow-x-hidden bg-background text-foreground antialiased">
     <slot />
-    <ThemeToggle floating client:load />
   </body>
 </html>

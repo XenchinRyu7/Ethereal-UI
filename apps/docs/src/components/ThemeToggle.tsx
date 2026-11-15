@@ -36,9 +36,7 @@ const QUICK_TAGS = [
   "neon",
 ]
 
-export const ThemeToggle: React.FC<{ floating?: boolean }> = ({
-  floating = false,
-}) => {
+export const ThemeToggle: React.FC = () => {
   const [dark, setDark] = React.useState(false)
   const [activeFileName, setActiveFileName] = React.useState("default")
   const [themes, setThemes] = React.useState<ThemeManifestItem[]>([])
@@ -208,295 +206,266 @@ export const ThemeToggle: React.FC<{ floating?: boolean }> = ({
   const renderDropdownPanel = () => {
     if (!open) return null
     return (
-      <div
-        className={`z-50 w-[330px] sm:w-[370px] overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-2xl dark:border-zinc-800 dark:bg-zinc-900 ${
-          floating
-            ? "fixed bottom-16 right-5"
-            : "fixed inset-x-3 top-14 mx-auto sm: insets-auto sm:absolute sm:right-0 sm:left-auto sm:top-full sm:mt-2 sm:mx-0"
-        }`}
-      >
-        {/* Top Header & Quick Actions */}
-        <div className="flex items-center justify-between border-b border-zinc-200/80 px-3.5 py-2.5 dark:border-zinc-800">
-          <div className="flex items-center gap-2 min-w-0">
-            <Palette className="h-4 w-4 text-blue-600 dark:text-blue-400 shrink-0" />
-            <div className="truncate">
-              <div className="text-xs font-bold text-zinc-900 dark:text-zinc-100 truncate">
-                Ethereal Themes ({themes.length || "870+"})
-              </div>
-              <div className="text-[10px] text-zinc-500 dark:text-zinc-400 truncate">
-                Active: <span className="font-semibold text-zinc-800 dark:text-zinc-200">{activeThemeObj.name}</span>
+      <>
+        {/* Mobile Backdrop (< sm) */}
+        <div
+          className="fixed inset-0 z-40 bg-black/40 backdrop-blur-xs sm:hidden"
+          onClick={() => setOpen(false)}
+          aria-hidden="true"
+        />
+
+        {/* Dropdown Panel (Responsive: centered modal on mobile, anchored popover on tablet/desktop) */}
+        <div
+          className="fixed inset-x-3 top-14 sm:top-auto sm:inset-auto z-50 mx-auto w-auto max-w-[390px] sm:max-w-none sm:w-[380px] sm:absolute sm:top-full sm:right-0 sm:mt-2 overflow-hidden rounded-2xl border border-border bg-popover text-popover-foreground shadow-2xl flex flex-col max-h-[calc(100vh-5rem)] sm:max-h-[540px]"
+        >
+          {/* Top Header & Quick Actions */}
+          <div className="flex items-center justify-between border-b border-border px-3.5 py-2.5">
+            <div className="flex items-center gap-2 min-w-0">
+              <Palette className="h-4 w-4 text-primary shrink-0" />
+              <div className="truncate">
+                <div className="text-xs font-bold text-foreground truncate">
+                  Ethereal Themes ({themes.length || "870+"})
+                </div>
+                <div className="text-[10px] text-muted-foreground truncate">
+                  Active: <span className="font-semibold text-foreground">{activeThemeObj.name}</span>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div className="flex items-center gap-1 shrink-0">
-            <button
-              type="button"
-              onClick={pickRandomTheme}
-              title="Random Theme"
-              className="inline-flex h-7 w-7 items-center justify-center rounded-lg border border-zinc-200/80 bg-zinc-50 text-zinc-600 transition-colors hover:bg-zinc-100 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-800/70 dark:text-zinc-300 dark:hover:bg-zinc-800 cursor-pointer"
-            >
-              <Shuffle className="h-3.5 w-3.5" />
-            </button>
-            <button
-              type="button"
-              onClick={copyActiveThemeCss}
-              title="Copy Active Theme CSS Variables"
-              className="inline-flex h-7 items-center gap-1 rounded-lg border border-zinc-200/80 bg-zinc-50 px-2 text-[10px] font-semibold text-zinc-700 transition-colors hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-800/70 dark:text-zinc-200 dark:hover:bg-zinc-800 cursor-pointer"
-            >
-              {copiedCss ? (
-                <>
-                  <Check className="h-3 w-3 text-emerald-500" />
-                  <span>Copied</span>
-                </>
-              ) : (
-                <>
-                  <Copy className="h-3 w-3" />
-                  <span>CSS</span>
-                </>
-              )}
-            </button>
-            {activeFileName !== "default" && (
+            <div className="flex items-center gap-1 shrink-0">
               <button
                 type="button"
-                onClick={() => selectTheme("default")}
-                title="Reset to Default Ethereal Theme"
-                className="inline-flex h-7 w-7 items-center justify-center rounded-lg border border-zinc-200/80 bg-zinc-50 text-zinc-600 transition-colors hover:bg-zinc-100 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-800/70 dark:text-zinc-300 dark:hover:bg-zinc-800 cursor-pointer"
+                onClick={pickRandomTheme}
+                title="Random Theme"
+                className="inline-flex h-7 w-7 items-center justify-center rounded-lg border border-border bg-muted/50 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground cursor-pointer"
               >
-                <RotateCcw className="h-3.5 w-3.5" />
+                <Shuffle className="h-3.5 w-3.5" />
               </button>
-            )}
-            <button
-              type="button"
-              onClick={() => setOpen(false)}
-              title="Close"
-              className="inline-flex h-7 w-7 items-center justify-center rounded-lg text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200 cursor-pointer"
-            >
-              <X className="h-3.5 w-3.5" />
-            </button>
-          </div>
-        </div>
-
-        {/* Search Input & Tag Filters */}
-        <div className="space-y-2 border-b border-zinc-200/80 bg-zinc-50/50 p-2.5 dark:border-zinc-800 dark:bg-zinc-950/40">
-          <div className="relative">
-            <Search className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-zinc-400" />
-            <input
-              ref={searchInputRef}
-              type="text"
-              value={search}
-              onChange={(e) => {
-                setSearch(e.target.value)
-                setVisibleLimit(60)
-              }}
-              placeholder="Search theme name, tag, or author..."
-              className="w-full rounded-xl border border-zinc-200 bg-white py-1.5 pl-8 pr-7 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
-            />
-            {search && (
               <button
                 type="button"
-                onClick={() => setSearch("")}
-                className="absolute right-2 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 cursor-pointer"
+                onClick={copyActiveThemeCss}
+                title="Copy Active Theme CSS Variables"
+                className="inline-flex h-7 items-center gap-1 rounded-lg border border-border bg-muted/50 px-2 text-[10px] font-semibold text-foreground transition-colors hover:bg-muted cursor-pointer"
+              >
+                {copiedCss ? (
+                  <>
+                    <Check className="h-3 w-3 text-emerald-500" />
+                    <span>Copied</span>
+                  </>
+                ) : (
+                  <>
+                    <Copy className="h-3 w-3" />
+                    <span>CSS</span>
+                  </>
+                )}
+              </button>
+              {activeFileName !== "default" && (
+                <button
+                  type="button"
+                  onClick={() => selectTheme("default")}
+                  title="Reset to Default Ethereal Theme"
+                  className="inline-flex h-7 w-7 items-center justify-center rounded-lg border border-border bg-muted/50 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground cursor-pointer"
+                >
+                  <RotateCcw className="h-3.5 w-3.5" />
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={() => setOpen(false)}
+                title="Close"
+                className="inline-flex h-7 w-7 items-center justify-center rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground cursor-pointer"
               >
                 <X className="h-3.5 w-3.5" />
               </button>
-            )}
+            </div>
           </div>
 
-          <div className="flex items-center gap-1 overflow-x-auto pb-0.5 no-scrollbar">
-            {QUICK_TAGS.map((tag) => {
-              const isSelected = selectedTag === tag
-              return (
+          {/* Search Input & Tag Filters */}
+          <div className="space-y-2 border-b border-border bg-muted/30 p-2.5">
+            <div className="relative">
+              <Search className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
+              <input
+                ref={searchInputRef}
+                type="text"
+                value={search}
+                onChange={(e) => {
+                  setSearch(e.target.value)
+                  setVisibleLimit(60)
+                }}
+                placeholder="Search theme name, tag, or author..."
+                className="w-full rounded-xl border border-border bg-background py-1.5 pl-8 pr-7 text-xs text-foreground placeholder:text-muted-foreground focus:border-ring focus:outline-none"
+              />
+              {search && (
                 <button
-                  key={tag}
                   type="button"
-                  onClick={() => {
-                    setSelectedTag(tag)
-                    setVisibleLimit(60)
-                  }}
-                  className={`shrink-0 rounded-lg px-2 py-0.5 text-[10px] font-medium capitalize transition-colors cursor-pointer ${
-                    isSelected
-                      ? "bg-blue-600 text-white"
-                      : "bg-zinc-200/70 text-zinc-600 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-700"
+                  onClick={() => setSearch("")}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground cursor-pointer"
+                >
+                  <X className="h-3.5 w-3.5" />
+                </button>
+              )}
+            </div>
+
+            <div className="flex items-center gap-1 overflow-x-auto pb-0.5 no-scrollbar">
+              {QUICK_TAGS.map((tag) => {
+                const isSelected = selectedTag === tag
+                return (
+                  <button
+                    key={tag}
+                    type="button"
+                    onClick={() => {
+                      setSelectedTag(tag)
+                      setVisibleLimit(60)
+                    }}
+                    className={`shrink-0 rounded-lg px-2 py-0.5 text-[10px] font-medium capitalize transition-colors cursor-pointer ${
+                      isSelected
+                        ? "bg-primary text-primary-foreground font-semibold"
+                        : "bg-muted text-muted-foreground hover:bg-accent hover:text-foreground"
+                    }`}
+                  >
+                    {tag}
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+
+          {/* Scrollable Theme List */}
+          <div className="flex-1 overflow-y-auto divide-y divide-border/30 p-1.5 max-h-[min(52vh,340px)]">
+            {/* Default Ethereal UI Option */}
+            {(!search || "ethereal default".includes(search.toLowerCase())) &&
+              selectedTag === "all" && (
+                <button
+                  type="button"
+                  onClick={() => selectTheme("default")}
+                  className={`flex w-full items-center justify-between gap-2.5 rounded-xl px-2.5 py-2 text-left transition-colors cursor-pointer ${
+                    activeFileName === "default"
+                      ? "bg-primary/10 text-primary font-semibold"
+                      : "text-foreground hover:bg-accent/60"
                   }`}
                 >
-                  {tag}
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    {renderSwatches(DEFAULT_ETHEREAL_THEME)}
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-xs font-semibold text-foreground truncate">
+                          Ethereal Default
+                        </span>
+                        <span className="rounded bg-primary/15 text-primary border border-primary/20 px-1.5 py-0.2 text-[9px] font-semibold">
+                          Built-in
+                        </span>
+                      </div>
+                      <div className="text-[10px] text-muted-foreground truncate">
+                        Precision Zinc &amp; Electric Blue
+                      </div>
+                    </div>
+                  </div>
+                  {activeFileName === "default" && (
+                    <Check className="h-4 w-4 text-primary shrink-0" />
+                  )}
+                </button>
+              )}
+
+            {visibleThemes.map((item) => {
+              const isSelected = activeFileName === item.fileName
+              return (
+                <button
+                  key={item.id}
+                  type="button"
+                  onClick={() => selectTheme(item.fileName)}
+                  className={`flex w-full items-center justify-between gap-2.5 rounded-xl px-2.5 py-2 text-left transition-colors cursor-pointer ${
+                    isSelected
+                      ? "bg-primary/10 text-primary font-semibold"
+                      : "text-foreground hover:bg-accent/60"
+                  }`}
+                >
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    {renderSwatches(item)}
+                    <div className="min-w-0">
+                      <div className="text-xs font-semibold text-foreground truncate">
+                        {item.name}
+                      </div>
+                      <div className="flex items-center gap-2 text-[10px] text-muted-foreground truncate">
+                        <span className="truncate">by {item.author}</span>
+                        {item.likeCount > 0 && (
+                          <span className="inline-flex items-center gap-0.5 text-muted-foreground">
+                            <Heart className="h-2.5 w-2.5 fill-current text-rose-500" />
+                            {item.likeCount}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  {isSelected && (
+                    <Check className="h-4 w-4 text-primary shrink-0" />
+                  )}
                 </button>
               )
             })}
+
+            {filteredThemes.length === 0 && (
+              <div className="py-8 text-center text-xs text-muted-foreground">
+                No themes found matching &ldquo;{search}&rdquo;
+              </div>
+            )}
+
+            {filteredThemes.length > visibleLimit && (
+              <div className="p-2 text-center">
+                <button
+                  type="button"
+                  onClick={() => setVisibleLimit((prev) => prev + 80)}
+                  className="w-full rounded-xl border border-border bg-muted/60 py-1.5 text-xs font-semibold text-foreground hover:bg-muted cursor-pointer"
+                >
+                  Show more themes ({filteredThemes.length - visibleLimit} remaining)
+                </button>
+              </div>
+            )}
+          </div>
+
+          {/* Footer Link to Full Theme Explorer & Mode Switcher */}
+          <div className="flex items-center justify-between border-t border-border bg-muted/40 px-3.5 py-2 text-[11px] text-muted-foreground">
+            <button
+              type="button"
+              onClick={toggleDark}
+              className="inline-flex items-center gap-1.5 font-medium hover:text-foreground cursor-pointer"
+            >
+              {dark ? (
+                <>
+                  <Sun className="h-3.5 w-3.5 text-amber-500" />
+                  <span>Light Mode</span>
+                </>
+              ) : (
+                <>
+                  <Moon className="h-3.5 w-3.5 text-primary" />
+                  <span>Dark Mode</span>
+                </>
+              )}
+            </button>
+
+            <a
+              href="/themes"
+              onClick={() => setOpen(false)}
+              className="inline-flex items-center gap-1 font-semibold text-primary hover:underline"
+            >
+              <span>Explore All Themes</span>
+              <ExternalLink className="h-3 w-3" />
+            </a>
           </div>
         </div>
-
-        {/* Scrollable Theme List */}
-        <div className="max-h-[320px] overflow-y-auto divide-y divide-zinc-100 p-1.5 dark:divide-zinc-800/50">
-          {/* Default Ethereal UI Option */}
-          {(!search || "ethereal default".includes(search.toLowerCase())) &&
-            selectedTag === "all" && (
-              <button
-                type="button"
-                onClick={() => selectTheme("default")}
-                className={`flex w-full items-center justify-between gap-2.5 rounded-xl px-2.5 py-2 text-left transition-colors cursor-pointer ${
-                  activeFileName === "default"
-                    ? "bg-blue-50/90 text-blue-700 dark:bg-blue-950/40 dark:text-blue-300"
-                    : "hover:bg-zinc-100/80 dark:hover:bg-zinc-800/60"
-                }`}
-              >
-                <div className="flex items-center gap-2.5 min-w-0">
-                  {renderSwatches(DEFAULT_ETHEREAL_THEME)}
-                  <div className="min-w-0">
-                    <div className="flex items-center gap-1.5">
-                      <span className="text-xs font-semibold text-zinc-900 dark:text-zinc-100 truncate">
-                        Ethereal Default
-                      </span>
-                      <span className="rounded bg-blue-100 px-1.5 py-0.2 text-[9px] font-semibold text-blue-700 dark:bg-blue-500/20 dark:text-blue-300">
-                        Built-in
-                      </span>
-                    </div>
-                    <div className="text-[10px] text-zinc-500 dark:text-zinc-400 truncate">
-                      Precision Zinc &amp; Electric Blue
-                    </div>
-                  </div>
-                </div>
-                {activeFileName === "default" && (
-                  <Check className="h-4 w-4 text-blue-600 dark:text-blue-400 shrink-0" />
-                )}
-              </button>
-            )}
-
-          {visibleThemes.map((item) => {
-            const isSelected = activeFileName === item.fileName
-            return (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => selectTheme(item.fileName)}
-                className={`flex w-full items-center justify-between gap-2.5 rounded-xl px-2.5 py-2 text-left transition-colors cursor-pointer ${
-                  isSelected
-                    ? "bg-blue-50/90 text-blue-700 dark:bg-blue-950/40 dark:text-blue-300"
-                    : "hover:bg-zinc-100/80 dark:hover:bg-zinc-800/60"
-                }`}
-              >
-                <div className="flex items-center gap-2.5 min-w-0">
-                  {renderSwatches(item)}
-                  <div className="min-w-0">
-                    <div className="text-xs font-semibold text-zinc-900 dark:text-zinc-100 truncate">
-                      {item.name}
-                    </div>
-                    <div className="flex items-center gap-2 text-[10px] text-zinc-500 dark:text-zinc-400 truncate">
-                      <span className="truncate">by {item.author}</span>
-                      {item.likeCount > 0 && (
-                        <span className="inline-flex items-center gap-0.5 text-zinc-400">
-                          <Heart className="h-2.5 w-2.5 fill-current text-rose-400" />
-                          {item.likeCount}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                </div>
-
-                {isSelected && (
-                  <Check className="h-4 w-4 text-blue-600 dark:text-blue-400 shrink-0" />
-                )}
-              </button>
-            )
-          })}
-
-          {filteredThemes.length === 0 && (
-            <div className="py-8 text-center text-xs text-zinc-500 dark:text-zinc-400">
-              No themes found matching &ldquo;{search}&rdquo;
-            </div>
-          )}
-
-          {filteredThemes.length > visibleLimit && (
-            <div className="p-2 text-center">
-              <button
-                type="button"
-                onClick={() => setVisibleLimit((prev) => prev + 80)}
-                className="w-full rounded-xl border border-zinc-200 bg-zinc-50 py-1.5 text-xs font-semibold text-zinc-700 hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-800/60 dark:text-zinc-200 dark:hover:bg-zinc-800 cursor-pointer"
-              >
-                Show more themes ({filteredThemes.length - visibleLimit} remaining)
-              </button>
-            </div>
-          )}
-        </div>
-
-        {/* Footer Link to Full Theme Explorer */}
-        <div className="flex items-center justify-between border-t border-zinc-200/80 bg-zinc-50/70 px-3.5 py-2 text-[11px] dark:border-zinc-800 dark:bg-zinc-950/50">
-          <button
-            type="button"
-            onClick={toggleDark}
-            className="inline-flex items-center gap-1.5 font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 cursor-pointer"
-          >
-            {dark ? (
-              <>
-                <Sun className="h-3.5 w-3.5 text-amber-500" />
-                <span>Switch to Light</span>
-              </>
-            ) : (
-              <>
-                <Moon className="h-3.5 w-3.5 text-blue-600" />
-                <span>Switch to Dark</span>
-              </>
-            )}
-          </button>
-
-          <a
-            href="/themes"
-            className="inline-flex items-center gap-1 font-semibold text-blue-600 hover:underline dark:text-blue-400"
-          >
-            <span>Explore All Themes</span>
-            <ExternalLink className="h-3 w-3" />
-          </a>
-        </div>
-      </div>
-    )
-  }
-
-  if (floating) {
-    return (
-      <div
-        ref={containerRef}
-        className="fixed bottom-5 right-5 z-40 flex flex-col items-end gap-2"
-      >
-        {renderDropdownPanel()}
-        <button
-          type="button"
-          onClick={() => setOpen((prev) => !prev)}
-          aria-label="Open Theme Selector"
-          title="Choose Color Theme"
-          className="flex h-9 items-center gap-1.5 rounded-full border border-zinc-200 bg-white px-3 text-xs font-semibold text-zinc-700 shadow-lg transition-colors hover:bg-zinc-50 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800 cursor-pointer"
-        >
-          <span
-            className="h-3 w-3 rounded-full border border-black/15 dark:border-white/20"
-            style={{ backgroundColor: activePalette.primary }}
-          />
-          <Palette className="h-3.5 w-3.5" />
-          <span className="hidden sm:inline max-w-[96px] truncate">
-            {activeThemeObj.name}
-          </span>
-        </button>
-        <button
-          type="button"
-          onClick={toggleDark}
-          aria-label="Toggle Light / Dark Mode"
-          title="Switch Light / Dark Mode"
-          className="flex h-9 w-9 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-600 shadow-lg transition-colors hover:bg-zinc-50 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800 cursor-pointer"
-        >
-          {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-        </button>
-      </div>
+      </>
     )
   }
 
   return (
-    <div ref={containerRef} className="relative inline-flex items-center gap-1.5">
+    <div ref={containerRef} className="relative inline-flex items-center gap-1 sm:gap-1.5">
       {/* Theme Preset Dropdown Trigger */}
       <button
         type="button"
         onClick={() => setOpen((prev) => !prev)}
         aria-label="Select Color Theme"
         title="Select Ethereal UI Theme"
-        className="inline-flex h-8 items-center gap-2 rounded-lg border border-zinc-200/80 bg-zinc-50/70 px-2.5 text-xs font-medium text-zinc-700 transition-colors hover:bg-zinc-100 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-900/70 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-zinc-100 cursor-pointer"
+        className="inline-flex h-8 items-center gap-1.5 sm:gap-2 rounded-lg border border-border bg-card px-2 sm:px-2.5 text-xs font-medium text-foreground transition-colors hover:bg-accent cursor-pointer"
       >
         <span
           className="inline-flex items-center gap-0.5 rounded border border-black/10 p-0.5 dark:border-white/15"
@@ -515,21 +484,21 @@ export const ThemeToggle: React.FC<{ floating?: boolean }> = ({
             style={{ backgroundColor: activePalette.card }}
           />
         </span>
-        <span className="hidden md:inline max-w-[110px] truncate">
+        <span className="hidden md:inline max-w-[100px] lg:max-w-[120px] truncate text-[11px] lg:text-xs">
           {activeThemeObj.name}
         </span>
-        <ChevronDown className="h-3.5 w-3.5 text-zinc-400" />
+        <ChevronDown className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-muted-foreground shrink-0" />
       </button>
 
       {/* Light / Dark Mode Button */}
       <button
         type="button"
         onClick={toggleDark}
-        aria-label="Toggle theme"
-        title="Switch Light / Dark Mode"
-        className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-zinc-500 transition-colors hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100 cursor-pointer"
+        aria-label="Toggle light or dark theme"
+        title={dark ? "Switch to Light Mode" : "Switch to Dark Mode"}
+        className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-foreground cursor-pointer shrink-0"
       >
-        {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+        {dark ? <Sun className="h-4 w-4 text-amber-500" /> : <Moon className="h-4 w-4" />}
       </button>
 
       {renderDropdownPanel()}
