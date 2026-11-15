@@ -7,6 +7,7 @@ interface Props {
 }
 
 const { categoryLabel = "Components", pageTitle } = Astro.props
+const pathname = Astro.url.pathname
 ---
 
 <header class="flex h-12 w-full items-center justify-between gap-2 border-b border-border pb-3">
@@ -60,20 +61,38 @@ const { categoryLabel = "Components", pageTitle } = Astro.props
 
   <!-- Right Action Links (Docs, Blog) + Icons & Pills -->
   <div class="flex items-center gap-2 sm:gap-3 shrink-0">
-    <div class="hidden md:flex items-center gap-4 text-xs font-medium text-muted-foreground mr-1">
-      <a href="/docs/introduction" class="hover:text-foreground transition-colors">
+    <div class="hidden md:flex items-center gap-4 text-xs font-medium mr-1">
+      <a
+        href="/docs/introduction"
+        class:list={[
+          "transition-colors",
+          pathname.startsWith("/docs") || pathname.startsWith("/components") || pathname.startsWith("/charts") || pathname.startsWith("/blocks")
+            ? "text-foreground font-semibold"
+            : "text-muted-foreground hover:text-foreground",
+        ]}
+      >
         Docs
       </a>
-      <a href="/components/avatar" class="hover:text-foreground transition-colors">
-        Components
+      <a
+        href="/templates"
+        class:list={[
+          "transition-colors",
+          pathname.startsWith("/templates") || pathname.startsWith("/showcase")
+            ? "text-foreground font-semibold"
+            : "text-muted-foreground hover:text-foreground",
+        ]}
+      >
+        Showcase
       </a>
-      <a href="/charts" class="hover:text-foreground transition-colors">
-        Charts
-      </a>
-      <a href="/blocks" class="hover:text-foreground transition-colors">
-        Blocks
-      </a>
-      <a href="/blog" class="hover:text-foreground transition-colors">
+      <a
+        href="/blog"
+        class:list={[
+          "transition-colors",
+          pathname.startsWith("/blog")
+            ? "text-foreground font-semibold"
+            : "text-muted-foreground hover:text-foreground",
+        ]}
+      >
         Blog
       </a>
     </div>

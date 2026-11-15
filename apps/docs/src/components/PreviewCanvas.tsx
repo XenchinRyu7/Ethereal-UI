@@ -10,6 +10,7 @@ import {
   Settings,
   Bell,
   Plus,
+  ExternalLink,
 } from "lucide-react"
 import {
   Accordion,
@@ -1353,7 +1354,23 @@ export const PreviewCanvas: React.FC<PreviewBoxProps & { title?: string; descrip
   showCopyPage = true,
 }) => {
   const [tab, setTab] = React.useState<"preview" | "code">("preview")
-  const [copied, setCopied] = React.useState(false)
+  const [copyMenuOpen, setCopyMenuOpen] = React.useState(false)
+  const [copiedType, setCopiedType] = React.useState<"code" | "cli" | null>(null)
+  const copyMenuRef = React.useRef<HTMLDivElement>(null)
+
+  React.useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (copyMenuRef.current && !copyMenuRef.current.contains(e.target as Node)) {
+        setCopyMenuOpen(false)
+      }
+    }
+    if (copyMenuOpen) {
+      document.addEventListener("mousedown", handleClickOutside)
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [copyMenuOpen])
 
   return (
     <div className="space-y-3">
@@ -1389,32 +1406,103 @@ export const PreviewCanvas: React.FC<PreviewBoxProps & { title?: string; descrip
         </div>
 
         {showCopyPage && (
-          <div className="inline-flex items-center rounded-xl border border-zinc-200 bg-white text-xs font-medium text-zinc-700 shadow-2xs dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200">
+          <div ref={copyMenuRef} className="relative inline-flex items-center">
             <button
               type="button"
-              onClick={() => {
-                navigator.clipboard?.writeText(code)
-                setCopied(true)
-                setTimeout(() => setCopied(false), 1800)
-              }}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 hover:bg-zinc-50 dark:hover:bg-zinc-800 rounded-l-xl cursor-pointer"
-            >
-              {copied ? (
-                <Check className="h-3.5 w-3.5 text-emerald-500" />
-              ) : (
-                <Copy className="h-3.5 w-3.5 text-zinc-400" />
+              onClick={() => setCopyMenuOpen((prev) => !prev)}
+              aria-expanded={copyMenuOpen}
+              aria-label="Copy code or CLI command"
+              className={cn(
+                "inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-xs font-medium text-zinc-700 shadow-2xs hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800 cursor-pointer transition-colors",
+                copyMenuOpen && "bg-zinc-50 dark:bg-zinc-800 ring-2 ring-zinc-400/20"
               )}
-              <span>{copied ? "Copied" : "Copy Page"}</span>
-            </button>
-            <a
-              href={`/registry/${slug}.json`}
-              target="_blank"
-              rel="noreferrer"
-              title="Open Registry JSON"
-              className="border-l border-zinc-200 px-2 py-1.5 text-zinc-400 hover:bg-zinc-50 hover:text-zinc-700 dark:border-zinc-800 dark:hover:bg-zinc-800 dark:hover:text-zinc-200 rounded-r-xl"
             >
-              <ChevronDown className="h-3.5 w-3.5" />
-            </a>
+              {copiedType ? (
+                <>
+                  <Check className="h-3.5 w-3.5 text-emerald-500" />
+                  <span className="text-emerald-600 dark:text-emerald-400 font-medium">
+                    {copiedType === "code" ? "Copied Code" : "Copied CLI"}
+                  </span>
+                </>
+              ) : (
+                <>
+                  <Copy className="h-3.5 w-3.5 text-zinc-400" />
+                  <span>Copy</span>
+                </>
+              )}
+              <ChevronDown
+                className={cn(
+                  "h-3.5 w-3.5 text-zinc-400 transition-transform duration-200",
+                  copyMenuOpen && "rotate-180"
+                )}
+              />
+            </button>
+
+            {copyMenuOpen && (
+              <div className="absolute right-0 top-full z-50 mt-1.5 w-60 rounded-xl border border-zinc-200 bg-white p-1.5 text-xs shadow-lg dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200">
+                <button
+                  type="button"
+                  onClick={() => {
+                    navigator.clipboard?.writeText(code)
+                    setCopiedType("code")
+                    setCopyMenuOpen(false)
+                    setTimeout(() => setCopiedType(null), 2000)
+                  }}
+                  className="flex w-full items-start gap-2.5 rounded-lg px-2.5 py-2 text-left hover:bg-zinc-100 dark:hover:bg-zinc-800 cursor-pointer transition-colors"
+                >
+                  <Code2 className="mt-0.5 h-4 w-4 shrink-0 text-zinc-500 dark:text-zinc-400" />
+                  <div className="flex flex-col">
+                    <span className="font-medium text-zinc-900 dark:text-zinc-100">
+                      Copy Code
+                    </span>
+                    <span className="text-[11px] text-zinc-500 dark:text-zinc-400">
+                      React TSX component preview
+                    </span>
+                  </div>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    navigator.clipboard?.writeText(`npx @etherealui/cli@latest add ${slug}`)
+                    setCopiedType("cli")
+                    setCopyMenuOpen(false)
+                    setTimeout(() => setCopiedType(null), 2000)
+                  }}
+                  className="flex w-full items-start gap-2.5 rounded-lg px-2.5 py-2 text-left hover:bg-zinc-100 dark:hover:bg-zinc-800 cursor-pointer transition-colors"
+                >
+                  <Terminal className="mt-0.5 h-4 w-4 shrink-0 text-zinc-500 dark:text-zinc-400" />
+                  <div className="flex flex-col">
+                    <span className="font-medium text-zinc-900 dark:text-zinc-100">
+                      Copy CLI Command
+                    </span>
+                    <span className="font-mono text-[10px] text-zinc-500 dark:text-zinc-400">
+                      npx @etherealui/cli add {slug}
+                    </span>
+                  </div>
+                </button>
+
+                <div className="my-1 border-t border-zinc-100 dark:border-zinc-800" />
+
+                <a
+                  href={`/registry/${slug}.json`}
+                  target="_blank"
+                  rel="noreferrer"
+                  onClick={() => setCopyMenuOpen(false)}
+                  className="flex w-full items-start gap-2.5 rounded-lg px-2.5 py-2 text-left hover:bg-zinc-100 dark:hover:bg-zinc-800 cursor-pointer transition-colors text-zinc-600 dark:text-zinc-300"
+                >
+                  <ExternalLink className="mt-0.5 h-4 w-4 shrink-0 text-zinc-400" />
+                  <div className="flex flex-col">
+                    <span className="font-medium text-zinc-900 dark:text-zinc-100">
+                      View Registry JSON
+                    </span>
+                    <span className="text-[11px] text-zinc-500 dark:text-zinc-400">
+                      Raw schema in new tab
+                    </span>
+                  </div>
+                </a>
+              </div>
+            )}
           </div>
         )}
       </div>

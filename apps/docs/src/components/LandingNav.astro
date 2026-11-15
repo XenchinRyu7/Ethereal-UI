@@ -22,12 +22,12 @@ const pathname = Astro.url.pathname
         </span>
       </a>
 
-      <nav class="hidden md:flex items-center gap-4 lg:gap-5 text-xs font-medium">
+      <nav class="hidden md:flex items-center gap-5 lg:gap-6 text-xs font-medium">
         <a
           href="/docs/introduction"
           class:list={[
             "transition-colors",
-            pathname.startsWith("/docs")
+            pathname.startsWith("/docs") || pathname.startsWith("/components") || pathname.startsWith("/charts") || pathname.startsWith("/blocks")
               ? "text-zinc-900 dark:text-white font-semibold"
               : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100",
           ]}
@@ -35,65 +35,15 @@ const pathname = Astro.url.pathname
           Docs
         </a>
         <a
-          href="/components/avatar"
-          class:list={[
-            "transition-colors",
-            pathname.startsWith("/components")
-              ? "text-zinc-900 dark:text-white font-semibold"
-              : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100",
-          ]}
-        >
-          Components
-        </a>
-        <a
-          href="/charts"
-          class:list={[
-            "transition-colors",
-            pathname.startsWith("/charts")
-              ? "text-zinc-900 dark:text-white font-semibold"
-              : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100",
-          ]}
-        >
-          Charts
-        </a>
-        <a
-          href="/blocks"
-          class:list={[
-            "transition-colors flex items-center gap-1.5",
-            pathname.startsWith("/blocks")
-              ? "text-zinc-900 dark:text-white font-semibold"
-              : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100",
-          ]}
-        >
-          Blocks
-          <span class="rounded bg-blue-100 px-1.5 py-0.5 text-[9px] font-semibold text-blue-700 dark:bg-blue-500/20 dark:text-blue-300">
-            FREE
-          </span>
-        </a>
-        <a
           href="/templates"
           class:list={[
             "transition-colors",
-            pathname.startsWith("/templates")
+            pathname.startsWith("/templates") || pathname.startsWith("/showcase")
               ? "text-zinc-900 dark:text-white font-semibold"
               : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100",
           ]}
         >
-          Templates
-        </a>
-        <a
-          href="/themes"
-          class:list={[
-            "transition-colors flex items-center gap-1.5",
-            pathname.startsWith("/themes")
-              ? "text-zinc-900 dark:text-white font-semibold"
-              : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100",
-          ]}
-        >
-          Themes
-          <span class="rounded bg-blue-100 px-1.5 py-0.5 text-[9px] font-semibold text-blue-700 dark:bg-blue-500/20 dark:text-blue-300">
-            870+
-          </span>
+          Showcase
         </a>
         <a
           href="/blog"
@@ -158,24 +108,10 @@ const pathname = Astro.url.pathname
   >
     <nav class="flex flex-col space-y-1 text-xs font-medium">
       <a href="/docs/introduction" class="rounded-lg px-3 py-2 text-zinc-700 hover:bg-zinc-100 dark:text-zinc-200 dark:hover:bg-zinc-900">
-        Documentation
-      </a>
-      <a href="/components/avatar" class="rounded-lg px-3 py-2 text-zinc-700 hover:bg-zinc-100 dark:text-zinc-200 dark:hover:bg-zinc-900">
-        Base Components (37)
-      </a>
-      <a href="/charts" class="rounded-lg px-3 py-2 text-zinc-700 hover:bg-zinc-100 dark:text-zinc-200 dark:hover:bg-zinc-900">
-        Statistical Charts (6)
-      </a>
-      <a href="/blocks" class="flex items-center justify-between rounded-lg px-3 py-2 text-zinc-700 hover:bg-zinc-100 dark:text-zinc-200 dark:hover:bg-zinc-900">
-        <span>Enterprise Blocks (10)</span>
-        <span class="rounded bg-blue-100 px-1.5 py-0.5 text-[9px] font-semibold text-blue-700 dark:bg-blue-500/20 dark:text-blue-300">FREE</span>
+        Docs
       </a>
       <a href="/templates" class="rounded-lg px-3 py-2 text-zinc-700 hover:bg-zinc-100 dark:text-zinc-200 dark:hover:bg-zinc-900">
-        SaaS Templates (3)
-      </a>
-      <a href="/themes" class="flex items-center justify-between rounded-lg px-3 py-2 text-zinc-700 hover:bg-zinc-100 dark:text-zinc-200 dark:hover:bg-zinc-900">
-        <span>Themes Studio</span>
-        <span class="rounded bg-blue-100 px-1.5 py-0.5 text-[9px] font-semibold text-blue-700 dark:bg-blue-500/20 dark:text-blue-300">870+</span>
+        Showcase
       </a>
       <a href="/blog" class="rounded-lg px-3 py-2 text-zinc-700 hover:bg-zinc-100 dark:text-zinc-200 dark:hover:bg-zinc-900">
         Blog
@@ -187,10 +123,10 @@ const pathname = Astro.url.pathname
           rel="noreferrer"
           class="flex-1 inline-flex h-8 items-center justify-center gap-1.5 rounded-xl border border-zinc-200 bg-zinc-50 text-xs font-medium text-zinc-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200"
         >
-          GitHub Repository
+          GitHub
         </a>
         <a
-          href="/components/avatar"
+          href="/docs/introduction"
           class="flex-1 inline-flex h-8 items-center justify-center rounded-xl bg-blue-600 text-xs font-medium text-white"
         >
           Get Started
