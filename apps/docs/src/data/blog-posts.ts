@@ -2,7 +2,6 @@ export interface BlogPost {
   slug: string
   title: string
   date: string
-  readTime: string
   tag: string
   excerpt: string
   author: string
@@ -13,53 +12,9 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
-    slug: "announcing-v0-0-6-cli-parity",
-    title: "Announcing Ethereal UI v0.0.6: CLI Parity, 870+ Theme Generator & Modern Navbars",
-    date: "November 15, 2026",
-    readTime: "3 min read",
-    tag: "Release",
-    author: "Saeful Rohman",
-    role: "Creator of Ethereal UI",
-    authorAvatar: "SR",
-    excerpt:
-      "Version 0.0.6 brings automated CLI installations with npx @etherealui/cli@latest, responsive theme switching across 870+ themes, and a clutter-free navbar architecture.",
-    content: `
-## What's New in v0.0.6
-
-We are thrilled to roll out **Ethereal UI v0.0.6**! This release focuses on developer experience, CLI precision, and eliminating UI redundancy across our documentation and application shells.
-
-### 1. Direct CLI Parity & Instant Component Installation
-Every primitive, statistical chart, and enterprise block can now be installed directly into your Next.js, Vite, or Astro projects with a single command:
-
-\`\`\`bash
-npx @etherealui/cli@latest add button
-npx @etherealui/cli@latest add data-table
-npx @etherealui/cli@latest add executive-analytics
-\`\`\`
-
-The CLI automatically parses your local Tailwind config, installs dependencies (like Radix UI primitives and Lucide icons), and places clean, zero-runtime TypeScript code into your \`components/ui/\` folder.
-
-### 2. Streamlined Navigation: Docs, Showcase & Blog
-Based on developer feedback, we removed redundant top navbar links that duplicated the sidebar. Both our landing page and documentation now focus strictly on:
-- **Docs**: Comprehensive API references, copy-paste guides, and theme tokens.
-- **Showcase**: Open-source SaaS & enterprise application templates (HRIS, Warehouse, Analytics, CRM).
-- **Blog**: Engineering deep dives and architecture release logs.
-
-### 3. Unified Copy Experience
-No more unexpected blank pages when trying to copy component code. Our new interactive dropdown gives you three immediate actions:
-- **Copy Code**: Copies the full React TSX component preview directly to your clipboard.
-- **Copy CLI Command**: Prepares the exact \`npx\` installation command.
-- **View Registry JSON**: Opens the verified registry manifest schema in a new tab.
-
-### 4. 870+ Themes with Instant Mode Switching
-The top navigation now hosts our single canonical \`ThemeToggle\` component. On desktop, tablet, and mobile screens, developers can switch between curated palettes—including **MX-Brutalist**, **Claude+**, **Nord**, **Vesper**, **Catppuccin Mocha**, and **Rose Pine**—with zero layout shift and automatic dark mode persistence.
-`,
-  },
-  {
     slug: "introducing-ethereal-ui-v1",
     title: "Introducing Ethereal UI: 37+ Components & 10 Free Dashboard Blocks",
     date: "November 6, 2026",
-    readTime: "5 min read",
     tag: "Release",
     author: "Saeful Rohman",
     role: "Creator of Ethereal UI",
@@ -107,7 +62,6 @@ Explore our interactive [Docs](/docs/introduction) and [Showcase](/templates) to
     slug: "tailwind-v4-semantic-tokens",
     title: "Zero-Config Light & Dark Mode with Tailwind CSS v4 Semantic Tokens",
     date: "November 2, 2026",
-    readTime: "4 min read",
     tag: "Architecture",
     author: "Saeful Rohman",
     role: "Creator of Ethereal UI",
@@ -159,7 +113,6 @@ By binding sidebar tokens (\`--sidebar\`, \`--sidebar-accent\`, \`--sidebar-fore
     slug: "accessible-data-tables-radix",
     title: "Designing High-Density SaaS Data Tables with Slide-Over Drawers",
     date: "October 26, 2026",
-    readTime: "6 min read",
     tag: "Engineering",
     author: "Saeful Rohman",
     role: "Creator of Ethereal UI",
