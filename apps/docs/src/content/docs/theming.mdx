@@ -15,6 +15,21 @@ Select any theme below or from the **Navbar Theme Dropdown** to transform the en
 
 ---
 
+> [!NOTE]
+> **Token Contrast Pairing & Community Presets (WCAG 2.1 AA Compliance)**
+>
+> Ethereal UI mencakup 870+ preset tema komunitas OKLCH. Beberapa preset kreatif (seperti *Light Green*, *Cyberpunk*, atau tema brutalist) menggunakan warna aksen terang pada mode light atau skema sekunder kontras tinggi.
+>
+> **Aturan Wajib Pasangan Token Semantik:**
+> - **Selalu pasangkan token background dengan foreground pasangannya**:
+>   - Gunakan `bg-primary` bersama `text-primary-foreground` (hindari hardcode `text-white` pada warna primary, karena preset seperti *Light Green* memiliki `--primary` hijau neon yang membutuhkan teks hitam `text-primary-foreground`).
+>   - Gunakan `bg-secondary` bersama `text-secondary-foreground`.
+>   - Gunakan `bg-muted` bersama `text-muted-foreground`.
+>   - Gunakan `bg-sidebar` bersama `text-sidebar-foreground` dan `bg-sidebar-primary` bersama `text-sidebar-primary-foreground`.
+> - **Skala Neutral Dinamis**: Skala neutral `zinc` di Ethereal UI dihitung otomatis via linear Oklab interpolation terhadap `var(--foreground)` dan `var(--background)`, menjamin rasio kontras teks minimum 4.5:1 (WCAG AA) pada semua variasi tema.
+
+---
+
 ## Dark-Mode First Philosophy
 
 Enterprise operators, SREs, and financial analysts spend hours inspecting dense telemetry grids. **Ethereal UI** is engineered specifically for low-eye-strain, high-contrast dark surfaces (`#09090b` root canvas and `#121215` elevated panels) with crisp `1px solid rgba(255, 255, 255, 0.08)` hairlines.

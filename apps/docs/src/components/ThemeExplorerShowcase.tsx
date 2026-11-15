@@ -189,15 +189,15 @@ export const ThemeExplorerShowcase: React.FC = () => {
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           {/* Active Theme Summary */}
           <div className="flex items-center gap-3.5">
-            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-blue-600 text-white shadow-xs shrink-0">
+            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-xs shrink-0">
               <Palette className="h-5 w-5" />
             </div>
             <div>
               <div className="flex flex-wrap items-center gap-2">
-                <span className="text-xs font-semibold uppercase tracking-wider text-blue-600 dark:text-blue-400">
+                <span className="text-xs font-semibold uppercase tracking-wider text-primary">
                   Active Theme Preset
                 </span>
-                <span className="rounded-full bg-zinc-100 px-2.5 py-0.5 text-[11px] font-semibold text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+                <span className="rounded-full bg-muted border border-border/70 px-2.5 py-0.5 text-[11px] font-semibold text-foreground/80">
                   {themes.length || 871} Community Themes
                 </span>
               </div>
@@ -251,7 +251,7 @@ export const ThemeExplorerShowcase: React.FC = () => {
             <button
               type="button"
               onClick={() => handleCopyCss(activeThemeObj)}
-              className="inline-flex h-9 items-center gap-2 rounded-xl bg-blue-600 px-4 text-xs font-semibold text-white shadow-xs transition-opacity hover:opacity-95 cursor-pointer"
+              className="inline-flex h-9 items-center gap-2 rounded-xl bg-primary px-4 text-xs font-semibold text-primary-foreground shadow-xs transition-opacity hover:opacity-90 cursor-pointer"
             >
               {copiedId === activeThemeObj.id ? (
                 <>
@@ -336,8 +336,8 @@ export const ThemeExplorerShowcase: React.FC = () => {
                   }}
                   className={`shrink-0 rounded-lg px-2.5 py-1 text-xs font-medium capitalize transition-colors cursor-pointer ${
                     active
-                      ? "bg-blue-600 text-white"
-                      : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200/80 dark:bg-zinc-800/80 dark:text-zinc-400 dark:hover:bg-zinc-800"
+                      ? "bg-primary text-primary-foreground font-semibold shadow-xs"
+                      : "bg-muted text-muted-foreground border border-border/60 hover:bg-muted/80 hover:text-foreground"
                   }`}
                 >
                   {tag}
@@ -484,7 +484,7 @@ export const ThemeExplorerShowcase: React.FC = () => {
                       </div>
                     </div>
                     {activeFileName === "default" && (
-                      <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-blue-600 text-white">
+                      <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-xs">
                         <Check className="h-3.5 w-3.5" />
                       </span>
                     )}
@@ -675,7 +675,7 @@ export const ThemeExplorerShowcase: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => handleCopyCss(inspectingTheme)}
-                  className="inline-flex h-8 items-center gap-1.5 rounded-xl bg-blue-600 px-3.5 text-xs font-semibold text-white cursor-pointer"
+                  className="inline-flex h-8 items-center gap-1.5 rounded-xl bg-primary px-3.5 text-xs font-semibold text-primary-foreground cursor-pointer shadow-xs"
                 >
                   {copiedId === inspectingTheme.id ? (
                     <>

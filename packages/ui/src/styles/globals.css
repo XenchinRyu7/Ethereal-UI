@@ -231,15 +231,15 @@ html[data-color-theme]:not([data-color-theme="default"]) {
 }
 
 html[data-color-theme]:not([data-color-theme="default"]):not(.dark) {
-  --color-zinc-50: color-mix(in oklab, var(--muted) 65%, var(--background));
-  --color-zinc-100: var(--secondary);
-  --color-zinc-200: var(--border);
-  --color-zinc-300: var(--input);
-  --color-zinc-400: color-mix(in oklab, var(--muted-foreground) 72%, var(--background));
+  --color-zinc-50: color-mix(in oklab, var(--foreground) 3%, var(--background));
+  --color-zinc-100: color-mix(in oklab, var(--foreground) 6%, var(--background));
+  --color-zinc-200: color-mix(in oklab, var(--foreground) 12%, var(--background));
+  --color-zinc-300: color-mix(in oklab, var(--foreground) 20%, var(--background));
+  --color-zinc-400: color-mix(in oklab, var(--foreground) 40%, var(--background));
   --color-zinc-500: var(--muted-foreground);
-  --color-zinc-600: color-mix(in oklab, var(--foreground) 72%, var(--muted-foreground));
-  --color-zinc-700: color-mix(in oklab, var(--foreground) 85%, var(--background));
-  --color-zinc-800: color-mix(in oklab, var(--foreground) 92%, var(--background));
+  --color-zinc-600: color-mix(in oklab, var(--foreground) 70%, var(--background));
+  --color-zinc-700: color-mix(in oklab, var(--foreground) 82%, var(--background));
+  --color-zinc-800: color-mix(in oklab, var(--foreground) 90%, var(--background));
   --color-zinc-900: var(--foreground);
   --color-zinc-950: var(--foreground);
 }
@@ -256,13 +256,13 @@ html[data-color-theme]:not([data-color-theme="default"]):not(.dark) .bg-white\/9
 html.dark[data-color-theme]:not([data-color-theme="default"]) {
   --color-zinc-950: var(--background);
   --color-zinc-900: var(--card);
-  --color-zinc-800: var(--border);
-  --color-zinc-700: var(--input);
-  --color-zinc-600: color-mix(in oklab, var(--muted-foreground) 65%, var(--background));
+  --color-zinc-800: color-mix(in oklab, var(--foreground) 12%, var(--background));
+  --color-zinc-700: color-mix(in oklab, var(--foreground) 20%, var(--background));
+  --color-zinc-600: color-mix(in oklab, var(--foreground) 40%, var(--background));
   --color-zinc-500: var(--muted-foreground);
-  --color-zinc-400: var(--muted-foreground);
-  --color-zinc-300: color-mix(in oklab, var(--foreground) 82%, var(--background));
-  --color-zinc-200: color-mix(in oklab, var(--foreground) 92%, var(--background));
+  --color-zinc-400: color-mix(in oklab, var(--foreground) 65%, var(--background));
+  --color-zinc-300: color-mix(in oklab, var(--foreground) 80%, var(--background));
+  --color-zinc-200: color-mix(in oklab, var(--foreground) 90%, var(--background));
   --color-zinc-100: var(--foreground);
   --color-zinc-50: var(--foreground);
 }
