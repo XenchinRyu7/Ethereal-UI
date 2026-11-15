@@ -1509,7 +1509,17 @@ export const PreviewCanvas: React.FC<PreviewBoxProps & { title?: string; descrip
 
       {/* Main Rounded Preview / Code Box */}
       {tab === "preview" ? (
-        <div className="flex min-h-[240px] sm:min-h-[260px] w-full items-center justify-center rounded-2xl border border-border bg-card/60 p-3.5 sm:p-8 overflow-x-auto shadow-2xs">
+        <div
+          className={cn(
+            "w-full rounded-2xl border border-border bg-card/60 overflow-hidden shadow-2xs",
+            slug === "executive-analytics" ||
+              slug === "control-tower" ||
+              slug === "workspace-settings" ||
+              slug.startsWith("template")
+              ? "p-0"
+              : "flex min-h-[240px] sm:min-h-[260px] items-center justify-center p-3.5 sm:p-8 overflow-x-auto"
+          )}
+        >
           <LiveDemoRenderer slug={slug} sectionId={sectionId} />
         </div>
       ) : (

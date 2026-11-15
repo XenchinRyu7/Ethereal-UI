@@ -15,6 +15,7 @@ import {
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "../primitives/tabs"
 import { Badge } from "../primitives/badge"
 import { Button } from "../primitives/button"
+import { CommandPalette } from "../primitives/command-palette"
 
 export const WorkspaceSettingsTemplate: React.FC<{ className?: string }> = ({
   className,
@@ -22,25 +23,42 @@ export const WorkspaceSettingsTemplate: React.FC<{ className?: string }> = ({
   const [copiedKey, setCopiedKey] = React.useState<string | null>(null)
   const [revealSecret, setRevealSecret] = React.useState(false)
   const [mobileNavOpen, setMobileNavOpen] = React.useState(false)
+  const [activeNav, setActiveNav] = React.useState("settings")
+  const [cmdOpen, setCmdOpen] = React.useState(false)
+  const [createdKeyAlert, setCreatedKeyAlert] = React.useState(false)
 
-  const apiKeys = [
+  const [keysList, setKeysList] = React.useState([
     {
       id: "key-prod",
       name: "Production API Key",
-      token: revealSecret
-        ? "sk_live_99482a7f10c3e81140b29d"
-        : "sk_live_••••••••••••••••••••9d",
+      token: "sk_live_99482a7f10c3e81140b29d",
       scope: "Read & Write",
       lastUsed: "2 minutes ago",
     },
     {
       id: "key-ci",
       name: "CI/CD Deployment Token",
-      token: "sk_ci_••••••••••••••••••••4a",
+      token: "sk_ci_4892bbfa7104e1295c4a",
       scope: "Read-only",
       lastUsed: "3 hours ago",
     },
-  ]
+  ])
+
+  const handleCreateKey = () => {
+    const newId = `key-${Date.now().toString().slice(-4)}`
+    setKeysList((prev) => [
+      ...prev,
+      {
+        id: newId,
+        name: `Development API Key #${prev.length + 1}`,
+        token: `sk_dev_${Math.random().toString(36).substring(2, 15)}`,
+        scope: "Read & Write",
+        lastUsed: "Just now",
+      },
+    ])
+    setCreatedKeyAlert(true)
+    setTimeout(() => setCreatedKeyAlert(false), 2500)
+  }
 
   return (
     <div
@@ -49,7 +67,17 @@ export const WorkspaceSettingsTemplate: React.FC<{ className?: string }> = ({
         className
       )}
     >
-      <SidebarShell activeId="settings" className="hidden md:flex" />
+      <CommandPalette
+        open={cmdOpen}
+        onOpenChange={setCmdOpen}
+        enableGlobalShortcut={false}
+      />
+
+      <SidebarShell
+        activeId={activeNav}
+        onSelect={setActiveNav}
+        className="hidden md:flex"
+      />
 
       {mobileNavOpen && (
         <div className="absolute inset-0 z-30 flex md:hidden">
@@ -59,14 +87,18 @@ export const WorkspaceSettingsTemplate: React.FC<{ className?: string }> = ({
           />
           <div className="relative z-10 flex h-full">
             <SidebarShell
-              activeId="settings"
+              activeId={activeNav}
+              onSelect={(id) => {
+                setActiveNav(id)
+                setMobileNavOpen(false)
+              }}
               className="h-full bg-white dark:bg-zinc-900 shadow-xl"
             />
             <button
               type="button"
               onClick={() => setMobileNavOpen(false)}
               aria-label="Close sidebar"
-              className="m-2 flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-900/80 text-white"
+              className="m-2 flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-900/80 text-white cursor-pointer"
             >
               <X className="h-4 w-4" />
             </button>
@@ -77,6 +109,7 @@ export const WorkspaceSettingsTemplate: React.FC<{ className?: string }> = ({
       <div className="flex flex-1 flex-col min-w-0">
         <HeaderNavbar
           breadcrumbs={["Workspace", "Settings", "General"]}
+          onOpenCommandPalette={() => setCmdOpen(true)}
           onToggleMobileMenu={() => setMobileNavOpen(true)}
         />
 
@@ -144,18 +177,28 @@ export const WorkspaceSettingsTemplate: React.FC<{ className?: string }> = ({
                       )}
                       {revealSecret ? "Hide" : "Reveal"}
                     </Button>
-                    <Button variant="primary" size="sm">
+                    <Button
+                      variant="primary"
+                      size="sm"
+                      onClick={handleCreateKey}
+                    >
                       <Plus className="h-3.5 w-3.5" />
                       Create key
                     </Button>
                   </div>
                 </div>
 
+                {createdKeyAlert && (
+                  <div className="rounded-lg bg-emerald-50 border border-emerald-200 p-2.5 text-xs text-emerald-800 dark:bg-emerald-950/40 dark:border-emerald-800 dark:text-emerald-300">
+                    ✓ New API Key generated successfully!
+                  </div>
+                )}
+
                 <div className="divide-y divide-zinc-200 rounded-xl border border-zinc-200 dark:divide-zinc-800 dark:border-zinc-800">
-                  {apiKeys.map((k) => (
+                  {keysList.map((k) => (
                     <div
                       key={k.id}
-                      className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between p-4"
+                      className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between p-4 hover:bg-zinc-50/50 dark:hover:bg-zinc-800/40 transition-colors"
                     >
                       <div className="space-y-1">
                         <div className="flex items-center gap-2">
@@ -165,7 +208,9 @@ export const WorkspaceSettingsTemplate: React.FC<{ className?: string }> = ({
                           <Badge variant="default">{k.scope}</Badge>
                         </div>
                         <p className="font-mono text-xs text-zinc-500 dark:text-zinc-400">
-                          {k.token}
+                          {revealSecret
+                            ? k.token
+                            : `${k.token.slice(0, 8)}••••••••••••••••${k.token.slice(-4)}`}
                         </p>
                       </div>
                       <div className="flex items-center gap-3">

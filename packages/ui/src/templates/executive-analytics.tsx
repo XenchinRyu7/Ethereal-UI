@@ -1,5 +1,5 @@
 import * as React from "react"
-import { ArrowUpRight, RefreshCw, X } from "lucide-react"
+import { ArrowUpRight, RefreshCw, X, BarChart3, Activity } from "lucide-react"
 import { cn } from "../utils/cn"
 import {
   SidebarShell,
@@ -11,6 +11,14 @@ import { Badge } from "../primitives/badge"
 import { Button, ToggleGroup } from "../primitives/button"
 import { Avatar } from "../primitives/avatar"
 import { CommandPalette } from "../primitives/command-palette"
+import { AreaStatisticChart } from "../primitives/chart"
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "../primitives/dialog"
 
 const chartSeriesData: Record<
   string,
@@ -92,9 +100,20 @@ export const ExecutiveAnalyticsTemplate: React.FC<{ className?: string }> = ({
   className,
 }) => {
   const [range, setRange] = React.useState("30d")
+  const [chartType, setChartType] = React.useState<"bar" | "area">("bar")
   const [cmdOpen, setCmdOpen] = React.useState(false)
   const [mobileNavOpen, setMobileNavOpen] = React.useState(false)
+  const [activeNav, setActiveNav] = React.useState("overview")
+  const [isRefreshing, setIsRefreshing] = React.useState(false)
+  const [viewAllOpen, setViewAllOpen] = React.useState(false)
+  const [hoveredPoint, setHoveredPoint] = React.useState<{ label: string; revenue: number; signups: number } | null>(null)
+
   const points = chartSeriesData[range] || chartSeriesData["30d"]
+
+  const handleRefresh = () => {
+    setIsRefreshing(true)
+    setTimeout(() => setIsRefreshing(false), 900)
+  }
 
   return (
     <div
@@ -109,7 +128,76 @@ export const ExecutiveAnalyticsTemplate: React.FC<{ className?: string }> = ({
         enableGlobalShortcut={false}
       />
 
-      <SidebarShell activeId="overview" className="hidden md:flex" />
+      <Dialog open={viewAllOpen} onOpenChange={setViewAllOpen}>
+        <DialogContent className="max-w-xl">
+          <DialogHeader>
+            <DialogTitle>Top Customer Accounts</DialogTitle>
+            <DialogDescription>
+              Complete list of enterprise and scale accounts sorted by monthly recurring revenue.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="divide-y divide-zinc-200 dark:divide-zinc-800 max-h-96 overflow-y-auto mt-2">
+            {[
+              ...topCustomers,
+              {
+                name: "Supabase Cloud Labs",
+                domain: "supabase.com",
+                fallback: "SC",
+                mrr: "$1,620",
+                growth: "+14.8%",
+                status: "Scale",
+              },
+              {
+                name: "Vercel Frontline Inc.",
+                domain: "vercel.app",
+                fallback: "VF",
+                mrr: "$1,280",
+                growth: "+7.2%",
+                status: "Scale",
+              },
+              {
+                name: "PostHog Analytics Corp",
+                domain: "posthog.com",
+                fallback: "PH",
+                mrr: "$940",
+                growth: "+22.5%",
+                status: "Pro",
+              },
+            ].map((cust, i) => (
+              <div
+                key={cust.name}
+                className="flex items-center justify-between py-3 text-xs"
+              >
+                <div className="flex items-center gap-3">
+                  <Avatar
+                    fallback={cust.fallback}
+                    tint={i % 2 === 0 ? "blue" : "neutral"}
+                    size="sm"
+                  />
+                  <div>
+                    <p className="font-medium text-zinc-900 dark:text-zinc-100">
+                      {cust.name}
+                    </p>
+                    <p className="text-[11px] text-zinc-400">{cust.domain}</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Badge variant="default">{cust.status}</Badge>
+                  <span className="font-semibold text-zinc-900 dark:text-zinc-100">
+                    {cust.mrr}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      <SidebarShell
+        activeId={activeNav}
+        onSelect={setActiveNav}
+        className="hidden md:flex"
+      />
 
       {mobileNavOpen && (
         <div className="absolute inset-0 z-30 flex md:hidden">
@@ -119,14 +207,18 @@ export const ExecutiveAnalyticsTemplate: React.FC<{ className?: string }> = ({
           />
           <div className="relative z-10 flex h-full">
             <SidebarShell
-              activeId="overview"
+              activeId={activeNav}
+              onSelect={(id) => {
+                setActiveNav(id)
+                setMobileNavOpen(false)
+              }}
               className="h-full bg-white dark:bg-zinc-900 shadow-xl"
             />
             <button
               type="button"
               onClick={() => setMobileNavOpen(false)}
               aria-label="Close sidebar"
-              className="m-2 flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-900/80 text-white"
+              className="m-2 flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-900/80 text-white cursor-pointer"
             >
               <X className="h-4 w-4" />
             </button>
@@ -164,39 +256,74 @@ export const ExecutiveAnalyticsTemplate: React.FC<{ className?: string }> = ({
                   </p>
                 </div>
 
-                <ToggleGroup
-                  size="sm"
-                  value={range}
-                  onValueChange={setRange}
-                  items={[
-                    { value: "7d", label: "7d" },
-                    { value: "30d", label: "30d" },
-                  ]}
-                />
+                <div className="flex flex-wrap items-center gap-2">
+                  <ToggleGroup
+                    size="sm"
+                    value={chartType}
+                    onValueChange={(val) => setChartType(val as "bar" | "area")}
+                    items={[
+                      { value: "bar", label: "Bar", icon: <BarChart3 className="h-3 w-3" /> },
+                      { value: "area", label: "Area", icon: <Activity className="h-3 w-3" /> },
+                    ]}
+                  />
+
+                  <ToggleGroup
+                    size="sm"
+                    value={range}
+                    onValueChange={setRange}
+                    items={[
+                      { value: "7d", label: "7d" },
+                      { value: "30d", label: "30d" },
+                    ]}
+                  />
+                </div>
               </div>
 
-              <div className="mt-6 grid grid-cols-8 items-end gap-3 h-48 pt-4 px-2">
-                {points.map((pt) => (
-                  <div
-                    key={pt.label}
-                    className="group flex flex-col items-center gap-2 h-full justify-end"
-                  >
-                    <div className="w-full flex items-end justify-center gap-1.5 h-full">
-                      <div
-                        style={{ height: `${pt.revenue}%` }}
-                        className="w-full max-w-[18px] rounded-t-md bg-blue-600 transition-all duration-300 group-hover:bg-blue-500"
-                      />
-                      <div
-                        style={{ height: `${pt.signups}%` }}
-                        className="w-full max-w-[14px] rounded-t-md bg-zinc-200 transition-all duration-300 dark:bg-zinc-700"
-                      />
+              {chartType === "area" ? (
+                <div className="pt-4">
+                  <AreaStatisticChart
+                    title=""
+                    subtitle=""
+                    value={range === "7d" ? "$28,400" : "$128,430"}
+                    change={range === "7d" ? "+9.8%" : "+14.2%"}
+                    className="border-0 p-0 shadow-none bg-transparent"
+                  />
+                </div>
+              ) : (
+                <div className="mt-6 flex flex-col justify-end h-56 pt-4 px-2">
+                  {hoveredPoint && (
+                    <div className="mb-2 self-center rounded-lg border border-zinc-200 bg-zinc-50 px-2.5 py-1 text-xs text-zinc-700 shadow-2xs dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200">
+                      <span className="font-semibold">{hoveredPoint.label}:</span>{" "}
+                      <span className="text-blue-600 dark:text-blue-400 font-bold">${hoveredPoint.revenue * 1400}</span> (Rev) •{" "}
+                      <span className="text-zinc-500">{hoveredPoint.signups * 42}</span> Signups
                     </div>
-                    <span className="text-[10px] text-zinc-400">
-                      {pt.label}
-                    </span>
+                  )}
+                  <div className="grid grid-cols-8 items-end gap-3 h-44">
+                    {points.map((pt) => (
+                      <div
+                        key={pt.label}
+                        onMouseEnter={() => setHoveredPoint(pt)}
+                        onMouseLeave={() => setHoveredPoint(null)}
+                        className="group flex flex-col items-center gap-2 h-full justify-end cursor-pointer"
+                      >
+                        <div className="w-full flex items-end justify-center gap-1.5 h-full">
+                          <div
+                            style={{ height: `${pt.revenue}%` }}
+                            className="w-full max-w-[18px] rounded-t-md bg-blue-600 transition-all duration-300 group-hover:bg-blue-500 group-hover:scale-y-105"
+                          />
+                          <div
+                            style={{ height: `${pt.signups}%` }}
+                            className="w-full max-w-[14px] rounded-t-md bg-zinc-200 transition-all duration-300 dark:bg-zinc-700 group-hover:bg-zinc-300 dark:group-hover:bg-zinc-600"
+                          />
+                        </div>
+                        <span className="text-[10px] text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-100 transition-colors">
+                          {pt.label}
+                        </span>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
+                </div>
+              )}
             </div>
 
             <div className="space-y-4">
@@ -207,7 +334,14 @@ export const ExecutiveAnalyticsTemplate: React.FC<{ className?: string }> = ({
                   <h3 className="text-xs font-semibold text-zinc-700 dark:text-zinc-300">
                     Recent Activity
                   </h3>
-                  <RefreshCw className="h-3.5 w-3.5 text-zinc-400" />
+                  <button
+                    type="button"
+                    onClick={handleRefresh}
+                    title="Refresh Activity"
+                    className="p-1 rounded-md text-zinc-400 hover:text-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 dark:hover:text-zinc-200 cursor-pointer"
+                  >
+                    <RefreshCw className={cn("h-3.5 w-3.5", isRefreshing && "animate-spin text-blue-600")} />
+                  </button>
                 </div>
 
                 <div className="space-y-3.5">
@@ -251,7 +385,11 @@ export const ExecutiveAnalyticsTemplate: React.FC<{ className?: string }> = ({
                   Sorted by monthly recurring revenue
                 </p>
               </div>
-              <Button variant="outline" size="sm">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setViewAllOpen(true)}
+              >
                 View all
                 <ArrowUpRight className="h-3.5 w-3.5" />
               </Button>
@@ -260,7 +398,8 @@ export const ExecutiveAnalyticsTemplate: React.FC<{ className?: string }> = ({
               {topCustomers.map((cust, i) => (
                 <div
                   key={cust.name}
-                  className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between px-5 py-3 text-xs"
+                  onClick={() => setViewAllOpen(true)}
+                  className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between px-5 py-3 text-xs hover:bg-zinc-50 dark:hover:bg-zinc-800/40 transition-colors cursor-pointer"
                 >
                   <div className="flex items-center gap-3">
                     <Avatar

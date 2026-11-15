@@ -8,11 +8,16 @@ import {
 } from "../blocks/app-shell"
 import { AdvancedFilterBar } from "../blocks/filter-bar"
 import { EnterpriseDataTable } from "../blocks/data-table"
+import { CommandPalette } from "../primitives/command-palette"
 
 export const ControlTowerTemplate: React.FC<{ className?: string }> = ({
   className,
 }) => {
   const [mobileNavOpen, setMobileNavOpen] = React.useState(false)
+  const [activeNav, setActiveNav] = React.useState("customers")
+  const [viewMode, setViewMode] = React.useState<"table" | "grid">("table")
+  const [searchQuery, setSearchQuery] = React.useState("")
+  const [cmdOpen, setCmdOpen] = React.useState(false)
 
   return (
     <div
@@ -21,7 +26,17 @@ export const ControlTowerTemplate: React.FC<{ className?: string }> = ({
         className
       )}
     >
-      <SidebarShell activeId="customers" className="hidden md:flex" />
+      <CommandPalette
+        open={cmdOpen}
+        onOpenChange={setCmdOpen}
+        enableGlobalShortcut={false}
+      />
+
+      <SidebarShell
+        activeId={activeNav}
+        onSelect={setActiveNav}
+        className="hidden md:flex"
+      />
 
       {mobileNavOpen && (
         <div className="absolute inset-0 z-30 flex md:hidden">
@@ -31,14 +46,18 @@ export const ControlTowerTemplate: React.FC<{ className?: string }> = ({
           />
           <div className="relative z-10 flex h-full">
             <SidebarShell
-              activeId="customers"
+              activeId={activeNav}
+              onSelect={(id) => {
+                setActiveNav(id)
+                setMobileNavOpen(false)
+              }}
               className="h-full bg-white dark:bg-zinc-900 shadow-xl"
             />
             <button
               type="button"
               onClick={() => setMobileNavOpen(false)}
               aria-label="Close sidebar"
-              className="m-2 flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-900/80 text-white"
+              className="m-2 flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-900/80 text-white cursor-pointer"
             >
               <X className="h-4 w-4" />
             </button>
@@ -48,19 +67,29 @@ export const ControlTowerTemplate: React.FC<{ className?: string }> = ({
 
       <div className="flex flex-1 flex-col min-w-0">
         <HeaderNavbar
-          breadcrumbs={["Workspace", "Customers", "Directory"]}
+          breadcrumbs={["Workspace", "Customers", viewMode === "grid" ? "Grid View" : "Directory"]}
+          onOpenCommandPalette={() => setCmdOpen(true)}
           onToggleMobileMenu={() => setMobileNavOpen(true)}
         />
 
         <main className="flex-1 space-y-4 sm:space-y-5 overflow-y-auto p-3.5 sm:p-6">
           <PageHeaderBar
             title="Customer Directory"
-            subtitle="Search, filter, and inspect customer subscriptions. Click any row to open the details drawer."
+            subtitle="Search, filter, and inspect customer subscriptions. Click any row or card to open the details drawer."
           />
 
-          <AdvancedFilterBar />
+          <AdvancedFilterBar
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+            viewMode={viewMode}
+            onViewModeChange={setViewMode}
+          />
 
-          <EnterpriseDataTable />
+          <EnterpriseDataTable
+            viewMode={viewMode}
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+          />
         </main>
       </div>
     </div>

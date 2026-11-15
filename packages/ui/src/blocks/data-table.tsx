@@ -116,27 +116,40 @@ const statusBadgeVariant: Record<
 
 export interface EnterpriseDataTableProps {
   data?: EnterpriseRowData[]
+  viewMode?: "table" | "grid"
+  searchQuery?: string
+  onSearchChange?: (q: string) => void
   className?: string
 }
 
 export const EnterpriseDataTable: React.FC<EnterpriseDataTableProps> = ({
   data = defaultRows,
+  viewMode = "table",
+  searchQuery,
+  onSearchChange,
   className,
 }) => {
   const [rows, setRows] = React.useState<EnterpriseRowData[]>(data)
-  const [search, setSearch] = React.useState("")
+  const [internalSearch, setInternalSearch] = React.useState("")
   const [statusFilter, setStatusFilter] = React.useState<string>("all")
   const [sortAsc, setSortAsc] = React.useState(false)
   const [selectedIds, setSelectedIds] = React.useState<Record<string, boolean>>({})
   const [inspectedRow, setInspectedRow] = React.useState<EnterpriseRowData | null>(null)
   const [showPlanCol, setShowPlanCol] = React.useState(true)
 
+  const activeSearch = searchQuery !== undefined ? searchQuery : internalSearch
+
+  const handleSearchChange = (val: string) => {
+    setInternalSearch(val)
+    onSearchChange?.(val)
+  }
+
   const filteredRows = React.useMemo(() => {
     return rows
       .filter((r) => {
         if (statusFilter !== "all" && r.status !== statusFilter) return false
-        if (!search.trim()) return true
-        const q = search.toLowerCase()
+        if (!activeSearch.trim()) return true
+        const q = activeSearch.toLowerCase()
         return (
           r.customer.toLowerCase().includes(q) ||
           r.email.toLowerCase().includes(q) ||
@@ -147,7 +160,7 @@ export const EnterpriseDataTable: React.FC<EnterpriseDataTableProps> = ({
       .sort((a, b) =>
         sortAsc ? a.mrrAmount - b.mrrAmount : b.mrrAmount - a.mrrAmount
       )
-  }, [rows, search, statusFilter, sortAsc])
+  }, [rows, activeSearch, statusFilter, sortAsc])
 
   const selectedCount = Object.values(selectedIds).filter(Boolean).length
 
@@ -162,8 +175,8 @@ export const EnterpriseDataTable: React.FC<EnterpriseDataTableProps> = ({
       <div className="flex flex-col gap-3 border-b border-zinc-200 p-4 lg:flex-row lg:items-center lg:justify-between dark:border-zinc-800">
         <div className="flex flex-wrap items-center gap-2.5">
           <Input
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            value={activeSearch}
+            onChange={(e) => handleSearchChange(e.target.value)}
             placeholder="Filter customers..."
             leftIcon={<Search className="h-3.5 w-3.5" />}
             className="w-full sm:w-64"
@@ -207,167 +220,270 @@ export const EnterpriseDataTable: React.FC<EnterpriseDataTableProps> = ({
         </div>
       </div>
 
-      {/* Table */}
-      <div className="overflow-x-auto">
-        <table className="w-full border-collapse text-left text-xs">
-          <thead>
-            <tr className="border-b border-zinc-200 bg-zinc-50/70 text-[11px] font-medium text-zinc-500 dark:border-zinc-800 dark:bg-zinc-950/40 dark:text-zinc-400">
-              <th className="w-10 px-4 py-3">
-                <Checkbox
-                  checked={
-                    filteredRows.length > 0 &&
-                    filteredRows.every((r) => selectedIds[r.id])
-                  }
-                  onCheckedChange={(checked) => {
-                    const next: Record<string, boolean> = {}
-                    if (checked) {
-                      filteredRows.forEach((r) => {
-                        next[r.id] = true
-                      })
-                    }
-                    setSelectedIds(next)
-                  }}
-                />
-              </th>
-              <th className="px-4 py-3">Customer</th>
-              {showPlanCol && <th className="px-4 py-3">Plan</th>}
-              <th className="px-4 py-3">Status</th>
-              <th className="px-4 py-3">
-                <button
-                  type="button"
-                  onClick={() => setSortAsc(!sortAsc)}
-                  className="inline-flex items-center gap-1 text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white cursor-pointer"
+      {/* Grid or Table Body */}
+      {viewMode === "grid" ? (
+        <div className="grid grid-cols-1 gap-4 p-4 sm:grid-cols-2 lg:grid-cols-3">
+          {filteredRows.length === 0 ? (
+            <div className="col-span-full py-12 text-center text-xs text-zinc-400">
+              No customers match your filter criteria.
+            </div>
+          ) : (
+            filteredRows.map((row, idx) => {
+              const badgeInfo = statusBadgeVariant[row.status]
+              const isSelected = Boolean(selectedIds[row.id])
+              return (
+                <div
+                  key={row.id}
+                  onClick={() => setInspectedRow(row)}
+                  className={cn(
+                    "group relative flex flex-col justify-between rounded-xl border border-zinc-200 bg-white p-4 shadow-2xs transition-all hover:border-zinc-300 hover:shadow-xs dark:border-zinc-800 dark:bg-zinc-900/90 dark:hover:border-zinc-700 cursor-pointer",
+                    isSelected && "ring-2 ring-primary/40 border-primary"
+                  )}
                 >
-                  MRR
-                  <ArrowUpDown className="h-3 w-3 text-zinc-400" />
-                </button>
-              </th>
-              <th className="px-4 py-3">Seat Utilization</th>
-              <th className="px-4 py-3">Updated</th>
-              <th className="px-4 py-3 text-right">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800">
-            {filteredRows.length === 0 ? (
-              <tr>
-                <td
-                  colSpan={8}
-                  className="py-12 text-center text-xs text-zinc-400"
-                >
-                  No customers match your filter criteria.
-                </td>
-              </tr>
-            ) : (
-              filteredRows.map((row, idx) => {
-                const badgeInfo = statusBadgeVariant[row.status]
-                return (
-                  <tr
-                    key={row.id}
-                    onClick={() => setInspectedRow(row)}
-                    className="group transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800/40 cursor-pointer"
-                  >
-                    <td
-                      className="px-4 py-3"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <Checkbox
-                        checked={Boolean(selectedIds[row.id])}
-                        onCheckedChange={(checked) =>
-                          setSelectedIds((prev) => ({
-                            ...prev,
-                            [row.id]: Boolean(checked),
-                          }))
-                        }
-                      />
-                    </td>
-                    <td className="px-4 py-3">
-                      <div className="flex items-center gap-2.5">
+                  <div className="space-y-3">
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="flex items-center gap-2.5 min-w-0">
                         <Avatar
                           fallback={row.customer.slice(0, 2)}
                           tint={idx % 2 === 0 ? "blue" : "neutral"}
                           size="sm"
                         />
-                        <div>
-                          <div className="font-medium text-zinc-900 dark:text-zinc-100">
+                        <div className="min-w-0">
+                          <h4 className="truncate text-xs font-semibold text-zinc-900 dark:text-zinc-100">
                             {row.customer}
-                          </div>
-                          <div className="text-[11px] text-zinc-500">
+                          </h4>
+                          <p className="truncate text-[11px] text-zinc-500">
                             {row.email}
-                          </div>
+                          </p>
                         </div>
                       </div>
-                    </td>
-                    {showPlanCol && (
-                      <td className="px-4 py-3 text-zinc-600 dark:text-zinc-300">
-                        {row.plan}
-                      </td>
-                    )}
-                    <td className="px-4 py-3">
-                      <Badge variant={badgeInfo.variant} dot>
+                      <div
+                        onClick={(e) => e.stopPropagation()}
+                        className="flex items-center gap-1.5 shrink-0"
+                      >
+                        <Checkbox
+                          checked={isSelected}
+                          onCheckedChange={(checked) =>
+                            setSelectedIds((prev) => ({
+                              ...prev,
+                              [row.id]: Boolean(checked),
+                            }))
+                          }
+                        />
+                      </div>
+                    </div>
+
+                    <div className="flex flex-wrap items-center gap-2 pt-0.5">
+                      <Badge variant={badgeInfo.variant} dot className="text-[10px]">
                         {badgeInfo.label}
                       </Badge>
-                    </td>
-                    <td className="px-4 py-3 font-medium text-zinc-900 dark:text-zinc-100">
-                      {row.mrrFormatted}
-                    </td>
-                    <td className="px-4 py-3 w-36">
+                      <span className="rounded bg-zinc-100 px-1.5 py-0.5 text-[10px] font-medium text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
+                        {row.plan}
+                      </span>
+                    </div>
+
+                    <div className="space-y-1.5 pt-1">
+                      <div className="flex items-center justify-between text-[11px]">
+                        <span className="text-zinc-500">Seat Utilization</span>
+                        <span className="font-semibold text-zinc-800 dark:text-zinc-200">
+                          {row.seatUsage}%
+                        </span>
+                      </div>
                       <Progress
                         value={row.seatUsage}
                         size="sm"
                         variant={row.seatUsage > 85 ? "amber" : "blue"}
                       />
-                    </td>
-                    <td className="px-4 py-3 text-zinc-500">{row.updatedAt}</td>
-                    <td
-                      className="px-4 py-3 text-right"
-                      onClick={(e) => e.stopPropagation()}
+                    </div>
+                  </div>
+
+                  <div className="mt-4 flex items-center justify-between border-t border-zinc-100 pt-3 text-xs dark:border-zinc-800/80">
+                    <div>
+                      <span className="text-[10px] text-zinc-400">MRR</span>
+                      <p className="font-semibold text-zinc-900 dark:text-zinc-100">
+                        {row.mrrFormatted}
+                      </p>
+                    </div>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        setInspectedRow(row)
+                      }}
                     >
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <button
-                            type="button"
-                            className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200 cursor-pointer"
-                          >
-                            <MoreHorizontal className="h-4 w-4" />
-                          </button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem
-                            onSelect={() => setInspectedRow(row)}
-                          >
-                            <Eye className="h-3.5 w-3.5 text-zinc-400" />
-                            View details
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            onSelect={() =>
-                              navigator.clipboard?.writeText(row.id)
-                            }
-                          >
-                            <Copy className="h-3.5 w-3.5 text-zinc-400" />
-                            Copy customer ID
-                          </DropdownMenuItem>
-                          <DropdownMenuSeparator />
-                          <DropdownMenuItem
-                            destructive
-                            onSelect={() =>
-                              setRows((prev) =>
-                                prev.filter((item) => item.id !== row.id)
-                              )
-                            }
-                          >
-                            <Trash2 className="h-3.5 w-3.5" />
-                            Remove customer
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </td>
-                  </tr>
-                )
-              })
-            )}
-          </tbody>
-        </table>
-      </div>
+                      <Eye className="h-3 w-3 mr-1 text-zinc-400" />
+                      Inspect
+                    </Button>
+                  </div>
+                </div>
+              )
+            })
+          )}
+        </div>
+      ) : (
+        /* Table */
+        <div className="overflow-x-auto">
+          <table className="w-full border-collapse text-left text-xs">
+            <thead>
+              <tr className="border-b border-zinc-200 bg-zinc-50/70 text-[11px] font-medium text-zinc-500 dark:border-zinc-800 dark:bg-zinc-950/40 dark:text-zinc-400">
+                <th className="w-10 px-4 py-3">
+                  <Checkbox
+                    checked={
+                      filteredRows.length > 0 &&
+                      filteredRows.every((r) => selectedIds[r.id])
+                    }
+                    onCheckedChange={(checked) => {
+                      const next: Record<string, boolean> = {}
+                      if (checked) {
+                        filteredRows.forEach((r) => {
+                          next[r.id] = true
+                        })
+                      }
+                      setSelectedIds(next)
+                    }}
+                  />
+                </th>
+                <th className="px-4 py-3">Customer</th>
+                {showPlanCol && <th className="px-4 py-3">Plan</th>}
+                <th className="px-4 py-3">Status</th>
+                <th className="px-4 py-3">
+                  <button
+                    type="button"
+                    onClick={() => setSortAsc(!sortAsc)}
+                    className="inline-flex items-center gap-1 text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white cursor-pointer"
+                  >
+                    MRR
+                    <ArrowUpDown className="h-3 w-3 text-zinc-400" />
+                  </button>
+                </th>
+                <th className="px-4 py-3">Seat Utilization</th>
+                <th className="px-4 py-3">Updated</th>
+                <th className="px-4 py-3 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800">
+              {filteredRows.length === 0 ? (
+                <tr>
+                  <td
+                    colSpan={8}
+                    className="py-12 text-center text-xs text-zinc-400"
+                  >
+                    No customers match your filter criteria.
+                  </td>
+                </tr>
+              ) : (
+                filteredRows.map((row, idx) => {
+                  const badgeInfo = statusBadgeVariant[row.status]
+                  return (
+                    <tr
+                      key={row.id}
+                      onClick={() => setInspectedRow(row)}
+                      className="group transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800/40 cursor-pointer"
+                    >
+                      <td
+                        className="px-4 py-3"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <Checkbox
+                          checked={Boolean(selectedIds[row.id])}
+                          onCheckedChange={(checked) =>
+                            setSelectedIds((prev) => ({
+                              ...prev,
+                              [row.id]: Boolean(checked),
+                            }))
+                          }
+                        />
+                      </td>
+                      <td className="px-4 py-3">
+                        <div className="flex items-center gap-2.5">
+                          <Avatar
+                            fallback={row.customer.slice(0, 2)}
+                            tint={idx % 2 === 0 ? "blue" : "neutral"}
+                            size="sm"
+                          />
+                          <div>
+                            <div className="font-medium text-zinc-900 dark:text-zinc-100">
+                              {row.customer}
+                            </div>
+                            <div className="text-[11px] text-zinc-500">
+                              {row.email}
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                      {showPlanCol && (
+                        <td className="px-4 py-3 text-zinc-600 dark:text-zinc-300">
+                          {row.plan}
+                        </td>
+                      )}
+                      <td className="px-4 py-3">
+                        <Badge variant={badgeInfo.variant} dot>
+                          {badgeInfo.label}
+                        </Badge>
+                      </td>
+                      <td className="px-4 py-3 font-medium text-zinc-900 dark:text-zinc-100">
+                        {row.mrrFormatted}
+                      </td>
+                      <td className="px-4 py-3 w-36">
+                        <Progress
+                          value={row.seatUsage}
+                          size="sm"
+                          variant={row.seatUsage > 85 ? "amber" : "blue"}
+                        />
+                      </td>
+                      <td className="px-4 py-3 text-zinc-500">{row.updatedAt}</td>
+                      <td
+                        className="px-4 py-3 text-right"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <button
+                              type="button"
+                              className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200 cursor-pointer"
+                            >
+                              <MoreHorizontal className="h-4 w-4" />
+                            </button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuItem
+                              onSelect={() => setInspectedRow(row)}
+                            >
+                              <Eye className="h-3.5 w-3.5 text-zinc-400" />
+                              View details
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              onSelect={() =>
+                                navigator.clipboard?.writeText(row.id)
+                              }
+                            >
+                              <Copy className="h-3.5 w-3.5 text-zinc-400" />
+                              Copy customer ID
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem
+                              destructive
+                              onSelect={() =>
+                                setRows((prev) =>
+                                  prev.filter((item) => item.id !== row.id)
+                                )
+                              }
+                            >
+                              <Trash2 className="h-3.5 w-3.5" />
+                              Remove customer
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </td>
+                    </tr>
+                  )
+                })
+              )}
+            </tbody>
+          </table>
+        </div>
+      )}
 
       {/* Pagination Footer */}
       <div className="flex items-center justify-between border-t border-zinc-200 px-4 py-3 text-xs text-zinc-500 dark:border-zinc-800 dark:text-zinc-400">

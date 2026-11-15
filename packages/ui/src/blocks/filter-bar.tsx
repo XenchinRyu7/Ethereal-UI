@@ -15,6 +15,8 @@ export interface AdvancedFilterBarProps {
   searchQuery?: string
   onSearchChange?: (q: string) => void
   initialPills?: ActiveFilterPill[]
+  viewMode?: "table" | "grid"
+  onViewModeChange?: (mode: "table" | "grid") => void
   className?: string
 }
 
@@ -25,15 +27,31 @@ export const AdvancedFilterBar: React.FC<AdvancedFilterBarProps> = ({
     { id: "status", field: "Status", value: "Active, Trialing" },
     { id: "plan", field: "Plan", value: "Enterprise, Pro" },
   ],
+  viewMode: controlledViewMode,
+  onViewModeChange,
   className,
 }) => {
   const [query, setQuery] = React.useState(searchQuery)
   const [pills, setPills] = React.useState<ActiveFilterPill[]>(initialPills)
-  const [viewMode, setViewMode] = React.useState("table")
+  const [internalViewMode, setInternalViewMode] = React.useState<"table" | "grid">("table")
+
+  const currentViewMode = controlledViewMode ?? internalViewMode
+
+  React.useEffect(() => {
+    if (searchQuery !== undefined) {
+      setQuery(searchQuery)
+    }
+  }, [searchQuery])
 
   const handleSearch = (val: string) => {
     setQuery(val)
     onSearchChange?.(val)
+  }
+
+  const handleViewModeChange = (val: string) => {
+    const next = (val === "grid" ? "grid" : "table") as "table" | "grid"
+    setInternalViewMode(next)
+    onViewModeChange?.(next)
   }
 
   return (
@@ -73,8 +91,8 @@ export const AdvancedFilterBar: React.FC<AdvancedFilterBarProps> = ({
           <DateRangePicker />
           <ToggleGroup
             size="sm"
-            value={viewMode}
-            onValueChange={setViewMode}
+            value={currentViewMode}
+            onValueChange={handleViewModeChange}
             items={[
               {
                 value: "table",

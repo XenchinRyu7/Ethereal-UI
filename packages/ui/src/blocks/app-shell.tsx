@@ -96,7 +96,13 @@ export const SidebarShell: React.FC<SidebarShellProps> = ({
     analytics: true,
   })
 
-  const currentId = activeId !== undefined ? activeId : selectedId
+  React.useEffect(() => {
+    if (activeId !== undefined) {
+      setSelectedId(activeId)
+    }
+  }, [activeId])
+
+  const currentId = selectedId
 
   const handleSelect = (id: string) => {
     setSelectedId(id)
