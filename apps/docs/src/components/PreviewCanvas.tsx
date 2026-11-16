@@ -16,6 +16,15 @@ import {
   Alert,
   AlertTitle,
   AlertDescription,
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogFooter,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogAction,
+  AlertDialogCancel,
   Accordion,
   Announcement,
   Avatar,
@@ -42,7 +51,6 @@ import {
   DateRangePicker,
   Divider,
   Drawer,
-  DrawerTrigger,
   DrawerContent,
   DrawerHeader,
   DrawerTitle,
@@ -58,7 +66,6 @@ import {
   Textarea,
   Label,
   Dialog,
-  DialogTrigger,
   DialogContent,
   DialogHeader,
   DialogTitle,
@@ -76,14 +83,6 @@ import {
   SelectValue,
   SelectContent,
   SelectItem,
-  Sheet,
-  SheetTrigger,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetDescription,
-  SheetFooter,
-  SheetClose,
   CardSkeleton,
   Slider,
   Switch,
@@ -137,6 +136,7 @@ import {
   WorkspaceSettingsTemplate,
   cn,
   type PromptSubmitPayload,
+  type NotificationItem,
 } from "@etherealui/react"
 import type { RegistryVariantSection } from "../data/registry-catalog"
 
@@ -175,6 +175,592 @@ const ControlledPromptComposerDemo: React.FC = () => {
             Switch the AI model dropdown above or click <strong>Run Agent</strong> to inspect the callback payload received by your parent component.
           </p>
         )}
+      </div>
+    </div>
+  )
+}
+
+const InteractiveAlertDemo: React.FC = () => {
+  const [alerts, setAlerts] = React.useState<
+    Array<{
+      id: number
+      variant: "default" | "info" | "success" | "warning" | "destructive"
+      title: string
+      description: string
+    }>
+  >([
+    {
+      id: 1,
+      variant: "success",
+      title: "Live Interactive Alert",
+      description:
+        "Nice! You triggered this live alert message. Try closing it with the (X) button.",
+    },
+  ])
+
+  const addAlert = (
+    variant: "default" | "info" | "success" | "warning" | "destructive",
+    title: string,
+    description: string
+  ) => {
+    setAlerts((prev) => [
+      { id: Date.now() + Math.random(), variant, title, description },
+      ...prev,
+    ])
+  }
+
+  const removeAlert = (id: number) => {
+    setAlerts((prev) => prev.filter((a) => a.id !== id))
+  }
+
+  return (
+    <div className="w-full max-w-xl space-y-6">
+      <div className="rounded-2xl border border-border bg-card p-5 space-y-4 shadow-xs">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-border/60 pb-3">
+          <div>
+            <h4 className="text-xs font-bold uppercase tracking-wider text-foreground">
+              Live Alert Trigger Test
+            </h4>
+            <p className="text-[11px] text-muted-foreground">
+              Click any button below to spawn dynamic, dismissible alerts with real animations.
+            </p>
+          </div>
+          {alerts.length > 0 && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setAlerts([])}
+              className="text-[11px] h-7 px-2.5 self-start sm:self-auto"
+            >
+              Clear All ({alerts.length})
+            </Button>
+          )}
+        </div>
+
+        <div className="flex flex-wrap items-center gap-2">
+          <Button
+            size="sm"
+            variant="primary"
+            onClick={() =>
+              addAlert(
+                "success",
+                "Deployment Successful",
+                "Cluster worker #04 has been scaled up and passed health checks."
+              )
+            }
+          >
+            + Success Alert
+          </Button>
+          <Button
+            size="sm"
+            variant="secondary"
+            onClick={() =>
+              addAlert(
+                "info",
+                "Cache Refreshed",
+                "Edge CDN cache was invalidated and warmed for us-east region."
+              )
+            }
+          >
+            + Info Alert
+          </Button>
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() =>
+              addAlert(
+                "warning",
+                "High Resource Usage",
+                "Memory consumption reached 82% of assigned container limits."
+              )
+            }
+          >
+            + Warning Alert
+          </Button>
+          <Button
+            size="sm"
+            variant="destructive"
+            onClick={() =>
+              addAlert(
+                "destructive",
+                "Database Timeout",
+                "Replica query latency exceeded 3000ms threshold."
+              )
+            }
+          >
+            + Destructive Alert
+          </Button>
+        </div>
+
+        <div className="space-y-2.5 pt-2 min-h-[60px]">
+          {alerts.length === 0 ? (
+            <div className="rounded-xl border border-dashed border-border/80 p-5 text-center text-xs text-muted-foreground">
+              No active alerts. Click a button above to spawn a live alert!
+            </div>
+          ) : (
+            alerts.map((item) => (
+              <Alert
+                key={item.id}
+                variant={item.variant}
+                onClose={() => removeAlert(item.id)}
+              >
+                <AlertTitle>{item.title}</AlertTitle>
+                <AlertDescription>{item.description}</AlertDescription>
+              </Alert>
+            ))
+          )}
+        </div>
+      </div>
+
+      <div className="space-y-3">
+        <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+          All Token Variants
+        </h4>
+        <Alert variant="default">
+          <AlertTitle>Default Notification</AlertTitle>
+          <AlertDescription>
+            System maintenance is scheduled for Sunday at 02:00 UTC.
+          </AlertDescription>
+        </Alert>
+        <Alert variant="info">
+          <AlertTitle>Telemetry Stream Connected</AlertTitle>
+          <AlertDescription>
+            Cluster agent is synchronizing metrics to edge nodes.
+          </AlertDescription>
+        </Alert>
+        <Alert variant="success">
+          <AlertTitle>License Renewed</AlertTitle>
+          <AlertDescription>
+            Your enterprise license has been renewed for 12 months.
+          </AlertDescription>
+        </Alert>
+        <Alert variant="warning">
+          <AlertTitle>Quota Threshold Reached</AlertTitle>
+          <AlertDescription>
+            Worker pod-09 exceeded 85% CPU capacity.
+          </AlertDescription>
+        </Alert>
+        <Alert variant="destructive" onClose={() => {}}>
+          <AlertTitle>Database Connection Lost</AlertTitle>
+          <AlertDescription>
+            Failed to connect to primary replica. Retrying in 5 seconds.
+          </AlertDescription>
+        </Alert>
+      </div>
+    </div>
+  )
+}
+
+const InteractiveAlertDialogDemo: React.FC = () => {
+  const [deleteOpen, setDeleteOpen] = React.useState(false)
+  const [deployOpen, setDeployOpen] = React.useState(false)
+  const [lastAction, setLastAction] = React.useState<string | null>(null)
+
+  return (
+    <div className="w-full max-w-xl space-y-6">
+      <div className="rounded-2xl border border-border bg-card p-5 space-y-4 shadow-xs">
+        <div>
+          <h4 className="text-xs font-bold uppercase tracking-wider text-foreground">
+            Confirmation Dialog Live Test
+          </h4>
+          <p className="text-[11px] text-muted-foreground">
+            AlertDialog interrupts user workflow to ask for explicit confirmation before irreversible or high-impact actions.
+          </p>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-3">
+          <AlertDialog open={deleteOpen} onOpenChange={setDeleteOpen}>
+            <AlertDialogTrigger asChild>
+              <Button variant="destructive">
+                Delete Project (Destructive)
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action cannot be undone. This will permanently delete the project
+                  and remove all associated databases from our servers.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel onClick={() => setLastAction("Cancelled repository deletion")}>
+                  Cancel
+                </AlertDialogCancel>
+                <AlertDialogAction
+                  variant="destructive"
+                  onClick={() => setLastAction("Confirmed: Repository permanently deleted")}
+                >
+                  Yes, Delete Project
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+
+          <AlertDialog open={deployOpen} onOpenChange={setDeployOpen}>
+            <AlertDialogTrigger asChild>
+              <Button variant="primary">
+                Deploy Release v1.2.0
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Deploy to Production</AlertDialogTitle>
+                <AlertDialogDescription>
+                  You are about to deploy release v1.2.0 across 14 edge clusters. Traffic will transition smoothly over 60 seconds.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel onClick={() => setLastAction("Cancelled production deployment")}>
+                  Cancel
+                </AlertDialogCancel>
+                <AlertDialogAction
+                  variant="primary"
+                  onClick={() => setLastAction("Confirmed: Production deployment v1.2.0 initiated")}
+                >
+                  Start Rolling Deployment
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        </div>
+
+        {lastAction && (
+          <div className="rounded-xl bg-muted/60 border border-border p-3 text-xs flex items-center justify-between">
+            <span className="text-foreground">
+              Feedback: <strong>{lastAction}</strong>
+            </span>
+            <button
+              onClick={() => setLastAction(null)}
+              className="text-muted-foreground hover:text-foreground text-[11px] underline cursor-pointer"
+            >
+              Clear
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
+const InteractiveDrawerDemo: React.FC = () => {
+  const [openSide, setOpenSide] = React.useState<"right" | "left" | "top" | "bottom" | null>(null)
+
+  return (
+    <div className="w-full max-w-xl space-y-6">
+      <div className="rounded-2xl border border-border bg-card p-5 space-y-4 shadow-xs">
+        <div>
+          <h4 className="text-xs font-bold uppercase tracking-wider text-foreground">
+            Drawer / Sheet Interactive Multi-Side Test
+          </h4>
+          <p className="text-[11px] text-muted-foreground">
+            Test sliding the side modal from any of the 4 screen edges (right, left, top, bottom) with animated overlays.
+          </p>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-2.5">
+          <Button variant="primary" onClick={() => setOpenSide("right")}>
+            Right Drawer (Default)
+          </Button>
+          <Button variant="secondary" onClick={() => setOpenSide("left")}>
+            Left Drawer (Nav)
+          </Button>
+          <Button variant="outline" onClick={() => setOpenSide("top")}>
+            Top Drawer
+          </Button>
+          <Button variant="outline" onClick={() => setOpenSide("bottom")}>
+            Bottom Drawer (Mobile)
+          </Button>
+        </div>
+
+        <Drawer open={openSide !== null} onOpenChange={(open) => !open && setOpenSide(null)}>
+          <DrawerContent side={openSide || "right"} size="default">
+            <DrawerHeader>
+              <DrawerTitle className="capitalize">{openSide || "Right"} Side Drawer</DrawerTitle>
+              <DrawerDescription>
+                Sliding modal panel anchored to the {openSide || "right"} viewport edge.
+              </DrawerDescription>
+            </DrawerHeader>
+            <div className="py-6 space-y-4 text-xs text-muted-foreground">
+              <p>
+                Drawer and Sheet are unified into one primitive in Ethereal UI, supporting 4 side directions and 5 size presets.
+              </p>
+              <div className="space-y-1.5">
+                <Label>Configuration Preset</Label>
+                <Input defaultValue="Production Telemetry Engine" />
+              </div>
+            </div>
+            <DrawerFooter>
+              <Button variant="outline" onClick={() => setOpenSide(null)}>
+                Close
+              </Button>
+              <Button variant="primary" onClick={() => setOpenSide(null)}>
+                Save Changes
+              </Button>
+            </DrawerFooter>
+          </DrawerContent>
+        </Drawer>
+      </div>
+    </div>
+  )
+}
+
+const InteractiveModalDemo: React.FC = () => {
+  const [modalType, setModalType] = React.useState<"center" | "top" | "lg" | "sm" | null>(null)
+
+  return (
+    <div className="w-full max-w-xl space-y-6">
+      <div className="rounded-2xl border border-border bg-card p-5 space-y-4 shadow-xs">
+        <div>
+          <h4 className="text-xs font-bold uppercase tracking-wider text-foreground">
+            Modal / Dialog Interactive Test
+          </h4>
+          <p className="text-[11px] text-muted-foreground">
+            Test center-aligned vs top-aligned positions and various size variants.
+          </p>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-2.5">
+          <Button variant="primary" onClick={() => setModalType("center")}>
+            Center Modal (Default)
+          </Button>
+          <Button variant="secondary" onClick={() => setModalType("top")}>
+            Top Anchored Modal
+          </Button>
+          <Button variant="outline" onClick={() => setModalType("lg")}>
+            Large Modal (size="lg")
+          </Button>
+          <Button variant="outline" onClick={() => setModalType("sm")}>
+            Small Modal (size="sm")
+          </Button>
+        </div>
+
+        <Dialog open={modalType !== null} onOpenChange={(open) => !open && setModalType(null)}>
+          <DialogContent
+            size={modalType === "lg" ? "lg" : modalType === "sm" ? "sm" : "default"}
+            position={modalType === "top" ? "top" : "center"}
+          >
+            <DialogHeader>
+              <DialogTitle>
+                {modalType === "top"
+                  ? "Top Position Modal"
+                  : modalType === "lg"
+                  ? "Large Configuration Modal"
+                  : modalType === "sm"
+                  ? "Quick Confirm Modal"
+                  : "Edit Project Settings"}
+              </DialogTitle>
+              <DialogDescription>
+                Configure parameters and environment settings for your workspace.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="py-4 space-y-3">
+              <div className="space-y-1">
+                <Label>Project Name</Label>
+                <Input defaultValue="Ethereal Telemetry Core" />
+              </div>
+              <div className="space-y-1">
+                <Label>Edge Cluster Hostname</Label>
+                <Input defaultValue="prod-edge-01.ethereal.internal" />
+              </div>
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setModalType(null)}>
+                Cancel
+              </Button>
+              <Button variant="primary" onClick={() => setModalType(null)}>
+                Save Changes
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </div>
+    </div>
+  )
+}
+
+const InteractiveToastDemo: React.FC = () => {
+  const [toasts, setToasts] = React.useState<
+    Array<{
+      id: number
+      variant?: "success" | "error" | "warning" | "info"
+      title: string
+      description: string
+    }>
+  >([
+    {
+      id: 1,
+      variant: "success",
+      title: "Changes saved",
+      description: "Your workspace settings have been updated.",
+    },
+  ])
+
+  const addToast = (
+    variant: "success" | "error" | "warning" | "info",
+    title: string,
+    description: string
+  ) => {
+    setToasts((prev) => [
+      { id: Date.now() + Math.random(), variant, title, description },
+      ...prev.slice(0, 3),
+    ])
+  }
+
+  return (
+    <div className="w-full max-w-xl space-y-6">
+      <div className="rounded-2xl border border-border bg-card p-5 space-y-4 shadow-xs">
+        <div className="flex items-center justify-between border-b border-border/60 pb-3">
+          <div>
+            <h4 className="text-xs font-bold uppercase tracking-wider text-foreground">
+              Toast Notification Live Test
+            </h4>
+            <p className="text-[11px] text-muted-foreground">
+              Click to trigger floating notification toasts in real time.
+            </p>
+          </div>
+          {toasts.length > 0 && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setToasts([])}
+              className="text-[11px] h-7 px-2"
+            >
+              Clear
+            </Button>
+          )}
+        </div>
+
+        <div className="flex flex-wrap items-center gap-2">
+          <Button
+            size="sm"
+            variant="primary"
+            onClick={() =>
+              addToast(
+                "success",
+                "Artifact Uploaded",
+                "Dataset exported to cloud storage bucket."
+              )
+            }
+          >
+            + Success Toast
+          </Button>
+          <Button
+            size="sm"
+            variant="secondary"
+            onClick={() =>
+              addToast(
+                "warning",
+                "Worker Degraded",
+                "Edge cluster is experiencing elevated latency."
+              )
+            }
+          >
+            + Warning Toast
+          </Button>
+          <Button
+            size="sm"
+            variant="destructive"
+            onClick={() =>
+              addToast(
+                "error",
+                "Deployment Failed",
+                "Docker image build failed with exit code 1."
+              )
+            }
+          >
+            + Error Toast
+          </Button>
+        </div>
+
+        <div className="space-y-3 pt-2">
+          {toasts.map((t) => (
+            <ToastCard
+              key={t.id}
+              variant={t.variant}
+              title={t.title}
+              description={t.description}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+const InteractiveNotificationCenterDemo: React.FC = () => {
+  const [notifications, setNotifications] = React.useState<NotificationItem[]>([
+    {
+      id: "1",
+      title: "Deployment Completed",
+      description: "Release v0.0.8 was deployed to edge nodes.",
+      timestamp: "5m ago",
+      read: false,
+      type: "success",
+    },
+    {
+      id: "2",
+      title: "Rate Limit Approaching",
+      description: "API consumer token usage reached 85% of tier limit.",
+      timestamp: "20m ago",
+      read: false,
+      type: "warning",
+    },
+  ])
+
+  const pushTestNotification = () => {
+    const types: Array<"info" | "success" | "warning" | "error"> = [
+      "info",
+      "success",
+      "warning",
+      "error",
+    ]
+    const randomType = types[Math.floor(Math.random() * types.length)]
+    setNotifications((prev) => [
+      {
+        id: String(Date.now()),
+        title: `Live Alert Event #${prev.length + 1}`,
+        description: "Triggered from the interactive documentation live tester.",
+        timestamp: "Just now",
+        read: false,
+        type: randomType,
+      },
+      ...prev,
+    ])
+  }
+
+  return (
+    <div className="flex flex-col items-center justify-center p-8 gap-4 w-full">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-5 rounded-2xl border border-border bg-card shadow-sm w-full max-w-lg">
+        <div className="text-left space-y-1">
+          <p className="text-sm font-semibold text-foreground">Header Notification Bell</p>
+          <p className="text-xs text-muted-foreground">
+            Click the bell to inspect feed & mark-as-read
+          </p>
+        </div>
+
+        <div className="flex items-center gap-3">
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={pushTestNotification}
+            className="text-xs"
+          >
+            + Push Live Notif
+          </Button>
+          <NotificationCenter
+            notifications={notifications}
+            onMarkAsRead={(id) => {
+              setNotifications((prev) =>
+                prev.map((n) => (n.id === id ? { ...n, read: true } : n))
+              )
+            }}
+            onMarkAllAsRead={() => {
+              setNotifications((prev) => prev.map((n) => ({ ...n, read: true })))
+            }}
+            onClearAll={() => setNotifications([])}
+          />
+        </div>
       </div>
     </div>
   )
@@ -257,40 +843,10 @@ export const LiveDemoRenderer: React.FC<{ slug: string; sectionId?: string }> = 
 
   switch (slug) {
     case "alert":
-      return (
-        <div className="w-full max-w-lg space-y-3">
-          <Alert variant="default" onClose={() => {}}>
-            <AlertTitle>System Notification</AlertTitle>
-            <AlertDescription>
-              A new software patch is available for deployment.
-            </AlertDescription>
-          </Alert>
-          <Alert variant="info">
-            <AlertTitle>Telemetry Stream Connected</AlertTitle>
-            <AlertDescription>
-              Cluster agent is synchronizing metrics to edge nodes.
-            </AlertDescription>
-          </Alert>
-          <Alert variant="success">
-            <AlertTitle>Payment Successful</AlertTitle>
-            <AlertDescription>
-              Your enterprise license has been renewed for 12 months.
-            </AlertDescription>
-          </Alert>
-          <Alert variant="warning">
-            <AlertTitle>High CPU Utilization</AlertTitle>
-            <AlertDescription>
-              Worker pod-09 exceeded 85% CPU capacity.
-            </AlertDescription>
-          </Alert>
-          <Alert variant="destructive" onClose={() => {}}>
-            <AlertTitle>Database Connection Lost</AlertTitle>
-            <AlertDescription>
-              Failed to connect to primary replica. Retrying in 5 seconds.
-            </AlertDescription>
-          </Alert>
-        </div>
-      )
+      return <InteractiveAlertDemo />
+
+    case "alert-dialog":
+      return <InteractiveAlertDialogDemo />
 
     case "accordion":
       return (
@@ -536,102 +1092,8 @@ export const LiveDemoRenderer: React.FC<{ slug: string; sectionId?: string }> = 
       )
 
     case "drawer":
-      return (
-        <Drawer>
-          <DrawerTrigger asChild>
-            <Button variant="outline">Open Drawer</Button>
-          </DrawerTrigger>
-          <DrawerContent side="right">
-            <DrawerHeader>
-              <DrawerTitle>Customer Details</DrawerTitle>
-              <DrawerDescription>
-                Subscription and billing breakdown
-              </DrawerDescription>
-            </DrawerHeader>
-            <div className="py-6 space-y-4 text-xs text-zinc-500">
-              <Progress value={76} label="Seat usage" showValue variant="blue" />
-              <Progress value={48} label="Storage used" showValue variant="emerald" />
-            </div>
-            <DrawerFooter>
-              <Button variant="primary" size="sm">
-                Save changes
-              </Button>
-            </DrawerFooter>
-          </DrawerContent>
-        </Drawer>
-      )
-
     case "sheet":
-      return (
-        <div className="flex flex-wrap items-center gap-3">
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="primary">Open Right Sheet (Side Modal)</Button>
-            </SheetTrigger>
-            <SheetContent side="right" size="default">
-              <SheetHeader>
-                <SheetTitle>Edit User Profile</SheetTitle>
-                <SheetDescription>
-                  Make changes to your user configuration here. Click save when done.
-                </SheetDescription>
-              </SheetHeader>
-              <div className="space-y-4 py-6">
-                <div className="space-y-1.5">
-                  <Label>Full Name</Label>
-                  <Input defaultValue="Saeful Rohman" />
-                </div>
-                <div className="space-y-1.5">
-                  <Label>Email</Label>
-                  <Input defaultValue="saefulrohman@example.com" />
-                </div>
-                <div className="space-y-1.5">
-                  <Label>Role</Label>
-                  <Input defaultValue="System Administrator" disabled />
-                </div>
-              </div>
-              <SheetFooter>
-                <SheetClose asChild>
-                  <Button variant="outline">Cancel</Button>
-                </SheetClose>
-                <Button variant="primary">Save Changes</Button>
-              </SheetFooter>
-            </SheetContent>
-          </Sheet>
-
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="secondary">Open Left Sheet</Button>
-            </SheetTrigger>
-            <SheetContent side="left" size="sm">
-              <SheetHeader>
-                <SheetTitle>Navigation Menu</SheetTitle>
-                <SheetDescription>Quick access side drawer</SheetDescription>
-              </SheetHeader>
-              <div className="py-4 space-y-2 text-sm text-muted-foreground">
-                <div className="p-2 rounded-lg hover:bg-muted cursor-pointer text-foreground">Dashboard</div>
-                <div className="p-2 rounded-lg hover:bg-muted cursor-pointer text-foreground">Analytics</div>
-                <div className="p-2 rounded-lg hover:bg-muted cursor-pointer text-foreground">Settings</div>
-              </div>
-            </SheetContent>
-          </Sheet>
-
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="outline">Open Bottom Sheet</Button>
-            </SheetTrigger>
-            <SheetContent side="bottom" size="default">
-              <SheetHeader>
-                <SheetTitle>Mobile Actions Sheet</SheetTitle>
-                <SheetDescription>Select an action to proceed</SheetDescription>
-              </SheetHeader>
-              <div className="py-4 flex gap-2">
-                <Button variant="primary" className="flex-1">Export CSV</Button>
-                <Button variant="outline" className="flex-1">Share Report</Button>
-              </div>
-            </SheetContent>
-          </Sheet>
-        </div>
-      )
+      return <InteractiveDrawerDemo />
 
     case "dropdown":
       return (
@@ -690,30 +1152,7 @@ export const LiveDemoRenderer: React.FC<{ slug: string; sectionId?: string }> = 
       )
 
     case "modal":
-      return (
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button variant="primary">Open Modal</Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Create new project</DialogTitle>
-              <DialogDescription>
-                Deploy a new workspace project in your organization.
-              </DialogDescription>
-            </DialogHeader>
-            <div className="space-y-2 py-2">
-              <Label>Project name</Label>
-              <Input defaultValue="Q4 Marketing Analytics" />
-            </div>
-            <DialogFooter>
-              <Button variant="primary" size="sm">
-                Create project
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
-      )
+      return <InteractiveModalDemo />
 
     case "pagination":
       return <Pagination totalPages={5} initialPage={2} />
@@ -885,13 +1324,7 @@ export const LiveDemoRenderer: React.FC<{ slug: string; sectionId?: string }> = 
       )
 
     case "toast":
-      return (
-        <ToastCard
-          variant="success"
-          title="Changes saved"
-          description="Your workspace settings have been updated."
-        />
-      )
+      return <InteractiveToastDemo />
 
     case "tooltip":
       return (
@@ -1246,17 +1679,7 @@ export const LiveDemoRenderer: React.FC<{ slug: string; sectionId?: string }> = 
       return <SystemHealthBlock />
 
     case "notification-center":
-      return (
-        <div className="flex flex-col items-center justify-center p-8 gap-4 w-full">
-          <div className="flex items-center gap-4 p-5 rounded-2xl border border-border bg-card shadow-sm">
-            <div className="text-left">
-              <p className="text-sm font-semibold text-foreground">Header Notification Bell</p>
-              <p className="text-xs text-muted-foreground">Click to view real-time feed with mark-as-read</p>
-            </div>
-            <NotificationCenter />
-          </div>
-        </div>
-      )
+      return <InteractiveNotificationCenterDemo />
 
     // NEW ENTERPRISE PRIMITIVES
     case "timeline":

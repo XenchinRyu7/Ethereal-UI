@@ -167,7 +167,25 @@ import {
   Dialog,
   DialogTrigger,
   DialogContent,
-  Sheet,
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogFooter,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogAction,
+  AlertDialogCancel,
+  ConfirmationDialog,
+  Drawer,
+  DrawerTrigger,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerClose,
+  Sheet, // Interoperable alias for Drawer
   SheetTrigger,
   SheetContent,
   SheetHeader,
@@ -175,7 +193,6 @@ import {
   SheetDescription,
   SheetFooter,
   SheetClose,
-  Drawer,
   Popover,
   Tooltip,
   Dropdown,
@@ -416,49 +433,60 @@ export function CustomerManagementPage() {
 
 ---
 
-### Recipe 4: Side Modal (Sheet) & Centered/Top Dialogs
-Ethereal UI provides two flexible overlay primitives for modals:
-- `Sheet`: Edge-anchored drawer/modal (`side="right" | "left" | "top" | "bottom"`) with standard widths (`sm`, `default`, `lg`, `xl`, `full`).
-- `Modal` / `Dialog`: Center-anchored or top-anchored modal with configurable size (`sm`, `default`, `lg`, `xl`, `full`) and position (`center`, `top`).
+### Recipe 4: Overlays — Confirmation Dialogs (AlertDialog), Side Modals (Drawer/Sheet) & Dialogs
+Ethereal UI provides three distinct, accessible overlay primitives:
+- `AlertDialog`: Confirmation dialog that interrupts the user before destructive actions (requires explicit Cancel or Confirm).
+- `Drawer` (or `Sheet`): Edge-anchored side modal (`side="right" | "left" | "top" | "bottom"`) with standard widths (`sm`, `default`, `lg`, `xl`, `full`).
+- `Modal` / `Dialog`: Center-anchored or top-anchored dialog with configurable size (`sm`, `default`, `lg`, `xl`, `full`) and position (`center`, `top`).
 
 ```tsx
 import React, { useState } from "react"
 import {
   Button,
-  Sheet,
-  SheetTrigger,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetDescription,
-  SheetFooter,
+  Drawer,
+  DrawerTrigger,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerDescription,
+  DrawerFooter,
   Modal,
   ModalContent,
   ModalHeader,
   ModalTitle,
   ModalDescription,
   ModalFooter,
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogCancel,
+  AlertDialogAction,
   Input
 } from "@etherealui/react"
 
-export function ModalsOverview() {
-  const [sheetOpen, setSheetOpen] = useState(false)
+export function OverlaysOverview() {
+  const [drawerOpen, setDrawerOpen] = useState(false)
   const [modalOpen, setModalOpen] = useState(false)
+  const [alertOpen, setAlertOpen] = useState(false)
 
   return (
     <div className="flex flex-wrap items-center gap-3">
-      {/* 1. Side Modal (Sheet) */}
-      <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
-        <SheetTrigger asChild>
+      {/* 1. Side Modal (Drawer / Sheet) */}
+      <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
+        <DrawerTrigger asChild>
           <Button variant="outline">Open Side Drawer</Button>
-        </SheetTrigger>
-        <SheetContent side="right" size="lg">
-          <SheetHeader>
-            <SheetTitle>Configure Agent Parameters</SheetTitle>
-            <SheetDescription>
+        </DrawerTrigger>
+        <DrawerContent side="right" size="lg">
+          <DrawerHeader>
+            <DrawerTitle>Configure Agent Parameters</DrawerTitle>
+            <DrawerDescription>
               Adjust hyper-parameters, context temperature, and execution limits.
-            </SheetDescription>
-          </SheetHeader>
+            </DrawerDescription>
+          </DrawerHeader>
           <div className="py-4 space-y-4">
             <div>
               <label className="text-xs font-semibold text-foreground">Temperature</label>
@@ -469,35 +497,56 @@ export function ModalsOverview() {
               <Input defaultValue="You are an expert autonomous coder." className="mt-1" />
             </div>
           </div>
-          <SheetFooter>
-            <Button variant="outline" onClick={() => setSheetOpen(false)}>Cancel</Button>
-            <Button variant="primary" onClick={() => setSheetOpen(false)}>Save Changes</Button>
-          </SheetFooter>
-        </SheetContent>
-      </Sheet>
+          <DrawerFooter>
+            <Button variant="outline" onClick={() => setDrawerOpen(false)}>Cancel</Button>
+            <Button variant="primary" onClick={() => setDrawerOpen(false)}>Save Changes</Button>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
 
       {/* 2. Center/Top Modal with custom size */}
-      <Button variant="primary" onClick={() => setModalOpen(true)}>
+      <Button variant="outline" onClick={() => setModalOpen(true)}>
         Open Center Modal
       </Button>
 
       <Modal open={modalOpen} onOpenChange={setModalOpen}>
         <ModalContent size="default" position="center">
           <ModalHeader>
-            <ModalTitle>Confirm Deployment</ModalTitle>
+            <ModalTitle>Edit Settings</ModalTitle>
             <ModalDescription>
-              Are you sure you want to push this release to production?
+              Update your workspace profile preferences.
             </ModalDescription>
           </ModalHeader>
           <div className="py-2 text-xs text-muted-foreground">
-            Version 0.0.8 will be deployed across edge clusters in us-east-1 and eu-central-1.
+            Configure default notification feeds and dark-mode tokens.
           </div>
           <ModalFooter>
             <Button variant="outline" onClick={() => setModalOpen(false)}>Cancel</Button>
-            <Button variant="primary" onClick={() => setModalOpen(false)}>Deploy Now</Button>
+            <Button variant="primary" onClick={() => setModalOpen(false)}>Save</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
+
+      {/* 3. Confirmation Dialog (AlertDialog) for critical/destructive actions */}
+      <AlertDialog open={alertOpen} onOpenChange={setAlertOpen}>
+        <AlertDialogTrigger asChild>
+          <Button variant="destructive">Delete Deployment</Button>
+        </AlertDialogTrigger>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently destroy worker cluster pod-09 and erase cached telemetry.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction variant="destructive" onClick={() => console.log("Deleted!")}>
+              Yes, Delete Deployment
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }

@@ -3,6 +3,24 @@ export { cn } from "./utils/cn"
 
 // Individual Primitives
 export { Alert, AlertTitle, AlertDescription, AlertAction, alertVariants, type AlertProps } from "./primitives/alert"
+export {
+  AlertDialog,
+  AlertDialogPortal,
+  AlertDialogOverlay,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogFooter,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogAction,
+  AlertDialogCancel,
+  ConfirmationDialog,
+  type AlertDialogContentProps,
+  type AlertDialogActionProps,
+  type AlertDialogCancelProps,
+  type ConfirmationDialogProps,
+} from "./primitives/alert-dialog"
 export { Accordion, type AccordionItemData, type AccordionProps } from "./primitives/accordion"
 export { Announcement, type AnnouncementProps } from "./primitives/announcement"
 export { Avatar, AvatarGroup, avatarVariants, type AvatarProps, type AvatarGroupProps, type AvatarStatusType } from "./primitives/avatar"

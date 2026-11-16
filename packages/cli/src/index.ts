@@ -45,6 +45,7 @@ const GITHUB_RAW_BASE =
 
 const SOURCE_FILE_MAP: Record<string, string> = {
   alert: "primitives/alert.tsx",
+  "alert-dialog": "primitives/alert-dialog.tsx",
   accordion: "primitives/accordion.tsx",
   announcement: "primitives/announcement.tsx",
   avatar: "primitives/avatar.tsx",

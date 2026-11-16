@@ -23,7 +23,8 @@ export type NotificationType = "info" | "success" | "warning" | "error" | "menti
 export interface NotificationItem {
   id: string
   title: string
-  message: string
+  message?: string
+  description?: string
   timestamp: string
   read: boolean
   type?: NotificationType
@@ -292,7 +293,7 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({
                     </div>
 
                     <p className="text-[11px] text-muted-foreground leading-relaxed line-clamp-2">
-                      {item.message}
+                      {item.message || item.description}
                     </p>
 
                     <div className="flex items-center gap-3 pt-0.5">

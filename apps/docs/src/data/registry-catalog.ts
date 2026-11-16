@@ -82,6 +82,55 @@ export function AlertDemo() {
     ],
   },
   {
+    slug: "alert-dialog",
+    title: "Alert Dialog",
+    category: "primitives",
+    subcategory: "Base",
+    description:
+      "A modal confirmation dialog that interrupts the user with important content and requires an explicit confirmation or cancellation.",
+    isNew: true,
+    dependencies: ["@radix-ui/react-alert-dialog", "lucide-react"],
+    sourceFile: "packages/ui/src/primitives/alert-dialog.tsx",
+    code: `import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogFooter,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogAction,
+  AlertDialogCancel,
+  Button
+} from "@etherealui/react"
+
+export function AlertDialogDemo() {
+  return (
+    <AlertDialog>
+      <AlertDialogTrigger asChild>
+        <Button variant="destructive">Delete Project</Button>
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogDescription>
+            This action cannot be undone. This will permanently delete the project
+            and remove all associated databases.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction variant="destructive">
+            Yes, Delete Project
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  )
+}`,
+    sections: [],
+  },
+  {
     slug: "accordion",
     title: "Accordion",
     category: "primitives",
@@ -582,87 +631,48 @@ export function DividerDemo() {
   },
   {
     slug: "drawer",
-    title: "Drawer",
+    title: "Drawer (Sheet)",
     category: "primitives",
     subcategory: "Base",
     description:
-      "Slide-over side panel anchored to the left or right viewport edge for inspecting table rows or forms.",
+      "Flexible side modal overlay sliding from the right, left, top, or bottom of the viewport with multiple size presets. (Also aliased as Sheet).",
     isNew: true,
-    dependencies: ["@radix-ui/react-dialog", "lucide-react"],
+    dependencies: ["@radix-ui/react-dialog", "lucide-react", "class-variance-authority"],
     sourceFile: "packages/ui/src/primitives/drawer.tsx",
     code: `import {
-  Drawer, DrawerTrigger, DrawerContent, DrawerHeader, DrawerTitle, DrawerDescription, DrawerFooter, Button
+  Drawer,
+  DrawerTrigger,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerClose,
+  Button
 } from "@etherealui/react"
 
 export function DrawerDemo() {
   return (
     <Drawer>
       <DrawerTrigger asChild>
-        <Button variant="outline">Open Drawer</Button>
+        <Button variant="primary">Open Side Drawer (Sheet)</Button>
       </DrawerTrigger>
-      <DrawerContent side="right">
+      <DrawerContent side="right" size="default">
         <DrawerHeader>
-          <DrawerTitle>Customer Details</DrawerTitle>
-          <DrawerDescription>Subscription and billing breakdown</DrawerDescription>
+          <DrawerTitle>User Configuration</DrawerTitle>
+          <DrawerDescription>Adjust parameters and preferences.</DrawerDescription>
         </DrawerHeader>
-        <div className="py-6 text-xs text-zinc-500">
-          Drawer body content goes here.
+        <div className="py-6 text-xs text-muted-foreground">
+          Drawer and Sheet share the exact same underlying primitive in Ethereal UI, supporting 4 side directions (right, left, top, bottom) and 5 sizes (sm, default, lg, xl, full).
         </div>
         <DrawerFooter>
-          <Button variant="primary" size="sm">Save changes</Button>
+          <DrawerClose asChild>
+            <Button variant="outline">Close</Button>
+          </DrawerClose>
+          <Button variant="primary">Save Changes</Button>
         </DrawerFooter>
       </DrawerContent>
     </Drawer>
-  )
-}`,
-    sections: [],
-  },
-  {
-    slug: "sheet",
-    title: "Sheet",
-    category: "primitives",
-    subcategory: "Base",
-    description:
-      "Flexible side modal overlay sliding from the right, left, top, or bottom of the viewport.",
-    isNew: true,
-    dependencies: ["@radix-ui/react-dialog", "lucide-react", "class-variance-authority"],
-    sourceFile: "packages/ui/src/primitives/sheet.tsx",
-    code: `import {
-  Sheet,
-  SheetTrigger,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetDescription,
-  SheetFooter,
-  SheetClose,
-  Button
-} from "@etherealui/react"
-
-export function SheetDemo() {
-  return (
-    <Sheet>
-      <SheetTrigger asChild>
-        <Button variant="primary">Open Side Modal</Button>
-      </SheetTrigger>
-      <SheetContent side="right" size="default">
-        <SheetHeader>
-          <SheetTitle>Side Modal Panel</SheetTitle>
-          <SheetDescription>
-            Slide-over drawer for inspecting records or editing forms.
-          </SheetDescription>
-        </SheetHeader>
-        <div className="py-6 text-xs text-muted-foreground">
-          Sheet content with rich inputs and responsive layouts.
-        </div>
-        <SheetFooter>
-          <SheetClose asChild>
-            <Button variant="outline">Close</Button>
-          </SheetClose>
-          <Button variant="primary">Save Changes</Button>
-        </SheetFooter>
-      </SheetContent>
-    </Sheet>
   )
 }`,
     sections: [
@@ -670,7 +680,7 @@ export function SheetDemo() {
         id: "sides",
         title: "Slide Sides & Sizes",
         description: "Supports side='right' | 'left' | 'top' | 'bottom' with size='sm' | 'default' | 'lg' | 'xl' | 'full'.",
-        code: `<SheetContent side="left" size="lg">...</SheetContent>`,
+        code: `<DrawerContent side="left" size="lg">...</DrawerContent>`,
       },
     ],
   },
