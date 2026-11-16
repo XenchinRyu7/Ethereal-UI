@@ -23,16 +23,37 @@ const DialogOverlay = React.forwardRef<
 ))
 DialogOverlay.displayName = DialogPrimitive.Overlay.displayName
 
+export interface DialogContentProps
+  extends React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content> {
+  size?: "sm" | "default" | "lg" | "xl" | "full"
+  position?: "center" | "top"
+}
+
+const sizeClasses = {
+  sm: "max-w-sm",
+  default: "max-w-lg",
+  lg: "max-w-2xl",
+  xl: "max-w-4xl",
+  full: "max-w-[96vw] max-h-[92vh] overflow-y-auto",
+}
+
+const positionClasses = {
+  center: "left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2",
+  top: "left-1/2 top-12 sm:top-16 -translate-x-1/2",
+}
+
 const DialogContent = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
->(({ className, children, ...props }, ref) => (
+  DialogContentProps
+>(({ className, children, size = "default", position = "center", ...props }, ref) => (
   <DialogPortal>
     <DialogOverlay />
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
-        "fixed left-1/2 top-1/2 z-50 grid w-full max-w-lg -translate-x-1/2 -translate-y-1/2 gap-4 rounded-2xl border border-border bg-card p-6 text-card-foreground shadow-2xl focus:outline-none",
+        "fixed z-50 grid w-full gap-4 rounded-2xl border border-border bg-card p-6 text-card-foreground shadow-2xl duration-200 focus:outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
+        positionClasses[position],
+        sizeClasses[size],
         className
       )}
       {...props}

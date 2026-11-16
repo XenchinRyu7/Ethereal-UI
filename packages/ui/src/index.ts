@@ -2,6 +2,7 @@
 export { cn } from "./utils/cn"
 
 // Individual Primitives
+export { Alert, AlertTitle, AlertDescription, AlertAction, alertVariants, type AlertProps } from "./primitives/alert"
 export { Accordion, type AccordionItemData, type AccordionProps } from "./primitives/accordion"
 export { Announcement, type AnnouncementProps } from "./primitives/announcement"
 export { Avatar, AvatarGroup, avatarVariants, type AvatarProps, type AvatarGroupProps, type AvatarStatusType } from "./primitives/avatar"
@@ -30,6 +31,7 @@ export {
   DialogFooter,
   DialogTitle,
   DialogDescription,
+  type DialogContentProps,
 } from "./primitives/dialog"
 export { Divider, type DividerProps } from "./primitives/divider"
 export {
@@ -43,6 +45,20 @@ export {
   DrawerFooter,
   type DrawerContentProps,
 } from "./primitives/drawer"
+export {
+  Sheet,
+  SheetTrigger,
+  SheetClose,
+  SheetPortal,
+  SheetOverlay,
+  SheetContent,
+  SheetHeader,
+  SheetFooter,
+  SheetTitle,
+  SheetDescription,
+  sheetVariants,
+  type SheetContentProps,
+} from "./primitives/sheet"
 export {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -123,6 +139,7 @@ export * from "./blocks/org-directory"
 export * from "./blocks/event-scheduler"
 export * from "./blocks/system-health"
 export * from "./blocks/ai-chat-thread"
+export * from "./blocks/notification-center"
 
 // Full Page Dashboard Templates
 export * from "./templates/executive-analytics"

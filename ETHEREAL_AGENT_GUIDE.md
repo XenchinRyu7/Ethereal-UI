@@ -110,7 +110,7 @@ To apply an Ethereal UI theme preset:
 
 ## 4. Component Catalog & Import Reference
 
-Import any of the 42 primitives, 6 charts, and 16 enterprise blocks directly from `@etherealui/react`:
+Import any of the 44 primitives, 6 charts, and 17 enterprise blocks directly from `@etherealui/react`:
 
 ```tsx
 import {
@@ -121,6 +121,9 @@ import {
   IconButton,
 
   // 2. Feedback, Indicators & Badges
+  Alert,
+  AlertTitle,
+  AlertDescription,
   Badge,
   Chip,
   Announcement,
@@ -156,6 +159,22 @@ import {
 
   // 5. Overlays & Dialogs (Radix UI)
   Modal,
+  ModalContent,
+  ModalHeader,
+  ModalTitle,
+  ModalDescription,
+  ModalFooter,
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  Sheet,
+  SheetTrigger,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+  SheetFooter,
+  SheetClose,
   Drawer,
   Popover,
   Tooltip,
@@ -179,6 +198,7 @@ import {
   HeatmapStatisticChart,
 
   // 8. Enterprise & Agentic Blocks
+  NotificationCenter,
   StatCardBlock,
   MultiMetricGrid,
   SystemHealthBlock,
@@ -389,6 +409,169 @@ export function CustomerManagementPage() {
           </div>
         )}
       </Drawer>
+    </div>
+  )
+}
+```
+
+---
+
+### Recipe 4: Side Modal (Sheet) & Centered/Top Dialogs
+Ethereal UI provides two flexible overlay primitives for modals:
+- `Sheet`: Edge-anchored drawer/modal (`side="right" | "left" | "top" | "bottom"`) with standard widths (`sm`, `default`, `lg`, `xl`, `full`).
+- `Modal` / `Dialog`: Center-anchored or top-anchored modal with configurable size (`sm`, `default`, `lg`, `xl`, `full`) and position (`center`, `top`).
+
+```tsx
+import React, { useState } from "react"
+import {
+  Button,
+  Sheet,
+  SheetTrigger,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+  SheetFooter,
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalTitle,
+  ModalDescription,
+  ModalFooter,
+  Input
+} from "@etherealui/react"
+
+export function ModalsOverview() {
+  const [sheetOpen, setSheetOpen] = useState(false)
+  const [modalOpen, setModalOpen] = useState(false)
+
+  return (
+    <div className="flex flex-wrap items-center gap-3">
+      {/* 1. Side Modal (Sheet) */}
+      <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
+        <SheetTrigger asChild>
+          <Button variant="outline">Open Side Drawer</Button>
+        </SheetTrigger>
+        <SheetContent side="right" size="lg">
+          <SheetHeader>
+            <SheetTitle>Configure Agent Parameters</SheetTitle>
+            <SheetDescription>
+              Adjust hyper-parameters, context temperature, and execution limits.
+            </SheetDescription>
+          </SheetHeader>
+          <div className="py-4 space-y-4">
+            <div>
+              <label className="text-xs font-semibold text-foreground">Temperature</label>
+              <Input type="number" defaultValue="0.7" className="mt-1" />
+            </div>
+            <div>
+              <label className="text-xs font-semibold text-foreground">System Prompt</label>
+              <Input defaultValue="You are an expert autonomous coder." className="mt-1" />
+            </div>
+          </div>
+          <SheetFooter>
+            <Button variant="outline" onClick={() => setSheetOpen(false)}>Cancel</Button>
+            <Button variant="primary" onClick={() => setSheetOpen(false)}>Save Changes</Button>
+          </SheetFooter>
+        </SheetContent>
+      </Sheet>
+
+      {/* 2. Center/Top Modal with custom size */}
+      <Button variant="primary" onClick={() => setModalOpen(true)}>
+        Open Center Modal
+      </Button>
+
+      <Modal open={modalOpen} onOpenChange={setModalOpen}>
+        <ModalContent size="default" position="center">
+          <ModalHeader>
+            <ModalTitle>Confirm Deployment</ModalTitle>
+            <ModalDescription>
+              Are you sure you want to push this release to production?
+            </ModalDescription>
+          </ModalHeader>
+          <div className="py-2 text-xs text-muted-foreground">
+            Version 0.0.8 will be deployed across edge clusters in us-east-1 and eu-central-1.
+          </div>
+          <ModalFooter>
+            <Button variant="outline" onClick={() => setModalOpen(false)}>Cancel</Button>
+            <Button variant="primary" onClick={() => setModalOpen(false)}>Deploy Now</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </div>
+  )
+}
+```
+
+---
+
+### Recipe 5: Inline Alerts & Dashboard Notification Center
+Use `Alert` for context-sensitive inline banner messages and `NotificationCenter` for the global dashboard notification popover.
+
+```tsx
+import React, { useState } from "react"
+import {
+  Alert,
+  AlertTitle,
+  AlertDescription,
+  NotificationCenter,
+  type NotificationItem
+} from "@etherealui/react"
+import { AlertCircle, ShieldCheck } from "lucide-react"
+
+const INITIAL_NOTIFICATIONS: NotificationItem[] = [
+  {
+    id: "1",
+    title: "Deployment Successful",
+    description: "Production build v0.0.8 passed health checks.",
+    timestamp: "2m ago",
+    read: false,
+    type: "success",
+  },
+  {
+    id: "2",
+    title: "Rate Limit Approaching",
+    description: "API consumer token usage reached 85% of tier quota.",
+    timestamp: "18m ago",
+    read: false,
+    type: "warning",
+  },
+]
+
+export function DashboardHeaderBar() {
+  const [notifications, setNotifications] = useState(INITIAL_NOTIFICATIONS)
+
+  return (
+    <div className="space-y-4">
+      {/* Inline Callout Alert */}
+      <Alert variant="warning" dismissible>
+        <AlertCircle className="h-4 w-4" />
+        <AlertTitle>Scheduled Maintenance Window</AlertTitle>
+        <AlertDescription>
+          Database indexing will occur tonight at 02:00 UTC. Expect slight read latency.
+        </AlertDescription>
+      </Alert>
+
+      {/* Header bar with Notification Bell Popover */}
+      <div className="flex items-center justify-between rounded-xl border border-border bg-card p-4">
+        <div className="flex items-center gap-2">
+          <ShieldCheck className="h-5 w-5 text-primary" />
+          <span className="text-sm font-bold text-foreground">Control Tower</span>
+        </div>
+
+        <NotificationCenter
+          notifications={notifications}
+          onMarkAsRead={(id) => {
+            setNotifications((prev) =>
+              prev.map((n) => (n.id === id ? { ...n, read: true } : n))
+            )
+          }}
+          onMarkAllAsRead={() => {
+            setNotifications((prev) => prev.map((n) => ({ ...n, read: true })))
+          }}
+          onClearAll={() => setNotifications([])}
+        />
+      </div>
     </div>
   )
 }

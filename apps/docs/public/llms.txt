@@ -13,7 +13,7 @@
 - [Registry Index JSON](https://ethereal-ui.saefulrohman.dev/registry/index.json): JSON catalog of all components, dependencies, and file structures.
 
 ## Component Catalog
-- Primitives (42 components): Button, Badge, Modal, Drawer, Table, Tabs, Input, Select, Combobox, DatePicker, FileUpload, Switch, etc.
+- Primitives (44 components): Button, Badge, Alert, Modal, Dialog, Sheet, Drawer, Table, Tabs, Input, Select, Combobox, DatePicker, FileUpload, Switch, etc.
 - Statistical SVG Charts (6 charts): AreaStatisticChart, BarStatisticChart, LineStatisticChart, DonutStatisticChart, RadialStatisticChart, HeatmapStatisticChart.
-- Enterprise & Agentic Blocks (16 blocks): InteractiveDashboardShell, KanbanBoardBlock, EnterpriseDataTable, AdvancedFilterBar, PromptComposerBlock, AgentProgressStreamBlock, TokenUsageTelemetryBlock, SystemHealthBlock, etc.
+- Enterprise & Agentic Blocks (17 blocks): NotificationCenter, InteractiveDashboardShell, KanbanBoardBlock, EnterpriseDataTable, AdvancedFilterBar, PromptComposerBlock, AgentProgressStreamBlock, TokenUsageTelemetryBlock, SystemHealthBlock, etc.
 - SaaS Templates (3 templates): ExecutiveAnalyticsTemplate, ControlTowerTemplate, WorkspaceSettingsTemplate.

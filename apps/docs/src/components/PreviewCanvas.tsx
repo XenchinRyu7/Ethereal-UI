@@ -13,6 +13,9 @@ import {
   ExternalLink,
 } from "lucide-react"
 import {
+  Alert,
+  AlertTitle,
+  AlertDescription,
   Accordion,
   Announcement,
   Avatar,
@@ -73,6 +76,14 @@ import {
   SelectValue,
   SelectContent,
   SelectItem,
+  Sheet,
+  SheetTrigger,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+  SheetFooter,
+  SheetClose,
   CardSkeleton,
   Slider,
   Switch,
@@ -111,6 +122,7 @@ import {
   DayAgendaCard,
   SystemHealthBlock,
   SlaRingGaugeCard,
+  NotificationCenter,
   AiChatThreadBlock,
   ToolCallExecutionCard,
   CodeArtifactCard,
@@ -244,6 +256,42 @@ export const LiveDemoRenderer: React.FC<{ slug: string; sectionId?: string }> = 
   }
 
   switch (slug) {
+    case "alert":
+      return (
+        <div className="w-full max-w-lg space-y-3">
+          <Alert variant="default" onClose={() => {}}>
+            <AlertTitle>System Notification</AlertTitle>
+            <AlertDescription>
+              A new software patch is available for deployment.
+            </AlertDescription>
+          </Alert>
+          <Alert variant="info">
+            <AlertTitle>Telemetry Stream Connected</AlertTitle>
+            <AlertDescription>
+              Cluster agent is synchronizing metrics to edge nodes.
+            </AlertDescription>
+          </Alert>
+          <Alert variant="success">
+            <AlertTitle>Payment Successful</AlertTitle>
+            <AlertDescription>
+              Your enterprise license has been renewed for 12 months.
+            </AlertDescription>
+          </Alert>
+          <Alert variant="warning">
+            <AlertTitle>High CPU Utilization</AlertTitle>
+            <AlertDescription>
+              Worker pod-09 exceeded 85% CPU capacity.
+            </AlertDescription>
+          </Alert>
+          <Alert variant="destructive" onClose={() => {}}>
+            <AlertTitle>Database Connection Lost</AlertTitle>
+            <AlertDescription>
+              Failed to connect to primary replica. Retrying in 5 seconds.
+            </AlertDescription>
+          </Alert>
+        </div>
+      )
+
     case "accordion":
       return (
         <Accordion
@@ -511,6 +559,78 @@ export const LiveDemoRenderer: React.FC<{ slug: string; sectionId?: string }> = 
             </DrawerFooter>
           </DrawerContent>
         </Drawer>
+      )
+
+    case "sheet":
+      return (
+        <div className="flex flex-wrap items-center gap-3">
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="primary">Open Right Sheet (Side Modal)</Button>
+            </SheetTrigger>
+            <SheetContent side="right" size="default">
+              <SheetHeader>
+                <SheetTitle>Edit User Profile</SheetTitle>
+                <SheetDescription>
+                  Make changes to your user configuration here. Click save when done.
+                </SheetDescription>
+              </SheetHeader>
+              <div className="space-y-4 py-6">
+                <div className="space-y-1.5">
+                  <Label>Full Name</Label>
+                  <Input defaultValue="Saeful Rohman" />
+                </div>
+                <div className="space-y-1.5">
+                  <Label>Email</Label>
+                  <Input defaultValue="saefulrohman@example.com" />
+                </div>
+                <div className="space-y-1.5">
+                  <Label>Role</Label>
+                  <Input defaultValue="System Administrator" disabled />
+                </div>
+              </div>
+              <SheetFooter>
+                <SheetClose asChild>
+                  <Button variant="outline">Cancel</Button>
+                </SheetClose>
+                <Button variant="primary">Save Changes</Button>
+              </SheetFooter>
+            </SheetContent>
+          </Sheet>
+
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="secondary">Open Left Sheet</Button>
+            </SheetTrigger>
+            <SheetContent side="left" size="sm">
+              <SheetHeader>
+                <SheetTitle>Navigation Menu</SheetTitle>
+                <SheetDescription>Quick access side drawer</SheetDescription>
+              </SheetHeader>
+              <div className="py-4 space-y-2 text-sm text-muted-foreground">
+                <div className="p-2 rounded-lg hover:bg-muted cursor-pointer text-foreground">Dashboard</div>
+                <div className="p-2 rounded-lg hover:bg-muted cursor-pointer text-foreground">Analytics</div>
+                <div className="p-2 rounded-lg hover:bg-muted cursor-pointer text-foreground">Settings</div>
+              </div>
+            </SheetContent>
+          </Sheet>
+
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="outline">Open Bottom Sheet</Button>
+            </SheetTrigger>
+            <SheetContent side="bottom" size="default">
+              <SheetHeader>
+                <SheetTitle>Mobile Actions Sheet</SheetTitle>
+                <SheetDescription>Select an action to proceed</SheetDescription>
+              </SheetHeader>
+              <div className="py-4 flex gap-2">
+                <Button variant="primary" className="flex-1">Export CSV</Button>
+                <Button variant="outline" className="flex-1">Share Report</Button>
+              </div>
+            </SheetContent>
+          </Sheet>
+        </div>
       )
 
     case "dropdown":
@@ -1124,6 +1244,19 @@ export const LiveDemoRenderer: React.FC<{ slug: string; sectionId?: string }> = 
         )
       }
       return <SystemHealthBlock />
+
+    case "notification-center":
+      return (
+        <div className="flex flex-col items-center justify-center p-8 gap-4 w-full">
+          <div className="flex items-center gap-4 p-5 rounded-2xl border border-border bg-card shadow-sm">
+            <div className="text-left">
+              <p className="text-sm font-semibold text-foreground">Header Notification Bell</p>
+              <p className="text-xs text-muted-foreground">Click to view real-time feed with mark-as-read</p>
+            </div>
+            <NotificationCenter />
+          </div>
+        </div>
+      )
 
     // NEW ENTERPRISE PRIMITIVES
     case "timeline":

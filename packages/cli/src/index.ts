@@ -44,6 +44,7 @@ const GITHUB_RAW_BASE =
   "https://raw.githubusercontent.com/XenchinRyu7/Ethereal-UI/main/packages/ui/src"
 
 const SOURCE_FILE_MAP: Record<string, string> = {
+  alert: "primitives/alert.tsx",
   accordion: "primitives/accordion.tsx",
   announcement: "primitives/announcement.tsx",
   avatar: "primitives/avatar.tsx",
@@ -73,6 +74,7 @@ const SOURCE_FILE_MAP: Record<string, string> = {
   progress: "primitives/progress.tsx",
   "radio-group": "primitives/radio-group.tsx",
   select: "primitives/select.tsx",
+  sheet: "primitives/sheet.tsx",
   skeleton: "primitives/skeleton.tsx",
   slider: "primitives/slider.tsx",
   switch: "primitives/switch.tsx",
@@ -113,6 +115,7 @@ const SOURCE_FILE_MAP: Record<string, string> = {
   "event-scheduler": "blocks/event-scheduler.tsx",
   "system-health": "blocks/system-health.tsx",
   "ai-chat-thread": "blocks/ai-chat-thread.tsx",
+  "notification-center": "blocks/notification-center.tsx",
   "executive-analytics": "templates/executive-analytics.tsx",
   "control-tower": "templates/control-tower.tsx",
   "workspace-settings": "templates/workspace-settings.tsx",

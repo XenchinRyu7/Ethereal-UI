@@ -25,6 +25,63 @@ export const REGISTRY_ITEMS: RegistryItem[] = [
   // BASE COMPONENTS (One-by-one, matching BoardUI sidebar)
   // ============================================================================
   {
+    slug: "alert",
+    title: "Alert",
+    category: "primitives",
+    subcategory: "Base",
+    description:
+      "Contextual feedback banners for system alerts, warnings, errors, and informational callouts.",
+    isNew: true,
+    dependencies: ["lucide-react", "class-variance-authority"],
+    sourceFile: "packages/ui/src/primitives/alert.tsx",
+    code: `import { Alert, AlertTitle, AlertDescription } from "@etherealui/react"
+
+export function AlertDemo() {
+  return (
+    <div className="space-y-3 max-w-md">
+      <Alert variant="info">
+        <AlertTitle>System Update Available</AlertTitle>
+        <AlertDescription>
+          A new version of the dashboard runtime has been deployed.
+        </AlertDescription>
+      </Alert>
+
+      <Alert variant="success">
+        <AlertTitle>Payment Successful</AlertTitle>
+        <AlertDescription>
+          Your monthly subscription payment has cleared.
+        </AlertDescription>
+      </Alert>
+
+      <Alert variant="warning">
+        <AlertTitle>High CPU Utilization</AlertTitle>
+        <AlertDescription>
+          Worker pod-09 exceeded 85% CPU capacity.
+        </AlertDescription>
+      </Alert>
+
+      <Alert variant="destructive" onClose={() => console.log("dismissed")}>
+        <AlertTitle>Connection Dropped</AlertTitle>
+        <AlertDescription>
+          Database cluster replica is unreachable.
+        </AlertDescription>
+      </Alert>
+    </div>
+  )
+}`,
+    sections: [
+      {
+        id: "variants",
+        title: "Alert Variants",
+        description: "Supports default, info, success, warning, and destructive variants.",
+        code: `<Alert variant="warning">
+  <AlertTitle>Warning</AlertTitle>
+  <AlertDescription>Resource threshold exceeded.</AlertDescription>
+</Alert>`,
+      },
+    ],
+  },
+  {
     slug: "accordion",
     title: "Accordion",
     category: "primitives",
@@ -559,6 +616,63 @@ export function DrawerDemo() {
   )
 }`,
     sections: [],
+  },
+  {
+    slug: "sheet",
+    title: "Sheet",
+    category: "primitives",
+    subcategory: "Base",
+    description:
+      "Flexible side modal overlay sliding from the right, left, top, or bottom of the viewport.",
+    isNew: true,
+    dependencies: ["@radix-ui/react-dialog", "lucide-react", "class-variance-authority"],
+    sourceFile: "packages/ui/src/primitives/sheet.tsx",
+    code: `import {
+  Sheet,
+  SheetTrigger,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+  SheetFooter,
+  SheetClose,
+  Button
+} from "@etherealui/react"
+
+export function SheetDemo() {
+  return (
+    <Sheet>
+      <SheetTrigger asChild>
+        <Button variant="primary">Open Side Modal</Button>
+      </SheetTrigger>
+      <SheetContent side="right" size="default">
+        <SheetHeader>
+          <SheetTitle>Side Modal Panel</SheetTitle>
+          <SheetDescription>
+            Slide-over drawer for inspecting records or editing forms.
+          </SheetDescription>
+        </SheetHeader>
+        <div className="py-6 text-xs text-muted-foreground">
+          Sheet content with rich inputs and responsive layouts.
+        </div>
+        <SheetFooter>
+          <SheetClose asChild>
+            <Button variant="outline">Close</Button>
+          </SheetClose>
+          <Button variant="primary">Save Changes</Button>
+        </SheetFooter>
+      </SheetContent>
+    </Sheet>
+  )
+}`,
+    sections: [
+      {
+        id: "sides",
+        title: "Slide Sides & Sizes",
+        description: "Supports side='right' | 'left' | 'top' | 'bottom' with size='sm' | 'default' | 'lg' | 'xl' | 'full'.",
+        code: `<SheetContent side="left" size="lg">...</SheetContent>`,
+      },
+    ],
   },
   {
     slug: "dropdown",
@@ -2082,6 +2196,40 @@ export function CustomSlaRingDemo() {
     </div>
   )
 }`,
+      },
+    ],
+  },
+  {
+    slug: "notification-center",
+    title: "Notification Center",
+    category: "blocks",
+    subcategory: "Feedback",
+    description:
+      "Enterprise dashboard notification bell with real-time unread badge, category filter tabs, mark-as-read, and dismissible activity stream.",
+    isNew: true,
+    dependencies: ["@radix-ui/react-popover", "lucide-react"],
+    sourceFile: "packages/ui/src/blocks/notification-center.tsx",
+    code: `import { NotificationCenter } from "@etherealui/react"
+
+export function NotificationCenterDemo() {
+  return (
+    <div className="flex items-center gap-4 p-6 rounded-2xl border border-border bg-card">
+      <span className="text-xs text-muted-foreground">Click the bell to test notifications:</span>
+      <NotificationCenter />
+    </div>
+  )
+}`,
+    sections: [
+      {
+        id: "controlled",
+        title: "Controlled Notification Feed",
+        description: "Pass custom notification items, handlers for mark-as-read, and action triggers.",
+        code: `<NotificationCenter
+  notifications={[
+    { id: "1", title: "Deployment v0.0.7", message: "Edge workers ready", timestamp: "Just now", read: false, type: "success" }
+  ]}
+  onMarkAsRead={(id) => console.log("Read:", id)}
+/>`,
       },
     ],
   },
