@@ -40,6 +40,7 @@ interface EtherealConfig {
 }
 
 const DEFAULT_REGISTRY_URL = "https://ethereal-ui.saefulrohman.dev/registry"
+const THEMES_BASE_URL = "https://ethereal-ui.saefulrohman.dev/themes"
 const GITHUB_RAW_BASE =
   "https://raw.githubusercontent.com/XenchinRyu7/Ethereal-UI/main/packages/ui/src"
 
@@ -159,19 +160,26 @@ function printHelp() {
     `  ${c.cyan}add <slug...>${c.reset}         Add one or more components/blocks/charts to your project`
   )
   console.log(
+    `  ${c.cyan}theme add <name...>${c.reset}   Download OKLCH theme presets (e.g. cyberpunk, light-green)`
+  )
+  console.log(
+    `  ${c.cyan}theme list [query]${c.reset}    Browse and search community OKLCH themes`
+  )
+  console.log(
     `  ${c.cyan}list${c.reset}                  List all 56+ available primitives, charts, blocks & templates\n`
   )
   console.log(`${c.bold}Options:${c.reset}`)
   console.log(
-    `  ${c.dim}--dir <path>${c.reset}          Target directory (default: src/components/ui)`
+    `  ${c.dim}--dir <path>${c.reset}          Target directory (default: src/components/ui or public/themes)`
   )
   console.log(
-    `  ${c.dim}--overwrite${c.reset}           Overwrite existing component files\n`
+    `  ${c.dim}--overwrite${c.reset}           Overwrite existing files\n`
   )
   console.log(`${c.bold}Examples:${c.reset}`)
   console.log(`  npx @etherealui/cli@latest init`)
   console.log(`  npx @etherealui/cli@latest add avatar button stat-card`)
-  console.log(`  npx @etherealui/cli@latest add area-chart data-table --overwrite\n`)
+  console.log(`  npx @etherealui/cli@latest theme add cyberpunk light-green`)
+  console.log(`  npx @etherealui/cli@latest theme list neon\n`)
 }
 
 async function fileExists(targetPath: string): Promise<boolean> {
@@ -375,6 +383,146 @@ async function handleAdd(cwd: string, args: string[]) {
   )
 }
 
+interface ThemeManifestEntry {
+  fileName: string
+  name: string
+  id: string
+  themeId: string
+  author: string
+  likeCount: number
+  tags: string[]
+}
+
+async function handleTheme(cwd: string, args: string[]) {
+  printBanner()
+  const subCommand = args[0]
+  if (!subCommand || subCommand === "help" || subCommand === "--help" || subCommand === "-h") {
+    console.log(`${c.bold}Usage:${c.reset}`)
+    console.log(`  npx @etherealui/cli theme add <theme-name...> [options]`)
+    console.log(`  npx @etherealui/cli theme list [search-query]\n`)
+    console.log(`${c.bold}Examples:${c.reset}`)
+    console.log(`  npx @etherealui/cli theme add cyberpunk`)
+    console.log(`  npx @etherealui/cli theme add light-green zen-inspired-theme --overwrite`)
+    console.log(`  npx @etherealui/cli theme list neon\n`)
+    return
+  }
+
+  // 1. THEME LIST / SEARCH
+  if (subCommand === "list" || subCommand === "ls" || subCommand === "search") {
+    const query = args[1]?.toLowerCase()
+    console.log(`${c.dim}Fetching themes manifest from registry...${c.reset}`)
+    try {
+      const res = await fetch(`${THEMES_BASE_URL}/themes-manifest.json`)
+      if (!res.ok) throw new Error(`HTTP ${res.status}`)
+      let items = (await res.json()) as ThemeManifestEntry[]
+
+      if (query) {
+        items = items.filter(
+          (t) =>
+            t.name.toLowerCase().includes(query) ||
+            t.fileName.toLowerCase().includes(query) ||
+            t.tags?.some((tag) => tag.toLowerCase().includes(query))
+        )
+      }
+
+      console.log(
+        `\nAvailable OKLCH Themes${query ? ` matching "${query}"` : ""} (${items.length} total):\n`
+      )
+      const topItems = items.slice(0, 30)
+      for (const item of topItems) {
+        const fileBase = item.fileName.replace(/\.css$/, "")
+        console.log(
+          `  ${c.cyan}${fileBase.padEnd(26)}${c.reset} ${c.bold}${item.name}${c.reset} ${c.dim}(♥ ${item.likeCount || 0})${c.reset}`
+        )
+        if (item.tags?.length) {
+          console.log(`    ${c.dim}tags: ${item.tags.join(", ")}${c.reset}`)
+        }
+      }
+      if (items.length > 30) {
+        console.log(
+          `\n  ${c.dim}...and ${items.length - 30} more themes. Visit ${THEMES_BASE_URL} to view all 870+ themes.${c.reset}`
+        )
+      }
+      console.log("")
+    } catch (err) {
+      console.error(`${c.red}✖ Failed to fetch theme list: ${err}${c.reset}\n`)
+    }
+    return
+  }
+
+  // 2. THEME ADD
+  const themeNames: string[] = []
+  let targetDir = (await fileExists(path.join(cwd, "public")))
+    ? "public/themes"
+    : "src/styles/themes"
+  let overwrite = false
+
+  const themeArgs = subCommand === "add" ? args.slice(1) : args
+
+  for (let i = 0; i < themeArgs.length; i++) {
+    const arg = themeArgs[i]
+    if (arg === "--overwrite" || arg === "-o") {
+      overwrite = true
+    } else if (arg === "--dir" || arg === "-d") {
+      if (themeArgs[i + 1]) {
+        targetDir = themeArgs[i + 1]
+        i++
+      }
+    } else if (!arg.startsWith("-")) {
+      themeNames.push(arg)
+    }
+  }
+
+  if (themeNames.length === 0) {
+    console.error(
+      `${c.red}✖ Please specify at least one theme to download (e.g. npx @etherealui/cli theme add cyberpunk).${c.reset}\n`
+    )
+    process.exit(1)
+  }
+
+  const absTargetDir = path.join(cwd, targetDir)
+  await fs.mkdir(absTargetDir, { recursive: true })
+
+  for (const rawName of themeNames) {
+    const slug = rawName.replace(/\.css$/, "").toLowerCase()
+    const fileName = `${slug}.css`
+    const outFilePath = path.join(absTargetDir, fileName)
+
+    if ((await fileExists(outFilePath)) && !overwrite) {
+      console.log(
+        `${c.yellow}⚠ Skipped${c.reset} ${c.bold}${path.relative(cwd, outFilePath)}${c.reset} ${c.dim}(already exists, pass --overwrite to replace)${c.reset}`
+      )
+      continue
+    }
+
+    try {
+      const res = await fetch(`${THEMES_BASE_URL}/${fileName}`)
+      if (!res.ok) {
+        throw new Error(
+          `Theme "${slug}" not found at ${THEMES_BASE_URL}/${fileName} (${res.status})`
+        )
+      }
+      const cssContent = await res.text()
+      await fs.writeFile(outFilePath, cssContent, "utf-8")
+      console.log(
+        `${c.green}✔ Added${c.reset} theme ${c.bold}${path.relative(cwd, outFilePath)}${c.reset}`
+      )
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err)
+      console.error(`${c.red}✖ Error downloading theme "${slug}": ${message}${c.reset}`)
+    }
+  }
+
+  const firstTheme = themeNames[0]?.replace(/\.css$/, "")
+  console.log(`\n${c.bold}How to activate your theme:${c.reset}`)
+  console.log(
+    `  1. In your root ${c.cyan}<html>${c.reset} element, add: ${c.yellow}data-color-theme="${firstTheme}"${c.reset}`
+  )
+  console.log(
+    `  2. In your HTML <head> or layout, link the stylesheet:\n     ${c.dim}<link rel="stylesheet" href="/themes/${firstTheme}.css" />${c.reset}\n`
+  )
+}
+
 async function main() {
   const args = process.argv.slice(2)
   const command = args[0]
@@ -402,6 +550,11 @@ async function main() {
 
   if (command === "add") {
     await handleAdd(cwd, args.slice(1))
+    return
+  }
+
+  if (command === "theme") {
+    await handleTheme(cwd, args.slice(1))
     return
   }
 

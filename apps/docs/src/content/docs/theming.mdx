@@ -1,74 +1,196 @@
 ---
-title: "Themes & Tailwind v4 Tokens"
-description: "870+ OKLCH color themes and dynamic Light & Dark mode design tokens powered by native Tailwind CSS v4 @theme variables."
+title: "Theming & Contrast Safeguards"
+description: "Panduan lengkap arsitektur tema OKLCH Ethereal UI, runtime switching di React, download tema via CLI/curl, dan vaksin pencegahan bug teks tidak terlihat ('Ghost Field')."
 order: 3
-badge: "870+ Themes"
+badge: "Design Tokens & WCAG AA"
 ---
 
-import { ThemeExplorerShowcase } from "../../components/ThemeExplorerShowcase"
+## Overview
 
-## Interactive Theme Studio (870+ Presets)
-
-Select any theme below or from the **Navbar Theme Dropdown** to transform the entire documentation site, components, blocks, and charts in real time. Click **Copy CSS** on any card to grab its `:root` and `.dark` OKLCH variables.
-
-<ThemeExplorerShowcase client:load />
+Sistem theming pada **Ethereal UI** dibangun di atas filosofi **Zero-Runtime Overhead**:
+- Menggunakan native **Tailwind CSS v4 `@theme inline`** dan CSS Custom Properties (`var(--primary)`, `var(--background)`, dll.).
+- **Tanpa `<ThemeProvider>` React Context**: pergantian tema terjadi murni di level browser via CSS variables propagation tanpa memicu re-render ulang component tree React.
+- Kompatibel penuh dengan **870+ preset komunitas OKLCH** yang dapat dilihat langsung di [Theme Explorer](/themes).
 
 ---
 
-> [!NOTE]
-> **Token Contrast Pairing & Community Presets (WCAG 2.1 AA Compliance)**
+> [!CAUTION]
+> ## Penyakit "Ghost Field" & Contrast Inversion Trap (Teks Tidak Kelihatan)
 >
-> Ethereal UI mencakup 870+ preset tema komunitas OKLCH. Beberapa preset kreatif (seperti *Light Green*, *Cyberpunk*, atau tema brutalist) menggunakan warna aksen terang pada mode light atau skema sekunder kontras tinggi.
+> ### Gejala Penyakit
+> Saat mendesain form atau kartu antarmuka, AI Agent atau developer sering kali menulis class styling kombinasi seperti:
+> ```tsx
+> /* ❌ FATAL MISTAKE: Teks akan lenyap di Dark Mode! */
+> <input className="bg-white text-foreground border-gray-300" />
+> <div className="bg-white text-foreground p-6 rounded-xl">Konten Card</div>
+> ```
 >
-> **Aturan Wajib Pasangan Token Semantik:**
-> - **Selalu pasangkan token background dengan foreground pasangannya**:
->   - Gunakan `bg-primary` bersama `text-primary-foreground` (hindari hardcode `text-white` pada warna primary, karena preset seperti *Light Green* memiliki `--primary` hijau neon yang membutuhkan teks hitam `text-primary-foreground`).
->   - Gunakan `bg-secondary` bersama `text-secondary-foreground`.
->   - Gunakan `bg-muted` bersama `text-muted-foreground`.
->   - Gunakan `bg-sidebar` bersama `text-sidebar-foreground` dan `bg-sidebar-primary` bersama `text-sidebar-primary-foreground`.
-> - **Skala Neutral Dinamis**: Skala neutral `zinc` di Ethereal UI dihitung otomatis via linear Oklab interpolation terhadap `var(--foreground)` dan `var(--background)`, menjamin rasio kontras teks minimum 4.5:1 (WCAG AA) pada semua variasi tema.
+> ### Mengapa Teksnya Jadi Hilang (Putih di Atas Putih)?
+> 1. **Di Mode Light:** `bg-white` membuat background putih, dan `text-foreground` bernilai hitam/gelap (`#09090b`). Tampilan terlihat normal sehingga bug tidak disadari saat awal dev.
+> 2. **Di Mode Dark:** Token semantik `text-foreground` secara otomatis berubah menjadi putih/terang (`#fafafa`). Namun karena background field di-hardcode dengan `bg-white`, hasilnya adalah **Teks Putih di atas Latar Putih (Ghost Field)**! Teks yang diketik user menjadi sama sekali tidak terlihat.
+>
+> ### Penyakit Sebaliknya: "Neon Burnout"
+> ```tsx
+> /* ❌ FATAL MISTAKE: Teks lenyap di tema neon/terang! */
+> <button className="bg-primary text-white">Simpan Perubahan</button>
+> ```
+> Pada tema modern Ethereal UI (misal *Light Green*, *Cyberpunk*, atau skema pastel), nilai `--primary` memiliki lightness > 85% (hijau/kuning neon). Jika Anda menaruh `text-white`, teks putih di atas tombol hijau neon menjadi silau dan tidak terbaca (gagal lolos standar WCAG AA).
+>
+> ### Vaksin & Aturan Mutlak
+> 1. **Gunakan Komponen Primitives Ethereal UI Langsung:** Komponen bawaan (`<Input>`, `<Button>`, `<Card>`, `<DataTable>`, dll.) sudah 100% menggunakan semantic tokens di internalnya sehingga **kebal otomatis** terhadap masalah ini.
+> 2. **JANGAN PERNAH hardcode palette warna Tailwind:** Hindari `bg-blue-600`, `text-white`, `bg-white`, `border-gray-200`, `bg-zinc-900`.
+> 3. **SELALU pasangkan token background dengan token teks pasangannya:**
+>    - `bg-background` berpasangan dengan `text-foreground`
+>    - `bg-card` berpasangan dengan `text-card-foreground`
+>    - `bg-primary` berpasangan dengan `text-primary-foreground` *(BUKAN `text-white`!)*
+>    - `bg-secondary` berpasangan dengan `text-secondary-foreground`
+>    - `bg-muted` berpasangan dengan `text-muted-foreground`
+>    - `bg-popover` berpasangan dengan `text-popover-foreground`
 
 ---
 
-## Dark-Mode First Philosophy
+## Semantic Token Pairing Reference
 
-Enterprise operators, SREs, and financial analysts spend hours inspecting dense telemetry grids. **Ethereal UI** is engineered specifically for low-eye-strain, high-contrast dark surfaces (`#09090b` root canvas and `#121215` elevated panels) with crisp `1px solid rgba(255, 255, 255, 0.08)` hairlines.
+Gunakan tabel referensi berikut saat merancang antarmuka kustom:
+
+| Lapisan UI | Token Background | Token Teks Pasangan | Alasan & Jaminan Kontras |
+| :--- | :--- | :--- | :--- |
+| **Canvas / Root** | `bg-background` | `text-foreground` | Mengikuti kanvas mode Light / Dark secara otomatis. |
+| **Card / Surface / Form Field** | `bg-card` atau `bg-background` | `text-card-foreground` atau `text-foreground` | Mencegah field input menjadi putih di Dark Mode. |
+| **Primary Actions (Tombol Utama)** | `bg-primary` | `text-primary-foreground` | Otomatis teks hitam pada tema neon, putih pada tema gelap. |
+| **Secondary Controls / Tab Pill** | `bg-secondary` | `text-secondary-foreground` | Kontras netral stabil untuk filter bar, tab, dan badge secondary. |
+| **Muted / Subtitle / Placeholder** | `bg-muted` | `text-muted-foreground` | Area deskripsi, label non-aktif, info banner, dan hint teks. |
+| **Floating Popover / Modal** | `bg-popover` | `text-popover-foreground` | Dropdown menu, popover tanggal, tooltip, dan modal dialog. |
+| **Sidebar Navigation** | `bg-sidebar` | `text-sidebar-foreground` | Drawer samping dan navigasi vertikal. |
 
 ---
 
-## CSS Variable Tokens (`@theme`)
+## Cara Menerapkan Tema di Project (React & Next.js)
+
+### 1. Atribut Wajib `data-color-theme` di `<html>`
+Engine dinamis Ethereal UI di `globals.css` memiliki rule remapping:
+```css
+html[data-color-theme]:not([data-color-theme="default"]) {
+  /* Engine dynamic: remap radius, Oklab neutral scale, elevation shadow, dll */
+}
+```
+Pastikan elemen root `<html>` memiliki atribut `data-color-theme="custom"` (atau nama tema yang Anda gunakan):
+
+```html
+<!-- index.html (Vite) atau app/layout.tsx (Next.js) -->
+<html lang="en" class="dark" data-color-theme="custom">
+  <head>
+    <link rel="stylesheet" href="/themes/cyberpunk.css" />
+  </head>
+  <body class="bg-background text-foreground antialiased min-h-screen">
+    <!-- Konten Aplikasi -->
+  </body>
+</html>
+```
+
+### 2. Menyalin Variabel Langsung ke `globals.css`
+Anda juga dapat menyalin blok `:root` dan `.dark` langsung ke file `globals.css` aplikasi Anda:
 
 ```css
+/* src/styles/globals.css */
 @import "tailwindcss";
+@import "@etherealui/react/styles.css";
 
-@theme {
-  --font-sans: "Inter", "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", "Fira Code", ui-monospace, monospace;
+:root {
+  --background: oklch(0.9818 0.0054 95.0986);
+  --foreground: oklch(0.3438 0.0269 95.7226);
+  --card: oklch(0.9665 0.0067 97.3521);
+  --card-foreground: oklch(0.3438 0.0269 95.7226);
+  --primary: oklch(0.6171 0.1375 39.0427);
+  --primary-foreground: oklch(1.0000 0 0);
+  --border: oklch(0.8847 0.0069 97.3628);
+}
 
-  --color-ethereal-bg: #09090b;
-  --color-ethereal-surface: #121215;
-  --color-ethereal-elevated: #18181b;
-  --color-ethereal-border: rgba(255, 255, 255, 0.08);
-  --color-ethereal-hover: rgba(255, 255, 255, 0.04);
-  --color-ethereal-ring: rgba(255, 255, 255, 0.15);
-
-  --color-accent-indigo: #6366f1;
-  --color-accent-violet: #8b5cf6;
-  --color-status-emerald: #10b981;
-  --color-status-amber: #f59e0b;
-  --color-status-rose: #f43f5e;
+.dark {
+  --background: oklch(0.1822 0.0055 95.2104);
+  --foreground: oklch(0.9405 0.0058 95.1245);
+  --card: oklch(0.2241 0.0064 95.1783);
+  --card-foreground: oklch(0.9405 0.0058 95.1245);
+  --primary: oklch(0.6726 0.2904 341.4084);
+  --primary-foreground: oklch(1.0000 0 0);
+  --border: oklch(0.2984 0.0071 95.1952);
 }
 ```
 
 ---
 
-## Surface & Border Hierarchy
+## Dynamic Theme Switching di React (Tanpa `<ThemeProvider>`)
 
-| Token / Utility | Hex / RGBA | Usage |
-| :--- | :--- | :--- |
-| `bg-[#09090b]` | `#09090b` | Root application background |
-| `bg-zinc-900/50` | `#121215` | Card, Data Table, and Sidebar surface |
-| `border-white/10` | `rgba(255,255,255,0.08)` | Crisp 1px structural borders |
-| `hover:bg-white/5` | `rgba(255,255,255,0.04)` | Interactive row & button hover states |
-| `ring-white/20` | `rgba(255,255,255,0.15)` | Accessible keyboard focus ring |
+Karena Ethereal UI tidak menggunakan React Context wrapper, Anda dapat beralih tema kapan saja via fungsi utilitas JavaScript murni:
 
+```tsx
+import React, { useState } from "react"
+
+export function ThemeSwitcher() {
+  const [activeTheme, setActiveTheme] = useState("default")
+
+  const switchTheme = (themeName: string) => {
+    setActiveTheme(themeName)
+
+    // 1. Set atribut pada elemen html
+    document.documentElement.setAttribute("data-color-theme", themeName)
+
+    // 2. Jika kembali ke tema default
+    if (themeName === "default") {
+      const activeLink = document.getElementById("ethereal-active-theme")
+      if (activeLink) activeLink.remove()
+      return
+    }
+
+    // 3. Inject atau update stylesheet tema yang aktif
+    let link = document.getElementById("ethereal-active-theme") as HTMLLinkElement | null
+    if (!link) {
+      link = document.createElement("link")
+      link.id = "ethereal-active-theme"
+      link.rel = "stylesheet"
+      document.head.appendChild(link)
+    }
+    link.href = `/themes/${themeName}.css`
+  }
+
+  return (
+    <div className="flex items-center gap-2">
+      <span className="text-xs text-muted-foreground font-medium">Tema:</span>
+      <select
+        value={activeTheme}
+        onChange={(e) => switchTheme(e.target.value)}
+        className="h-8 rounded-lg border border-border bg-background px-2.5 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+      >
+        <option value="default">Default Blue & Zinc</option>
+        <option value="cyberpunk">Cyberpunk Neon</option>
+        <option value="light-green">Light Green</option>
+        <option value="zen-inspired-theme">Zen Inspired</option>
+      </select>
+    </div>
+  )
+}
+```
+
+---
+
+## Cara Mendapatkan & Download File Tema
+
+Ada 3 cara untuk mendapatkan file tema CSS preset Ethereal UI:
+
+### Cara 1: Menggunakan Ethereal UI CLI
+Anda dapat mengunduh tema langsung ke project Anda via CLI:
+```bash
+# Download preset tema ke folder public/themes/
+npx @etherealui/cli@latest theme add cyberpunk
+npx @etherealui/cli@latest theme add light-green zen-inspired-theme
+```
+
+### Cara 2: Download Langsung via `curl` / `wget`
+Semua file CSS tema di-host secara publik:
+```bash
+# Simpan langsung ke folder public/themes/ project Anda
+curl -o public/themes/cyberpunk.css https://ethereal-ui.saefulrohman.dev/themes/cyberpunk.css
+```
+
+### Cara 3: Copy CSS dari Theme Explorer
+Buka halaman [Theme Explorer](/themes), pilih salah satu dari 870+ preset tema, lalu klik tombol **Copy CSS** untuk menyalin variabel `:root` dan `.dark` ke clipboard.

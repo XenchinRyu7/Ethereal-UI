@@ -5,6 +5,28 @@ order: 4
 badge: "Registry API"
 ---
 
+## Official CLI Commands (`@etherealui/cli`)
+
+### 1. Initialize Configuration
+```bash
+npx @etherealui/cli@latest init
+```
+
+### 2. Add Components & Enterprise Blocks
+```bash
+npx @etherealui/cli@latest add button avatar stat-card
+npx @etherealui/cli@latest add data-table area-chart --overwrite
+```
+
+### 3. Download OKLCH Community Themes
+```bash
+npx @etherealui/cli@latest theme add cyberpunk
+npx @etherealui/cli@latest theme add light-green zen-inspired-theme
+npx @etherealui/cli@latest theme list neon
+```
+
+---
+
 ## Live JSON Registry Endpoints
 
 Every primitive, enterprise block, and full-page dashboard template in Ethereal UI is automatically indexed and served as a static JSON endpoint during the Astro build:

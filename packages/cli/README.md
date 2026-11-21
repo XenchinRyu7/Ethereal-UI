@@ -17,7 +17,14 @@ npx @etherealui/cli@latest add avatar button stat-card
 npx @etherealui/cli@latest add area-chart data-table --overwrite
 ```
 
-### 3. List All 56+ Registry Items
+### 3. Download OKLCH Theme Presets (870+ Community Themes)
+```bash
+npx @etherealui/cli@latest theme add cyberpunk
+npx @etherealui/cli@latest theme add light-green zen-inspired-theme
+npx @etherealui/cli@latest theme list neon
+```
+
+### 4. List All 56+ Registry Items
 ```bash
 npx @etherealui/cli@latest list
 ```

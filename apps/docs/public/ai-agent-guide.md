@@ -60,9 +60,38 @@ npx @etherealui/cli add button data-table kanban-board stat-card
 ## 3. Strict Theming & Token Pairing Rules (CRITICAL FOR AGENTS)
 
 > [!CAUTION]
-> **THE GOLDEN TOKEN PAIRING RULE (WCAG 2.1 AA COMPLIANCE)**  
-> **NEVER hardcode text colors like `text-white` on variable backgrounds!**  
-> In Ethereal UI, themes like *Light Green*, *Cyberpunk*, or *Pastel* feature bright neon primary colors (lightness > 85%). If you hardcode `text-white`, the text will become completely **invisible**!
+> **THE "GHOST FIELD" & CONTRAST INVERSION TRAP (WHITE-ON-WHITE BUG)**
+> 
+> **The Common AI Agent Pitfall:**
+> AI agents frequently write hardcoded utilities like:
+> ```tsx
+> /* ❌ FATAL MISTAKE: Causes invisible "Ghost Fields" in Dark Mode! */
+> <input className="bg-white text-foreground border-gray-300" />
+> <div className="bg-white text-foreground p-6 rounded-xl">...</div>
+> ```
+> 
+> **Why does this break?**
+> 1. In **Light Mode**: `bg-white` is white and `text-foreground` is near-black (`#09090b`). It looks fine.
+> 2. In **Dark Mode**: `text-foreground` automatically transitions to white (`#fafafa`). Because `bg-white` was hardcoded, the result is **White Text on White Background** = **Completely invisible text!**
+> 
+> **The Reverse Trap ("Neon Burnout"):**
+> ```tsx
+> /* ❌ FATAL MISTAKE: Text disappears on bright neon themes! */
+> <button className="bg-primary text-white">Submit</button>
+> ```
+> In Ethereal UI, themes like *Light Green*, *Cyberpunk*, or *Pastel* feature bright neon primary colors (lightness > 85%). If you hardcode `text-white`, the white text on a bright neon button becomes completely unreadable!
+> 
+> **STRICT AGENT MANDATES:**
+> 1. **USE ETHEREAL UI PRIMITIVES DIRECTLY**: Native components (`<Input>`, `<Button>`, `<Card>`, `<DataTable>`, etc.) already use semantic tokens internally and are 100% immune to this issue.
+> 2. **NEVER hardcode Tailwind palette colors**: Do NOT use `bg-blue-600`, `text-white`, `bg-white`, `border-gray-200`, `bg-zinc-900`.
+> 3. **ALWAYS pair semantic background tokens with their matching foreground token**:
+>    - `bg-background` ➔ `text-foreground`
+>    - `bg-card` ➔ `text-card-foreground`
+>    - `bg-primary` ➔ `text-primary-foreground` (NEVER `text-white`!)
+>    - `bg-secondary` ➔ `text-secondary-foreground`
+>    - `bg-muted` ➔ `text-muted-foreground`
+>    - `bg-popover` ➔ `text-popover-foreground`
+>    - `border-border`, `ring-ring`
 
 ### Mandatory Semantic Token Matrix
 
@@ -70,10 +99,11 @@ Always pair background tokens with their corresponding foreground tokens:
 
 | Element / Utility | Background Class | Matching Text Class | Note / Contrast Rule |
 | :--- | :--- | :--- | :--- |
+| **Canvas / Root** | `bg-background` | `text-foreground` | ✅ Adapts cleanly between Light & Dark canvas |
+| **Cards & Panels** | `bg-card` | `text-card-foreground` | ✅ Prevents white-on-white card/modal bug in Dark Mode |
 | **Primary Actions** | `bg-primary` | `text-primary-foreground` | ✅ Adapts to black on neon themes and white on dark themes |
 | **Secondary Controls** | `bg-secondary` | `text-secondary-foreground` | ✅ Secondary buttons, active chips |
 | **Muted Surfaces** | `bg-muted` | `text-muted-foreground` | ✅ Badges, subtle tags, inactive tab pills |
-| **Cards & Panels** | `bg-card` | `text-card-foreground` | ✅ Elevated cards, dialog boxes |
 | **Popovers & Menus** | `bg-popover` | `text-popover-foreground` | ✅ Tooltips, dropdown menus |
 | **Sidebar Root** | `bg-sidebar` | `text-sidebar-foreground` | ✅ Navigation drawers |
 | **Sidebar Accent** | `bg-sidebar-primary` | `text-sidebar-primary-foreground` | ✅ Active badges (e.g. `NEW`, counts) |
@@ -89,9 +119,15 @@ Ethereal UI dynamically computes the neutral grayscale using linear Oklab interp
 - **Prefer:** Use semantic tokens (`bg-muted text-muted-foreground`) over hardcoded color utilities whenever possible.
 
 ### Applying One of the 870+ OKLCH Community Themes
+
+> [!IMPORTANT]
+> **NO REACT `<ThemeProvider>` NEEDED!**  
+> Ethereal UI runs on native Tailwind CSS v4 `@theme inline` variables. DO NOT hallucinate or import a `<ThemeProvider>` or pass `theme="..."` props to components.  
+> Theming is activated via the `data-color-theme` attribute on the root `<html>` element.
+
 To apply an Ethereal UI theme preset:
-1. Download or fetch any theme from `https://ethereal-ui.saefulrohman.dev/themes/<theme-name>.css`.
-2. Add `data-color-theme="custom"` to the root `<html>` element.
+1. Download via CLI (`npx @etherealui/cli theme add <theme-name>`) or fetch from `https://ethereal-ui.saefulrohman.dev/themes/<theme-name>.css`.
+2. Add `data-color-theme="custom"` (or the theme name) to the root `<html>` element.
 3. Paste the `:root` and `.dark` variables into your `globals.css` or link the CSS file in `<head>`.
 
 ```html
@@ -100,10 +136,36 @@ To apply an Ethereal UI theme preset:
   <head>
     <link rel="stylesheet" href="/themes/cyberpunk.css" />
   </head>
-  <body class="bg-background text-foreground antialiased">
+  <body class="bg-background text-foreground antialiased min-h-screen">
     <!-- Application Content -->
   </body>
 </html>
+```
+
+### Runtime Theme Switching in React
+To switch themes dynamically at runtime without re-rendering the component tree:
+
+```tsx
+export function switchTheme(themeName: string) {
+  // 1. Activate dynamic OKLCH mapping engine
+  document.documentElement.setAttribute("data-color-theme", themeName)
+
+  if (themeName === "default") {
+    const activeLink = document.getElementById("ethereal-theme-css")
+    if (activeLink) activeLink.remove()
+    return
+  }
+
+  // 2. Inject or switch active CSS stylesheet
+  let link = document.getElementById("ethereal-theme-css") as HTMLLinkElement | null
+  if (!link) {
+    link = document.createElement("link")
+    link.id = "ethereal-theme-css"
+    link.rel = "stylesheet"
+    document.head.appendChild(link)
+  }
+  link.href = `/themes/${themeName}.css`
+}
 ```
 
 ---
