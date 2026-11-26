@@ -343,7 +343,6 @@ const templates = getRegistryByCategory("templates")
             )
             link.classList.remove("text-sidebar-foreground/75")
 
-            // Ensure active link is visible in view if offscreen
             if (container) {
               const rect = link.getBoundingClientRect()
               const cRect = container.getBoundingClientRect()
@@ -372,7 +371,6 @@ const templates = getRegistryByCategory("templates")
         }
       }
 
-      // Close drawer on link click in mobile view
       if (container) {
         container.addEventListener("click", function (e) {
           if (e.target && e.target.closest("a") && window.innerWidth < 1024) {
@@ -384,13 +382,11 @@ const templates = getRegistryByCategory("templates")
       if (closeBtn) closeBtn.addEventListener("click", closeDrawer)
       if (backdrop) backdrop.addEventListener("click", closeDrawer)
 
-      // Support Astro ClientRouter View Transitions
       document.addEventListener("astro:page-load", function () {
         syncActiveSidebarLink()
         initDrawerTriggers()
       })
 
-      // Initial page run
       syncActiveSidebarLink()
       initDrawerTriggers()
     })()
