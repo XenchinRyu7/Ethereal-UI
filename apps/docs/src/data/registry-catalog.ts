@@ -2236,7 +2236,7 @@ export function NotificationCenterDemo() {
         description: "Pass custom notification items, handlers for mark-as-read, and action triggers.",
         code: `<NotificationCenter
   notifications={[
-    { id: "1", title: "Deployment v0.0.7", message: "Edge workers ready", timestamp: "Just now", read: false, type: "success" }
+    { id: "1", title: "Deployment v0.0.9", message: "Edge workers ready", timestamp: "Just now", read: false, type: "success" }
   ]}
   onMarkAsRead={(id) => console.log("Read:", id)}
 />`,

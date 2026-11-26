@@ -634,7 +634,7 @@ const INITIAL_NOTIFICATIONS: NotificationItem[] = [
   {
     id: "1",
     title: "Deployment Successful",
-    description: "Production build v0.0.8 passed health checks.",
+    description: "Production build v0.0.9 passed health checks.",
     timestamp: "2m ago",
     read: false,
     type: "success",

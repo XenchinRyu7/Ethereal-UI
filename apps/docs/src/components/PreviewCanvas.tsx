@@ -693,7 +693,7 @@ const InteractiveNotificationCenterDemo: React.FC = () => {
     {
       id: "1",
       title: "Deployment Completed",
-      description: "Release v0.0.8 was deployed to edge nodes.",
+      description: "Release v0.0.9 was deployed to edge nodes.",
       timestamp: "5m ago",
       read: false,
       type: "success",
