@@ -1,0 +1,152 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro"
+import LandingNav from "../../components/LandingNav.astro"
+---
+
+<BaseLayout
+  title="Showcase — Real-World Apps Built with Ethereal UI"
+  description="Explore production SaaS applications and open-source systems built with Ethereal UI, Radix UI, and Tailwind CSS v4."
+>
+  <LandingNav />
+
+  <main class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-16">
+    <!-- Header -->
+    <div class="space-y-4 max-w-3xl">
+      <div class="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700 dark:border-blue-500/30 dark:bg-blue-500/10 dark:text-blue-300">
+        <span>Community &amp; Production Ecosystem</span>
+        <span>&bull;</span>
+        <span>Built with Ethereal UI</span>
+      </div>
+      <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+        Showcase
+      </h1>
+      <p class="text-base sm:text-lg text-zinc-600 dark:text-zinc-400 leading-relaxed">
+        Explore production applications, SaaS platforms, and open-source projects built with Ethereal UI. Real-world proof that Ethereal UI is battle-tested for enterprise workloads.
+      </p>
+    </div>
+
+    <!-- Featured App Showcase: Ethereal HRMS -->
+    <section class="space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <div class="flex items-center gap-2.5">
+            <h2 class="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+              Ethereal Enterprise HRMS
+            </h2>
+            <span class="inline-flex items-center rounded-full bg-emerald-500/10 px-2.5 py-0.5 text-xs font-semibold text-emerald-600 dark:text-emerald-400 border border-emerald-500/25">
+              Production SaaS
+            </span>
+            <span class="inline-flex items-center rounded-full bg-blue-500/10 px-2.5 py-0.5 text-xs font-semibold text-blue-600 dark:text-blue-400 border border-blue-500/25">
+              Open Source
+            </span>
+          </div>
+          <p class="text-sm text-zinc-600 dark:text-zinc-400 mt-1">
+            Complete Human Resource Management System with payroll execution, multi-department roster, attendance, and role-based permissions.
+          </p>
+        </div>
+
+        <div class="flex items-center gap-3 shrink-0">
+          <a
+            href="https://github.com/XenchinRyu7/hrms"
+            target="_blank"
+            rel="noreferrer"
+            class="inline-flex items-center gap-2 rounded-xl border border-zinc-200 bg-white px-4 py-2 text-xs font-semibold text-zinc-800 shadow-2xs hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800 transition-colors"
+          >
+            <svg class="h-4 w-4 fill-current" viewBox="0 0 24 24">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+            </svg>
+            <span>View Source on GitHub</span>
+          </a>
+
+          <a
+            href="https://hrms.saefulrohman.dev"
+            target="_blank"
+            rel="noreferrer"
+            class="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2 text-xs font-semibold text-white shadow-2xs hover:bg-blue-700 transition-colors"
+          >
+            <span>Open Live Application</span>
+            <span>&rarr;</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Preview Device Frame -->
+      <div class="overflow-hidden rounded-2xl border border-zinc-200 bg-zinc-950 shadow-xl dark:border-zinc-800">
+        <!-- Mock Browser Chrome Bar -->
+        <div class="flex items-center justify-between border-b border-zinc-800 bg-zinc-900/90 px-4 py-2.5">
+          <div class="flex items-center gap-2">
+            <span class="h-3 w-3 rounded-full bg-red-500/80"></span>
+            <span class="h-3 w-3 rounded-full bg-amber-500/80"></span>
+            <span class="h-3 w-3 rounded-full bg-emerald-500/80"></span>
+          </div>
+
+          <div class="flex items-center gap-1.5 rounded-md bg-zinc-950 px-3 py-1 font-mono text-[11px] text-zinc-400">
+            <svg class="h-3 w-3 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+            <span>https://hrms.saefulrohman.dev</span>
+          </div>
+
+          <div class="text-[11px] font-mono text-zinc-500 hidden sm:block">
+            Production Deployment
+          </div>
+        </div>
+
+        <!-- Embedded Interactive Iframe -->
+        <div class="relative aspect-16/10 w-full min-h-[580px] bg-zinc-900">
+          <iframe
+            src="https://hrms.saefulrohman.dev"
+            title="Ethereal Enterprise HRMS Live Application"
+            class="h-full w-full border-0"
+            loading="lazy"
+            allow="fullscreen"
+          ></iframe>
+        </div>
+      </div>
+
+      <!-- Tech Stack Badges & Details -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+        <div class="rounded-xl border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900/50">
+          <span class="text-xs font-semibold text-zinc-400 uppercase tracking-wider">Architecture</span>
+          <p class="text-sm font-semibold text-zinc-900 dark:text-zinc-100 mt-1">Astro 5 + React 19 Islands</p>
+          <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1">Hybrid SSG/SSR rendering with fast page transitions and zero hydration bloat.</p>
+        </div>
+
+        <div class="rounded-xl border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900/50">
+          <span class="text-xs font-semibold text-zinc-400 uppercase tracking-wider">Design System</span>
+          <p class="text-sm font-semibold text-zinc-900 dark:text-zinc-100 mt-1">Ethereal UI + Tailwind v4</p>
+          <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1">Custom OKLCH theme engine, data tables, dialogs, charts, and metric grids.</p>
+        </div>
+
+        <div class="rounded-xl border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900/50">
+          <span class="text-xs font-semibold text-zinc-400 uppercase tracking-wider">Features</span>
+          <p class="text-sm font-semibold text-zinc-900 dark:text-zinc-100 mt-1">Fullstack SaaS Capabilities</p>
+          <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1">Employee rosters, payroll execution, expense vouchers, attendance analytics.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Submission CTA -->
+    <section class="rounded-2xl border border-dashed border-zinc-300 bg-zinc-50/50 p-8 text-center dark:border-zinc-800 dark:bg-zinc-900/20">
+      <div class="max-w-xl mx-auto space-y-3">
+        <h3 class="text-lg font-bold text-zinc-900 dark:text-zinc-100">
+          Building something with Ethereal UI?
+        </h3>
+        <p class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400">
+          We would love to feature your project in the Ethereal UI Showcase! Whether it is a SaaS platform, internal dashboard, or open-source tool, submit a PR on GitHub.
+        </p>
+        <div class="pt-2">
+          <a
+            href="https://github.com/XenchinRyu7/Ethereal-UI/issues"
+            target="_blank"
+            rel="noreferrer"
+            class="inline-flex items-center gap-1.5 rounded-xl border border-zinc-300 bg-white px-4 py-2 text-xs font-semibold text-zinc-800 shadow-2xs hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700 transition-colors"
+          >
+            Submit Your Project &rarr;
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

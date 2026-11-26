@@ -17,6 +17,7 @@ const templates = getRegistryByCategory("templates")
 
 <aside
   id="docs-sidebar-drawer"
+  transition:persist="docs-sidebar"
   class="fixed inset-y-0 left-0 z-50 w-[276px] -translate-x-full transition-transform duration-200 ease-out lg:static lg:z-auto lg:w-[248px] lg:translate-x-0 shrink-0 lg:sticky lg:top-3 lg:h-[calc(100vh-1.5rem)] flex flex-col lg:rounded-2xl border-r lg:border border-sidebar-border bg-sidebar text-sidebar-foreground p-3 select-none shadow-2xl lg:shadow-none"
 >
   <!-- Brand Header -->
@@ -54,152 +55,90 @@ const templates = getRegistryByCategory("templates")
 
   <!-- Scrollable Tree Navigation -->
   <div id="docs-sidebar-scroll" class="flex-1 overflow-y-auto px-1 space-y-5 pr-1">
-    <!-- Top-level Overview / Blocks / Templates -->
-    <ul class="ml-2 border-l border-sidebar-border/60 space-y-0.5 text-xs">
-      <li class="relative pl-3">
-        <span class="absolute left-0 top-1/2 w-2 -translate-y-1/2 border-t border-sidebar-border/60"></span>
-        <a
-          href="/docs/introduction"
-          data-active={pathname.startsWith("/docs") ? "true" : undefined}
-          class:list={[
-            "flex items-center gap-2 rounded-lg px-2.5 py-1.5 transition-colors",
-            pathname.startsWith("/docs")
-              ? "bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-2xs"
-              : "text-sidebar-foreground/75 hover:bg-sidebar-accent/70 hover:text-sidebar-accent-foreground",
-          ]}
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-sidebar-foreground/60 shrink-0">
-            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20"/>
-          </svg>
-          <span>Documentation</span>
-        </a>
-      </li>
-      <li class="relative pl-3">
-        <span class="absolute left-0 top-1/2 w-2 -translate-y-1/2 border-t border-sidebar-border/60"></span>
-        <a
-          href="/charts"
-          data-active={(pathname === "/charts" || pathname === "/charts/") ? "true" : undefined}
-          class:list={[
-            "flex items-center gap-2 rounded-lg px-2.5 py-1.5 transition-colors",
-            pathname === "/charts" || pathname === "/charts/"
-              ? "bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-2xs"
-              : "text-sidebar-foreground/75 hover:bg-sidebar-accent/70 hover:text-sidebar-accent-foreground",
-          ]}
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-sidebar-foreground/60 shrink-0">
-            <path d="M3 3v16a2 2 0 0 0 2 2h16"/>
-            <path d="M18 17V9"/>
-            <path d="M13 17V5"/>
-            <path d="M8 17v-3"/>
-          </svg>
-          <span>Charts</span>
-        </a>
-      </li>
-      <li class="relative pl-3">
-        <span class="absolute left-0 top-1/2 w-2 -translate-y-1/2 border-t border-sidebar-border/60"></span>
-        <a
-          href="/blocks"
-          data-active={(pathname === "/blocks" || pathname === "/blocks/") ? "true" : undefined}
-          class:list={[
-            "flex items-center gap-2 rounded-lg px-2.5 py-1.5 transition-colors",
-            pathname === "/blocks" || pathname === "/blocks/"
-              ? "bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-2xs"
-              : "text-sidebar-foreground/75 hover:bg-sidebar-accent/70 hover:text-sidebar-accent-foreground",
-          ]}
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-sidebar-foreground/60 shrink-0">
-            <rect width="7" height="7" x="3" y="3" rx="1"/>
-            <rect width="7" height="7" x="14" y="3" rx="1"/>
-            <rect width="7" height="7" x="14" y="14" rx="1"/>
-            <rect width="7" height="7" x="3" y="14" rx="1"/>
-          </svg>
-          <span>Blocks</span>
-        </a>
-      </li>
-      <li class="relative pl-3">
-        <span class="absolute left-0 top-1/2 w-2 -translate-y-1/2 border-t border-sidebar-border/60"></span>
-        <a
-          href="/templates"
-          data-active={(pathname === "/templates" || pathname === "/templates/") ? "true" : undefined}
-          class:list={[
-            "flex items-center gap-2 rounded-lg px-2.5 py-1.5 transition-colors",
-            pathname === "/templates" || pathname === "/templates/"
-              ? "bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-2xs"
-              : "text-sidebar-foreground/75 hover:bg-sidebar-accent/70 hover:text-sidebar-accent-foreground",
-          ]}
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-sidebar-foreground/60 shrink-0">
-            <rect width="18" height="18" x="3" y="3" rx="2"/>
-            <path d="M3 9h18"/>
-            <path d="M9 21V9"/>
-          </svg>
-          <span>Templates</span>
-        </a>
-      </li>
-      <li class="relative pl-3">
-        <span class="absolute left-0 top-1/2 w-2 -translate-y-1/2 border-t border-sidebar-border/60"></span>
-        <a
-          href="/themes"
-          data-active={(pathname === "/themes" || pathname === "/themes/") ? "true" : undefined}
-          class:list={[
-            "flex items-center justify-between rounded-lg px-2.5 py-1.5 transition-colors",
-            pathname === "/themes" || pathname === "/themes/"
-              ? "bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-2xs"
-              : "text-sidebar-foreground/75 hover:bg-sidebar-accent/70 hover:text-sidebar-accent-foreground",
-          ]}
-        >
-          <span class="flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-sidebar-foreground/60 shrink-0">
-              <circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/>
-              <circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/>
-              <circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/>
-              <circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/>
-              <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/>
-            </svg>
-            <span>Themes</span>
-          </span>
-          <span class="rounded bg-sidebar-primary text-sidebar-primary-foreground px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide shadow-2xs">
-            870+
-          </span>
-        </a>
-      </li>
-    </ul>
-
-    <!-- BASE COMPONENTS (One-by-one like BoardUI) -->
+    <!-- DOCUMENTATION / GETTING STARTED -->
     <div class="space-y-1.5">
       <div class="flex items-center justify-between px-2 text-[11px] font-semibold uppercase tracking-wider text-sidebar-foreground/75">
-        <span>Base</span>
+        <span>Documentation</span>
         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-sidebar-foreground/50">
           <path d="m6 9 6 6 6-6"/>
         </svg>
       </div>
       <ul class="ml-2 border-l border-sidebar-border/60 space-y-0.5 text-xs">
-        {primitives.map((item) => {
-          const href = `/components/${item.slug}`
-          const active = pathname === href || pathname === `${href}/`
-          return (
-            <li class="relative pl-3">
-              <span class="absolute left-0 top-1/2 w-2 -translate-y-1/2 border-t border-sidebar-border/60"></span>
-              <a
-                href={href}
-                data-active={active ? "true" : undefined}
-                class:list={[
-                  "flex items-center justify-between rounded-lg px-2.5 py-1.5 transition-colors",
-                  active
-                    ? "bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-2xs"
-                    : "text-sidebar-foreground/75 hover:bg-sidebar-accent/70 hover:text-sidebar-accent-foreground",
-                ]}
-              >
-                <span class="truncate">{item.title}</span>
-                {item.isNew && (
-                  <span class="rounded bg-sidebar-primary text-sidebar-primary-foreground px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide shadow-2xs">
-                    NEW
-                  </span>
-                )}
-              </a>
-            </li>
-          )
-        })}
+        <li class="relative pl-3">
+          <span class="absolute left-0 top-1/2 w-2 -translate-y-1/2 border-t border-sidebar-border/60"></span>
+          <a
+            href="/docs/introduction"
+            data-active={pathname === "/docs/introduction" || pathname === "/docs" || pathname === "/docs/" ? "true" : undefined}
+            class:list={[
+              "flex items-center justify-between rounded-lg px-2.5 py-1.5 transition-colors",
+              pathname === "/docs/introduction" || pathname === "/docs" || pathname === "/docs/"
+                ? "bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-2xs"
+                : "text-sidebar-foreground/75 hover:bg-sidebar-accent/70 hover:text-sidebar-accent-foreground",
+            ]}
+          >
+            <span class="truncate">Introduction</span>
+          </a>
+        </li>
+        <li class="relative pl-3">
+          <span class="absolute left-0 top-1/2 w-2 -translate-y-1/2 border-t border-sidebar-border/60"></span>
+          <a
+            href="/docs/requirements"
+            data-active={pathname === "/docs/requirements" || pathname === "/docs/requirements/" ? "true" : undefined}
+            class:list={[
+              "flex items-center justify-between rounded-lg px-2.5 py-1.5 transition-colors",
+              pathname === "/docs/requirements" || pathname === "/docs/requirements/"
+                ? "bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-2xs"
+                : "text-sidebar-foreground/75 hover:bg-sidebar-accent/70 hover:text-sidebar-accent-foreground",
+            ]}
+          >
+            <span class="truncate">Requirements</span>
+          </a>
+        </li>
+        <li class="relative pl-3">
+          <span class="absolute left-0 top-1/2 w-2 -translate-y-1/2 border-t border-sidebar-border/60"></span>
+          <a
+            href="/docs/installation"
+            data-active={pathname === "/docs/installation" || pathname === "/docs/installation/" ? "true" : undefined}
+            class:list={[
+              "flex items-center justify-between rounded-lg px-2.5 py-1.5 transition-colors",
+              pathname === "/docs/installation" || pathname === "/docs/installation/"
+                ? "bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-2xs"
+                : "text-sidebar-foreground/75 hover:bg-sidebar-accent/70 hover:text-sidebar-accent-foreground",
+            ]}
+          >
+            <span class="truncate">Installation</span>
+          </a>
+        </li>
+        <li class="relative pl-3">
+          <span class="absolute left-0 top-1/2 w-2 -translate-y-1/2 border-t border-sidebar-border/60"></span>
+          <a
+            href="/docs/theming"
+            data-active={pathname === "/docs/theming" || pathname === "/docs/theming/" ? "true" : undefined}
+            class:list={[
+              "flex items-center justify-between rounded-lg px-2.5 py-1.5 transition-colors",
+              pathname === "/docs/theming" || pathname === "/docs/theming/"
+                ? "bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-2xs"
+                : "text-sidebar-foreground/75 hover:bg-sidebar-accent/70 hover:text-sidebar-accent-foreground",
+            ]}
+          >
+            <span class="truncate">Theming & Contrast</span>
+          </a>
+        </li>
+        <li class="relative pl-3">
+          <span class="absolute left-0 top-1/2 w-2 -translate-y-1/2 border-t border-sidebar-border/60"></span>
+          <a
+            href="/docs/cli-registry"
+            data-active={pathname === "/docs/cli-registry" || pathname === "/docs/cli-registry/" ? "true" : undefined}
+            class:list={[
+              "flex items-center justify-between rounded-lg px-2.5 py-1.5 transition-colors",
+              pathname === "/docs/cli-registry" || pathname === "/docs/cli-registry/"
+                ? "bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-2xs"
+                : "text-sidebar-foreground/75 hover:bg-sidebar-accent/70 hover:text-sidebar-accent-foreground",
+            ]}
+          >
+            <span class="truncate">CLI & Registry</span>
+          </a>
+        </li>
       </ul>
     </div>
 
@@ -241,17 +180,17 @@ const templates = getRegistryByCategory("templates")
       </ul>
     </div>
 
-    <!-- BLOCKS (One-by-one) -->
+    <!-- BASE COMPONENTS (One-by-one like BoardUI) -->
     <div class="space-y-1.5">
       <div class="flex items-center justify-between px-2 text-[11px] font-semibold uppercase tracking-wider text-sidebar-foreground/75">
-        <span>Blocks</span>
+        <span>Base</span>
         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-sidebar-foreground/50">
           <path d="m6 9 6 6 6-6"/>
         </svg>
       </div>
       <ul class="ml-2 border-l border-sidebar-border/60 space-y-0.5 text-xs">
-        {blocks.map((item) => {
-          const href = `/blocks/${item.slug}`
+        {primitives.map((item) => {
+          const href = `/components/${item.slug}`
           const active = pathname === href || pathname === `${href}/`
           return (
             <li class="relative pl-3">
@@ -280,7 +219,7 @@ const templates = getRegistryByCategory("templates")
     </div>
 
     <!-- TEMPLATES (One-by-one) -->
-    <div class="space-y-1.5 pb-4">
+    <div class="space-y-1.5">
       <div class="flex items-center justify-between px-2 text-[11px] font-semibold uppercase tracking-wider text-sidebar-foreground/75">
         <span>Templates</span>
         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-sidebar-foreground/50">
@@ -311,49 +250,59 @@ const templates = getRegistryByCategory("templates")
         })}
       </ul>
     </div>
+
+    <!-- ECOSYSTEM (Showcase & Themes) -->
+    <div class="space-y-1.5 pb-4">
+      <div class="flex items-center justify-between px-2 text-[11px] font-semibold uppercase tracking-wider text-sidebar-foreground/75">
+        <span>Ecosystem</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-sidebar-foreground/50">
+          <path d="m6 9 6 6 6-6"/>
+        </svg>
+      </div>
+      <ul class="ml-2 border-l border-sidebar-border/60 space-y-0.5 text-xs">
+        <li class="relative pl-3">
+          <span class="absolute left-0 top-1/2 w-2 -translate-y-1/2 border-t border-sidebar-border/60"></span>
+          <a
+            href="/showcase"
+            data-active={pathname.startsWith("/showcase") ? "true" : undefined}
+            class:list={[
+              "flex items-center justify-between rounded-lg px-2.5 py-1.5 transition-colors",
+              pathname.startsWith("/showcase")
+                ? "bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-2xs"
+                : "text-sidebar-foreground/75 hover:bg-sidebar-accent/70 hover:text-sidebar-accent-foreground",
+            ]}
+          >
+            <span class="truncate">Showcase</span>
+            <span class="rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide">
+              LIVE
+            </span>
+          </a>
+        </li>
+        <li class="relative pl-3">
+          <span class="absolute left-0 top-1/2 w-2 -translate-y-1/2 border-t border-sidebar-border/60"></span>
+          <a
+            href="/themes"
+            data-active={(pathname === "/themes" || pathname === "/themes/") ? "true" : undefined}
+            class:list={[
+              "flex items-center justify-between rounded-lg px-2.5 py-1.5 transition-colors",
+              pathname === "/themes" || pathname === "/themes/"
+                ? "bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-2xs"
+                : "text-sidebar-foreground/75 hover:bg-sidebar-accent/70 hover:text-sidebar-accent-foreground",
+            ]}
+          >
+            <span class="truncate">Themes</span>
+            <span class="rounded bg-sidebar-primary text-sidebar-primary-foreground px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide shadow-2xs">
+              870+
+            </span>
+          </a>
+        </li>
+      </ul>
+    </div>
   </div>
 
   <script is:inline>
     (function () {
       const container = document.getElementById("docs-sidebar-scroll")
-      if (!container) return
-
-      const STORAGE_KEY = "ethereal-docs-sidebar-scroll"
-      const savedScroll = sessionStorage.getItem(STORAGE_KEY)
-
-      if (savedScroll !== null) {
-        container.scrollTop = parseInt(savedScroll, 10)
-      } else {
-        const activeLink = container.querySelector('[data-active="true"]')
-        if (activeLink) {
-          activeLink.scrollIntoView({ block: "center" })
-        }
-      }
-
-      const activeEl = container.querySelector('[data-active="true"]')
-      if (activeEl) {
-        const rect = activeEl.getBoundingClientRect()
-        const cRect = container.getBoundingClientRect()
-        if (rect.top < cRect.top || rect.bottom > cRect.bottom) {
-          activeEl.scrollIntoView({ block: "nearest" })
-        }
-      }
-
-      container.addEventListener(
-        "scroll",
-        function () {
-          sessionStorage.setItem(STORAGE_KEY, String(container.scrollTop))
-        },
-        { passive: true }
-      )
-
-      container.addEventListener("click", function (e) {
-        if (e.target && e.target.closest("a")) {
-          sessionStorage.setItem(STORAGE_KEY, String(container.scrollTop))
-        }
-      })
-
-      // Mobile & Tablet Drawer Toggle Logic
       const drawer = document.getElementById("docs-sidebar-drawer")
       const backdrop = document.getElementById("docs-sidebar-backdrop")
       const closeBtn = document.getElementById("docs-sidebar-close-btn")
@@ -370,14 +319,80 @@ const templates = getRegistryByCategory("templates")
         backdrop.classList.add("hidden")
       }
 
-      document.addEventListener("DOMContentLoaded", function () {
+      function syncActiveSidebarLink() {
+        const currentPath = window.location.pathname.replace(/\/+$/, "") || "/"
+        const links = document.querySelectorAll("#docs-sidebar-scroll a")
+        links.forEach((link) => {
+          const href = (link.getAttribute("href") || "").replace(/\/+$/, "") || "/"
+          const isDocRoot = href === "/docs/introduction" && currentPath.startsWith("/docs")
+          const isChartRoot = href === "/charts" && currentPath === "/charts"
+          const isBlockRoot = href === "/blocks" && currentPath === "/blocks"
+          const isTemplateRoot = href === "/templates" && currentPath === "/templates"
+          const isThemeRoot = href === "/themes" && currentPath === "/themes"
+          const isExact = href === currentPath
+
+          const isActive = isExact || isDocRoot || isChartRoot || isBlockRoot || isTemplateRoot || isThemeRoot
+
+          if (isActive) {
+            link.setAttribute("data-active", "true")
+            link.classList.add(
+              "bg-sidebar-accent",
+              "text-sidebar-accent-foreground",
+              "font-semibold",
+              "shadow-2xs"
+            )
+            link.classList.remove("text-sidebar-foreground/75")
+
+            // Ensure active link is visible in view if offscreen
+            if (container) {
+              const rect = link.getBoundingClientRect()
+              const cRect = container.getBoundingClientRect()
+              if (rect.top < cRect.top || rect.bottom > cRect.bottom) {
+                link.scrollIntoView({ block: "nearest" })
+              }
+            }
+          } else {
+            link.removeAttribute("data-active")
+            link.classList.remove(
+              "bg-sidebar-accent",
+              "text-sidebar-accent-foreground",
+              "font-semibold",
+              "shadow-2xs"
+            )
+            link.classList.add("text-sidebar-foreground/75")
+          }
+        })
+      }
+
+      function initDrawerTriggers() {
         const openBtn = document.getElementById("docs-mobile-menu-btn")
-        if (openBtn) openBtn.addEventListener("click", openDrawer)
-      })
-      const openBtnImmediate = document.getElementById("docs-mobile-menu-btn")
-      if (openBtnImmediate) openBtnImmediate.addEventListener("click", openDrawer)
+        if (openBtn) {
+          openBtn.removeEventListener("click", openDrawer)
+          openBtn.addEventListener("click", openDrawer)
+        }
+      }
+
+      // Close drawer on link click in mobile view
+      if (container) {
+        container.addEventListener("click", function (e) {
+          if (e.target && e.target.closest("a") && window.innerWidth < 1024) {
+            closeDrawer()
+          }
+        })
+      }
+
       if (closeBtn) closeBtn.addEventListener("click", closeDrawer)
       if (backdrop) backdrop.addEventListener("click", closeDrawer)
+
+      // Support Astro ClientRouter View Transitions
+      document.addEventListener("astro:page-load", function () {
+        syncActiveSidebarLink()
+        initDrawerTriggers()
+      })
+
+      // Initial page run
+      syncActiveSidebarLink()
+      initDrawerTriggers()
     })()
   </script>
 </aside>

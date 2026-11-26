@@ -74,15 +74,26 @@ const pathname = Astro.url.pathname
         Docs
       </a>
       <a
-        href="/templates"
+        href="/showcase"
         class:list={[
           "transition-colors",
-          pathname.startsWith("/templates") || pathname.startsWith("/showcase")
+          pathname.startsWith("/showcase")
             ? "text-foreground font-semibold"
             : "text-muted-foreground hover:text-foreground",
         ]}
       >
         Showcase
+      </a>
+      <a
+        href="/templates"
+        class:list={[
+          "transition-colors",
+          pathname.startsWith("/templates")
+            ? "text-foreground font-semibold"
+            : "text-muted-foreground hover:text-foreground",
+        ]}
+      >
+        Templates
       </a>
       <a
         href="/blog"

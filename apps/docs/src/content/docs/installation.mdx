@@ -1,46 +1,133 @@
 ---
-title: "Installation & Monorepo Setup"
-description: "Install @etherealui/react as an NPM package or pull individual components and blocks via our shadcn-compatible JSON Registry."
-order: 2
-badge: "Setup"
+title: "Installation & Quick Start"
+description: "Panduan langkah demi langkah menginstal @etherealui/react, setup stylesheet Tailwind CSS v4, dan membuat komponen pertama Anda."
+order: 3
+badge: "Getting Started"
 ---
 
-## Option 1: Install via Package Manager
+## Metode Instalasi
 
-Install `@etherealui/react` along with its peer dependencies in any React 18/19 or Next.js / Astro project:
+Tersedia dua metode untuk menggunakan Ethereal UI di project Anda:
+1. **Package Manager (NPM)**: Paling cepat dan mudah untuk mulai membangun aplikasi.
+2. **CLI & Copy-Paste**: Cocok jika Anda ingin memiliki source code komponen di dalam codebase Anda sendiri (seperti alur kerja shadcn/ui).
+
+---
+
+## Langkah 1: Instalasi Paket & Dependencies
+
+Jalankan perintah instalasi berikut menggunakan package manager yang Anda gunakan:
 
 ```bash
+# Menggunakan pnpm (Direkomendasikan)
 pnpm add @etherealui/react lucide-react clsx tailwind-merge class-variance-authority
+
+# Menggunakan npm
+npm install @etherealui/react lucide-react clsx tailwind-merge class-variance-authority
+
+# Menggunakan yarn
+yarn add @etherealui/react lucide-react clsx tailwind-merge class-variance-authority
+
+# Menggunakan bun
+bun add @etherealui/react lucide-react clsx tailwind-merge class-variance-authority
 ```
 
-Import the native Tailwind CSS v4 theme variables in your root stylesheet:
+---
+
+## Langkah 2: Setup Stylesheet di File CSS Utama
+
+Impor stylesheet Tailwind CSS v4 beserta style Ethereal UI di file CSS utama project Anda (misalnya `src/app/globals.css` di Next.js atau `src/index.css` di Vite):
 
 ```css
+/* Import native engine Tailwind CSS v4 */
 @import "tailwindcss";
+
+/* Import token tema, variabel OKLCH, dan styling Ethereal UI */
 @import "@etherealui/react/styles.css";
 ```
 
-Then import any primitive, enterprise block, or full template directly:
+> [!TIP]
+> Pastikan urutan impor sudah benar: letakkan `@import "tailwindcss";` sebelum `@import "@etherealui/react/styles.css";`. Anda tidak memerlukan wrapper `<ThemeProvider>` tambahan untuk mengaktifkan styling dasar.
+
+---
+
+## Langkah 3: Menggunakan Komponen Pertama Anda
+
+Setelah dependensi dan CSS terpasang, Anda bisa langsung mengimpor komponen Ethereal UI di file React mana saja:
 
 ```tsx
-import { Button, MultiMetricGrid, EnterpriseDataTable } from "@etherealui/react"
+import React from "react"
+import { Button, Badge } from "@etherealui/react"
+import { Sparkles, ArrowRight } from "lucide-react"
 
-export default function Dashboard() {
+export default function WelcomeCard() {
   return (
-    <main className="space-y-6 p-6 bg-[#09090b] text-zinc-100">
-      <MultiMetricGrid />
-      <EnterpriseDataTable />
-    </main>
+    <div className="flex min-h-[280px] items-center justify-center p-6 bg-background text-foreground">
+      <div className="w-full max-w-md space-y-4 rounded-2xl border border-border bg-card p-6 shadow-sm">
+        <div className="flex items-center justify-between">
+          <Badge variant="blue" className="gap-1.5">
+            <Sparkles className="h-3 w-3" />
+            Ethereal UI Active
+          </Badge>
+          <span className="text-xs text-muted-foreground">React 19 Ready</span>
+        </div>
+
+        <div className="space-y-1">
+          <h2 className="text-lg font-bold tracking-tight text-foreground">
+            Instalasi Berhasil!
+          </h2>
+          <p className="text-xs text-muted-foreground leading-relaxed">
+            Komponen Ethereal UI Anda telah terhubung sempurna dengan Tailwind CSS v4 dan siap digunakan.
+          </p>
+        </div>
+
+        <div className="pt-2 flex items-center gap-2">
+          <Button variant="primary" size="sm" className="gap-2">
+            <span>Buka Dashboard</span>
+            <ArrowRight className="h-3.5 w-3.5" />
+          </Button>
+          <Button variant="outline" size="sm">
+            Dokumentasi
+          </Button>
+        </div>
+      </div>
+    </div>
   )
 }
 ```
 
 ---
 
-## Option 2: Copy & Paste or CLI Registry
+## Metode Alternatif: Ethereal UI CLI
 
-Just like **shadcn/ui** and **BoardUI**, you own the source code. Every component and block page includes:
+Jika Anda lebih menyukai source code komponen tersimpan langsung di dalam folder project Anda (misal `src/components/ui/`):
 
-- **One-Click Copy Code**: Copy the self-contained TSX implementation directly into your `components/ui` or `components/blocks` folder.
-- **JSON Registry Endpoint**: Fetch component source and dependency trees programmatically from `/registry/<slug>.json`.
+### 1. Inisialisasi Project via CLI
+```bash
+npx @etherealui/cli init
+```
 
+### 2. Tambahkan Komponen Tertentu
+```bash
+# Menambahkan tombol (Button)
+npx @etherealui/cli add button
+
+# Menambahkan modal dialog
+npx @etherealui/cli add dialog
+
+# Menambahkan komponen chart
+npx @etherealui/cli add area-chart
+```
+
+### 3. Mengunduh Preset Tema Warna
+```bash
+# Mengunduh tema OKLCH favorit via CLI
+npx @etherealui/cli theme add cobalt
+```
+
+---
+
+## Langkah Selanjutnya
+
+* Pelajari sistem warna dinamis dan proteksi kontras di **[Theming & Contrast](/docs/theming)**.
+* Lihat daftar lengkap perintah CLI dan API registry di **[CLI & Registry](/docs/cli-registry)**.
+* Jelajahi grafik visualisasi data siap pakai di **[Statistical Charts](/charts)**.

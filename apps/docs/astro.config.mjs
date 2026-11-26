@@ -6,9 +6,6 @@ import tailwindcss from "@tailwindcss/vite"
 
 export default defineConfig({
   site: "https://ethereal-ui.saefulrohman.dev",
-  redirects: {
-    "/showcase": "/templates",
-  },
   integrations: [react(), mdx()],
   vite: {
     plugins: [tailwindcss()],

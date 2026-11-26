@@ -1,5 +1,6 @@
 import * as React from "react"
 import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog"
+import { Loader2 } from "lucide-react"
 import { cn } from "../utils/cn"
 import { buttonVariants } from "./button"
 
@@ -150,7 +151,8 @@ export interface ConfirmationDialogProps {
   confirmText?: string
   cancelText?: string
   variant?: "primary" | "destructive" | "secondary"
-  onConfirm?: () => void
+  loading?: boolean
+  onConfirm?: () => void | Promise<void>
   onCancel?: () => void
 }
 
@@ -163,6 +165,7 @@ export const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
   confirmText = "Confirm",
   cancelText = "Cancel",
   variant = "destructive",
+  loading = false,
   onConfirm,
   onCancel,
 }) => {
@@ -175,8 +178,22 @@ export const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
           <AlertDialogDescription>{description}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel onClick={onCancel}>{cancelText}</AlertDialogCancel>
-          <AlertDialogAction variant={variant} onClick={onConfirm}>
+          <AlertDialogCancel onClick={onCancel} disabled={loading}>
+            {cancelText}
+          </AlertDialogCancel>
+          <AlertDialogAction
+            variant={variant}
+            disabled={loading}
+            onClick={(e) => {
+              if (loading) {
+                e.preventDefault()
+                return
+              }
+              onConfirm?.()
+            }}
+            className="gap-2 inline-flex items-center"
+          >
+            {loading && <Loader2 className="h-4 w-4 animate-spin shrink-0" />}
             {confirmText}
           </AlertDialogAction>
         </AlertDialogFooter>

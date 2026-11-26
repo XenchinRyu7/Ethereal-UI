@@ -1,0 +1,68 @@
+---
+title: "Requirements & Prerequisites"
+description: "Spesifikasi sistem, versi minimum Node.js, kompatibilitas framework React, dan arsitektur Tailwind CSS v4 untuk Ethereal UI."
+order: 2
+badge: "Prerequisites"
+---
+
+## System Requirements
+
+Sebelum menginstal Ethereal UI, pastikan environment pengembangan Anda memenuhi spesifikasi minimum berikut:
+
+| Kebutuhan | Versi Minimum | Rekomendasi Ideal | Keterangan |
+| :--- | :--- | :--- | :--- |
+| **Node.js** | `>= 18.0.0` | `20.x` atau `22.x` (LTS) | Diperlukan runtime modern untuk modul ES dan Vite / Next.js. |
+| **Package Manager** | Versi terbaru | `pnpm` (`>= 9.0.0`) | `pnpm` sangat direkomendasikan untuk efisiensi disk dan monorepo. |
+| **React** | `^18.0.0` atau `^19.0.0` | React `19.x` | Mendukung penuh fitur React Server Components (RSC) dan React Actions. |
+| **Tailwind CSS** | `^4.0.0` (Tailwind v4) | `@tailwindcss/vite` atau PostCSS v4 | Berjalan di atas arsitektur CSS variables native Tailwind v4 tanpa JavaScript runtime config. |
+| **TypeScript** | `>= 5.0.0` | TypeScript `5.4+` | Ethereal UI 100% ditulis dalam TypeScript dengan type definitions lengkap. |
+
+---
+
+## Kompatibilitas Framework
+
+Ethereal UI dirancang agar dapat berjalan dengan mulus di berbagai ekosistem modern:
+
+### 1. Next.js (App Router & Pages Router)
+* **Next.js 14 & 15**: Didukung penuh.
+* Komponen interaktif (seperti Dialog, Popover, Dropdown) siap digunakan dengan direktif `'use client'`.
+* Komponen presentasional dapat di-render langsung di sisi server (Server Components).
+
+### 2. Vite + React
+* Kompatibel dengan template standar `@vitejs/plugin-react` dan `@tailwindcss/vite`.
+* Waktu build dan Hot Module Replacement (HMR) berkecepatan tinggi tanpa hambatan.
+
+### 3. Astro (Island Architecture)
+* Berjalan mulus sebagai React Island di dalam Astro:
+  ```astro
+  <Button client:load>Klik Saya</Button>
+  ```
+* Mendukung transisi halaman `<ClientRouter />` (View Transitions) tanpa flicker.
+
+### 4. Remix & React Router v7
+* Kompatibel dengan SSR dan streaming architecture React Router v7.
+
+---
+
+## Prasyarat Styling: Tailwind CSS v4
+
+Ethereal UI mengadopsi standar modern **Tailwind CSS v4**.
+
+Perhatikan perbedaan mendasar dibanding Tailwind v3:
+
+* **Zero Configuration**: Anda **tidak perlu** membuat file `tailwind.config.js` atau `tailwind.config.ts`.
+* **CSS-First Theme**: Seluruh token warna, radius, dan font diatur langsung di dalam file stylesheet via `@theme inline` atau CSS variables standar.
+* **OKLCH Color Space**: Menggunakan format warna OKLCH (`--primary: oklch(...)`) untuk hasil rendering warna yang akurat di semua monitor dan perangkat.
+
+---
+
+## Peer Dependencies
+
+Komponen Ethereal UI mengandalkan beberapa utility standar industri:
+
+* **lucide-react** (`^0.400.0` atau lebih baru) untuk icon set.
+* **clsx** dan **tailwind-merge** untuk penggabungan class CSS dinamis yang aman dari konflik Tailwind.
+* **class-variance-authority** (`cva`) untuk manajemen varian komponen.
+* **@radix-ui/react-*** primitives untuk state aksesibilitas headless.
+
+Semua dependensi ini akan terpasang secara otomatis ketika Anda mengikuti langkah di halaman **[Installation](/docs/installation)**.

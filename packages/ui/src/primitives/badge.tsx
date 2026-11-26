@@ -10,6 +10,10 @@ const badgeVariants = cva(
       variant: {
         default:
           "bg-secondary text-secondary-foreground border border-border/80",
+        secondary:
+          "bg-secondary text-secondary-foreground border border-border/80",
+        muted:
+          "bg-muted text-muted-foreground border border-transparent",
         blue:
           "bg-primary/10 text-primary border border-primary/25",
         primary:
@@ -36,6 +40,8 @@ const badgeVariants = cva(
 
 const dotColorMap: Record<string, string> = {
   default: "bg-muted-foreground",
+  secondary: "bg-muted-foreground",
+  muted: "bg-muted-foreground",
   blue: "bg-primary",
   primary: "bg-primary-foreground",
   glow: "bg-primary",

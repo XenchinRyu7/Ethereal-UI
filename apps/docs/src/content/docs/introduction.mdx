@@ -1,23 +1,62 @@
 ---
-title: "Introduction & Vision"
-description: "Why we built Ethereal UI: a 100% free, open-source, dark-mode native enterprise dashboard block kit inspired by BoardUI and shadcn/ui."
+title: "Introduction"
+description: "Mengenal Ethereal UI — enterprise React UI component library & block system bertenaga Tailwind CSS v4 dan Radix UI Primitives."
 order: 1
 badge: "Overview"
 ---
 
-## Executive Summary
+## Apa Itu Ethereal UI?
 
-**Ethereal UI (`@etherealui/react`)** is an open-source, dark-mode first enterprise component library and dashboard block system built with **React 19**, **Tailwind CSS v4**, **Radix UI Primitives**, and **Astro v5**.
+**Ethereal UI (`@etherealui/react`)** adalah open-source, dark-mode first enterprise UI component library dan dashboard system yang dibangun khusus untuk **React 18 & 19**, **Tailwind CSS v4**, dan **Radix UI Primitives**.
 
-Unlike commercial UI kits that lock data-dense enterprise tables, collapsible app shells, RBAC governance views, and multi-metric KPI sparklines behind a **$299+ PRO paywall**, every single primitive, block, and full-page template in Ethereal UI is **100% free and MIT-licensed forever**.
+Berbeda dari UI kit komersial yang mengunci komponen enterprise berbobot data (seperti server-side data table, multi-metric KPI sparklines, collapsible app shells, AI reasoning streams, dan RBAC settings matrix) di balik **paywall $299+**, setiap primitive, chart, block, dan full-page template di Ethereal UI **100% gratis dan berlisensi MIT selamanya**.
 
 ---
 
-## Core Architectural Pillars
+## Mengapa Ethereal UI?
 
-1. **100% Free Enterprise Blocks**: Every dashboard shell, server-side ready data table, slide-over telemetry drawer, and RBAC settings matrix is completely open-source.
-2. **BoardUI + shadcn/ui Experience**: Interactive live playground canvases with responsive viewport switchers (`Desktop`, `Tablet`, `Mobile`), one-click source code copy, and a static JSON Registry API (`/registry/[slug].json`).
-3. **Astro v5 Islands Engine**: Ultra-fast documentation with zero unnecessary client overhead—hydrating interactive React 19 primitives via Astro Islands (`client:load`).
-4. **Tailwind CSS v4 Native**: Zero legacy `tailwind.config.js` bloat. Powered purely by native `@import "tailwindcss";` and `@theme` CSS variable tokens.
-5. **Headless Accessibility (a11y)**: Dialogs, Drawers, Comboboxes, Dropdowns, Switches, and Tooltips are built on **Radix UI Primitives** for strict WAI-ARIA compliance and full keyboard navigation.
+Banyak tim developer modern mengalami dilema yang sama saat membangun aplikasi web SaaS atau internal dashboard:
 
+1. **Paywall Komponen Kompleks**: Komponen dasar gratis (button, badge, input), tapi begitu butuh *interactive filter bar*, *kanban board*, *AI prompt composer*, atau *data table*, harus berlangganan lisensi mahal per-developer.
+2. **Kerapuhan Kontras Warna di AI Agent**: Ketika AI coding assistant (Cursor, Copilot, Claude) diminta membuat dark mode, sering terjadi bug *"Ghost Field"* — background gelap dengan text hitam, atau background putih dengan text putih.
+3. **Migrasi Lambat ke Tailwind CSS v4**: Banyak library masih terjebak di konfigurasi jadul `tailwind.config.js` berbasis JavaScript runtime lama dan tidak memanfaatkan performa engine Rust/LightningCSS milik Tailwind v4.
+
+Ethereal UI hadir untuk menyelesaikan ketiga masalah tersebut secara tuntas.
+
+---
+
+## Pilar Arsitektur
+
+Ethereal UI dibangun di atas 4 pilar utama:
+
+### 1. Radix UI Primitives & WCAG 2.1 AA
+Aksesibilitas bukan sekadar fitur tambahan. Seluruh interaksi keyboard navigation, screen reader announcements, ARIA focus management, dan modal trapping ditangani langsung oleh Radix UI tanpa kompromi.
+
+### 2. Tailwind CSS v4 Native (@theme)
+Zero runtime JavaScript overhead untuk styling. Ethereal UI menggunakan native CSS variables dengan directive `@theme inline`, memungkinkan kompiler Tailwind v4 memproses styling dengan kecepatan sub-millisecond.
+
+### 3. Arsitektur Warna OKLCH & Safeguards Kontras
+Dengan mengadopsi ruang warna *OKLCH (Oklab Lightness & Chroma)*, persepsi kecerahan warna konsisten di seluruh spektrum visual. Teks selalu terjamin kontras dan terbaca jelas baik di mode Light maupun Dark.
+
+### 4. Copy & Paste atau NPM Package
+Anda memegang kendali penuh atas kode Anda. Gunakan sebagai package NPM standar (`@etherealui/react`), atau salin source code komponen langsung ke project Anda via CLI (`npx @etherealui/cli add <component>`).
+
+---
+
+## Apa Saja yang Disediakan?
+
+| Kategori | Jumlah | Deskripsi |
+| :--- | :--- | :--- |
+| **Base Primitives** | 43 Komponen | Tombol, modal dialog, popover, tabs, input, select, slider, badge, dan komponen fondasi UI lainnya. |
+| **Statistical SVG Charts** | 6 Varian | Area, Bar, Line, Donut, Radial Ring, dan Heatmap chart murni berbasis SVG tanpa library pihak ketiga yang berat. |
+| **Enterprise & AI Blocks** | 20 Blocks | Prompt composer, agent progress tracker, data table, kanban board, transaction ledger, filter bar, approval workflow. |
+| **Full-Page Templates** | 3 Dashboard | Executive Analytics, Customer Control Tower, dan Workspace Settings siap pakai. |
+| **Themes Engine** | 870+ Presets | Palet tema berbasis OKLCH yang dapat ditukar secara dinamis di runtime. |
+
+---
+
+## Langkah Selanjutnya
+
+* Pelajari syarat lingkungan sistem di **[Requirements](/docs/requirements)**.
+* Mulai integrasi ke dalam project Anda melalui **[Installation Guide](/docs/installation)**.
+* Eksplorasi visualisasi data di bagian **[Statistical Charts](/charts)**.
