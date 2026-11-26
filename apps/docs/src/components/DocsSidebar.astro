@@ -324,7 +324,7 @@ const templates = getRegistryByCategory("templates")
         const links = document.querySelectorAll("#docs-sidebar-scroll a")
         links.forEach((link) => {
           const href = (link.getAttribute("href") || "").replace(/\/+$/, "") || "/"
-          const isDocRoot = href === "/docs/introduction" && currentPath.startsWith("/docs")
+          const isDocRoot = href === "/docs/introduction" && (currentPath === "/docs" || currentPath === "/docs/")
           const isChartRoot = href === "/charts" && currentPath === "/charts"
           const isBlockRoot = href === "/blocks" && currentPath === "/blocks"
           const isTemplateRoot = href === "/templates" && currentPath === "/templates"
