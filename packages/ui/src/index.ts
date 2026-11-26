@@ -36,8 +36,8 @@ export { ColorPicker, type ColorPickerProps } from "./primitives/color-picker"
 export { Combobox, type ComboboxOption, type ComboboxProps } from "./primitives/combobox"
 export { CommandPalette, type CommandItem, type CommandPaletteProps } from "./primitives/command-palette"
 export { ContextMenuBox, type ContextMenuAction, type ContextMenuBoxProps } from "./primitives/context-menu"
-export { DateCalendar, type DateCalendarProps } from "./primitives/date-calendar"
-export { DateRangePicker, type DateRangePreset, type DateRangePickerProps } from "./primitives/date-picker"
+export { Calendar, type CalendarProps, DateCalendar, type DateCalendarProps } from "./primitives/calendar"
+export { DatePicker, type DatePickerProps, DateRangePicker, type DateRangePreset, type DateRangePickerProps } from "./primitives/date-picker"
 export {
   Dialog,
   DialogPortal,

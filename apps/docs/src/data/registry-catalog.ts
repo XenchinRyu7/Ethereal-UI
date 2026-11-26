@@ -576,19 +576,45 @@ export function ContextMenuDemo() {
     sections: [],
   },
   {
+    slug: "calendar",
+    title: "Calendar",
+    category: "primitives",
+    subcategory: "Base",
+    description:
+      "Interactive inline calendar with day, month, and year navigation views and today shortcut.",
+    isNew: true,
+    dependencies: ["lucide-react"],
+    sourceFile: "packages/ui/src/primitives/calendar.tsx",
+    code: `import * as React from "react"
+import { Calendar } from "@etherealui/react"
+
+export function CalendarDemo() {
+  const [date, setDate] = React.useState<Date | null>(new Date())
+
+  return (
+    <div className="flex flex-col items-center gap-3">
+      <Calendar value={date} onChange={setDate} />
+      <p className="text-xs text-zinc-500">
+        Selected: {date ? date.toDateString() : "None"}
+      </p>
+    </div>
+  )
+}`,
+    sections: [],
+  },
+  {
     slug: "date-calendar",
     title: "Date Calendar",
     category: "primitives",
     subcategory: "Base",
     description:
-      "Inline month calendar grid for selecting single dates or scheduling events.",
-    isNew: true,
+      "Alias for Calendar primitive with day, month, and year navigation.",
     dependencies: ["lucide-react"],
-    sourceFile: "packages/ui/src/primitives/date-picker.tsx",
-    code: `import { DateCalendar } from "@etherealui/react"
+    sourceFile: "packages/ui/src/primitives/date-calendar.tsx",
+    code: `import { Calendar } from "@etherealui/react"
 
 export function DateCalendarDemo() {
-  return <DateCalendar />
+  return <Calendar />
 }`,
     sections: [],
   },
@@ -598,13 +624,20 @@ export function DateCalendarDemo() {
     category: "primitives",
     subcategory: "Base",
     description:
-      "Popover date-range selector with common analytics reporting presets (Last 7 days, Last 30 days, YTD).",
+      "Popover date input with interactive calendar grid, quick presets, and clear button.",
     dependencies: ["@radix-ui/react-popover", "lucide-react"],
     sourceFile: "packages/ui/src/primitives/date-picker.tsx",
-    code: `import { DateRangePicker } from "@etherealui/react"
+    code: `import * as React from "react"
+import { DatePicker } from "@etherealui/react"
 
 export function DatePickerDemo() {
-  return <DateRangePicker />
+  const [date, setDate] = React.useState<Date | null>(new Date())
+
+  return (
+    <div className="flex flex-col items-center gap-3">
+      <DatePicker value={date} onChange={setDate} placeholder="Select date..." />
+    </div>
+  )
 }`,
     sections: [],
   },

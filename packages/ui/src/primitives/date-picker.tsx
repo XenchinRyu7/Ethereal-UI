@@ -8,9 +8,154 @@ import {
   Trash2,
   ChevronLeft,
   ChevronRight,
+  X,
 } from "lucide-react"
 import { cn } from "../utils/cn"
 import { Progress } from "./progress"
+import { Calendar } from "./date-calendar"
+
+export interface DatePickerProps {
+  value?: Date | null
+  defaultValue?: Date | null
+  onChange?: (date: Date | null) => void
+  placeholder?: string
+  className?: string
+  minDate?: Date
+  maxDate?: Date
+  disabled?: boolean
+  showPresets?: boolean
+}
+
+export const DatePicker: React.FC<DatePickerProps> = ({
+  value: controlledValue,
+  defaultValue,
+  onChange,
+  placeholder = "Pick a date",
+  className,
+  minDate,
+  maxDate,
+  disabled = false,
+  showPresets = true,
+}) => {
+  const isControlled = controlledValue !== undefined
+  const [internalDate, setInternalDate] = React.useState<Date | null>(
+    defaultValue || (isControlled ? controlledValue : null)
+  )
+  const [open, setOpen] = React.useState(false)
+
+  const selectedDate = isControlled ? controlledValue : internalDate
+
+  const handleSelect = (date: Date | null) => {
+    if (!isControlled) {
+      setInternalDate(date)
+    }
+    onChange?.(date)
+    if (date) {
+      setOpen(false)
+    }
+  }
+
+  const handleClear = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    handleSelect(null)
+  }
+
+  const formattedDate = selectedDate
+    ? selectedDate.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      })
+    : null
+
+  const presets = [
+    {
+      label: "Today",
+      getDate: () => new Date(),
+    },
+    {
+      label: "Tomorrow",
+      getDate: () => {
+        const d = new Date()
+        d.setDate(d.getDate() + 1)
+        return d
+      },
+    },
+    {
+      label: "Next Week",
+      getDate: () => {
+        const d = new Date()
+        d.setDate(d.getDate() + 7)
+        return d
+      },
+    },
+  ]
+
+  return (
+    <PopoverPrimitive.Root open={open} onOpenChange={setOpen}>
+      <PopoverPrimitive.Trigger asChild disabled={disabled}>
+        <button
+          type="button"
+          className={cn(
+            "group inline-flex h-9 items-center justify-between gap-2.5 rounded-xl border border-zinc-200 bg-white px-3 text-xs font-medium text-zinc-900 shadow-2xs transition-colors hover:bg-zinc-50 hover:border-zinc-300 focus:outline-none focus:ring-2 focus:ring-primary/20 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:bg-zinc-800/80 dark:hover:border-zinc-700 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50",
+            className
+          )}
+        >
+          <div className="flex items-center gap-2 truncate">
+            <CalendarIcon className="h-4 w-4 shrink-0 text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-200" />
+            <span className={cn(!formattedDate && "text-zinc-400 dark:text-zinc-500")}>
+              {formattedDate || placeholder}
+            </span>
+          </div>
+
+          {formattedDate && (
+            <span
+              role="button"
+              tabIndex={0}
+              onClick={handleClear}
+              className="rounded p-0.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
+            >
+              <X className="h-3 w-3" />
+            </span>
+          )}
+        </button>
+      </PopoverPrimitive.Trigger>
+
+      <PopoverPrimitive.Portal>
+        <PopoverPrimitive.Content
+          align="start"
+          sideOffset={6}
+          className="z-50 rounded-2xl border border-zinc-200/90 bg-white p-2 shadow-xl outline-none animate-in fade-in-0 zoom-in-95 dark:border-zinc-800 dark:bg-zinc-950"
+        >
+          {showPresets && (
+            <div className="flex items-center gap-1.5 border-b border-zinc-100 dark:border-zinc-800/80 pb-2 px-1 mb-2">
+              {presets.map((p) => (
+                <button
+                  key={p.label}
+                  type="button"
+                  onClick={() => handleSelect(p.getDate())}
+                  className="rounded-lg px-2.5 py-1 text-[11px] font-medium text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+                >
+                  {p.label}
+                </button>
+              ))}
+            </div>
+          )}
+
+          <Calendar
+            value={selectedDate}
+            onChange={handleSelect}
+            minDate={minDate}
+            maxDate={maxDate}
+            className="border-0 shadow-none p-1 w-68"
+          />
+        </PopoverPrimitive.Content>
+      </PopoverPrimitive.Portal>
+    </PopoverPrimitive.Root>
+  )
+}
+
+DatePicker.displayName = "DatePicker"
 
 export interface DateRangePreset {
   label: string
@@ -98,71 +243,10 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({
   )
 }
 
-// Standalone DateCalendar Primitive
-export const DateCalendar: React.FC<{ className?: string }> = ({ className }) => {
-  const [selectedDay, setSelectedDay] = React.useState(14)
-  const days = Array.from({ length: 30 }, (_, i) => i + 1)
+DateRangePicker.displayName = "DateRangePicker"
 
-  return (
-    <div
-      className={cn(
-        "w-64 rounded-2xl border border-zinc-200 bg-white p-4 shadow-2xs dark:border-zinc-800 dark:bg-zinc-900",
-        className
-      )}
-    >
-      <div className="mb-3 flex items-center justify-between">
-        <span className="text-xs font-semibold text-zinc-900 dark:text-zinc-100">
-          November 2026
-        </span>
-        <div className="flex items-center gap-1">
-          <button
-            type="button"
-            className="rounded-md p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 cursor-pointer"
-          >
-            <ChevronLeft className="h-3.5 w-3.5" />
-          </button>
-          <button
-            type="button"
-            className="rounded-md p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 cursor-pointer"
-          >
-            <ChevronRight className="h-3.5 w-3.5" />
-          </button>
-        </div>
-      </div>
-      <div className="grid grid-cols-7 gap-1 text-center text-[10px] font-medium text-zinc-400 mb-1.5">
-        <span>Su</span>
-        <span>Mo</span>
-        <span>Tu</span>
-        <span>We</span>
-        <span>Th</span>
-        <span>Fr</span>
-        <span>Sa</span>
-      </div>
-      <div className="grid grid-cols-7 gap-1">
-        {days.map((d) => {
-          const active = d === selectedDay
-          return (
-            <button
-              key={d}
-              type="button"
-              onClick={() => setSelectedDay(d)}
-              className={cn(
-                "flex h-7 w-7 items-center justify-center rounded-lg text-xs transition-colors cursor-pointer",
-                active
-                  ? "bg-blue-600 font-semibold text-white"
-                  : "text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800"
-              )}
-            >
-              {d}
-            </button>
-          )
-        })}
-      </div>
-    </div>
-  )
-}
+export { Calendar, Calendar as DateCalendar, type CalendarProps, type CalendarProps as DateCalendarProps } from "./date-calendar"
 
-// ColorPicker Primitive
 export const ColorPicker: React.FC<{ className?: string }> = ({ className }) => {
   const swatches = [
     "#2563eb",
@@ -212,7 +296,6 @@ export const ColorPicker: React.FC<{ className?: string }> = ({ className }) => 
   )
 }
 
-// Carousel Primitive
 export const Carousel: React.FC<{
   slides?: Array<{ title: string; subtitle: string; metric: string }>
   className?: string

@@ -62,6 +62,7 @@ const SOURCE_FILE_MAP: Record<string, string> = {
   combobox: "primitives/combobox.tsx",
   "command-palette": "primitives/command-palette.tsx",
   "context-menu": "primitives/context-menu.tsx",
+  calendar: "primitives/calendar.tsx",
   "date-calendar": "primitives/date-calendar.tsx",
   "date-picker": "primitives/date-picker.tsx",
   divider: "primitives/divider.tsx",

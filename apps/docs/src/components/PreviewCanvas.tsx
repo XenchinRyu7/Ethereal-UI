@@ -47,8 +47,8 @@ import {
   Combobox,
   CommandPalette,
   ContextMenuBox,
-  DateCalendar,
-  DateRangePicker,
+  Calendar,
+  DatePicker,
   Divider,
   Drawer,
   DrawerContent,
@@ -1077,11 +1077,20 @@ export const LiveDemoRenderer: React.FC<{ slug: string; sectionId?: string }> = 
         </ContextMenuBox>
       )
 
+    case "calendar":
     case "date-calendar":
-      return <DateCalendar />
+      return (
+        <div className="flex flex-col items-center gap-3">
+          <Calendar />
+        </div>
+      )
 
     case "date-picker":
-      return <DateRangePicker />
+      return (
+        <div className="flex flex-col items-center gap-3">
+          <DatePicker />
+        </div>
+      )
 
     case "divider":
       return (
