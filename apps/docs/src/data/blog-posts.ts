@@ -12,6 +12,87 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: "road-to-v1-roadmap",
+    title: "The Road to Ethereal UI v1.0.0: Vision, Architecture, and What's Coming",
+    date: "November 27, 2026",
+    tag: "Roadmap",
+    author: "Saeful Rohman",
+    role: "Creator of Ethereal UI",
+    authorAvatar: "SR",
+    excerpt:
+      "A comprehensive look at what's landing in Ethereal UI v1.0.0: 45+ accessible primitives, enterprise authentication blocks, OKLCH theme architecture, and CLI workflows.",
+    content: `
+## Setting the New Standard for Modern UI Engineering
+
+As we gear up for the official release of **Ethereal UI v1.0.0**, our mission remains crystal clear: to give engineers and design teams the most modern, accessible, and high-density component system available—built from the ground up for **Tailwind CSS v4** and **Radix UI Primitives**.
+
+In earlier versions (0.0.x), we focused on laying the core foundation—validating our zero-runtime semantic token architecture, perfecting server-side rendering in Astro, and creating initial showcase templates.
+
+Now, as we approach **v1.0.0**, we are bridging every missing gap between atomic primitives and full-scale enterprise application blocks.
+
+---
+
+### 1. Complete Primitive Parity & Deep Form Polish
+
+We conducted an exhaustive audit across the modern UI ecosystem (including shadcn/ui, Mantine, Ant Design, and Radix) to eliminate gaps before reaching v1.0.0. This release cycle delivers:
+
+- **Enterprise Input Primitives**: \`PasswordInput\` (with integrated visibility toggling and password strength scoring), \`TagInput\` (interactive chip management with keyboard navigation), and \`FormField\` (standardized labels, required indicators, descriptions, and error states).
+- **Modern Interactive Controls**: \`SegmentedControl\` with animated sliding pill indicators, \`Collapsible\` for smooth single-panel disclosure, and \`HoverCard\` with delayed hover previews.
+- **Revamped Color Picker**: Moving far beyond simple static palettes, \`ColorPicker\` now features **Semantic Theme Rules** (\`Primary\`, \`Secondary\`, \`Accent\`, \`Success\`, \`Warning\`, \`Destructive\`), native spectrum picker trigger, manual Hex input, and native browser **EyeDropper API** integration.
+- **Unified Layout Primitives**: \`Card\` compound components, \`Kbd\`, \`Rating\`, \`Spinner\`, \`AspectRatio\`, and \`CopyButton\`.
+
+---
+
+### 2. High-Density Enterprise & Agentic Blocks
+
+Modern applications are no longer just static forms. With AI copilots, complex fintech workflows, and high-density dashboards taking center stage, Ethereal UI provides production-ready blocks:
+
+- **Authentication & Security**: The newly added \`LoginFormBlock\` delivers enterprise Google & GitHub OAuth sign-in, email validation, password visibility toggle, remember-me options, and simulated loading states.
+- **Dual-Control Workflows**: The \`ApprovalWorkflowBlock\` powers Maker-Checker verification for high-value banking transfers, HRMS requests, and privileged access.
+- **FinTech Treasury Ledgers**: \`TransactionLedgerBlock\` handles multi-currency Nostro accounts (USD, EUR, IDR), SWIFT/BI-FAST settlements, and outbound wire modals.
+- **AI Copilot & Prompt Engineering**: Dedicated blocks for multi-modal prompt composing (\`PromptComposerBlock\`), real-time agent reasoning traces (\`AgentProgressBlock\`), and context token meters (\`TokenUsageBlock\`).
+- **Interactive Telemetry Drawers**: Our enhanced \`Drawer\` and \`DrawerBody\` now support live bidirectional data editing directly from inside slide-over sheets.
+
+---
+
+### 3. Architecture: Tailwind CSS v4 & OKLCH Color Engine
+
+Ethereal UI v1.0.0 is built exclusively on **Tailwind CSS v4**'s \`@theme\` paradigm:
+
+- **OKLCH Palette Precision**: Perceptually uniform color curves that preserve perceived brightness across different hues and mode switches.
+- **Zero-FOUC Dark Mode**: Inline theme bootstrapping prevents white flashes during server-rendered page loads.
+- **Theme Marketplace**: Instant community theme loading via CSS custom properties with zero runtime JavaScript overhead.
+
+---
+
+### 4. Developer Experience & CLI Scaffolding
+
+With v1.0.0, developers can choose between:
+
+1. **Copy-and-Paste Registry**:
+   \`\`\`bash
+   npx @etherealui/cli@latest add login-form color-picker drawer
+   \`\`\`
+2. **Pre-bundled NPM Package**:
+   \`\`\`bash
+   pnpm add @etherealui/react
+   \`\`\`
+
+Both distribution channels are backed by automated schema generation, complete TypeScript typings, and strict zero-error lint policies.
+
+---
+
+### 5. What's Next on the Roadmap to v1.0.0 GA
+
+Before locking the v1.0.0 tag, our final milestones include:
+- **Comprehensive Docs Polish**: Updating all component interactive code tabs, props tables, and installation copy commands.
+- **Framework Adapters**: Continued verification with Next.js App Router, Remix, Vite, and Astro.
+- **Full Showcase Gallery**: Live interactive templates demonstrating end-to-end applications built exclusively with Ethereal UI.
+
+Stay tuned as we roll out the release candidate tags. Thank you for building with Ethereal UI!
+`,
+  },
+  {
     slug: "introducing-ethereal-ui-v1",
     title: "Introducing Ethereal UI: 37+ Components & 10 Free Dashboard Blocks",
     date: "November 6, 2026",

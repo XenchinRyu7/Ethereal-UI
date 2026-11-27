@@ -480,10 +480,10 @@ export function CloseButtonDemo() {
     category: "primitives",
     subcategory: "Base",
     description:
-      "Hex color input paired with preset brand swatches for workspace customization and chart series coloring.",
+      "Interactive color selector supporting semantic theme roles (Primary, Secondary, Accent), standard swatches, custom hex inputs, EyeDropper API, and native spectrum picker.",
     isNew: true,
-    dependencies: [],
-    sourceFile: "packages/ui/src/primitives/date-picker.tsx",
+    dependencies: ["lucide-react"],
+    sourceFile: "packages/ui/src/primitives/color-picker.tsx",
     code: `import { ColorPicker } from "@etherealui/react"
 
 export function ColorPickerDemo() {

@@ -68,7 +68,11 @@ export { Carousel, type CarouselSlide, type CarouselProps } from "./primitives/c
 export { Checkbox } from "./primitives/checkbox"
 export { Chip, type ChipProps } from "./primitives/chip"
 export { CloseButton, type CloseButtonProps } from "./primitives/close-button"
-export { ColorPicker, type ColorPickerProps } from "./primitives/color-picker"
+export {
+  ColorPicker,
+  type ColorPickerProps,
+  type SemanticSwatch,
+} from "./primitives/color-picker"
 export { Combobox, type ComboboxOption, type ComboboxProps } from "./primitives/combobox"
 export { CommandPalette, type CommandItem, type CommandPaletteProps } from "./primitives/command-palette"
 export { ContextMenuBox, type ContextMenuAction, type ContextMenuBoxProps } from "./primitives/context-menu"
