@@ -50,7 +50,7 @@ const DEFAULT_NOTIFICATIONS: NotificationItem[] = [
   {
     id: "notif-1",
     title: "Deployment Successful",
-    message: "Production build v0.0.9 successfully deployed to edge clusters.",
+    message: "Production build v1.0.0 successfully deployed to edge clusters.",
     timestamp: "2m ago",
     read: false,
     type: "success",

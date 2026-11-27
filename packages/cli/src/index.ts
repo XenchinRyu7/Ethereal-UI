@@ -164,7 +164,7 @@ const c = {
 
 function printBanner() {
   console.log(
-    `\n${c.bold}${c.blue}◆ Ethereal UI CLI${c.reset} ${c.dim}(@etherealui/cli v0.0.9)${c.reset}\n`
+    `\n${c.bold}${c.blue}◆ Ethereal UI CLI${c.reset} ${c.dim}(@etherealui/cli v1.0.0)${c.reset}\n`
   )
 }
 
