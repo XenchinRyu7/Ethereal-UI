@@ -11,6 +11,8 @@ import {
   Bell,
   Plus,
   ExternalLink,
+  Mail,
+  Search,
 } from "lucide-react"
 import {
   Alert,
@@ -72,6 +74,7 @@ import {
   Drawer,
   DrawerContent,
   DrawerHeader,
+  DrawerBody,
   DrawerTitle,
   DrawerDescription,
   DrawerFooter,
@@ -126,6 +129,7 @@ import {
   SecurityPasswordFormBlock,
   TeamRbacTableBlock,
   BillingPlanCardBlock,
+  LoginFormBlock,
   PromptComposerBlock,
   AgentProgressBlock,
   TokenUsageBlock,
@@ -464,62 +468,155 @@ const InteractiveAlertDialogDemo: React.FC = () => {
 
 const InteractiveDrawerDemo: React.FC = () => {
   const [openSide, setOpenSide] = React.useState<"right" | "left" | "top" | "bottom" | null>(null)
+  const [userData, setUserData] = React.useState({
+    name: "Elena Rostova",
+    email: "elena.rostova@ethereal.dev",
+    role: "Principal Architect",
+    status: "Active",
+    bio: "Design systems architect crafting tokenized UI components and accessible micro-interactions.",
+  })
+  const [formData, setFormData] = React.useState(userData)
+  const [saveBanner, setSaveBanner] = React.useState(false)
+
+  const handleOpen = (side: "right" | "left" | "top" | "bottom") => {
+    setFormData({ ...userData })
+    setOpenSide(side)
+  }
+
+  const handleSave = () => {
+    setUserData({ ...formData })
+    setOpenSide(null)
+    setSaveBanner(true)
+    setTimeout(() => setSaveBanner(false), 3000)
+  }
 
   return (
-    <div className="w-full max-w-xl space-y-6">
-      <div className="rounded-2xl border border-border bg-card p-5 space-y-4 shadow-xs">
-        <div>
-          <h4 className="text-xs font-bold uppercase tracking-wider text-foreground">
-            Drawer / Sheet Interactive Multi-Side Test
-          </h4>
-          <p className="text-[11px] text-muted-foreground">
-            Test sliding the side modal from any of the 4 screen edges (right, left, top, bottom) with animated overlays.
-          </p>
+    <div className="w-full max-w-xl space-y-4">
+      {saveBanner && (
+        <div className="flex items-center gap-2 rounded-xl border border-emerald-500/30 bg-emerald-50/60 p-3 text-xs text-emerald-800 dark:bg-emerald-950/30 dark:text-emerald-300">
+          <Check className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+          <span>Profile changes saved successfully via Drawer!</span>
         </div>
+      )}
 
-        <div className="flex flex-wrap items-center gap-2.5">
-          <Button variant="primary" onClick={() => setOpenSide("right")}>
-            Right Drawer (Default)
-          </Button>
-          <Button variant="secondary" onClick={() => setOpenSide("left")}>
-            Left Drawer (Nav)
-          </Button>
-          <Button variant="outline" onClick={() => setOpenSide("top")}>
-            Top Drawer
-          </Button>
-          <Button variant="outline" onClick={() => setOpenSide("bottom")}>
-            Bottom Drawer (Mobile)
-          </Button>
-        </div>
-
-        <Drawer open={openSide !== null} onOpenChange={(open) => !open && setOpenSide(null)}>
-          <DrawerContent side={openSide || "right"} size="default">
-            <DrawerHeader>
-              <DrawerTitle className="capitalize">{openSide || "Right"} Side Drawer</DrawerTitle>
-              <DrawerDescription>
-                Sliding modal panel anchored to the {openSide || "right"} viewport edge.
-              </DrawerDescription>
-            </DrawerHeader>
-            <div className="py-6 space-y-4 text-xs text-muted-foreground">
-              <p>
-                Drawer and Sheet are unified into one primitive in Ethereal UI, supporting 4 side directions and 5 size presets.
-              </p>
-              <div className="space-y-1.5">
-                <Label>Configuration Preset</Label>
-                <Input defaultValue="Production Telemetry Engine" />
+      {/* Target Record Card */}
+      <div className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-zinc-100 pb-4 dark:border-zinc-800/80">
+          <div className="flex items-center gap-3">
+            <Avatar fallback={userData.name.slice(0, 2).toUpperCase()} tint="blue" size="lg" status="online" />
+            <div>
+              <div className="flex items-center gap-2">
+                <h4 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">{userData.name}</h4>
+                <Badge variant={userData.status === "Active" ? "emerald" : "muted"} dot>
+                  {userData.status}
+                </Badge>
               </div>
+              <p className="text-xs text-zinc-500 dark:text-zinc-400">{userData.email}</p>
             </div>
-            <DrawerFooter>
-              <Button variant="outline" onClick={() => setOpenSide(null)}>
-                Close
-              </Button>
-              <Button variant="primary" onClick={() => setOpenSide(null)}>
-                Save Changes
-              </Button>
-            </DrawerFooter>
-          </DrawerContent>
-        </Drawer>
+          </div>
+          <Badge variant="blue">{userData.role}</Badge>
+        </div>
+
+        <p className="text-xs text-zinc-600 dark:text-zinc-300 leading-relaxed">
+          {userData.bio}
+        </p>
+
+        <div className="pt-2 border-t border-zinc-100 dark:border-zinc-800/80 flex flex-wrap items-center justify-between gap-2.5">
+          <span className="text-[11px] font-medium text-zinc-400">Open Drawer to Edit:</span>
+          <div className="flex flex-wrap items-center gap-2">
+            <Button variant="primary" size="sm" onClick={() => handleOpen("right")}>
+              Edit (Right Drawer)
+            </Button>
+            <Button variant="outline" size="sm" onClick={() => handleOpen("left")}>
+              Left Side
+            </Button>
+            <Button variant="outline" size="sm" onClick={() => handleOpen("bottom")}>
+              Bottom Sheet
+            </Button>
+          </div>
+        </div>
       </div>
+
+      <Drawer open={openSide !== null} onOpenChange={(open) => !open && setOpenSide(null)}>
+        <DrawerContent side={openSide || "right"} size="default">
+          <DrawerHeader>
+            <DrawerTitle>Edit Member Profile</DrawerTitle>
+            <DrawerDescription>
+              Update team details, role permissions, and active settings in real time.
+            </DrawerDescription>
+          </DrawerHeader>
+
+          <DrawerBody className="space-y-4">
+            <div className="space-y-1.5">
+              <Label htmlFor="drawer-name">Full Name</Label>
+              <Input
+                id="drawer-name"
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <Label htmlFor="drawer-email">Email Address</Label>
+              <Input
+                id="drawer-email"
+                type="email"
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <Label>Role Designation</Label>
+              <Select
+                value={formData.role}
+                onValueChange={(val) => setFormData({ ...formData, role: val })}
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Principal Architect">Principal Architect</SelectItem>
+                  <SelectItem value="Lead Engineer">Lead Engineer</SelectItem>
+                  <SelectItem value="Product Designer">Product Designer</SelectItem>
+                  <SelectItem value="Security Officer">Security Officer</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="flex items-center justify-between rounded-xl border border-zinc-200 bg-zinc-50/50 p-3.5 dark:border-zinc-800 dark:bg-zinc-800/40">
+              <div>
+                <Label>Active Status</Label>
+                <p className="text-[11px] text-zinc-500">Allow active team collaboration access</p>
+              </div>
+              <Switch
+                checked={formData.status === "Active"}
+                onCheckedChange={(checked) =>
+                  setFormData({ ...formData, status: checked ? "Active" : "Inactive" })
+                }
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <Label optional>Biography &amp; Notes</Label>
+              <Textarea
+                autoResize
+                value={formData.bio}
+                onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
+              />
+            </div>
+          </DrawerBody>
+
+          <DrawerFooter>
+            <Button variant="outline" onClick={() => setOpenSide(null)}>
+              Cancel
+            </Button>
+            <Button variant="primary" onClick={handleSave}>
+              Save Changes
+            </Button>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
     </div>
   )
 }
@@ -1298,18 +1395,23 @@ export const LiveDemoRenderer: React.FC<{ slug: string; sectionId?: string }> = 
 
     case "input":
       return (
-        <div className="w-full max-w-xs space-y-3">
+        <div className="w-full max-w-xs space-y-4">
           <div className="space-y-1.5">
-            <Label>Email address</Label>
-            <Input placeholder="you@example.com" />
+            <Label htmlFor="demo-email">Email address</Label>
+            <Input id="demo-email" type="email" placeholder="you@ethereal.dev" leftIcon={<Mail className="h-4 w-4" />} />
           </div>
           <div className="space-y-1.5">
-            <Label>Workspace URL</Label>
+            <Label htmlFor="demo-url">Workspace subdomain</Label>
             <Input
+              id="demo-url"
               prefixText="https://"
-              suffixText=".boardui.com"
-              defaultValue="acme"
+              suffixText=".ethereal.dev"
+              defaultValue="acme-corp"
             />
+          </div>
+          <div className="space-y-1.5">
+            <Label optional>Search filter</Label>
+            <Input placeholder="Filter records or keywords..." leftIcon={<Search className="h-4 w-4" />} />
           </div>
         </div>
       )
@@ -1579,6 +1681,13 @@ export const LiveDemoRenderer: React.FC<{ slug: string; sectionId?: string }> = 
       return (
         <div className="w-full max-w-2xl">
           <BillingPlanCardBlock />
+        </div>
+      )
+
+    case "login-form":
+      return (
+        <div className="w-full max-w-md py-4">
+          <LoginFormBlock />
         </div>
       )
 

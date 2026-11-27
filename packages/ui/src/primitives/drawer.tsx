@@ -103,6 +103,17 @@ const DrawerHeader = ({
 )
 DrawerHeader.displayName = "DrawerHeader"
 
+const DrawerBody = ({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) => (
+  <div
+    className={cn("flex-1 overflow-y-auto py-4 space-y-4 text-sm text-foreground", className)}
+    {...props}
+  />
+)
+DrawerBody.displayName = "DrawerBody"
+
 const DrawerFooter = ({
   className,
   ...props
@@ -146,6 +157,7 @@ const SheetPortal = DrawerPortal
 const SheetOverlay = DrawerOverlay
 const SheetContent = DrawerContent
 const SheetHeader = DrawerHeader
+const SheetBody = DrawerBody
 const SheetFooter = DrawerFooter
 const SheetTitle = DrawerTitle
 const SheetDescription = DrawerDescription
@@ -160,6 +172,7 @@ export {
   DrawerOverlay,
   DrawerContent,
   DrawerHeader,
+  DrawerBody,
   DrawerFooter,
   DrawerTitle,
   DrawerDescription,
@@ -171,6 +184,7 @@ export {
   SheetOverlay,
   SheetContent,
   SheetHeader,
+  SheetBody,
   SheetFooter,
   SheetTitle,
   SheetDescription,

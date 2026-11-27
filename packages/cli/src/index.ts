@@ -131,6 +131,7 @@ const SOURCE_FILE_MAP: Record<string, string> = {
   "system-health": "blocks/system-health.tsx",
   "ai-chat-thread": "blocks/ai-chat-thread.tsx",
   "notification-center": "blocks/notification-center.tsx",
+  "login-form": "blocks/login-form.tsx",
   "executive-analytics": "templates/executive-analytics.tsx",
   "control-tower": "templates/control-tower.tsx",
   "workspace-settings": "templates/workspace-settings.tsx",

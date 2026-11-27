@@ -94,6 +94,7 @@ export {
   DrawerClose,
   DrawerContent,
   DrawerHeader,
+  DrawerBody,
   DrawerTitle,
   DrawerDescription,
   DrawerFooter,
@@ -107,6 +108,7 @@ export {
   SheetOverlay,
   SheetContent,
   SheetHeader,
+  SheetBody,
   SheetFooter,
   SheetTitle,
   SheetDescription,
@@ -183,6 +185,7 @@ export * from "./blocks/stat-cards"
 export * from "./blocks/filter-bar"
 export * from "./blocks/data-table"
 export * from "./blocks/settings-blocks"
+export * from "./blocks/login-form"
 export * from "./blocks/prompt-composer"
 export * from "./blocks/agent-progress"
 export * from "./blocks/token-usage"

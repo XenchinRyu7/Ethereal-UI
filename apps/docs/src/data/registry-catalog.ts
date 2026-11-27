@@ -1151,7 +1151,7 @@ export function InputDemo() {
       </div>
       <div className="space-y-1.5">
         <Label>Workspace URL</Label>
-        <Input prefixText="https://" suffixText=".boardui.com" defaultValue="acme" />
+        <Input prefixText="https://" suffixText=".ethereal.dev" defaultValue="acme" />
       </div>
     </div>
   )
@@ -1786,6 +1786,30 @@ export function SecuritySettingsDemo() {
 
 export function BillingCardDemo() {
   return <BillingPlanCardBlock />
+}`,
+    sections: [],
+  },
+  {
+    slug: "login-form",
+    title: "Login Form",
+    category: "blocks",
+    subcategory: "Authentication",
+    description:
+      "Enterprise authentication card with Google/GitHub social sign-in, email validation, password visibility toggle, remember-me checkbox, and loading state.",
+    isNew: true,
+    dependencies: ["lucide-react"],
+    sourceFile: "packages/ui/src/blocks/login-form.tsx",
+    code: `import { LoginFormBlock } from "@etherealui/react"
+
+export function LoginFormDemo() {
+  return (
+    <LoginFormBlock
+      onSuccess={({ email }) => console.log("Logged in:", email)}
+      onSocialLogin={(provider) => console.log("Social login:", provider)}
+      onForgotPassword={() => alert("Forgot password clicked")}
+      onSignUpClick={() => alert("Sign up clicked")}
+    />
+  )
 }`,
     sections: [],
   },
