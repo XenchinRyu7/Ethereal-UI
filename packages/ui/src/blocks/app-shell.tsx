@@ -245,19 +245,24 @@ export const SidebarShell: React.FC<SidebarShellProps> = ({
       {/* Footer User Pod */}
       <div className="border-t border-zinc-200 p-3 dark:border-zinc-800">
         <div className="flex items-center justify-between gap-2.5">
-          <div className="flex items-center gap-2.5 min-w-0">
+          <a
+            href="https://github.com/XenchinRyu7"
+            target="_blank"
+            rel="noreferrer"
+            className="flex items-center gap-2.5 min-w-0 group hover:opacity-90"
+          >
             <Avatar fallback="SR" tint="blue" size="sm" status="online" />
             {!collapsed && (
               <div className="min-w-0">
-                <p className="truncate text-xs font-medium text-zinc-900 dark:text-zinc-100">
+                <p className="truncate text-xs font-medium text-zinc-900 group-hover:text-blue-600 dark:text-zinc-100 dark:group-hover:text-blue-400">
                   Saeful Rohman
                 </p>
                 <p className="truncate text-[11px] text-zinc-500">
-                  saeful@acme.com
+                  @XenchinRyu7
                 </p>
               </div>
             )}
-          </div>
+          </a>
         </div>
       </div>
     </aside>

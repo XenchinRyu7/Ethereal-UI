@@ -106,6 +106,17 @@ const pathname = Astro.url.pathname
       >
         Blog
       </a>
+      <a
+        href="/community"
+        class:list={[
+          "transition-colors",
+          pathname.startsWith("/community")
+            ? "text-foreground font-semibold"
+            : "text-muted-foreground hover:text-foreground",
+        ]}
+      >
+        Community
+      </a>
     </div>
 
     <div class="flex items-center gap-1.5">

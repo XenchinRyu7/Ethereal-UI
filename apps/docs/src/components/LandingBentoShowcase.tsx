@@ -427,15 +427,30 @@ export const LandingBentoShowcase: React.FC = () => {
         <div className="group flex flex-col justify-between rounded-3xl border border-zinc-200/90 bg-zinc-50/50 p-3 transition-all duration-200 hover:border-zinc-300 hover:shadow-md dark:border-zinc-800/90 dark:bg-zinc-900/40 dark:hover:border-zinc-700">
           <div className="relative h-52 overflow-hidden rounded-2xl border border-zinc-200/80 bg-white p-3.5 shadow-2xs dark:border-zinc-800 dark:bg-zinc-950 space-y-2.5">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
+              <a
+                href="https://github.com/XenchinRyu7"
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center gap-2 group cursor-pointer"
+              >
                 <Avatar size="xs" fallback="SR" status="online" />
-                <span className="text-xs font-semibold text-zinc-900 dark:text-zinc-100">
-                  Saeful Rohman
-                </span>
-              </div>
-              <Badge variant="blue" className="text-[9px]">
-                PRO
-              </Badge>
+                <div className="flex flex-col">
+                  <span className="text-xs font-semibold text-zinc-900 group-hover:text-blue-600 dark:text-zinc-100 dark:group-hover:text-blue-400">
+                    Saeful Rohman
+                  </span>
+                  <span className="text-[10px] text-zinc-400">
+                    @XenchinRyu7
+                  </span>
+                </div>
+              </a>
+              <a
+                href="https://github.com/XenchinRyu7/Ethereal-UI"
+                target="_blank"
+                rel="noreferrer"
+                className="rounded bg-blue-100 px-1.5 py-0.5 text-[9px] font-semibold text-blue-700 hover:bg-blue-200 dark:bg-blue-500/20 dark:text-blue-300"
+              >
+                GitHub OSS
+              </a>
             </div>
 
             <div className="flex items-center justify-between rounded-xl border border-zinc-200 bg-zinc-50 px-2.5 py-1.5 text-[11px] text-zinc-400 dark:border-zinc-800 dark:bg-zinc-900">
@@ -511,11 +526,23 @@ export const LandingBentoShowcase: React.FC = () => {
                 <p className="text-xs font-semibold text-zinc-900 dark:text-zinc-100">
                   Saeful Rohman
                 </p>
-                <p className="text-[10px] text-zinc-400">@saefulrdevs • Lead Architect</p>
+                <a
+                  href="https://github.com/XenchinRyu7"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-[10px] text-zinc-400 hover:text-blue-600 hover:underline"
+                >
+                  @XenchinRyu7 • Founder & Lead Maintainer
+                </a>
               </div>
-              <Button variant="outline" size="xs">
+              <a
+                href="https://github.com/XenchinRyu7"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex h-6 items-center justify-center rounded-lg border border-zinc-200 bg-white px-2.5 text-[11px] font-medium text-zinc-900 shadow-2xs hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:bg-zinc-800"
+              >
                 Follow
-              </Button>
+              </a>
             </div>
 
             <div className="grid grid-cols-3 gap-1.5 rounded-xl bg-zinc-50 p-2 dark:bg-zinc-900">

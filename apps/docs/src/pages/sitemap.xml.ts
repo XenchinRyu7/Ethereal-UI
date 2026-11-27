@@ -15,6 +15,7 @@ export const GET: APIRoute = async () => {
     { path: "/charts", priority: "0.9", changefreq: "weekly" },
     { path: "/templates", priority: "0.9", changefreq: "weekly" },
     { path: "/themes", priority: "0.9", changefreq: "weekly" },
+    { path: "/community", priority: "0.8", changefreq: "weekly" },
     { path: "/blog", priority: "0.7", changefreq: "weekly" },
   ]
 
