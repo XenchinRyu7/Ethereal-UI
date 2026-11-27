@@ -64,18 +64,18 @@ export const LoginFormBlock: React.FC<LoginFormBlockProps> = ({
   return (
     <div
       className={cn(
-        "w-full max-w-md mx-auto rounded-2xl border border-zinc-200 bg-white p-7 shadow-xl shadow-zinc-950/5 dark:border-zinc-800 dark:bg-zinc-900/90 dark:shadow-black/20",
+        "w-full max-w-md mx-auto rounded-2xl border border-border bg-card p-7 shadow-xl text-card-foreground dark:shadow-black/20",
         className
       )}
     >
       <div className="space-y-1.5 text-center sm:text-left">
-        <div className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-blue-600/10 text-blue-600 dark:bg-blue-500/15 dark:text-blue-400 mb-2">
+        <div className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10 text-primary mb-2">
           <Lock className="h-4 w-4" />
         </div>
-        <h2 className="text-xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+        <h2 className="text-xl font-bold tracking-tight text-foreground">
           {title}
         </h2>
-        <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
+        <p className="text-xs text-muted-foreground leading-relaxed">
           {description}
         </p>
       </div>
@@ -107,7 +107,7 @@ export const LoginFormBlock: React.FC<LoginFormBlockProps> = ({
             <button
               type="button"
               onClick={() => onSocialLogin?.("google")}
-              className="flex h-9.5 items-center justify-center gap-2 rounded-xl border border-zinc-200 bg-white text-xs font-medium text-zinc-700 transition hover:bg-zinc-50 hover:text-zinc-900 active:scale-[0.98] dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-300 dark:hover:bg-zinc-900 dark:hover:text-zinc-100 cursor-pointer shadow-2xs"
+              className="flex h-9.5 items-center justify-center gap-2 rounded-lg border border-input bg-background text-xs font-medium text-foreground transition hover:bg-muted active:scale-[0.98] cursor-pointer shadow-2xs"
             >
               <svg className="h-4 w-4" viewBox="0 0 24 24">
                 <path
@@ -133,7 +133,7 @@ export const LoginFormBlock: React.FC<LoginFormBlockProps> = ({
             <button
               type="button"
               onClick={() => onSocialLogin?.("github")}
-              className="flex h-9.5 items-center justify-center gap-2 rounded-xl border border-zinc-200 bg-white text-xs font-medium text-zinc-700 transition hover:bg-zinc-50 hover:text-zinc-900 active:scale-[0.98] dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-300 dark:hover:bg-zinc-900 dark:hover:text-zinc-100 cursor-pointer shadow-2xs"
+              className="flex h-9.5 items-center justify-center gap-2 rounded-lg border border-input bg-background text-xs font-medium text-foreground transition hover:bg-muted active:scale-[0.98] cursor-pointer shadow-2xs"
             >
               <svg className="h-4 w-4 fill-current" viewBox="0 0 24 24">
                 <path
@@ -148,9 +148,9 @@ export const LoginFormBlock: React.FC<LoginFormBlockProps> = ({
 
           <div className="relative my-5 flex items-center justify-center">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-zinc-200 dark:border-zinc-800"></div>
+              <div className="w-full border-t border-border"></div>
             </div>
-            <span className="relative bg-white px-2.5 text-[11px] uppercase tracking-wider text-zinc-400 dark:bg-zinc-900">
+            <span className="relative bg-card px-2.5 text-[11px] uppercase tracking-wider text-muted-foreground">
               Or continue with email
             </span>
           </div>
@@ -204,7 +204,7 @@ export const LoginFormBlock: React.FC<LoginFormBlockProps> = ({
                   checked={rememberMe}
                   onCheckedChange={(checked) => setRememberMe(Boolean(checked))}
                 />
-                <span className="text-xs text-zinc-600 dark:text-zinc-400">
+                <span className="text-xs text-muted-foreground">
                   Remember me for 30 days
                 </span>
               </label>
@@ -230,7 +230,7 @@ export const LoginFormBlock: React.FC<LoginFormBlockProps> = ({
             </Button>
           </form>
 
-          <div className="mt-5 space-y-2 text-center text-xs text-zinc-500 dark:text-zinc-400">
+          <div className="mt-5 space-y-2 text-center text-xs text-muted-foreground">
             <p>
               Don&apos;t have an account?{" "}
               <button
@@ -245,7 +245,7 @@ export const LoginFormBlock: React.FC<LoginFormBlockProps> = ({
               <button
                 type="button"
                 onClick={onSsoClick}
-                className="text-[11px] text-zinc-400 hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-300 hover:underline cursor-pointer"
+                className="text-[11px] text-muted-foreground/80 hover:text-foreground hover:underline cursor-pointer"
               >
                 Sign in with Enterprise SSO &rarr;
               </button>

@@ -56,7 +56,7 @@ export const PasswordInput = React.forwardRef<
 
     return (
       <div className="w-full space-y-1.5">
-        <div className="relative flex items-center">
+        <div className="relative flex items-center w-full">
           <input
             type={showPassword ? "text" : "password"}
             ref={ref}
@@ -67,7 +67,7 @@ export const PasswordInput = React.forwardRef<
               onChange?.(e)
             }}
             className={cn(
-              "flex h-9 w-full rounded-xl border border-zinc-200 bg-white px-3 pr-10 text-xs text-zinc-900 shadow-2xs transition-colors placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 dark:placeholder:text-zinc-500",
+              "flex h-9 w-full rounded-lg border border-input bg-background px-3 pr-10 text-sm text-foreground shadow-2xs transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/20 disabled:cursor-not-allowed disabled:opacity-50",
               className
             )}
             {...props}
@@ -78,7 +78,7 @@ export const PasswordInput = React.forwardRef<
             disabled={disabled}
             onClick={() => setShowPassword((prev) => !prev)}
             aria-label={showPassword ? "Hide password" : "Show password"}
-            className="absolute right-2.5 flex h-5 w-5 items-center justify-center rounded text-zinc-400 hover:text-zinc-600 focus:outline-none dark:hover:text-zinc-200 cursor-pointer disabled:pointer-events-none"
+            className="absolute right-3 flex h-5 w-5 items-center justify-center rounded text-muted-foreground hover:text-foreground focus:outline-none cursor-pointer disabled:pointer-events-none"
           >
             {showPassword ? (
               <EyeOff className="h-4 w-4" />
