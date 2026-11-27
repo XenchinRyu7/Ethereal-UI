@@ -847,18 +847,34 @@ export interface CandlestickDataPoint {
 }
 
 const DEFAULT_CANDLESTICKS: CandlestickDataPoint[] = [
-  { time: "09:00", open: 95400, high: 95800, low: 95100, close: 95750, volume: 142 },
-  { time: "10:00", open: 95750, high: 96200, low: 95600, close: 96100, volume: 188 },
-  { time: "11:00", open: 96100, high: 96350, low: 95800, close: 95900, volume: 165 },
-  { time: "12:00", open: 95900, high: 96400, low: 95750, close: 96320, volume: 210 },
-  { time: "13:00", open: 96320, high: 96800, low: 96200, close: 96750, volume: 245 },
-  { time: "14:00", open: 96750, high: 97100, low: 96500, close: 96600, volume: 198 },
-  { time: "15:00", open: 96600, high: 96900, low: 96300, close: 96420, volume: 154 },
-  { time: "16:00", open: 96420, high: 97350, low: 96400, close: 97280, volume: 312 },
-  { time: "17:00", open: 97280, high: 97600, low: 97050, close: 97450, volume: 280 },
-  { time: "18:00", open: 97450, high: 97550, low: 96800, close: 96950, volume: 220 },
-  { time: "19:00", open: 96950, high: 97400, low: 96900, close: 97320, volume: 175 },
-  { time: "20:00", open: 97320, high: 97850, low: 97200, close: 97800, volume: 340 },
+  { time: "00:00", open: 95100, high: 95350, low: 94950, close: 95280, volume: 112 },
+  { time: "01:00", open: 95280, high: 95500, low: 95120, close: 95420, volume: 145 },
+  { time: "02:00", open: 95420, high: 95750, low: 95300, close: 95680, volume: 168 },
+  { time: "03:00", open: 95680, high: 95900, low: 95550, close: 95820, volume: 182 },
+  { time: "04:00", open: 95820, high: 96150, low: 95700, close: 96050, volume: 210 },
+  { time: "05:00", open: 96050, high: 96250, low: 95880, close: 95920, volume: 175 },
+  { time: "06:00", open: 95920, high: 96080, low: 95600, close: 95740, volume: 160 },
+  { time: "07:00", open: 95740, high: 96300, low: 95650, close: 96210, volume: 235 },
+  { time: "08:00", open: 96210, high: 96550, low: 96100, close: 96480, volume: 278 },
+  { time: "09:00", open: 96480, high: 96900, low: 96350, close: 96750, volume: 312 },
+  { time: "10:00", open: 96750, high: 97120, low: 96600, close: 96980, volume: 295 },
+  { time: "11:00", open: 96980, high: 97050, low: 96520, close: 96640, volume: 220 },
+  { time: "12:00", open: 96640, high: 96850, low: 96400, close: 96500, volume: 190 },
+  { time: "13:00", open: 96500, high: 96720, low: 96250, close: 96380, volume: 175 },
+  { time: "14:00", open: 96380, high: 96950, low: 96300, close: 96820, volume: 260 },
+  { time: "15:00", open: 96820, high: 97300, low: 96700, close: 97180, volume: 340 },
+  { time: "16:00", open: 97180, high: 97550, low: 97000, close: 97420, volume: 388 },
+  { time: "17:00", open: 97420, high: 97780, low: 97250, close: 97650, volume: 410 },
+  { time: "18:00", open: 97650, high: 97800, low: 97320, close: 97400, volume: 298 },
+  { time: "19:00", open: 97400, high: 97650, low: 97150, close: 97320, volume: 245 },
+  { time: "20:00", open: 97320, high: 97920, low: 97280, close: 97850, volume: 430 },
+  { time: "21:00", open: 97850, high: 98250, low: 97700, close: 98120, volume: 490 },
+  { time: "22:00", open: 98120, high: 98400, low: 97950, close: 98280, volume: 460 },
+  { time: "23:00", open: 98280, high: 98450, low: 98050, close: 98150, volume: 385 },
+  { time: "00:00", open: 98150, high: 98320, low: 97880, close: 97940, volume: 310 },
+  { time: "01:00", open: 97940, high: 98200, low: 97820, close: 98100, volume: 345 },
+  { time: "02:00", open: 98100, high: 98550, low: 98020, close: 98420, volume: 480 },
+  { time: "03:00", open: 98420, high: 98700, low: 98280, close: 98650, volume: 520 },
 ]
 
 export interface CandlestickStatisticChartProps {
@@ -873,34 +889,97 @@ export interface CandlestickStatisticChartProps {
 
 export const CandlestickStatisticChart: React.FC<CandlestickStatisticChartProps> = ({
   title = "BTC/USDT Perpetual",
-  subtitle = "Binance Futures • 1H Interval",
-  currentPrice = "$97,800.00",
-  change = "+2.51%",
+  subtitle = "Binance Futures • 15M Interval",
+  currentPrice = "$98,650.00",
+  change = "+3.72%",
   isPositive = true,
   data = DEFAULT_CANDLESTICKS,
   className,
 }) => {
   const [hoverIdx, setHoverIdx] = React.useState<number | null>(null)
-  const [timeframe, setTimeframe] = React.useState<"1H" | "4H" | "1D" | "1W">("1H")
+  const [timeframe, setTimeframe] = React.useState<"15m" | "1H" | "4H" | "1D" | "1W">("15m")
+  const [showIndicators, setShowIndicators] = React.useState(true)
 
-  const width = 540
-  const height = 190
-  const padX = 24
-  const padTop = 15
-  const padBottom = 35
+  const width = 600
+  const height = 230
+  const padLeft = 14
+  const padRight = 56
+  const padTop = 16
+  const padBottom = 42
 
   const chartHeight = height - padTop - padBottom
 
-  const minPrice = Math.min(...data.map((d) => d.low)) * 0.998
-  const maxPrice = Math.max(...data.map((d) => d.high)) * 1.002
+  const minPrice = Math.min(...data.map((d) => d.low)) * 0.9985
+  const maxPrice = Math.max(...data.map((d) => d.high)) * 1.0015
   const maxVolume = Math.max(...data.map((d) => d.volume), 1)
 
   const getY = (price: number) => {
     return padTop + chartHeight - ((price - minPrice) / (maxPrice - minPrice)) * chartHeight
   }
 
+  const getX = (idx: number) => {
+    return padLeft + (idx / Math.max(data.length - 1, 1)) * (width - padLeft - padRight)
+  }
+
+  // Calculate Moving Averages MA7 & MA25
+  const ma7Data = React.useMemo(() => {
+    return data.map((_, idx) => {
+      if (idx < 6) return null
+      const slice = data.slice(idx - 6, idx + 1)
+      const sum = slice.reduce((acc, c) => acc + c.close, 0)
+      return sum / 7
+    })
+  }, [data])
+
+  const ma25Data = React.useMemo(() => {
+    return data.map((_, idx) => {
+      if (idx < 24) return null
+      const slice = data.slice(idx - 24, idx + 1)
+      const sum = slice.reduce((acc, c) => acc + c.close, 0)
+      return sum / 25
+    })
+  }, [data])
+
+  const ma7Path = React.useMemo(() => {
+    let p = ""
+    ma7Data.forEach((val, idx) => {
+      if (val === null) return
+      const x = getX(idx)
+      const y = getY(val)
+      p += p === "" ? `M ${x.toFixed(1)} ${y.toFixed(1)}` : ` L ${x.toFixed(1)} ${y.toFixed(1)}`
+    })
+    return p
+  }, [ma7Data])
+
+  const ma25Path = React.useMemo(() => {
+    let p = ""
+    ma25Data.forEach((val, idx) => {
+      if (val === null) return
+      const x = getX(idx)
+      const y = getY(val)
+      p += p === "" ? `M ${x.toFixed(1)} ${y.toFixed(1)}` : ` L ${x.toFixed(1)} ${y.toFixed(1)}`
+    })
+    return p
+  }, [ma25Data])
+
   const activeCandle = hoverIdx !== null ? data[hoverIdx] : data[data.length - 1]
-  const candleWidth = Math.max((width - padX * 2) / data.length - 8, 6)
+  const activeMa7 = hoverIdx !== null ? ma7Data[hoverIdx] : ma7Data[ma7Data.length - 1]
+  const activeMa25 = hoverIdx !== null ? ma25Data[hoverIdx] : ma25Data[ma25Data.length - 1]
+
+  const candleSpacing = (width - padLeft - padRight) / Math.max(data.length - 1, 1)
+  const candleWidth = Math.max(candleSpacing * 0.65, 4)
+
+  // Highest & Lowest candle indices
+  const highestCandleIdx = data.reduce((maxI, c, i, arr) => (c.high > arr[maxI].high ? i : maxI), 0)
+  const lowestCandleIdx = data.reduce((minI, c, i, arr) => (c.low < arr[minI].low ? i : minI), 0)
+
+  // Price axis labels (4 levels)
+  const priceLevels = [
+    maxPrice * 0.999,
+    minPrice + (maxPrice - minPrice) * 0.66,
+    minPrice + (maxPrice - minPrice) * 0.33,
+    minPrice * 1.001,
+  ]
 
   return (
     <div
@@ -909,6 +988,7 @@ export const CandlestickStatisticChart: React.FC<CandlestickStatisticChartProps>
         className
       )}
     >
+      {/* Top Header: Symbol, 24h change & Timeframe Buttons */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-zinc-100 pb-4 dark:border-zinc-800/80">
         <div>
           <div className="flex items-center gap-2">
@@ -926,6 +1006,9 @@ export const CandlestickStatisticChart: React.FC<CandlestickStatisticChartProps>
               {isPositive ? <ArrowUpRight className="h-3 w-3 mr-0.5" /> : <ArrowDownRight className="h-3 w-3 mr-0.5" />}
               {change}
             </span>
+            <span className="hidden sm:inline-flex items-center rounded-md border border-zinc-200/80 bg-zinc-50 px-1.5 py-0.5 text-[10px] font-mono text-zinc-600 dark:border-zinc-700/80 dark:bg-zinc-800 dark:text-zinc-300">
+              Perp 50x
+            </span>
           </div>
           <p className="mt-0.5 text-xs text-zinc-500 dark:text-zinc-400">
             {subtitle}
@@ -937,9 +1020,12 @@ export const CandlestickStatisticChart: React.FC<CandlestickStatisticChartProps>
             <div className="font-mono text-base font-bold text-zinc-900 dark:text-zinc-100">
               {currentPrice}
             </div>
+            <div className="text-[10px] font-mono text-zinc-400">
+              Index: $98,642.10
+            </div>
           </div>
           <div className="flex items-center rounded-lg border border-zinc-200 bg-zinc-50 p-0.5 dark:border-zinc-800 dark:bg-zinc-800/60">
-            {(["1H", "4H", "1D", "1W"] as const).map((t) => (
+            {(["15m", "1H", "4H", "1D", "1W"] as const).map((t) => (
               <button
                 key={t}
                 type="button"
@@ -958,60 +1044,117 @@ export const CandlestickStatisticChart: React.FC<CandlestickStatisticChartProps>
         </div>
       </div>
 
-      {/* OHLC Bar readout */}
-      <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-[11px] text-zinc-500 dark:text-zinc-400">
-        <span>Time: <strong className="text-zinc-800 dark:text-zinc-200">{activeCandle.time}</strong></span>
-        <span>O: <strong className="text-zinc-800 dark:text-zinc-200">${activeCandle.open.toLocaleString()}</strong></span>
-        <span>H: <strong className="text-emerald-600 dark:text-emerald-400">${activeCandle.high.toLocaleString()}</strong></span>
-        <span>L: <strong className="text-rose-600 dark:text-rose-400">${activeCandle.low.toLocaleString()}</strong></span>
-        <span>C: <strong className={activeCandle.close >= activeCandle.open ? "text-emerald-600 dark:text-emerald-400" : "text-rose-600 dark:text-rose-400"}>${activeCandle.close.toLocaleString()}</strong></span>
-        <span>Vol: <strong className="text-zinc-800 dark:text-zinc-200">{activeCandle.volume} BTC</strong></span>
+      {/* 24h Trading Stats Bar */}
+      <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-b border-zinc-100/80 pb-2.5 font-mono text-[10px] text-zinc-500 dark:border-zinc-800/60 dark:text-zinc-400">
+        <div className="flex items-center gap-3">
+          <span>24h High: <strong className="text-emerald-600 dark:text-emerald-400 font-semibold">$98,700.00</strong></span>
+          <span>24h Low: <strong className="text-rose-600 dark:text-rose-400 font-semibold">$94,950.00</strong></span>
+          <span className="hidden md:inline">24h Vol: <strong className="text-zinc-800 dark:text-zinc-200 font-semibold">8,412.30 BTC</strong></span>
+        </div>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setShowIndicators(!showIndicators)}
+            className={cn(
+              "rounded px-1.5 py-0.5 text-[9px] font-medium transition cursor-pointer border",
+              showIndicators
+                ? "border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-300"
+                : "border-zinc-200 bg-transparent text-zinc-400 dark:border-zinc-700"
+            )}
+          >
+            MA Indicator
+          </button>
+        </div>
       </div>
 
+      {/* Dynamic OHLC Bar + Indicator readout */}
+      <div className="mt-2.5 flex flex-wrap items-center gap-x-3.5 gap-y-1 font-mono text-[11px]">
+        <span className="text-zinc-400">{activeCandle.time}</span>
+        <span className="text-zinc-500">O: <strong className="text-zinc-800 dark:text-zinc-200">${activeCandle.open.toLocaleString()}</strong></span>
+        <span className="text-zinc-500">H: <strong className="text-emerald-600 dark:text-emerald-400">${activeCandle.high.toLocaleString()}</strong></span>
+        <span className="text-zinc-500">L: <strong className="text-rose-600 dark:text-rose-400">${activeCandle.low.toLocaleString()}</strong></span>
+        <span className="text-zinc-500">C: <strong className={activeCandle.close >= activeCandle.open ? "text-emerald-600 dark:text-emerald-400" : "text-rose-600 dark:text-rose-400"}>${activeCandle.close.toLocaleString()}</strong></span>
+        <span className="text-zinc-500">Vol: <strong className="text-zinc-800 dark:text-zinc-200">{activeCandle.volume}</strong></span>
+
+        {showIndicators && (
+          <div className="ml-auto hidden sm:flex items-center gap-2 text-[10px]">
+            {activeMa7 && (
+              <span className="text-amber-600 dark:text-amber-400">
+                MA(7): <strong className="font-mono">${activeMa7.toFixed(1)}</strong>
+              </span>
+            )}
+            {activeMa25 && (
+              <span className="text-cyan-600 dark:text-cyan-400">
+                MA(25): <strong className="font-mono">${activeMa25.toFixed(1)}</strong>
+              </span>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* Candlestick & Volume Chart */}
       <div className="relative mt-2">
         <svg
           viewBox={`0 0 ${width} ${height}`}
           className="w-full overflow-visible"
         >
-          {/* Horizontal gridlines */}
-          {[0.2, 0.5, 0.8].map((pct, idx) => {
-            const y = padTop + chartHeight * pct
+          {/* Horizontal Price Gridlines & Right Axis Price Labels */}
+          {priceLevels.map((price, idx) => {
+            const y = getY(price)
             return (
-              <line
-                key={idx}
-                x1={padX}
-                y1={y}
-                x2={width - padX}
-                y2={y}
-                stroke="currentColor"
-                strokeDasharray="3 3"
-                className="text-zinc-200 dark:text-zinc-800/80"
-              />
+              <g key={idx}>
+                <line
+                  x1={padLeft}
+                  y1={y}
+                  x2={width - padRight}
+                  y2={y}
+                  stroke="currentColor"
+                  strokeDasharray="2 3"
+                  className="text-zinc-200 dark:text-zinc-800/80"
+                />
+                <text
+                  x={width - padRight + 6}
+                  y={y + 3}
+                  className="fill-zinc-400 text-[9px] font-mono select-none"
+                >
+                  ${Math.round(price).toLocaleString()}
+                </text>
+              </g>
             )
           })}
 
-          {/* Volume separator */}
+          {/* Volume baseline separator */}
           <line
-            x1={padX}
+            x1={padLeft}
             y1={height - padBottom}
-            x2={width - padX}
+            x2={width - padRight}
             y2={height - padBottom}
             stroke="currentColor"
-            className="text-zinc-200 dark:text-zinc-800/80"
+            className="text-zinc-200 dark:text-zinc-800"
           />
 
+          {/* Volume pane title */}
+          <text
+            x={padLeft}
+            y={height - padBottom - 4}
+            className="fill-zinc-400 text-[8px] font-mono uppercase select-none opacity-60"
+          >
+            Vol (BTC)
+          </text>
+
+          {/* Candlestick bars + Volume bars */}
           {data.map((c, idx) => {
-            const x = padX + (idx / (data.length - 1)) * (width - padX * 2)
+            const x = getX(idx)
             const isUp = c.close >= c.open
             const candleTop = getY(Math.max(c.open, c.close))
             const candleBottom = getY(Math.min(c.open, c.close))
-            const candleH = Math.max(candleBottom - candleTop, 2)
+            const candleH = Math.max(candleBottom - candleTop, 1.5)
             const highY = getY(c.high)
             const lowY = getY(c.low)
 
             // Volume bar
-            const volH = (c.volume / maxVolume) * 22
-            const volY = height - volH
+            const volH = (c.volume / maxVolume) * 24
+            const volY = height - 16 - volH
 
             const strokeColor = isUp ? "#10b981" : "#f43f5e"
             const fillColor = isUp ? "#10b981" : "#f43f5e"
@@ -1021,27 +1164,26 @@ export const CandlestickStatisticChart: React.FC<CandlestickStatisticChartProps>
                 key={idx}
                 onMouseEnter={() => setHoverIdx(idx)}
                 onMouseLeave={() => setHoverIdx(null)}
-                className="cursor-pointer transition-opacity"
-                opacity={hoverIdx === null || hoverIdx === idx ? 1 : 0.4}
+                className="cursor-crosshair"
               >
-                {/* Wick High/Low */}
+                {/* Wick High/Low (1px precision hairline) */}
                 <line
                   x1={x}
                   y1={highY}
                   x2={x}
                   y2={lowY}
                   stroke={strokeColor}
-                  strokeWidth={1.5}
+                  strokeWidth={1}
                 />
 
-                {/* Body Rect */}
+                {/* Candle Body Rect */}
                 <rect
                   x={x - candleWidth / 2}
                   y={candleTop}
                   width={candleWidth}
                   height={candleH}
                   fill={fillColor}
-                  rx={1}
+                  rx={0.5}
                 />
 
                 {/* Volume Bar */}
@@ -1051,15 +1193,15 @@ export const CandlestickStatisticChart: React.FC<CandlestickStatisticChartProps>
                   width={candleWidth}
                   height={volH}
                   fill={fillColor}
-                  opacity={0.4}
-                  rx={1}
+                  opacity={hoverIdx === idx ? 0.9 : 0.45}
+                  rx={0.5}
                 />
 
-                {/* Time Axis Text */}
-                {idx % 2 === 0 && (
+                {/* Time Axis Text at intervals */}
+                {idx % 5 === 0 && (
                   <text
                     x={x}
-                    y={height - 26}
+                    y={height - 2}
                     textAnchor="middle"
                     className="fill-zinc-400 text-[9px] font-mono select-none"
                   >
@@ -1069,6 +1211,156 @@ export const CandlestickStatisticChart: React.FC<CandlestickStatisticChartProps>
               </g>
             )
           })}
+
+          {/* MA Curves Overlay */}
+          {showIndicators && ma25Path && (
+            <path
+              d={ma25Path}
+              fill="none"
+              stroke="#06b6d4"
+              strokeWidth={1.25}
+              strokeOpacity={0.85}
+            />
+          )}
+
+          {showIndicators && ma7Path && (
+            <path
+              d={ma7Path}
+              fill="none"
+              stroke="#f59e0b"
+              strokeWidth={1.25}
+              strokeOpacity={0.9}
+            />
+          )}
+
+          {/* Extreme Price Tags (Highest & Lowest) */}
+          {data[highestCandleIdx] && (
+            <g transform={`translate(${getX(highestCandleIdx)}, ${getY(data[highestCandleIdx].high) - 8})`}>
+              <text
+                x={0}
+                y={0}
+                textAnchor="middle"
+                className="fill-emerald-600 dark:fill-emerald-400 text-[8px] font-mono font-bold select-none"
+              >
+                ▲ ${data[highestCandleIdx].high.toLocaleString()}
+              </text>
+            </g>
+          )}
+
+          {data[lowestCandleIdx] && (
+            <g transform={`translate(${getX(lowestCandleIdx)}, ${getY(data[lowestCandleIdx].low) + 12})`}>
+              <text
+                x={0}
+                y={0}
+                textAnchor="middle"
+                className="fill-rose-600 dark:fill-rose-400 text-[8px] font-mono font-bold select-none"
+              >
+                ▼ ${data[lowestCandleIdx].low.toLocaleString()}
+              </text>
+            </g>
+          )}
+
+          {/* Current Live Price Right Axis Marker */}
+          {(() => {
+            const lastCandle = data[data.length - 1]
+            const curY = getY(lastCandle.close)
+            const isUp = lastCandle.close >= lastCandle.open
+            return (
+              <g>
+                <line
+                  x1={padLeft}
+                  y1={curY}
+                  x2={width - padRight}
+                  y2={curY}
+                  stroke={isUp ? "#10b981" : "#f43f5e"}
+                  strokeDasharray="2 2"
+                  strokeWidth={1}
+                  opacity={0.6}
+                />
+                <rect
+                  x={width - padRight + 2}
+                  y={curY - 7}
+                  width={52}
+                  height={14}
+                  rx={3}
+                  fill={isUp ? "#10b981" : "#f43f5e"}
+                />
+                <text
+                  x={width - padRight + 28}
+                  y={curY + 3.5}
+                  textAnchor="middle"
+                  className="fill-white text-[8.5px] font-mono font-bold select-none"
+                >
+                  ${lastCandle.close.toLocaleString()}
+                </text>
+              </g>
+            )
+          })()}
+
+          {/* Interactive Crosshair when Hovering */}
+          {hoverIdx !== null && data[hoverIdx] && (
+            <g className="pointer-events-none">
+              {/* Vertical Crosshair Line */}
+              <line
+                x1={getX(hoverIdx)}
+                y1={padTop}
+                x2={getX(hoverIdx)}
+                y2={height - padBottom}
+                stroke="currentColor"
+                strokeDasharray="2 2"
+                strokeWidth={1}
+                className="text-zinc-500 dark:text-zinc-400"
+              />
+
+              {/* Horizontal Crosshair Line */}
+              <line
+                x1={padLeft}
+                y1={getY(data[hoverIdx].close)}
+                x2={width - padRight}
+                y2={getY(data[hoverIdx].close)}
+                stroke="currentColor"
+                strokeDasharray="2 2"
+                strokeWidth={1}
+                className="text-zinc-500 dark:text-zinc-400"
+              />
+
+              {/* Price Tag on Right Axis */}
+              <rect
+                x={width - padRight + 2}
+                y={getY(data[hoverIdx].close) - 7}
+                width={52}
+                height={14}
+                rx={3}
+                className="fill-zinc-900 dark:fill-zinc-100"
+              />
+              <text
+                x={width - padRight + 28}
+                y={getY(data[hoverIdx].close) + 3.5}
+                textAnchor="middle"
+                className="fill-zinc-100 dark:fill-zinc-900 text-[8.5px] font-mono font-bold"
+              >
+                ${data[hoverIdx].close.toLocaleString()}
+              </text>
+
+              {/* Time Tag on Bottom Axis */}
+              <rect
+                x={getX(hoverIdx) - 20}
+                y={height - padBottom + 2}
+                width={40}
+                height={13}
+                rx={3}
+                className="fill-zinc-900 dark:fill-zinc-100"
+              />
+              <text
+                x={getX(hoverIdx)}
+                y={height - padBottom + 11}
+                textAnchor="middle"
+                className="fill-zinc-100 dark:fill-zinc-900 text-[8px] font-mono font-bold"
+              >
+                {data[hoverIdx].time}
+              </text>
+            </g>
+          )}
         </svg>
       </div>
     </div>

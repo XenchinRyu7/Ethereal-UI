@@ -107,7 +107,7 @@ export const LoginFormBlock: React.FC<LoginFormBlockProps> = ({
             <button
               type="button"
               onClick={() => onSocialLogin?.("google")}
-              className="flex h-9.5 items-center justify-center gap-2 rounded-lg border border-input bg-background text-xs font-medium text-foreground transition hover:bg-muted active:scale-[0.98] cursor-pointer shadow-2xs"
+              className="flex h-9.5 items-center justify-center gap-2 rounded-lg border border-input bg-background text-xs font-medium text-foreground transition hover:bg-muted hover:border-foreground/70 active:scale-[0.98] cursor-pointer shadow-2xs"
             >
               <svg className="h-4 w-4" viewBox="0 0 24 24">
                 <path
@@ -133,7 +133,7 @@ export const LoginFormBlock: React.FC<LoginFormBlockProps> = ({
             <button
               type="button"
               onClick={() => onSocialLogin?.("github")}
-              className="flex h-9.5 items-center justify-center gap-2 rounded-lg border border-input bg-background text-xs font-medium text-foreground transition hover:bg-muted active:scale-[0.98] cursor-pointer shadow-2xs"
+              className="flex h-9.5 items-center justify-center gap-2 rounded-lg border border-input bg-background text-xs font-medium text-foreground transition hover:bg-muted hover:border-foreground/70 active:scale-[0.98] cursor-pointer shadow-2xs"
             >
               <svg className="h-4 w-4 fill-current" viewBox="0 0 24 24">
                 <path
