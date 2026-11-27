@@ -38,9 +38,76 @@ const toc = [
     </div>
 
     <div
-      class="space-y-4 text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed [&_h2]:text-lg [&_h2]:font-semibold [&_h2]:text-zinc-900 dark:[&_h2]:text-white [&_h2]:mt-8 [&_h2]:mb-3 [&_pre]:rounded-xl [&_pre]:border [&_pre]:border-zinc-200 dark:[&_pre]:border-zinc-800 [&_pre]:bg-zinc-950 [&_pre]:text-zinc-100 [&_pre]:p-4 [&_code]:font-mono [&_code]:text-xs [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:my-1.5 [&_hr]:border-zinc-200 dark:[&_hr]:border-zinc-800 [&_hr]:my-6 [&_table]:w-full [&_th]:text-left [&_th]:py-2 [&_th]:text-xs [&_th]:text-zinc-500 [&_td]:py-2 [&_td]:border-t [&_td]:border-zinc-200 dark:[&_td]:border-zinc-800 [&_a]:text-blue-600 dark:[&_a]:text-blue-400 [&_a:hover]:underline"
+      class="docs-content space-y-4 text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed [&_h2]:text-lg [&_h2]:font-semibold [&_h2]:text-zinc-900 dark:[&_h2]:text-white [&_h2]:mt-8 [&_h2]:mb-3 [&_pre]:rounded-2xl [&_pre]:border [&_pre]:border-zinc-200/90 dark:[&_pre]:border-zinc-800 [&_pre]:p-4 [&_pre]:shadow-xs [&_code]:font-mono [&_code]:text-xs [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:my-1.5 [&_hr]:border-zinc-200 dark:[&_hr]:border-zinc-800 [&_hr]:my-6 [&_table]:w-full [&_th]:text-left [&_th]:py-2 [&_th]:text-xs [&_th]:text-zinc-500 [&_td]:py-2 [&_td]:border-t [&_td]:border-zinc-200 dark:[&_td]:border-zinc-800 [&_a]:text-blue-600 dark:[&_a]:text-blue-400 [&_a:hover]:underline"
     >
       <Content />
     </div>
+
+    <script>
+      function setupCodeBlockCopyButtons() {
+        const preElements = document.querySelectorAll<HTMLPreElement>(".docs-content pre")
+        preElements.forEach((pre) => {
+          if (pre.querySelector(".code-copy-btn")) return
+
+          pre.classList.add("group", "relative")
+
+          const lang = pre.getAttribute("data-language") || ""
+
+          const header = document.createElement("div")
+          header.className =
+            "flex items-center justify-between border-b border-zinc-200/80 px-4 py-2 text-[11px] font-mono text-zinc-500 dark:border-zinc-800/80 dark:text-zinc-400 bg-zinc-100/50 dark:bg-zinc-900/50 rounded-t-2xl -mt-4 -mx-4 mb-3"
+
+          const langLabel = document.createElement("span")
+          langLabel.className = "uppercase tracking-wider font-semibold text-[10px]"
+          langLabel.textContent = lang || "code"
+          header.appendChild(langLabel)
+
+          const copyBtn = document.createElement("button")
+          copyBtn.type = "button"
+          copyBtn.className =
+            "code-copy-btn inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-[11px] font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 hover:bg-zinc-200/60 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+          copyBtn.innerHTML = `
+            <svg class="copy-icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
+              <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
+            </svg>
+            <span class="copy-text">Copy</span>
+          `
+
+          copyBtn.addEventListener("click", async () => {
+            const codeEl = pre.querySelector("code")
+            const textToCopy = codeEl ? codeEl.innerText : pre.innerText
+            try {
+              await navigator.clipboard.writeText(textToCopy.trim())
+              copyBtn.classList.add("text-emerald-600", "dark:text-emerald-400")
+              copyBtn.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 6 9 17l-5-5"/>
+                </svg>
+                <span>Copied</span>
+              `
+              setTimeout(() => {
+                copyBtn.classList.remove("text-emerald-600", "dark:text-emerald-400")
+                copyBtn.innerHTML = `
+                  <svg class="copy-icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
+                    <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
+                  </svg>
+                  <span class="copy-text">Copy</span>
+                `
+              }, 2000)
+            } catch (err) {
+              console.error("Failed to copy code:", err)
+            }
+          })
+
+          header.appendChild(copyBtn)
+          pre.insertBefore(header, pre.firstChild)
+        })
+      }
+
+      document.addEventListener("astro:page-load", setupCodeBlockCopyButtons)
+      setupCodeBlockCopyButtons()
+    </script>
   </article>
 </DocsLayout>

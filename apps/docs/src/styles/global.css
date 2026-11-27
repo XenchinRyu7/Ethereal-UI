@@ -18,6 +18,23 @@
   border-radius: 9999px;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(161, 161, 170, 0.55);
+/* Shiki Adaptive Themes for Dark Mode */
+html.dark .astro-code,
+html.dark .astro-code span {
+  color: var(--shiki-dark) !important;
+  background-color: var(--shiki-dark-bg) !important;
+  font-style: var(--shiki-dark-font-style) !important;
+  font-weight: var(--shiki-dark-font-weight) !important;
+  text-decoration: var(--shiki-dark-text-decoration) !important;
+}
+
+.docs-content pre.astro-code {
+  position: relative;
+  background-color: var(--color-zinc-50) !important;
+  border-color: var(--color-zinc-200);
+}
+
+html.dark .docs-content pre.astro-code {
+  background-color: var(--color-zinc-900) !important;
+  border-color: var(--color-zinc-800);
 }

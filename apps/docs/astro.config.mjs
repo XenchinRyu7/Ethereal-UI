@@ -7,6 +7,15 @@ import tailwindcss from "@tailwindcss/vite"
 export default defineConfig({
   site: "https://ethereal-ui.saefulrohman.dev",
   integrations: [react(), mdx()],
+  markdown: {
+    shikiConfig: {
+      themes: {
+        light: "github-light",
+        dark: "github-dark",
+      },
+      wrap: true,
+    },
+  },
   vite: {
     plugins: [tailwindcss()],
     resolve: {
