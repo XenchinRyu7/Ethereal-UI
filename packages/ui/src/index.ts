@@ -28,6 +28,25 @@ export { Badge, badgeVariants, type BadgeProps } from "./primitives/badge"
 export { Breadcrumb, type BreadcrumbItem, type BreadcrumbProps } from "./primitives/breadcrumb"
 export { Button, buttonVariants, type ButtonProps } from "./primitives/button"
 export { ButtonGroup, ToggleGroup, type ButtonGroupProps, type ToggleGroupItem, type ToggleGroupProps } from "./primitives/button-group"
+export { AspectRatio, type AspectRatioProps } from "./primitives/aspect-ratio"
+export {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+  type CardProps,
+  type CardHeaderProps,
+  type CardTitleProps,
+  type CardDescriptionProps,
+  type CardContentProps,
+  type CardFooterProps,
+} from "./primitives/card"
+export { CopyButton, type CopyButtonProps } from "./primitives/copy-button"
+export { Kbd, type KbdProps } from "./primitives/kbd"
+export { Rating, type RatingProps } from "./primitives/rating"
+export { Spinner, type SpinnerProps } from "./primitives/spinner"
 export { Carousel, type CarouselSlide, type CarouselProps } from "./primitives/carousel"
 export { Checkbox } from "./primitives/checkbox"
 export { Chip, type ChipProps } from "./primitives/chip"

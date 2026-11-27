@@ -35,6 +35,17 @@ import {
   Button,
   CloseButton,
   ButtonGroup,
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+  Kbd,
+  Rating,
+  Spinner,
+  CopyButton,
+  AspectRatio,
   Carousel,
   AreaStatisticChart,
   BarStatisticChart,
@@ -1061,6 +1072,74 @@ export const LiveDemoRenderer: React.FC<{ slug: string; sectionId?: string }> = 
             enableGlobalShortcut={false}
           />
         </>
+      )
+
+    case "card":
+      return (
+        <Card className="w-full max-w-sm">
+          <CardHeader>
+            <CardTitle>Create Project</CardTitle>
+            <CardDescription>Deploy your new project in one click.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p className="text-xs text-zinc-500">
+              Connect your GitHub repository and automatically configure CI/CD pipelines.
+            </p>
+          </CardContent>
+          <CardFooter className="flex justify-between">
+            <Button variant="outline" size="sm">Cancel</Button>
+            <Button size="sm">Deploy</Button>
+          </CardFooter>
+        </Card>
+      )
+
+    case "kbd":
+      return (
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-zinc-500">Quick Search:</span>
+          <Kbd>⌘</Kbd>
+          <Kbd>K</Kbd>
+        </div>
+      )
+
+    case "rating":
+      return (
+        <div className="flex items-center gap-3">
+          <Rating defaultValue={4} />
+          <span className="text-xs font-medium text-zinc-600 dark:text-zinc-400">
+            4 / 5 Stars
+          </span>
+        </div>
+      )
+
+    case "spinner":
+      return (
+        <div className="flex items-center gap-4">
+          <Spinner size="sm" />
+          <Spinner size="md" variant="primary" />
+          <Spinner size="lg" />
+        </div>
+      )
+
+    case "copy-button":
+      return (
+        <div className="flex items-center gap-2 rounded-xl border border-zinc-200 bg-zinc-50 p-2 dark:border-zinc-800 dark:bg-zinc-900">
+          <code className="text-xs font-mono text-zinc-700 dark:text-zinc-300">
+            npm i @etherealui/react
+          </code>
+          <CopyButton value="npm i @etherealui/react" />
+        </div>
+      )
+
+    case "aspect-ratio":
+      return (
+        <div className="w-80 rounded-xl overflow-hidden border border-zinc-200 dark:border-zinc-800">
+          <AspectRatio ratio={16 / 9}>
+            <div className="h-full w-full bg-linear-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-semibold text-xs">
+              16 : 9 Aspect Ratio
+            </div>
+          </AspectRatio>
+        </div>
       )
 
     case "context-menu":

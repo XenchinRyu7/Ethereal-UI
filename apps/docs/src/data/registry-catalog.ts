@@ -548,6 +548,168 @@ export function CommandPaletteDemo() {
     sections: [],
   },
   {
+    slug: "card",
+    title: "Card",
+    category: "primitives",
+    subcategory: "Base",
+    description:
+      "Composable card container with header, title, description, content, and footer primitives.",
+    isNew: true,
+    dependencies: [],
+    sourceFile: "packages/ui/src/primitives/card.tsx",
+    code: `import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+  Button
+} from "@etherealui/react"
+
+export function CardDemo() {
+  return (
+    <Card className="w-full max-w-sm">
+      <CardHeader>
+        <CardTitle>Create Project</CardTitle>
+        <CardDescription>Deploy your new project in one click.</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <p className="text-xs text-zinc-500">
+          Connect your GitHub repository and automatically configure CI/CD pipelines.
+        </p>
+      </CardContent>
+      <CardFooter className="flex justify-between">
+        <Button variant="outline" size="sm">Cancel</Button>
+        <Button size="sm">Deploy</Button>
+      </CardFooter>
+    </Card>
+  )
+}`,
+    sections: [],
+  },
+  {
+    slug: "kbd",
+    title: "Kbd",
+    category: "primitives",
+    subcategory: "Base",
+    description:
+      "Keyboard shortcut badge for key combinations and command palette triggers.",
+    isNew: true,
+    dependencies: [],
+    sourceFile: "packages/ui/src/primitives/kbd.tsx",
+    code: `import { Kbd } from "@etherealui/react"
+
+export function KbdDemo() {
+  return (
+    <div className="flex items-center gap-2">
+      <span className="text-xs text-zinc-500">Quick Search:</span>
+      <Kbd>⌘</Kbd>
+      <Kbd>K</Kbd>
+    </div>
+  )
+}`,
+    sections: [],
+  },
+  {
+    slug: "rating",
+    title: "Rating",
+    category: "primitives",
+    subcategory: "Base",
+    description:
+      "Interactive or read-only star rating input with hover feedback and half-star support.",
+    isNew: true,
+    dependencies: ["lucide-react"],
+    sourceFile: "packages/ui/src/primitives/rating.tsx",
+    code: `import * as React from "react"
+import { Rating } from "@etherealui/react"
+
+export function RatingDemo() {
+  const [rate, setRate] = React.useState(4)
+  return (
+    <div className="flex items-center gap-3">
+      <Rating value={rate} onChange={setRate} />
+      <span className="text-xs font-medium text-zinc-600 dark:text-zinc-400">
+        {rate} / 5 Stars
+      </span>
+    </div>
+  )
+}`,
+    sections: [],
+  },
+  {
+    slug: "spinner",
+    title: "Spinner",
+    category: "primitives",
+    subcategory: "Base",
+    description:
+      "Standalone circular spinning loader with multiple sizes and color variants.",
+    isNew: true,
+    dependencies: ["lucide-react"],
+    sourceFile: "packages/ui/src/primitives/spinner.tsx",
+    code: `import { Spinner } from "@etherealui/react"
+
+export function SpinnerDemo() {
+  return (
+    <div className="flex items-center gap-4">
+      <Spinner size="sm" />
+      <Spinner size="md" variant="primary" />
+      <Spinner size="lg" />
+    </div>
+  )
+}`,
+    sections: [],
+  },
+  {
+    slug: "copy-button",
+    title: "Copy Button",
+    category: "primitives",
+    subcategory: "Base",
+    description:
+      "One-click clipboard copy button with feedback status and timeout transitions.",
+    isNew: true,
+    dependencies: ["lucide-react"],
+    sourceFile: "packages/ui/src/primitives/copy-button.tsx",
+    code: `import { CopyButton } from "@etherealui/react"
+
+export function CopyButtonDemo() {
+  return (
+    <div className="flex items-center gap-2 rounded-xl border border-zinc-200 bg-zinc-50 p-2 dark:border-zinc-800 dark:bg-zinc-900">
+      <code className="text-xs font-mono text-zinc-700 dark:text-zinc-300">
+        npm i @etherealui/react
+      </code>
+      <CopyButton value="npm i @etherealui/react" />
+    </div>
+  )
+}`,
+    sections: [],
+  },
+  {
+    slug: "aspect-ratio",
+    title: "Aspect Ratio",
+    category: "primitives",
+    subcategory: "Base",
+    description:
+      "Container primitive that enforces a desired width-to-height ratio for images and media.",
+    isNew: true,
+    dependencies: [],
+    sourceFile: "packages/ui/src/primitives/aspect-ratio.tsx",
+    code: `import { AspectRatio } from "@etherealui/react"
+
+export function AspectRatioDemo() {
+  return (
+    <div className="w-80 rounded-xl overflow-hidden border border-zinc-200 dark:border-zinc-800">
+      <AspectRatio ratio={16 / 9}>
+        <div className="h-full w-full bg-linear-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-semibold text-xs">
+          16 : 9 Aspect Ratio
+        </div>
+      </AspectRatio>
+    </div>
+  )
+}`,
+    sections: [],
+  },
+  {
     slug: "context-menu",
     title: "Context Menu",
     category: "primitives",
