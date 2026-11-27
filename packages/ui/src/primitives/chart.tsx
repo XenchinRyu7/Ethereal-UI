@@ -846,36 +846,242 @@ export interface CandlestickDataPoint {
   volume: number
 }
 
-const DEFAULT_CANDLESTICKS: CandlestickDataPoint[] = [
-  { time: "00:00", open: 95100, high: 95350, low: 94950, close: 95280, volume: 112 },
-  { time: "01:00", open: 95280, high: 95500, low: 95120, close: 95420, volume: 145 },
-  { time: "02:00", open: 95420, high: 95750, low: 95300, close: 95680, volume: 168 },
-  { time: "03:00", open: 95680, high: 95900, low: 95550, close: 95820, volume: 182 },
-  { time: "04:00", open: 95820, high: 96150, low: 95700, close: 96050, volume: 210 },
-  { time: "05:00", open: 96050, high: 96250, low: 95880, close: 95920, volume: 175 },
-  { time: "06:00", open: 95920, high: 96080, low: 95600, close: 95740, volume: 160 },
-  { time: "07:00", open: 95740, high: 96300, low: 95650, close: 96210, volume: 235 },
-  { time: "08:00", open: 96210, high: 96550, low: 96100, close: 96480, volume: 278 },
-  { time: "09:00", open: 96480, high: 96900, low: 96350, close: 96750, volume: 312 },
-  { time: "10:00", open: 96750, high: 97120, low: 96600, close: 96980, volume: 295 },
-  { time: "11:00", open: 96980, high: 97050, low: 96520, close: 96640, volume: 220 },
-  { time: "12:00", open: 96640, high: 96850, low: 96400, close: 96500, volume: 190 },
-  { time: "13:00", open: 96500, high: 96720, low: 96250, close: 96380, volume: 175 },
-  { time: "14:00", open: 96380, high: 96950, low: 96300, close: 96820, volume: 260 },
-  { time: "15:00", open: 96820, high: 97300, low: 96700, close: 97180, volume: 340 },
-  { time: "16:00", open: 97180, high: 97550, low: 97000, close: 97420, volume: 388 },
-  { time: "17:00", open: 97420, high: 97780, low: 97250, close: 97650, volume: 410 },
-  { time: "18:00", open: 97650, high: 97800, low: 97320, close: 97400, volume: 298 },
-  { time: "19:00", open: 97400, high: 97650, low: 97150, close: 97320, volume: 245 },
-  { time: "20:00", open: 97320, high: 97920, low: 97280, close: 97850, volume: 430 },
-  { time: "21:00", open: 97850, high: 98250, low: 97700, close: 98120, volume: 490 },
-  { time: "22:00", open: 98120, high: 98400, low: 97950, close: 98280, volume: 460 },
-  { time: "23:00", open: 98280, high: 98450, low: 98050, close: 98150, volume: 385 },
-  { time: "00:00", open: 98150, high: 98320, low: 97880, close: 97940, volume: 310 },
-  { time: "01:00", open: 97940, high: 98200, low: 97820, close: 98100, volume: 345 },
-  { time: "02:00", open: 98100, high: 98550, low: 98020, close: 98420, volume: 480 },
-  { time: "03:00", open: 98420, high: 98700, low: 98280, close: 98650, volume: 520 },
-]
+/**
+ * Utility helper for developers to generate realistic synthetic candlestick data
+ * for any number of intervals (minutes, hours, days, weeks, months).
+ */
+export function generateMockCandlesticks(options: {
+  count?: number
+  startPrice?: number
+  volatility?: number
+  trend?: "bullish" | "bearish" | "ranging"
+  timeFormat?: (index: number) => string
+} = {}): CandlestickDataPoint[] {
+  const {
+    count = 30,
+    startPrice = 95000,
+    volatility = 0.012,
+    trend = "bullish",
+    timeFormat = (i) => `${i + 1}`,
+  } = options
+
+  const points: CandlestickDataPoint[] = []
+  let currentOpen = startPrice
+
+  for (let i = 0; i < count; i++) {
+    const trendDrift = trend === "bullish" ? 0.0025 : trend === "bearish" ? -0.0025 : 0
+    const changePct = (Math.random() - 0.48) * volatility * 2 + trendDrift
+    const currentClose = Math.max(Math.round(currentOpen * (1 + changePct)), 100)
+    const high = Math.round(Math.max(currentOpen, currentClose) * (1 + Math.random() * volatility * 0.85))
+    const low = Math.round(Math.min(currentOpen, currentClose) * (1 - Math.random() * volatility * 0.85))
+    const volume = Math.round(120 + Math.random() * 420)
+
+    points.push({
+      time: timeFormat(i),
+      open: currentOpen,
+      high,
+      low,
+      close: currentClose,
+      volume,
+    })
+
+    currentOpen = currentClose
+  }
+
+  return points
+}
+
+/**
+ * Default multi-timeframe dummy datasets covering intraday (15m, 1H),
+ * swing days (4H, 1D), macro weeks (1W), and cycle months (1M).
+ */
+export const DEFAULT_TIMEFRAME_CANDLESTICKS: Record<string, CandlestickDataPoint[]> = {
+  // 15-Minute Intraday intervals (28 candles)
+  "15m": [
+    { time: "00:00", open: 96800, high: 97100, low: 96650, close: 97050, volume: 142 },
+    { time: "00:15", open: 97050, high: 97300, low: 96980, close: 97220, volume: 165 },
+    { time: "00:30", open: 97220, high: 97450, low: 97100, close: 97380, volume: 180 },
+    { time: "00:45", open: 97380, high: 97500, low: 97200, close: 97280, volume: 154 },
+    { time: "01:00", open: 97280, high: 97420, low: 97080, close: 97150, volume: 130 },
+    { time: "01:15", open: 97150, high: 97550, low: 97100, close: 97480, volume: 198 },
+    { time: "01:30", open: 97480, high: 97720, low: 97350, close: 97650, volume: 225 },
+    { time: "01:45", open: 97650, high: 97900, low: 97520, close: 97810, volume: 240 },
+    { time: "02:00", open: 97810, high: 98150, low: 97740, close: 98020, volume: 285 },
+    { time: "02:15", open: 98020, high: 98250, low: 97880, close: 97940, volume: 210 },
+    { time: "02:30", open: 97940, high: 98180, low: 97820, close: 98120, volume: 195 },
+    { time: "02:45", open: 98120, high: 98350, low: 98000, close: 98280, volume: 245 },
+    { time: "03:00", open: 98280, high: 98450, low: 98100, close: 98200, volume: 185 },
+    { time: "03:15", open: 98200, high: 98380, low: 97950, close: 98050, volume: 170 },
+    { time: "03:30", open: 98050, high: 98400, low: 98010, close: 98340, volume: 230 },
+    { time: "03:45", open: 98340, high: 98600, low: 98250, close: 98510, volume: 290 },
+    { time: "04:00", open: 98510, high: 98750, low: 98400, close: 98680, volume: 320 },
+    { time: "04:15", open: 98680, high: 98800, low: 98480, close: 98550, volume: 260 },
+    { time: "04:30", open: 98550, high: 98680, low: 98320, close: 98420, volume: 210 },
+    { time: "04:45", open: 98420, high: 98750, low: 98380, close: 98700, volume: 280 },
+    { time: "05:00", open: 98700, high: 98920, low: 98600, close: 98850, volume: 340 },
+    { time: "05:15", open: 98850, high: 99100, low: 98750, close: 99020, volume: 395 },
+    { time: "05:30", open: 99020, high: 99250, low: 98850, close: 98940, volume: 310 },
+    { time: "05:45", open: 98940, high: 99180, low: 98800, close: 99120, volume: 280 },
+    { time: "06:00", open: 99120, high: 99350, low: 98950, close: 99280, volume: 350 },
+    { time: "06:15", open: 99280, high: 99420, low: 99050, close: 99180, volume: 305 },
+    { time: "06:30", open: 99180, high: 99550, low: 99100, close: 99480, volume: 420 },
+    { time: "06:45", open: 99480, high: 99700, low: 99320, close: 99650, volume: 460 },
+  ],
+
+  // 1-Hour Intervals (24 hours)
+  "1H": [
+    { time: "00:00", open: 95100, high: 95350, low: 94950, close: 95280, volume: 112 },
+    { time: "01:00", open: 95280, high: 95500, low: 95120, close: 95420, volume: 145 },
+    { time: "02:00", open: 95420, high: 95750, low: 95300, close: 95680, volume: 168 },
+    { time: "03:00", open: 95680, high: 95900, low: 95550, close: 95820, volume: 182 },
+    { time: "04:00", open: 95820, high: 96150, low: 95700, close: 96050, volume: 210 },
+    { time: "05:00", open: 96050, high: 96250, low: 95880, close: 95920, volume: 175 },
+    { time: "06:00", open: 95920, high: 96080, low: 95600, close: 95740, volume: 160 },
+    { time: "07:00", open: 95740, high: 96300, low: 95650, close: 96210, volume: 235 },
+    { time: "08:00", open: 96210, high: 96550, low: 96100, close: 96480, volume: 278 },
+    { time: "09:00", open: 96480, high: 96900, low: 96350, close: 96750, volume: 312 },
+    { time: "10:00", open: 96750, high: 97120, low: 96600, close: 96980, volume: 295 },
+    { time: "11:00", open: 96980, high: 97050, low: 96520, close: 96640, volume: 220 },
+    { time: "12:00", open: 96640, high: 96850, low: 96400, close: 96500, volume: 190 },
+    { time: "13:00", open: 96500, high: 96720, low: 96250, close: 96380, volume: 175 },
+    { time: "14:00", open: 96380, high: 96950, low: 96300, close: 96820, volume: 260 },
+    { time: "15:00", open: 96820, high: 97300, low: 96700, close: 97180, volume: 340 },
+    { time: "16:00", open: 97180, high: 97550, low: 97000, close: 97420, volume: 388 },
+    { time: "17:00", open: 97420, high: 97780, low: 97250, close: 97650, volume: 410 },
+    { time: "18:00", open: 97650, high: 97800, low: 97320, close: 97400, volume: 298 },
+    { time: "19:00", open: 97400, high: 97650, low: 97150, close: 97320, volume: 245 },
+    { time: "20:00", open: 97320, high: 97920, low: 97280, close: 97850, volume: 430 },
+    { time: "21:00", open: 97850, high: 98250, low: 97700, close: 98120, volume: 490 },
+    { time: "22:00", open: 98120, high: 98400, low: 97950, close: 98280, volume: 460 },
+    { time: "23:00", open: 98280, high: 98700, low: 98150, close: 98650, volume: 520 },
+  ],
+
+  // 4-Hour Swing Intervals (28 candles spanning past 5 days)
+  "4H": [
+    { time: "11/23 00:00", open: 91400, high: 92100, low: 91200, close: 91950, volume: 340 },
+    { time: "11/23 04:00", open: 91950, high: 92500, low: 91700, close: 92350, volume: 380 },
+    { time: "11/23 08:00", open: 92350, high: 93100, low: 92200, close: 92850, volume: 450 },
+    { time: "11/23 12:00", open: 92850, high: 93400, low: 92600, close: 93150, volume: 410 },
+    { time: "11/23 16:00", open: 93150, high: 93600, low: 92900, close: 93380, volume: 375 },
+    { time: "11/23 20:00", open: 93380, high: 93850, low: 93100, close: 93700, volume: 390 },
+    { time: "11/24 00:00", open: 93700, high: 94300, low: 93500, close: 94150, volume: 480 },
+    { time: "11/24 04:00", open: 94150, high: 94650, low: 93900, close: 94400, volume: 430 },
+    { time: "11/24 08:00", open: 94400, high: 95200, low: 94250, close: 95050, volume: 560 },
+    { time: "11/24 12:00", open: 95050, high: 95500, low: 94700, close: 95180, volume: 490 },
+    { time: "11/24 16:00", open: 95180, high: 95400, low: 94600, close: 94820, volume: 395 },
+    { time: "11/24 20:00", open: 94820, high: 95350, low: 94700, close: 95200, volume: 415 },
+    { time: "11/25 00:00", open: 95200, high: 95800, low: 95050, close: 95650, volume: 470 },
+    { time: "11/25 04:00", open: 95650, high: 96250, low: 95400, close: 96100, volume: 520 },
+    { time: "11/25 08:00", open: 96100, high: 96900, low: 95950, close: 96750, volume: 680 },
+    { time: "11/25 12:00", open: 96750, high: 97200, low: 96400, close: 96950, volume: 590 },
+    { time: "11/25 16:00", open: 96950, high: 97150, low: 96300, close: 96520, volume: 440 },
+    { time: "11/25 20:00", open: 96520, high: 96980, low: 96350, close: 96800, volume: 420 },
+    { time: "11/26 00:00", open: 96800, high: 97450, low: 96650, close: 97300, volume: 510 },
+    { time: "11/26 04:00", open: 97300, high: 97850, low: 97100, close: 97680, volume: 575 },
+    { time: "11/26 08:00", open: 97680, high: 98400, low: 97500, close: 98150, volume: 730 },
+    { time: "11/26 12:00", open: 98150, high: 98650, low: 97900, close: 98400, volume: 640 },
+    { time: "11/26 16:00", open: 98400, high: 98550, low: 97800, close: 98050, volume: 490 },
+    { time: "11/26 20:00", open: 98050, high: 98600, low: 97950, close: 98480, volume: 520 },
+    { time: "11/27 00:00", open: 98480, high: 99100, low: 98350, close: 98920, volume: 660 },
+    { time: "11/27 04:00", open: 98920, high: 99450, low: 98750, close: 99280, volume: 710 },
+    { time: "11/27 08:00", open: 99280, high: 99800, low: 99100, close: 99550, volume: 830 },
+    { time: "11/27 12:00", open: 99550, high: 99980, low: 99350, close: 99750, volume: 910 },
+  ],
+
+  // 1-Day Intervals (Daily candles across past month: 30 days)
+  "1D": [
+    { time: "10/29", open: 71200, high: 72800, low: 70800, close: 72450, volume: 1850 },
+    { time: "10/30", open: 72450, high: 73500, low: 71900, close: 73100, volume: 2100 },
+    { time: "10/31", open: 73100, high: 73650, low: 72200, close: 72800, volume: 1950 },
+    { time: "11/01", open: 72800, high: 73400, low: 71800, close: 72150, volume: 1680 },
+    { time: "11/02", open: 72150, high: 72600, low: 71100, close: 71450, volume: 1420 },
+    { time: "11/03", open: 71450, high: 72200, low: 70900, close: 71980, volume: 1530 },
+    { time: "11/04", open: 71980, high: 73100, low: 71600, close: 72850, volume: 1940 },
+    { time: "11/05", open: 72850, high: 75400, low: 72500, close: 74900, volume: 3200 },
+    { time: "11/06", open: 74900, high: 76800, low: 74400, close: 76250, volume: 3650 },
+    { time: "11/07", open: 76250, high: 77500, low: 75800, close: 77100, volume: 3100 },
+    { time: "11/08", open: 77100, high: 78200, low: 76500, close: 77950, volume: 2980 },
+    { time: "11/09", open: 77950, high: 79100, low: 77400, close: 78800, volume: 2850 },
+    { time: "11/10", open: 78800, high: 80500, low: 78300, close: 80150, volume: 3800 },
+    { time: "11/11", open: 80150, high: 84200, low: 79800, close: 83900, volume: 5400 },
+    { time: "11/12", open: 83900, high: 87800, low: 83200, close: 87200, volume: 6200 },
+    { time: "11/13", open: 87200, high: 92500, low: 86800, close: 91800, volume: 7400 },
+    { time: "11/14", open: 91800, high: 93400, low: 89600, close: 90700, volume: 5800 },
+    { time: "11/15", open: 90700, high: 92100, low: 88900, close: 91400, volume: 4600 },
+    { time: "11/16", open: 91400, high: 92350, low: 90200, close: 91850, volume: 3900 },
+    { time: "11/17", open: 91850, high: 92800, low: 91100, close: 92450, volume: 4200 },
+    { time: "11/18", open: 92450, high: 93800, low: 91900, close: 93200, volume: 4900 },
+    { time: "11/19", open: 93200, high: 94500, low: 92600, close: 94100, volume: 5100 },
+    { time: "11/20", open: 94100, high: 95800, low: 93700, close: 95300, volume: 5800 },
+    { time: "11/21", open: 95300, high: 98800, low: 94900, close: 98200, volume: 7900 },
+    { time: "11/22", open: 98200, high: 99400, low: 96800, close: 97800, volume: 6800 },
+    { time: "11/23", open: 97800, high: 98600, low: 95600, close: 96900, volume: 4800 },
+    { time: "11/24", open: 96900, high: 97800, low: 95200, close: 97200, volume: 4500 },
+    { time: "11/25", open: 97200, high: 98400, low: 96600, close: 98100, volume: 5200 },
+    { time: "11/26", open: 98100, high: 99150, low: 97400, close: 98750, volume: 6100 },
+    { time: "11/27", open: 98750, high: 99980, low: 98200, close: 99750, volume: 7400 },
+  ],
+
+  // 1-Week Macro Intervals (Weekly candles across 26 weeks ~ 6 months)
+  "1W": [
+    { time: "W24", open: 66200, high: 68400, low: 65100, close: 66800, volume: 14200 },
+    { time: "W25", open: 66800, high: 67300, low: 63800, close: 64200, volume: 15800 },
+    { time: "W26", open: 64200, high: 65100, low: 60200, close: 61400, volume: 19400 },
+    { time: "W27", open: 61400, high: 62800, low: 56500, close: 57800, volume: 24100 },
+    { time: "W28", open: 57800, high: 61200, low: 57100, close: 60500, volume: 20500 },
+    { time: "W29", open: 60500, high: 64800, low: 59800, close: 63900, volume: 18900 },
+    { time: "W30", open: 63900, high: 67200, low: 62800, close: 66400, volume: 19800 },
+    { time: "W31", open: 66400, high: 67800, low: 61500, close: 62800, volume: 22400 },
+    { time: "W32", open: 62800, high: 63500, low: 49500, close: 58800, volume: 38900 },
+    { time: "W33", open: 58800, high: 61400, low: 57200, close: 59900, volume: 18200 },
+    { time: "W34", open: 59900, high: 64200, low: 59100, close: 63600, volume: 17800 },
+    { time: "W35", open: 63600, high: 64500, low: 58200, close: 59200, volume: 16500 },
+    { time: "W36", open: 59200, high: 60100, low: 53200, close: 54600, volume: 19800 },
+    { time: "W37", open: 54600, high: 59800, low: 54100, close: 59400, volume: 18600 },
+    { time: "W38", open: 59400, high: 63800, low: 58900, close: 63200, volume: 19400 },
+    { time: "W39", open: 63200, high: 65800, low: 62400, close: 65200, volume: 21200 },
+    { time: "W40", open: 65200, high: 66100, low: 60200, close: 62400, volume: 18500 },
+    { time: "W41", open: 62400, high: 64800, low: 59800, close: 63500, volume: 17400 },
+    { time: "W42", open: 63500, high: 68800, low: 62900, close: 68200, volume: 23500 },
+    { time: "W43", open: 68200, high: 69400, low: 66200, close: 67800, volume: 20100 },
+    { time: "W44", open: 67800, high: 73600, low: 67200, close: 72600, volume: 28400 },
+    { time: "W45", open: 72600, high: 77200, low: 71200, close: 76800, volume: 34200 },
+    { time: "W46", open: 76800, high: 92800, low: 76100, close: 90400, volume: 56800 },
+    { time: "W47", open: 90400, high: 94800, low: 88500, close: 93800, volume: 44200 },
+    { time: "W48", open: 93800, high: 99400, low: 93100, close: 97800, volume: 49800 },
+    { time: "W49", open: 97800, high: 99980, low: 96800, close: 99750, volume: 41200 },
+  ],
+
+  // 1-Month Cycle Intervals (Monthly candles across 24 months: 2 years)
+  "1M": [
+    { time: "Jan '25", open: 42100, high: 43800, low: 38500, close: 42800, volume: 84200 },
+    { time: "Feb '25", open: 42800, high: 63800, low: 42200, close: 61800, volume: 124500 },
+    { time: "Mar '25", open: 61800, high: 73800, low: 60800, close: 71200, volume: 156800 },
+    { time: "Apr '25", open: 71200, high: 72800, low: 59800, close: 63900, volume: 112400 },
+    { time: "May '25", open: 63900, high: 71800, low: 62400, close: 67800, volume: 98400 },
+    { time: "Jun '25", open: 67800, high: 71900, low: 60200, close: 62600, volume: 89500 },
+    { time: "Jul '25", open: 62600, high: 69800, low: 53500, close: 64800, volume: 104200 },
+    { time: "Aug '25", open: 64800, high: 65100, low: 49200, close: 59100, volume: 118400 },
+    { time: "Sep '25", open: 59100, high: 66400, low: 52600, close: 63400, volume: 92400 },
+    { time: "Oct '25", open: 63400, high: 73600, low: 59800, close: 72200, volume: 128600 },
+    { time: "Nov '25", open: 72200, high: 99400, low: 71100, close: 97800, volume: 248900 },
+    { time: "Dec '25", open: 97800, high: 102400, low: 92800, close: 98900, volume: 198400 },
+    { time: "Jan '26", open: 98900, high: 104500, low: 95400, close: 101200, volume: 174200 },
+    { time: "Feb '26", open: 101200, high: 108400, low: 99200, close: 106500, volume: 165800 },
+    { time: "Mar '26", open: 106500, high: 112800, low: 104100, close: 110400, volume: 182400 },
+    { time: "Apr '26", open: 110400, high: 114200, low: 102500, close: 107200, volume: 145000 },
+    { time: "May '26", open: 107200, high: 116500, low: 106100, close: 114800, volume: 158900 },
+    { time: "Jun '26", open: 114800, high: 118900, low: 109500, close: 116200, volume: 141200 },
+    { time: "Jul '26", open: 116200, high: 122400, low: 112100, close: 119800, volume: 162400 },
+    { time: "Aug '26", open: 119800, high: 124500, low: 114800, close: 121500, volume: 154800 },
+    { time: "Sep '26", open: 121500, high: 123800, low: 113200, close: 117600, volume: 132400 },
+    { time: "Oct '26", open: 117600, high: 126200, low: 115400, close: 124100, volume: 168200 },
+    { time: "Nov '26", open: 124100, high: 132500, low: 121800, close: 129400, volume: 215400 },
+    { time: "Dec '26", open: 129400, high: 138000, low: 127200, close: 136500, volume: 242000 },
+  ],
+}
+
+export const DEFAULT_CANDLESTICKS = DEFAULT_TIMEFRAME_CANDLESTICKS["15m"]
 
 export interface CandlestickStatisticChartProps {
   title?: string
@@ -883,22 +1089,69 @@ export interface CandlestickStatisticChartProps {
   currentPrice?: string
   change?: string
   isPositive?: boolean
+  /** Single dataset override */
   data?: CandlestickDataPoint[]
+  /** Custom dataset dictionary mapped per timeframe (e.g. { "15m": [...], "1H": [...], "1D": [...], "1W": [...], "1M": [...] }) */
+  timeframeData?: Record<string, CandlestickDataPoint[]>
+  /** List of available timeframe tabs (defaults to ["15m", "1H", "4H", "1D", "1W", "1M"]) */
+  timeframes?: string[]
+  /** Controlled active timeframe */
+  timeframe?: string
+  /** Default active timeframe (defaults to "15m") */
+  defaultTimeframe?: string
+  /** Callback fired when user switches timeframe */
+  onTimeframeChange?: (timeframe: string) => void
+  /** Show/hide the technical MA indicator toggle button */
+  showIndicatorsToggle?: boolean
+  /** Initial visibility of MA lines */
+  defaultShowIndicators?: boolean
   className?: string
 }
 
 export const CandlestickStatisticChart: React.FC<CandlestickStatisticChartProps> = ({
   title = "BTC/USDT Perpetual",
-  subtitle = "Binance Futures • 15M Interval",
-  currentPrice = "$98,650.00",
-  change = "+3.72%",
-  isPositive = true,
-  data = DEFAULT_CANDLESTICKS,
+  subtitle,
+  currentPrice,
+  change,
+  isPositive,
+  data,
+  timeframeData,
+  timeframes = ["15m", "1H", "4H", "1D", "1W", "1M"],
+  timeframe,
+  defaultTimeframe = "15m",
+  onTimeframeChange,
+  showIndicatorsToggle = true,
+  defaultShowIndicators = true,
   className,
 }) => {
+  const [internalTimeframe, setInternalTimeframe] = React.useState(defaultTimeframe)
+  const activeTimeframe = timeframe !== undefined ? timeframe : internalTimeframe
+
+  const handleTimeframeSelect = (tf: string) => {
+    if (timeframe === undefined) {
+      setInternalTimeframe(tf)
+    }
+    setHoverIdx(null)
+    onTimeframeChange?.(tf)
+  }
+
+  // Resolve dataset according to selected timeframe or direct data prop
+  const currentData = React.useMemo(() => {
+    if (timeframeData && timeframeData[activeTimeframe]) {
+      return timeframeData[activeTimeframe]
+    }
+    if (data && (!timeframeData || Object.keys(timeframeData).length === 0)) {
+      return data
+    }
+    return (
+      DEFAULT_TIMEFRAME_CANDLESTICKS[activeTimeframe] ||
+      data ||
+      DEFAULT_TIMEFRAME_CANDLESTICKS["15m"]
+    )
+  }, [data, timeframeData, activeTimeframe])
+
   const [hoverIdx, setHoverIdx] = React.useState<number | null>(null)
-  const [timeframe, setTimeframe] = React.useState<"15m" | "1H" | "4H" | "1D" | "1W">("15m")
-  const [showIndicators, setShowIndicators] = React.useState(true)
+  const [showIndicators, setShowIndicators] = React.useState(defaultShowIndicators)
 
   const width = 600
   const height = 230
@@ -909,36 +1162,36 @@ export const CandlestickStatisticChart: React.FC<CandlestickStatisticChartProps>
 
   const chartHeight = height - padTop - padBottom
 
-  const minPrice = Math.min(...data.map((d) => d.low)) * 0.9985
-  const maxPrice = Math.max(...data.map((d) => d.high)) * 1.0015
-  const maxVolume = Math.max(...data.map((d) => d.volume), 1)
+  const minPrice = Math.min(...currentData.map((d) => d.low)) * 0.9985
+  const maxPrice = Math.max(...currentData.map((d) => d.high)) * 1.0015
+  const maxVolume = Math.max(...currentData.map((d) => d.volume), 1)
 
   const getY = (price: number) => {
     return padTop + chartHeight - ((price - minPrice) / (maxPrice - minPrice)) * chartHeight
   }
 
   const getX = (idx: number) => {
-    return padLeft + (idx / Math.max(data.length - 1, 1)) * (width - padLeft - padRight)
+    return padLeft + (idx / Math.max(currentData.length - 1, 1)) * (width - padLeft - padRight)
   }
 
   // Calculate Moving Averages MA7 & MA25
   const ma7Data = React.useMemo(() => {
-    return data.map((_, idx) => {
+    return currentData.map((_, idx) => {
       if (idx < 6) return null
-      const slice = data.slice(idx - 6, idx + 1)
+      const slice = currentData.slice(idx - 6, idx + 1)
       const sum = slice.reduce((acc, c) => acc + c.close, 0)
       return sum / 7
     })
-  }, [data])
+  }, [currentData])
 
   const ma25Data = React.useMemo(() => {
-    return data.map((_, idx) => {
+    return currentData.map((_, idx) => {
       if (idx < 24) return null
-      const slice = data.slice(idx - 24, idx + 1)
+      const slice = currentData.slice(idx - 24, idx + 1)
       const sum = slice.reduce((acc, c) => acc + c.close, 0)
       return sum / 25
     })
-  }, [data])
+  }, [currentData])
 
   const ma7Path = React.useMemo(() => {
     let p = ""
@@ -949,7 +1202,7 @@ export const CandlestickStatisticChart: React.FC<CandlestickStatisticChartProps>
       p += p === "" ? `M ${x.toFixed(1)} ${y.toFixed(1)}` : ` L ${x.toFixed(1)} ${y.toFixed(1)}`
     })
     return p
-  }, [ma7Data])
+  }, [ma7Data, currentData, minPrice, maxPrice])
 
   const ma25Path = React.useMemo(() => {
     let p = ""
@@ -960,18 +1213,34 @@ export const CandlestickStatisticChart: React.FC<CandlestickStatisticChartProps>
       p += p === "" ? `M ${x.toFixed(1)} ${y.toFixed(1)}` : ` L ${x.toFixed(1)} ${y.toFixed(1)}`
     })
     return p
-  }, [ma25Data])
+  }, [ma25Data, currentData, minPrice, maxPrice])
 
-  const activeCandle = hoverIdx !== null ? data[hoverIdx] : data[data.length - 1]
+  const activeCandle = hoverIdx !== null && currentData[hoverIdx] ? currentData[hoverIdx] : currentData[currentData.length - 1]
   const activeMa7 = hoverIdx !== null ? ma7Data[hoverIdx] : ma7Data[ma7Data.length - 1]
   const activeMa25 = hoverIdx !== null ? ma25Data[hoverIdx] : ma25Data[ma25Data.length - 1]
 
-  const candleSpacing = (width - padLeft - padRight) / Math.max(data.length - 1, 1)
+  const candleSpacing = (width - padLeft - padRight) / Math.max(currentData.length - 1, 1)
   const candleWidth = Math.max(candleSpacing * 0.65, 4)
 
   // Highest & Lowest candle indices
-  const highestCandleIdx = data.reduce((maxI, c, i, arr) => (c.high > arr[maxI].high ? i : maxI), 0)
-  const lowestCandleIdx = data.reduce((minI, c, i, arr) => (c.low < arr[minI].low ? i : minI), 0)
+  const highestCandleIdx = currentData.reduce((maxI, c, i, arr) => (c.high > arr[maxI].high ? i : maxI), 0)
+  const lowestCandleIdx = currentData.reduce((minI, c, i, arr) => (c.low < arr[minI].low ? i : minI), 0)
+
+  // Auto calculate change & current price if not explicitly provided
+  const firstCandle = currentData[0] || { open: 1 }
+  const lastCandle = currentData[currentData.length - 1] || { close: 1, open: 1 }
+  const computedChangePct = (((lastCandle.close - firstCandle.open) / firstCandle.open) * 100).toFixed(2)
+  const computedIsPositive = lastCandle.close >= firstCandle.open
+
+  const displayPrice = currentPrice ?? `$${lastCandle.close.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+  const displayChange = change ?? `${computedIsPositive ? "+" : ""}${computedChangePct}%`
+  const displayIsPositive = isPositive !== undefined ? isPositive : computedIsPositive
+  const displaySubtitle = subtitle ?? `Binance Futures • ${activeTimeframe} Interval`
+
+  // 24h/Period High, Low, Total Volume
+  const periodHigh = Math.max(...currentData.map((d) => d.high))
+  const periodLow = Math.min(...currentData.map((d) => d.low))
+  const periodVol = currentData.reduce((acc, d) => acc + d.volume, 0)
 
   // Price axis labels (4 levels)
   const priceLevels = [
@@ -988,7 +1257,7 @@ export const CandlestickStatisticChart: React.FC<CandlestickStatisticChartProps>
         className
       )}
     >
-      {/* Top Header: Symbol, 24h change & Timeframe Buttons */}
+      {/* Top Header: Symbol, Change & Timeframe Buttons */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-zinc-100 pb-4 dark:border-zinc-800/80">
         <div>
           <div className="flex items-center gap-2">
@@ -998,41 +1267,41 @@ export const CandlestickStatisticChart: React.FC<CandlestickStatisticChartProps>
             <span
               className={cn(
                 "inline-flex items-center rounded-md px-1.5 py-0.5 text-[11px] font-semibold",
-                isPositive
+                displayIsPositive
                   ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
                   : "bg-rose-500/10 text-rose-600 dark:text-rose-400"
               )}
             >
-              {isPositive ? <ArrowUpRight className="h-3 w-3 mr-0.5" /> : <ArrowDownRight className="h-3 w-3 mr-0.5" />}
-              {change}
+              {displayIsPositive ? <ArrowUpRight className="h-3 w-3 mr-0.5" /> : <ArrowDownRight className="h-3 w-3 mr-0.5" />}
+              {displayChange}
             </span>
             <span className="hidden sm:inline-flex items-center rounded-md border border-zinc-200/80 bg-zinc-50 px-1.5 py-0.5 text-[10px] font-mono text-zinc-600 dark:border-zinc-700/80 dark:bg-zinc-800 dark:text-zinc-300">
               Perp 50x
             </span>
           </div>
           <p className="mt-0.5 text-xs text-zinc-500 dark:text-zinc-400">
-            {subtitle}
+            {displaySubtitle}
           </p>
         </div>
 
         <div className="flex items-center gap-3">
           <div className="text-right">
             <div className="font-mono text-base font-bold text-zinc-900 dark:text-zinc-100">
-              {currentPrice}
+              {displayPrice}
             </div>
             <div className="text-[10px] font-mono text-zinc-400">
-              Index: $98,642.10
+              Mark: ${Math.round(lastCandle.close * 0.9998).toLocaleString()}
             </div>
           </div>
           <div className="flex items-center rounded-lg border border-zinc-200 bg-zinc-50 p-0.5 dark:border-zinc-800 dark:bg-zinc-800/60">
-            {(["15m", "1H", "4H", "1D", "1W"] as const).map((t) => (
+            {timeframes.map((t) => (
               <button
                 key={t}
                 type="button"
-                onClick={() => setTimeframe(t)}
+                onClick={() => handleTimeframeSelect(t)}
                 className={cn(
                   "rounded-md px-2 py-0.5 text-[10px] font-medium transition cursor-pointer",
-                  timeframe === t
+                  activeTimeframe === t
                     ? "bg-white text-zinc-900 shadow-2xs dark:bg-zinc-700 dark:text-zinc-100"
                     : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
                 )}
@@ -1044,27 +1313,29 @@ export const CandlestickStatisticChart: React.FC<CandlestickStatisticChartProps>
         </div>
       </div>
 
-      {/* 24h Trading Stats Bar */}
+      {/* Trading Stats Ribbon */}
       <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-b border-zinc-100/80 pb-2.5 font-mono text-[10px] text-zinc-500 dark:border-zinc-800/60 dark:text-zinc-400">
         <div className="flex items-center gap-3">
-          <span>24h High: <strong className="text-emerald-600 dark:text-emerald-400 font-semibold">$98,700.00</strong></span>
-          <span>24h Low: <strong className="text-rose-600 dark:text-rose-400 font-semibold">$94,950.00</strong></span>
-          <span className="hidden md:inline">24h Vol: <strong className="text-zinc-800 dark:text-zinc-200 font-semibold">8,412.30 BTC</strong></span>
+          <span>High: <strong className="text-emerald-600 dark:text-emerald-400 font-semibold">${periodHigh.toLocaleString()}</strong></span>
+          <span>Low: <strong className="text-rose-600 dark:text-rose-400 font-semibold">${periodLow.toLocaleString()}</strong></span>
+          <span className="hidden md:inline">Vol ({activeTimeframe}): <strong className="text-zinc-800 dark:text-zinc-200 font-semibold">{periodVol.toLocaleString()} BTC</strong></span>
         </div>
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={() => setShowIndicators(!showIndicators)}
-            className={cn(
-              "rounded px-1.5 py-0.5 text-[9px] font-medium transition cursor-pointer border",
-              showIndicators
-                ? "border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-300"
-                : "border-zinc-200 bg-transparent text-zinc-400 dark:border-zinc-700"
-            )}
-          >
-            MA Indicator
-          </button>
-        </div>
+        {showIndicatorsToggle && (
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setShowIndicators(!showIndicators)}
+              className={cn(
+                "rounded px-1.5 py-0.5 text-[9px] font-medium transition cursor-pointer border",
+                showIndicators
+                  ? "border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-300"
+                  : "border-zinc-200 bg-transparent text-zinc-400 dark:border-zinc-700"
+              )}
+            >
+              MA Indicators
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Dynamic OHLC Bar + Indicator readout */}
@@ -1143,7 +1414,7 @@ export const CandlestickStatisticChart: React.FC<CandlestickStatisticChartProps>
           </text>
 
           {/* Candlestick bars + Volume bars */}
-          {data.map((c, idx) => {
+          {currentData.map((c, idx) => {
             const x = getX(idx)
             const isUp = c.close >= c.open
             const candleTop = getY(Math.max(c.open, c.close))
@@ -1198,7 +1469,7 @@ export const CandlestickStatisticChart: React.FC<CandlestickStatisticChartProps>
                 />
 
                 {/* Time Axis Text at intervals */}
-                {idx % 5 === 0 && (
+                {idx % Math.max(Math.floor(currentData.length / 6), 1) === 0 && (
                   <text
                     x={x}
                     y={height - 2}
@@ -1234,35 +1505,36 @@ export const CandlestickStatisticChart: React.FC<CandlestickStatisticChartProps>
           )}
 
           {/* Extreme Price Tags (Highest & Lowest) */}
-          {data[highestCandleIdx] && (
-            <g transform={`translate(${getX(highestCandleIdx)}, ${getY(data[highestCandleIdx].high) - 8})`}>
+          {currentData[highestCandleIdx] && (
+            <g transform={`translate(${getX(highestCandleIdx)}, ${getY(currentData[highestCandleIdx].high) - 8})`}>
               <text
                 x={0}
                 y={0}
                 textAnchor="middle"
                 className="fill-emerald-600 dark:fill-emerald-400 text-[8px] font-mono font-bold select-none"
               >
-                ▲ ${data[highestCandleIdx].high.toLocaleString()}
+                ▲ ${currentData[highestCandleIdx].high.toLocaleString()}
               </text>
             </g>
           )}
 
-          {data[lowestCandleIdx] && (
-            <g transform={`translate(${getX(lowestCandleIdx)}, ${getY(data[lowestCandleIdx].low) + 12})`}>
+          {currentData[lowestCandleIdx] && (
+            <g transform={`translate(${getX(lowestCandleIdx)}, ${getY(currentData[lowestCandleIdx].low) + 12})`}>
               <text
                 x={0}
                 y={0}
                 textAnchor="middle"
                 className="fill-rose-600 dark:fill-rose-400 text-[8px] font-mono font-bold select-none"
               >
-                ▼ ${data[lowestCandleIdx].low.toLocaleString()}
+                ▼ ${currentData[lowestCandleIdx].low.toLocaleString()}
               </text>
             </g>
           )}
 
           {/* Current Live Price Right Axis Marker */}
           {(() => {
-            const lastCandle = data[data.length - 1]
+            const lastCandle = currentData[currentData.length - 1]
+            if (!lastCandle) return null
             const curY = getY(lastCandle.close)
             const isUp = lastCandle.close >= lastCandle.open
             return (
@@ -1298,7 +1570,7 @@ export const CandlestickStatisticChart: React.FC<CandlestickStatisticChartProps>
           })()}
 
           {/* Interactive Crosshair when Hovering */}
-          {hoverIdx !== null && data[hoverIdx] && (
+          {hoverIdx !== null && currentData[hoverIdx] && (
             <g className="pointer-events-none">
               {/* Vertical Crosshair Line */}
               <line
@@ -1315,9 +1587,9 @@ export const CandlestickStatisticChart: React.FC<CandlestickStatisticChartProps>
               {/* Horizontal Crosshair Line */}
               <line
                 x1={padLeft}
-                y1={getY(data[hoverIdx].close)}
+                y1={getY(currentData[hoverIdx].close)}
                 x2={width - padRight}
-                y2={getY(data[hoverIdx].close)}
+                y2={getY(currentData[hoverIdx].close)}
                 stroke="currentColor"
                 strokeDasharray="2 2"
                 strokeWidth={1}
@@ -1327,7 +1599,7 @@ export const CandlestickStatisticChart: React.FC<CandlestickStatisticChartProps>
               {/* Price Tag on Right Axis */}
               <rect
                 x={width - padRight + 2}
-                y={getY(data[hoverIdx].close) - 7}
+                y={getY(currentData[hoverIdx].close) - 7}
                 width={52}
                 height={14}
                 rx={3}
@@ -1335,18 +1607,18 @@ export const CandlestickStatisticChart: React.FC<CandlestickStatisticChartProps>
               />
               <text
                 x={width - padRight + 28}
-                y={getY(data[hoverIdx].close) + 3.5}
+                y={getY(currentData[hoverIdx].close) + 3.5}
                 textAnchor="middle"
                 className="fill-zinc-100 dark:fill-zinc-900 text-[8.5px] font-mono font-bold"
               >
-                ${data[hoverIdx].close.toLocaleString()}
+                ${currentData[hoverIdx].close.toLocaleString()}
               </text>
 
               {/* Time Tag on Bottom Axis */}
               <rect
-                x={getX(hoverIdx) - 20}
+                x={getX(hoverIdx) - 24}
                 y={height - padBottom + 2}
-                width={40}
+                width={48}
                 height={13}
                 rx={3}
                 className="fill-zinc-900 dark:fill-zinc-100"
@@ -1357,7 +1629,7 @@ export const CandlestickStatisticChart: React.FC<CandlestickStatisticChartProps>
                 textAnchor="middle"
                 className="fill-zinc-100 dark:fill-zinc-900 text-[8px] font-mono font-bold"
               >
-                {data[hoverIdx].time}
+                {currentData[hoverIdx].time}
               </text>
             </g>
           )}

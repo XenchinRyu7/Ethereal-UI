@@ -2837,15 +2837,15 @@ export function HeatmapChartDemo() {
     isNew: true,
     dependencies: ["lucide-react"],
     sourceFile: "packages/ui/src/primitives/chart.tsx",
-    code: `import { CandlestickStatisticChart } from "@etherealui/react"
+    code: `import { CandlestickStatisticChart, DEFAULT_TIMEFRAME_CANDLESTICKS } from "@etherealui/react"
 
 export function CandlestickChartDemo() {
   return (
     <CandlestickStatisticChart
       title="BTC/USDT Perpetual"
-      subtitle="Binance Futures • 1H Interval"
-      currentPrice="$97,800.00"
-      change="+2.51%"
+      timeframes={["15m", "1H", "4H", "1D", "1W", "1M"]}
+      defaultTimeframe="15m"
+      timeframeData={DEFAULT_TIMEFRAME_CANDLESTICKS}
     />
   )
 }`,
