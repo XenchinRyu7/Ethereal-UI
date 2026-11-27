@@ -46,6 +46,14 @@ import {
   Spinner,
   CopyButton,
   AspectRatio,
+  PasswordInput,
+  TagInput,
+  FormField,
+  Collapsible,
+  CollapsibleTrigger,
+  CollapsibleContent,
+  HoverCard,
+  SegmentedControl,
   Carousel,
   AreaStatisticChart,
   BarStatisticChart,
@@ -1140,6 +1148,73 @@ export const LiveDemoRenderer: React.FC<{ slug: string; sectionId?: string }> = 
             </div>
           </AspectRatio>
         </div>
+      )
+
+    case "password-input":
+      return (
+        <div className="w-full max-w-xs space-y-2">
+          <PasswordInput placeholder="Enter strong password..." showStrengthMeter />
+        </div>
+      )
+
+    case "tag-input":
+      return (
+        <div className="w-full max-w-sm space-y-2">
+          <TagInput defaultValue={["React", "TypeScript", "Tailwind"]} placeholder="Add skill..." />
+        </div>
+      )
+
+    case "form-field":
+      return (
+        <div className="w-full max-w-xs space-y-4">
+          <FormField label="Organization Name" required description="Public company or team display name.">
+            <Input placeholder="Acme Corp" />
+          </FormField>
+        </div>
+      )
+
+    case "collapsible":
+      return (
+        <Collapsible className="w-80 rounded-xl border border-zinc-200 bg-white p-4 shadow-2xs dark:border-zinc-800 dark:bg-zinc-950">
+          <CollapsibleTrigger>Advanced Security Configuration</CollapsibleTrigger>
+          <CollapsibleContent className="pt-2 text-xs text-zinc-500 dark:text-zinc-400">
+            Configure biometric keys, session revocation thresholds, and hardware security token verification.
+          </CollapsibleContent>
+        </Collapsible>
+      )
+
+    case "hover-card":
+      return (
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-zinc-500">Collaborator:</span>
+          <HoverCard
+            content={
+              <div className="space-y-1">
+                <p className="font-medium text-zinc-900 dark:text-zinc-100">Elena Rostova</p>
+                <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                  Principal Design Architect @ Ethereal Labs. Specializing in OKLCH palettes and design systems.
+                </p>
+              </div>
+            }
+          >
+            <span className="text-xs font-semibold text-blue-600 underline cursor-pointer dark:text-blue-400">
+              @elena
+            </span>
+          </HoverCard>
+        </div>
+      )
+
+    case "segmented-control":
+      return (
+        <SegmentedControl
+          defaultValue="monthly"
+          options={[
+            { label: "Daily", value: "daily" },
+            { label: "Monthly", value: "monthly" },
+            { label: "Quarterly", value: "quarterly" },
+            { label: "Yearly", value: "yearly" },
+          ]}
+        />
       )
 
     case "context-menu":

@@ -710,6 +710,183 @@ export function AspectRatioDemo() {
     sections: [],
   },
   {
+    slug: "password-input",
+    title: "Password Input",
+    category: "primitives",
+    subcategory: "Base",
+    description:
+      "Secure password text input with visibility toggle and optional real-time strength meter.",
+    isNew: true,
+    dependencies: ["lucide-react"],
+    sourceFile: "packages/ui/src/primitives/password-input.tsx",
+    code: `import * as React from "react"
+import { PasswordInput } from "@etherealui/react"
+
+export function PasswordInputDemo() {
+  const [val, setVal] = React.useState("")
+  return (
+    <div className="w-full max-w-xs">
+      <PasswordInput
+        value={val}
+        onChange={(e) => setVal(e.target.value)}
+        placeholder="Enter password..."
+        showStrengthMeter
+      />
+    </div>
+  )
+}`,
+    sections: [],
+  },
+  {
+    slug: "tag-input",
+    title: "Tag Input",
+    category: "primitives",
+    subcategory: "Base",
+    description:
+      "Multi-value chip tag input with Enter/comma separators and backspace removal.",
+    isNew: true,
+    dependencies: ["lucide-react"],
+    sourceFile: "packages/ui/src/primitives/tag-input.tsx",
+    code: `import * as React from "react"
+import { TagInput } from "@etherealui/react"
+
+export function TagInputDemo() {
+  const [tags, setTags] = React.useState(["React", "TypeScript", "Tailwind"])
+  return (
+    <div className="w-full max-w-sm">
+      <TagInput value={tags} onChange={setTags} placeholder="Add skill..." />
+    </div>
+  )
+}`,
+    sections: [],
+  },
+  {
+    slug: "form-field",
+    title: "Form Field",
+    category: "primitives",
+    subcategory: "Base",
+    description:
+      "Form input layout wrapper handling label, required asterisk, description, and validation errors.",
+    isNew: true,
+    dependencies: [],
+    sourceFile: "packages/ui/src/primitives/form-field.tsx",
+    code: `import { FormField, Input } from "@etherealui/react"
+
+export function FormFieldDemo() {
+  return (
+    <div className="w-full max-w-xs space-y-4">
+      <FormField
+        label="Organization Name"
+        required
+        description="Public display name for your team workspace."
+      >
+        <Input placeholder="Acme Corp" />
+      </FormField>
+      <FormField
+        label="Domain Identifier"
+        error="Domain has already been reserved."
+      >
+        <Input defaultValue="acme" />
+      </FormField>
+    </div>
+  )
+}`,
+    sections: [],
+  },
+  {
+    slug: "collapsible",
+    title: "Collapsible",
+    category: "primitives",
+    subcategory: "Base",
+    description:
+      "Single-panel expand and collapse utility with animated trigger chevron.",
+    isNew: true,
+    dependencies: ["lucide-react"],
+    sourceFile: "packages/ui/src/primitives/collapsible.tsx",
+    code: `import {
+  Collapsible,
+  CollapsibleTrigger,
+  CollapsibleContent
+} from "@etherealui/react"
+
+export function CollapsibleDemo() {
+  return (
+    <Collapsible className="w-80 rounded-xl border border-zinc-200 bg-white p-4 shadow-2xs dark:border-zinc-800 dark:bg-zinc-950">
+      <CollapsibleTrigger>
+        Advanced Security Configuration
+      </CollapsibleTrigger>
+      <CollapsibleContent className="pt-2 text-xs text-zinc-500 space-y-2">
+        <p>Configure hardware security keys (FIDO2) and session revocation policies.</p>
+      </CollapsibleContent>
+    </Collapsible>
+  )
+}`,
+    sections: [],
+  },
+  {
+    slug: "hover-card",
+    title: "Hover Card",
+    category: "primitives",
+    subcategory: "Base",
+    description:
+      "Hover-triggered floating preview card with intentional open and close delays.",
+    isNew: true,
+    dependencies: ["@radix-ui/react-popover"],
+    sourceFile: "packages/ui/src/primitives/hover-card.tsx",
+    code: `import { HoverCard, Avatar } from "@etherealui/react"
+
+export function HoverCardDemo() {
+  return (
+    <HoverCard
+      content={
+        <div className="flex items-start gap-3">
+          <Avatar src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" alt="Elena" />
+          <div className="space-y-1">
+            <h4 className="text-xs font-semibold text-zinc-900 dark:text-zinc-100">Elena Rostova</h4>
+            <p className="text-[11px] text-zinc-500">Lead Design Technologist @ Ethereal UI</p>
+          </div>
+        </div>
+      }
+    >
+      <span className="text-xs font-semibold text-blue-600 dark:text-blue-400 cursor-pointer underline">
+        @elena
+      </span>
+    </HoverCard>
+  )
+}`,
+    sections: [],
+  },
+  {
+    slug: "segmented-control",
+    title: "Segmented Control",
+    category: "primitives",
+    subcategory: "Base",
+    description:
+      "Compact sliding toggle button group for filtering views, metrics, or billing cycles.",
+    isNew: true,
+    dependencies: [],
+    sourceFile: "packages/ui/src/primitives/segmented-control.tsx",
+    code: `import * as React from "react"
+import { SegmentedControl } from "@etherealui/react"
+
+export function SegmentedControlDemo() {
+  const [val, setVal] = React.useState("monthly")
+  return (
+    <SegmentedControl
+      value={val}
+      onChange={setVal}
+      options={[
+        { label: "Daily", value: "daily" },
+        { label: "Monthly", value: "monthly" },
+        { label: "Quarterly", value: "quarterly" },
+        { label: "Yearly", value: "yearly" },
+      ]}
+    />
+  )
+}`,
+    sections: [],
+  },
+  {
     slug: "context-menu",
     title: "Context Menu",
     category: "primitives",

@@ -47,6 +47,23 @@ export { CopyButton, type CopyButtonProps } from "./primitives/copy-button"
 export { Kbd, type KbdProps } from "./primitives/kbd"
 export { Rating, type RatingProps } from "./primitives/rating"
 export { Spinner, type SpinnerProps } from "./primitives/spinner"
+export { PasswordInput, type PasswordInputProps } from "./primitives/password-input"
+export { TagInput, type TagInputProps } from "./primitives/tag-input"
+export { FormField, type FormFieldProps } from "./primitives/form-field"
+export {
+  Collapsible,
+  CollapsibleTrigger,
+  CollapsibleContent,
+  type CollapsibleProps,
+  type CollapsibleTriggerProps,
+  type CollapsibleContentProps,
+} from "./primitives/collapsible"
+export { HoverCard, type HoverCardProps } from "./primitives/hover-card"
+export {
+  SegmentedControl,
+  type SegmentedControlOption,
+  type SegmentedControlProps,
+} from "./primitives/segmented-control"
 export { Carousel, type CarouselSlide, type CarouselProps } from "./primitives/carousel"
 export { Checkbox } from "./primitives/checkbox"
 export { Chip, type ChipProps } from "./primitives/chip"
