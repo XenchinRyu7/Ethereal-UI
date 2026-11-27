@@ -1,12 +1,15 @@
 import * as React from "react"
 import {
   ArrowUpRight,
+  ArrowDownRight,
   TrendingUp,
   Activity,
   PieChart as PieChartIcon,
   Gauge,
   Grid,
   LineChart as LineChartIcon,
+  Layers,
+  Filter,
 } from "lucide-react"
 import { cn } from "../utils/cn"
 
@@ -829,3 +832,1000 @@ export const HeatmapStatisticChart: React.FC<{
     </div>
   )
 }
+
+// ==========================================
+// 1. CANDLESTICK STATISTIC CHART (Trading/Crypto)
+// ==========================================
+
+export interface CandlestickDataPoint {
+  time: string
+  open: number
+  high: number
+  low: number
+  close: number
+  volume: number
+}
+
+const DEFAULT_CANDLESTICKS: CandlestickDataPoint[] = [
+  { time: "09:00", open: 95400, high: 95800, low: 95100, close: 95750, volume: 142 },
+  { time: "10:00", open: 95750, high: 96200, low: 95600, close: 96100, volume: 188 },
+  { time: "11:00", open: 96100, high: 96350, low: 95800, close: 95900, volume: 165 },
+  { time: "12:00", open: 95900, high: 96400, low: 95750, close: 96320, volume: 210 },
+  { time: "13:00", open: 96320, high: 96800, low: 96200, close: 96750, volume: 245 },
+  { time: "14:00", open: 96750, high: 97100, low: 96500, close: 96600, volume: 198 },
+  { time: "15:00", open: 96600, high: 96900, low: 96300, close: 96420, volume: 154 },
+  { time: "16:00", open: 96420, high: 97350, low: 96400, close: 97280, volume: 312 },
+  { time: "17:00", open: 97280, high: 97600, low: 97050, close: 97450, volume: 280 },
+  { time: "18:00", open: 97450, high: 97550, low: 96800, close: 96950, volume: 220 },
+  { time: "19:00", open: 96950, high: 97400, low: 96900, close: 97320, volume: 175 },
+  { time: "20:00", open: 97320, high: 97850, low: 97200, close: 97800, volume: 340 },
+]
+
+export interface CandlestickStatisticChartProps {
+  title?: string
+  subtitle?: string
+  currentPrice?: string
+  change?: string
+  isPositive?: boolean
+  data?: CandlestickDataPoint[]
+  className?: string
+}
+
+export const CandlestickStatisticChart: React.FC<CandlestickStatisticChartProps> = ({
+  title = "BTC/USDT Perpetual",
+  subtitle = "Binance Futures • 1H Interval",
+  currentPrice = "$97,800.00",
+  change = "+2.51%",
+  isPositive = true,
+  data = DEFAULT_CANDLESTICKS,
+  className,
+}) => {
+  const [hoverIdx, setHoverIdx] = React.useState<number | null>(null)
+  const [timeframe, setTimeframe] = React.useState<"1H" | "4H" | "1D" | "1W">("1H")
+
+  const width = 540
+  const height = 190
+  const padX = 24
+  const padTop = 15
+  const padBottom = 35
+
+  const chartHeight = height - padTop - padBottom
+
+  const minPrice = Math.min(...data.map((d) => d.low)) * 0.998
+  const maxPrice = Math.max(...data.map((d) => d.high)) * 1.002
+  const maxVolume = Math.max(...data.map((d) => d.volume), 1)
+
+  const getY = (price: number) => {
+    return padTop + chartHeight - ((price - minPrice) / (maxPrice - minPrice)) * chartHeight
+  }
+
+  const activeCandle = hoverIdx !== null ? data[hoverIdx] : data[data.length - 1]
+  const candleWidth = Math.max((width - padX * 2) / data.length - 8, 6)
+
+  return (
+    <div
+      className={cn(
+        "rounded-2xl border border-zinc-200 bg-white p-5 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 select-none",
+        className
+      )}
+    >
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-zinc-100 pb-4 dark:border-zinc-800/80">
+        <div>
+          <div className="flex items-center gap-2">
+            <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+              {title}
+            </h3>
+            <span
+              className={cn(
+                "inline-flex items-center rounded-md px-1.5 py-0.5 text-[11px] font-semibold",
+                isPositive
+                  ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+                  : "bg-rose-500/10 text-rose-600 dark:text-rose-400"
+              )}
+            >
+              {isPositive ? <ArrowUpRight className="h-3 w-3 mr-0.5" /> : <ArrowDownRight className="h-3 w-3 mr-0.5" />}
+              {change}
+            </span>
+          </div>
+          <p className="mt-0.5 text-xs text-zinc-500 dark:text-zinc-400">
+            {subtitle}
+          </p>
+        </div>
+
+        <div className="flex items-center gap-3">
+          <div className="text-right">
+            <div className="font-mono text-base font-bold text-zinc-900 dark:text-zinc-100">
+              {currentPrice}
+            </div>
+          </div>
+          <div className="flex items-center rounded-lg border border-zinc-200 bg-zinc-50 p-0.5 dark:border-zinc-800 dark:bg-zinc-800/60">
+            {(["1H", "4H", "1D", "1W"] as const).map((t) => (
+              <button
+                key={t}
+                type="button"
+                onClick={() => setTimeframe(t)}
+                className={cn(
+                  "rounded-md px-2 py-0.5 text-[10px] font-medium transition cursor-pointer",
+                  timeframe === t
+                    ? "bg-white text-zinc-900 shadow-2xs dark:bg-zinc-700 dark:text-zinc-100"
+                    : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
+                )}
+              >
+                {t}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* OHLC Bar readout */}
+      <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-[11px] text-zinc-500 dark:text-zinc-400">
+        <span>Time: <strong className="text-zinc-800 dark:text-zinc-200">{activeCandle.time}</strong></span>
+        <span>O: <strong className="text-zinc-800 dark:text-zinc-200">${activeCandle.open.toLocaleString()}</strong></span>
+        <span>H: <strong className="text-emerald-600 dark:text-emerald-400">${activeCandle.high.toLocaleString()}</strong></span>
+        <span>L: <strong className="text-rose-600 dark:text-rose-400">${activeCandle.low.toLocaleString()}</strong></span>
+        <span>C: <strong className={activeCandle.close >= activeCandle.open ? "text-emerald-600 dark:text-emerald-400" : "text-rose-600 dark:text-rose-400"}>${activeCandle.close.toLocaleString()}</strong></span>
+        <span>Vol: <strong className="text-zinc-800 dark:text-zinc-200">{activeCandle.volume} BTC</strong></span>
+      </div>
+
+      <div className="relative mt-2">
+        <svg
+          viewBox={`0 0 ${width} ${height}`}
+          className="w-full overflow-visible"
+        >
+          {/* Horizontal gridlines */}
+          {[0.2, 0.5, 0.8].map((pct, idx) => {
+            const y = padTop + chartHeight * pct
+            return (
+              <line
+                key={idx}
+                x1={padX}
+                y1={y}
+                x2={width - padX}
+                y2={y}
+                stroke="currentColor"
+                strokeDasharray="3 3"
+                className="text-zinc-200 dark:text-zinc-800/80"
+              />
+            )
+          })}
+
+          {/* Volume separator */}
+          <line
+            x1={padX}
+            y1={height - padBottom}
+            x2={width - padX}
+            y2={height - padBottom}
+            stroke="currentColor"
+            className="text-zinc-200 dark:text-zinc-800/80"
+          />
+
+          {data.map((c, idx) => {
+            const x = padX + (idx / (data.length - 1)) * (width - padX * 2)
+            const isUp = c.close >= c.open
+            const candleTop = getY(Math.max(c.open, c.close))
+            const candleBottom = getY(Math.min(c.open, c.close))
+            const candleH = Math.max(candleBottom - candleTop, 2)
+            const highY = getY(c.high)
+            const lowY = getY(c.low)
+
+            // Volume bar
+            const volH = (c.volume / maxVolume) * 22
+            const volY = height - volH
+
+            const strokeColor = isUp ? "#10b981" : "#f43f5e"
+            const fillColor = isUp ? "#10b981" : "#f43f5e"
+
+            return (
+              <g
+                key={idx}
+                onMouseEnter={() => setHoverIdx(idx)}
+                onMouseLeave={() => setHoverIdx(null)}
+                className="cursor-pointer transition-opacity"
+                opacity={hoverIdx === null || hoverIdx === idx ? 1 : 0.4}
+              >
+                {/* Wick High/Low */}
+                <line
+                  x1={x}
+                  y1={highY}
+                  x2={x}
+                  y2={lowY}
+                  stroke={strokeColor}
+                  strokeWidth={1.5}
+                />
+
+                {/* Body Rect */}
+                <rect
+                  x={x - candleWidth / 2}
+                  y={candleTop}
+                  width={candleWidth}
+                  height={candleH}
+                  fill={fillColor}
+                  rx={1}
+                />
+
+                {/* Volume Bar */}
+                <rect
+                  x={x - candleWidth / 2}
+                  y={volY}
+                  width={candleWidth}
+                  height={volH}
+                  fill={fillColor}
+                  opacity={0.4}
+                  rx={1}
+                />
+
+                {/* Time Axis Text */}
+                {idx % 2 === 0 && (
+                  <text
+                    x={x}
+                    y={height - 26}
+                    textAnchor="middle"
+                    className="fill-zinc-400 text-[9px] font-mono select-none"
+                  >
+                    {c.time}
+                  </text>
+                )}
+              </g>
+            )
+          })}
+        </svg>
+      </div>
+    </div>
+  )
+}
+export const CandlestickChart = CandlestickStatisticChart
+
+// ==========================================
+// 2. DEPTH STATISTIC CHART (Order Book Liquidity)
+// ==========================================
+
+export interface DepthOrderPoint {
+  price: number
+  volume: number
+  totalVolume: number
+}
+
+const DEFAULT_BIDS: DepthOrderPoint[] = [
+  { price: 97800, volume: 4.2, totalVolume: 4.2 },
+  { price: 97750, volume: 8.5, totalVolume: 12.7 },
+  { price: 97700, volume: 15.3, totalVolume: 28.0 },
+  { price: 97650, volume: 22.1, totalVolume: 50.1 },
+  { price: 97600, volume: 34.0, totalVolume: 84.1 },
+  { price: 97550, volume: 48.2, totalVolume: 132.3 },
+  { price: 97500, volume: 65.4, totalVolume: 197.7 },
+]
+
+const DEFAULT_ASKS: DepthOrderPoint[] = [
+  { price: 97820, volume: 5.1, totalVolume: 5.1 },
+  { price: 97870, volume: 9.8, totalVolume: 14.9 },
+  { price: 97920, volume: 16.4, totalVolume: 31.3 },
+  { price: 97970, volume: 24.5, totalVolume: 55.8 },
+  { price: 98020, volume: 38.0, totalVolume: 93.8 },
+  { price: 98070, volume: 52.1, totalVolume: 145.9 },
+  { price: 98120, volume: 72.3, totalVolume: 218.2 },
+]
+
+export interface DepthStatisticChartProps {
+  title?: string
+  subtitle?: string
+  midPrice?: string
+  spread?: string
+  bids?: DepthOrderPoint[]
+  asks?: DepthOrderPoint[]
+  className?: string
+}
+
+export const DepthStatisticChart: React.FC<DepthStatisticChartProps> = ({
+  title = "Market Order Book Depth",
+  subtitle = "Cumulative Bids (Buy) vs Asks (Sell) Liquidity",
+  midPrice = "$97,810.00",
+  spread = "$20.00 (0.02%)",
+  bids = DEFAULT_BIDS,
+  asks = DEFAULT_ASKS,
+  className,
+}) => {
+  const [hoverDepth, setHoverDepth] = React.useState<{ side: "bid" | "ask"; price: number; total: number } | null>(null)
+
+  const width = 540
+  const height = 180
+  const padX = 20
+  const padY = 20
+  const midX = width / 2
+
+  const maxTotal = Math.max(
+    bids[bids.length - 1].totalVolume,
+    asks[asks.length - 1].totalVolume
+  )
+
+  // Bids curve: from left to mid
+  const bidPoints = bids.map((b, idx) => {
+    const x = midX - ((idx + 1) / bids.length) * (midX - padX)
+    const y = height - padY - (b.totalVolume / maxTotal) * (height - padY * 2)
+    return { x, y, ...b }
+  })
+
+  // Asks curve: from mid to right
+  const askPoints = asks.map((a, idx) => {
+    const x = midX + ((idx + 1) / asks.length) * (midX - padX)
+    const y = height - padY - (a.totalVolume / maxTotal) * (height - padY * 2)
+    return { x, y, ...a }
+  })
+
+  const bidPath = `M ${midX} ${height - padY} ` +
+    [...bidPoints].reverse().map((p) => `L ${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(" ") +
+    ` L ${padX} ${height - padY} Z`
+
+  const askPath = `M ${midX} ${height - padY} ` +
+    askPoints.map((p) => `L ${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(" ") +
+    ` L ${width - padX} ${height - padY} Z`
+
+  return (
+    <div
+      className={cn(
+        "rounded-2xl border border-zinc-200 bg-white p-5 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 select-none",
+        className
+      )}
+    >
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-zinc-100 pb-4 dark:border-zinc-800/80">
+        <div>
+          <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+            <Layers className="h-4 w-4 text-emerald-500" />
+            {title}
+          </h3>
+          <p className="mt-0.5 text-xs text-zinc-500 dark:text-zinc-400">
+            {subtitle}
+          </p>
+        </div>
+
+        <div className="flex items-center gap-4 text-right">
+          <div>
+            <div className="text-[10px] uppercase font-semibold text-zinc-400">Mid Price</div>
+            <div className="font-mono text-sm font-bold text-zinc-900 dark:text-zinc-100">{midPrice}</div>
+          </div>
+          <div>
+            <div className="text-[10px] uppercase font-semibold text-zinc-400">Spread</div>
+            <div className="font-mono text-xs font-semibold text-blue-600 dark:text-blue-400">{spread}</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Hover info banner */}
+      <div className="mt-3 flex items-center justify-between text-xs font-mono text-zinc-500">
+        <span className="text-emerald-600 dark:text-emerald-400 font-semibold">
+          ◀ Bids (Buy Support)
+        </span>
+        <span>
+          {hoverDepth
+            ? `${hoverDepth.side.toUpperCase()}: $${hoverDepth.price.toLocaleString()} • Vol: ${hoverDepth.total.toFixed(1)} BTC`
+            : "Hover depth chart to inspect cumulative liquidity"}
+        </span>
+        <span className="text-rose-600 dark:text-rose-400 font-semibold">
+          Asks (Sell Wall) ▶
+        </span>
+      </div>
+
+      <div className="relative mt-2">
+        <svg viewBox={`0 0 ${width} ${height}`} className="w-full overflow-visible">
+          <defs>
+            <linearGradient id="bidDepthGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#10b981" stopOpacity="0.3" />
+              <stop offset="100%" stopColor="#10b981" stopOpacity="0.02" />
+            </linearGradient>
+            <linearGradient id="askDepthGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#f43f5e" stopOpacity="0.3" />
+              <stop offset="100%" stopColor="#f43f5e" stopOpacity="0.02" />
+            </linearGradient>
+          </defs>
+
+          {/* Dotted Center line */}
+          <line
+            x1={midX}
+            y1={padY}
+            x2={midX}
+            y2={height - padY}
+            stroke="currentColor"
+            strokeDasharray="3 3"
+            className="text-zinc-400 dark:text-zinc-600"
+          />
+
+          {/* Bids fill & stroke */}
+          <path d={bidPath} fill="url(#bidDepthGrad)" />
+          <path
+            d={[...bidPoints].reverse().map((p, i) => `${i === 0 ? "M" : "L"} ${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(" ")}
+            fill="none"
+            stroke="#10b981"
+            strokeWidth={2}
+          />
+
+          {/* Asks fill & stroke */}
+          <path d={askPath} fill="url(#askDepthGrad)" />
+          <path
+            d={askPoints.map((p, i) => `${i === 0 ? "M" : "L"} ${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(" ")}
+            fill="none"
+            stroke="#f43f5e"
+            strokeWidth={2}
+          />
+
+          {/* Bid point triggers */}
+          {bidPoints.map((p, i) => (
+            <circle
+              key={`b-${i}`}
+              cx={p.x}
+              cy={p.y}
+              r={4}
+              className="fill-emerald-500 hover:r-6 transition-all cursor-pointer"
+              onMouseEnter={() => setHoverDepth({ side: "bid", price: p.price, total: p.totalVolume })}
+              onMouseLeave={() => setHoverDepth(null)}
+            />
+          ))}
+
+          {/* Ask point triggers */}
+          {askPoints.map((p, i) => (
+            <circle
+              key={`a-${i}`}
+              cx={p.x}
+              cy={p.y}
+              r={4}
+              className="fill-rose-500 hover:r-6 transition-all cursor-pointer"
+              onMouseEnter={() => setHoverDepth({ side: "ask", price: p.price, total: p.totalVolume })}
+              onMouseLeave={() => setHoverDepth(null)}
+            />
+          ))}
+        </svg>
+      </div>
+    </div>
+  )
+}
+export const DepthChart = DepthStatisticChart
+
+// ==========================================
+// 3. RADAR STATISTIC CHART (Spider Web / AI Benchmark)
+// ==========================================
+
+export interface RadarSeriesItem {
+  name: string
+  color: string
+  values: number[]
+}
+
+const DEFAULT_RADAR_AXES = ["Reasoning", "Coding", "Mathematics", "Multimodal", "Low Latency", "Safety"]
+const DEFAULT_RADAR_SERIES: RadarSeriesItem[] = [
+  { name: "Gemini 3.1 Pro", color: "#2563eb", values: [95, 92, 88, 96, 90, 94] },
+  { name: "Claude 3.5 Sonnet", color: "#f59e0b", values: [94, 95, 86, 89, 85, 96] },
+]
+
+export interface RadarStatisticChartProps {
+  title?: string
+  subtitle?: string
+  axes?: string[]
+  series?: RadarSeriesItem[]
+  className?: string
+}
+
+export const RadarStatisticChart: React.FC<RadarStatisticChartProps> = ({
+  title = "AI Foundation Model Capability Radar",
+  subtitle = "Multi-axis intelligence, speed, and safety benchmark",
+  axes = DEFAULT_RADAR_AXES,
+  series = DEFAULT_RADAR_SERIES,
+  className,
+}) => {
+  const [hoveredAxis, setHoveredAxis] = React.useState<number | null>(null)
+
+  const size = 320
+  const cx = size / 2
+  const cy = size / 2
+  const radius = 105
+  const levels = 5
+  const count = axes.length
+
+  const getAxisPoint = (idx: number, dist: number) => {
+    const angle = (Math.PI * 2 * idx) / count - Math.PI / 2
+    return {
+      x: cx + dist * Math.cos(angle),
+      y: cy + dist * Math.sin(angle),
+    }
+  }
+
+  return (
+    <div
+      className={cn(
+        "rounded-2xl border border-zinc-200 bg-white p-5 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 select-none",
+        className
+      )}
+    >
+      <div className="border-b border-zinc-100 pb-3 dark:border-zinc-800/80">
+        <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+          {title}
+        </h3>
+        <p className="mt-0.5 text-xs text-zinc-500 dark:text-zinc-400">
+          {subtitle}
+        </p>
+      </div>
+
+      <div className="relative mt-2 flex flex-col items-center justify-center">
+        <svg viewBox={`0 0 ${size} ${size}`} className="w-full max-w-[340px] overflow-visible">
+          {/* Concentric Web Polygons */}
+          {Array.from({ length: levels }).map((_, lIdx) => {
+            const levelRadius = (radius / levels) * (lIdx + 1)
+            const polyPoints = Array.from({ length: count })
+              .map((_, aIdx) => {
+                const pt = getAxisPoint(aIdx, levelRadius)
+                return `${pt.x.toFixed(1)},${pt.y.toFixed(1)}`
+              })
+              .join(" ")
+            return (
+              <polygon
+                key={lIdx}
+                points={polyPoints}
+                fill="none"
+                stroke="currentColor"
+                strokeDasharray="2 3"
+                className="text-zinc-200 dark:text-zinc-800"
+              />
+            )
+          })}
+
+          {/* Radial Spokes */}
+          {axes.map((axis, idx) => {
+            const end = getAxisPoint(idx, radius)
+            const labelPos = getAxisPoint(idx, radius + 22)
+            const isHovered = hoveredAxis === idx
+
+            return (
+              <g key={idx}>
+                <line
+                  x1={cx}
+                  y1={cy}
+                  x2={end.x}
+                  y2={end.y}
+                  stroke="currentColor"
+                  className={cn(
+                    "transition-colors",
+                    isHovered ? "text-blue-500 stroke-[1.5]" : "text-zinc-200 dark:text-zinc-800"
+                  )}
+                />
+                <text
+                  x={labelPos.x}
+                  y={labelPos.y}
+                  textAnchor="middle"
+                  dominantBaseline="central"
+                  onMouseEnter={() => setHoveredAxis(idx)}
+                  onMouseLeave={() => setHoveredAxis(null)}
+                  className={cn(
+                    "text-[10px] font-medium transition-colors cursor-pointer select-none",
+                    isHovered
+                      ? "fill-blue-600 font-bold dark:fill-blue-400"
+                      : "fill-zinc-600 dark:fill-zinc-400"
+                  )}
+                >
+                  {axis}
+                </text>
+              </g>
+            )
+          })}
+
+          {/* Radar Series Polygons */}
+          {series.map((s, sIdx) => {
+            const points = s.values.map((v, aIdx) => {
+              const pt = getAxisPoint(aIdx, (v / 100) * radius)
+              return pt
+            })
+            const polyStr = points.map((p) => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(" ")
+
+            return (
+              <g key={sIdx}>
+                <polygon
+                  points={polyStr}
+                  fill={s.color}
+                  fillOpacity={0.2}
+                  stroke={s.color}
+                  strokeWidth={2}
+                />
+                {points.map((p, pIdx) => (
+                  <circle
+                    key={pIdx}
+                    cx={p.x}
+                    cy={p.y}
+                    r={3.5}
+                    fill={s.color}
+                    className="cursor-pointer hover:r-5 transition-all"
+                  />
+                ))}
+              </g>
+            )
+          })}
+        </svg>
+
+        {/* Legend */}
+        <div className="mt-2 flex flex-wrap items-center justify-center gap-4 text-xs font-medium">
+          {series.map((s, idx) => (
+            <div key={idx} className="flex items-center gap-1.5">
+              <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: s.color }} />
+              <span className="text-zinc-700 dark:text-zinc-300">{s.name}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+export const RadarChart = RadarStatisticChart
+
+// ==========================================
+// 4. FUNNEL STATISTIC CHART (SaaS Conversion)
+// ==========================================
+
+export interface FunnelStageItem {
+  name: string
+  count: number
+  value?: string
+}
+
+const DEFAULT_FUNNEL_STAGES: FunnelStageItem[] = [
+  { name: "Website Visitors", count: 120000, value: "$0" },
+  { name: "Free Trial Signups", count: 42000, value: "$0" },
+  { name: "Product Qualified Leads", count: 18500, value: "$185k ARR pipeline" },
+  { name: "Sales Demo & Trial", count: 6200, value: "$920k ARR pipeline" },
+  { name: "Closed Won Customers", count: 2450, value: "$1.42M Net ARR" },
+]
+
+export interface FunnelStatisticChartProps {
+  title?: string
+  subtitle?: string
+  stages?: FunnelStageItem[]
+  className?: string
+}
+
+export const FunnelStatisticChart: React.FC<FunnelStatisticChartProps> = ({
+  title = "Enterprise Sales & Conversion Funnel",
+  subtitle = "End-to-end customer journey drop-off and conversion benchmarks",
+  stages = DEFAULT_FUNNEL_STAGES,
+  className,
+}) => {
+  const [hoveredIdx, setHoveredIdx] = React.useState<number | null>(null)
+  const topCount = stages[0]?.count || 1
+
+  return (
+    <div
+      className={cn(
+        "rounded-2xl border border-zinc-200 bg-white p-5 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 select-none",
+        className
+      )}
+    >
+      <div className="flex items-center justify-between border-b border-zinc-100 pb-3 dark:border-zinc-800/80">
+        <div>
+          <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+            <Filter className="h-4 w-4 text-blue-500" />
+            {title}
+          </h3>
+          <p className="mt-0.5 text-xs text-zinc-500 dark:text-zinc-400">
+            {subtitle}
+          </p>
+        </div>
+        <div className="text-right">
+          <span className="text-[10px] font-semibold uppercase text-zinc-400">Overall Win Rate</span>
+          <div className="font-mono text-sm font-bold text-emerald-600 dark:text-emerald-400">
+            {((stages[stages.length - 1].count / topCount) * 100).toFixed(1)}%
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-5 space-y-3">
+        {stages.map((stage, idx) => {
+          const pctOfTop = (stage.count / topCount) * 100
+          const prevCount = idx > 0 ? stages[idx - 1].count : null
+          const dropoffPct = prevCount ? ((prevCount - stage.count) / prevCount) * 100 : null
+
+          return (
+            <div
+              key={stage.name}
+              onMouseEnter={() => setHoveredIdx(idx)}
+              onMouseLeave={() => setHoveredIdx(null)}
+              className={cn(
+                "rounded-xl border p-3 transition-all cursor-pointer",
+                hoveredIdx === idx
+                  ? "border-blue-500 bg-blue-50/40 shadow-xs dark:border-blue-500/60 dark:bg-blue-950/20"
+                  : "border-zinc-100 bg-zinc-50/60 dark:border-zinc-800/70 dark:bg-zinc-800/30"
+              )}
+            >
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 text-xs mb-2">
+                <span className="font-semibold text-zinc-900 dark:text-zinc-100">
+                  {idx + 1}. {stage.name}
+                </span>
+                <div className="flex items-center gap-2 font-mono">
+                  <span className="font-bold text-zinc-900 dark:text-zinc-100">
+                    {stage.count.toLocaleString()}
+                  </span>
+                  <span className="text-[11px] text-zinc-400">
+                    ({pctOfTop.toFixed(1)}%)
+                  </span>
+                  {dropoffPct !== null && (
+                    <span className="text-[10px] font-medium text-rose-500">
+                      -{dropoffPct.toFixed(0)}% drop
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              {/* Progressive width bar */}
+              <div className="h-2.5 w-full rounded-full bg-zinc-200/70 dark:bg-zinc-800 overflow-hidden">
+                <div
+                  className="h-full rounded-full bg-linear-to-r from-blue-600 to-indigo-500 transition-all duration-500"
+                  style={{ width: `${Math.max(pctOfTop, 3)}%` }}
+                />
+              </div>
+
+              {stage.value && (
+                <div className="mt-1.5 text-right font-mono text-[10px] text-zinc-400">
+                  {stage.value}
+                </div>
+              )}
+            </div>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+export const FunnelChart = FunnelStatisticChart
+
+// ==========================================
+// 5. GAUGE STATISTIC CHART (Speedometer/Capacity)
+// ==========================================
+
+export interface GaugeStatisticChartProps {
+  title?: string
+  subtitle?: string
+  value?: number
+  min?: number
+  max?: number
+  unit?: string
+  statusLabel?: string
+  className?: string
+}
+
+export const GaugeStatisticChart: React.FC<GaugeStatisticChartProps> = ({
+  title = "Cluster Compute & GPU Pressure",
+  subtitle = "Real-time AI inference capacity load",
+  value = 78,
+  min = 0,
+  max = 100,
+  unit = "%",
+  statusLabel = "Elevated",
+  className,
+}) => {
+  const radius = 80
+  const cx = 130
+  const cy = 110
+  const clampedVal = Math.min(Math.max(value, min), max)
+  const pct = (clampedVal - min) / (max - min)
+
+  // -180 deg to 0 deg
+  const needleAngle = -180 + pct * 180
+  const needleRad = (needleAngle * Math.PI) / 180
+  const needleX = cx + (radius - 16) * Math.cos(needleRad)
+  const needleY = cy + (radius - 16) * Math.sin(needleRad)
+
+  return (
+    <div
+      className={cn(
+        "rounded-2xl border border-zinc-200 bg-white p-5 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 select-none",
+        className
+      )}
+    >
+      <div className="flex items-center justify-between border-b border-zinc-100 pb-3 dark:border-zinc-800/80">
+        <div>
+          <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+            <Gauge className="h-4 w-4 text-amber-500" />
+            {title}
+          </h3>
+          <p className="mt-0.5 text-xs text-zinc-500 dark:text-zinc-400">
+            {subtitle}
+          </p>
+        </div>
+        <span
+          className={cn(
+            "rounded-md px-2 py-0.5 text-[11px] font-semibold",
+            pct < 0.6
+              ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300"
+              : pct < 0.85
+              ? "bg-amber-100 text-amber-800 dark:bg-amber-950/40 dark:text-amber-300"
+              : "bg-rose-100 text-rose-800 dark:bg-rose-950/40 dark:text-rose-300"
+          )}
+        >
+          {statusLabel}
+        </span>
+      </div>
+
+      <div className="relative mt-2 flex flex-col items-center justify-center">
+        <svg viewBox="0 0 260 140" className="w-full max-w-[280px] overflow-visible">
+          {/* Background Arc */}
+          <path
+            d={`M ${cx - radius} ${cy} A ${radius} ${radius} 0 0 1 ${cx + radius} ${cy}`}
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={14}
+            strokeLinecap="round"
+            className="text-zinc-100 dark:text-zinc-800"
+          />
+
+          {/* Safe Zone (0-60%) Emerald */}
+          <path
+            d={`M ${cx - radius} ${cy} A ${radius} ${radius} 0 0 1 ${cx - radius * 0.3} ${cy - radius * 0.95}`}
+            fill="none"
+            stroke="#10b981"
+            strokeWidth={14}
+            strokeLinecap="round"
+            opacity={0.8}
+          />
+
+          {/* Elevated Zone (60-85%) Amber */}
+          <path
+            d={`M ${cx - radius * 0.25} ${cy - radius * 0.96} A ${radius} ${radius} 0 0 1 ${cx + radius * 0.58} ${cy - radius * 0.81}`}
+            fill="none"
+            stroke="#f59e0b"
+            strokeWidth={14}
+            opacity={0.8}
+          />
+
+          {/* Critical Zone (85-100%) Rose */}
+          <path
+            d={`M ${cx + radius * 0.62} ${cy - radius * 0.78} A ${radius} ${radius} 0 0 1 ${cx + radius} ${cy}`}
+            fill="none"
+            stroke="#f43f5e"
+            strokeWidth={14}
+            strokeLinecap="round"
+            opacity={0.8}
+          />
+
+          {/* Needle */}
+          <line
+            x1={cx}
+            y1={cy}
+            x2={needleX}
+            y2={needleY}
+            stroke="currentColor"
+            strokeWidth={3}
+            strokeLinecap="round"
+            className="text-zinc-800 dark:text-zinc-100 transition-all duration-500"
+          />
+
+          {/* Pivot Dot */}
+          <circle cx={cx} cy={cy} r={6} className="fill-zinc-800 dark:fill-zinc-100" />
+          <circle cx={cx} cy={cy} r={3} fill="#fff" />
+
+          {/* Min/Max indicators */}
+          <text x={cx - radius} y={cy + 16} textAnchor="middle" className="fill-zinc-400 text-[10px] font-mono">
+            {min}
+          </text>
+          <text x={cx + radius} y={cy + 16} textAnchor="middle" className="fill-zinc-400 text-[10px] font-mono">
+            {max}
+          </text>
+        </svg>
+
+        {/* Center Big Number */}
+        <div className="-mt-2 text-center">
+          <div className="font-mono text-3xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-100">
+            {clampedVal}
+            <span className="text-base font-normal text-zinc-400">{unit}</span>
+          </div>
+          <div className="text-[11px] text-zinc-500 dark:text-zinc-400">Current Workload Index</div>
+        </div>
+      </div>
+    </div>
+  )
+}
+export const GaugeChart = GaugeStatisticChart
+
+// ==========================================
+// 6. TREEMAP STATISTIC CHART (Resource Allocation)
+// ==========================================
+
+export interface TreemapItem {
+  label: string
+  value: number
+  formatted: string
+  color: string
+}
+
+const DEFAULT_TREEMAP_ITEMS: TreemapItem[] = [
+  { label: "Elastic Kubernetes (EKS)", value: 42, formatted: "$18,450/mo", color: "bg-blue-500/20 border-blue-500/40 text-blue-900 dark:text-blue-200" },
+  { label: "Managed PostgreSQL", value: 24, formatted: "$10,540/mo", color: "bg-indigo-500/20 border-indigo-500/40 text-indigo-900 dark:text-indigo-200" },
+  { label: "Vector Search & Embeddings", value: 16, formatted: "$7,020/mo", color: "bg-purple-500/20 border-purple-500/40 text-purple-900 dark:text-purple-200" },
+  { label: "S3 Object Lakehouse", value: 10, formatted: "$4,390/mo", color: "bg-emerald-500/20 border-emerald-500/40 text-emerald-900 dark:text-emerald-200" },
+  { label: "Global Edge CDN", value: 8, formatted: "$3,510/mo", color: "bg-amber-500/20 border-amber-500/40 text-amber-900 dark:text-amber-200" },
+]
+
+export interface TreemapStatisticChartProps {
+  title?: string
+  subtitle?: string
+  totalSpend?: string
+  items?: TreemapItem[]
+  className?: string
+}
+
+export const TreemapStatisticChart: React.FC<TreemapStatisticChartProps> = ({
+  title = "Cloud Infrastructure Cost Treemap",
+  subtitle = "Proportional compute, database, and storage monthly burn",
+  totalSpend = "$43,910/mo",
+  items = DEFAULT_TREEMAP_ITEMS,
+  className,
+}) => {
+  return (
+    <div
+      className={cn(
+        "rounded-2xl border border-zinc-200 bg-white p-5 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 select-none",
+        className
+      )}
+    >
+      <div className="flex items-center justify-between border-b border-zinc-100 pb-3 dark:border-zinc-800/80">
+        <div>
+          <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+            <Grid className="h-4 w-4 text-indigo-500" />
+            {title}
+          </h3>
+          <p className="mt-0.5 text-xs text-zinc-500 dark:text-zinc-400">
+            {subtitle}
+          </p>
+        </div>
+        <div className="text-right">
+          <span className="text-[10px] font-semibold uppercase text-zinc-400">Total Run Rate</span>
+          <div className="font-mono text-sm font-bold text-zinc-900 dark:text-zinc-100">
+            {totalSpend}
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-4 grid grid-cols-12 gap-2 h-56">
+        {/* Large Block 1 (EKS 42%) -> span 7 */}
+        <div
+          className={cn(
+            "col-span-12 sm:col-span-7 row-span-2 rounded-xl border p-4 flex flex-col justify-between transition hover:scale-[1.01] cursor-pointer",
+            items[0]?.color
+          )}
+        >
+          <div>
+            <span className="text-xs font-bold uppercase tracking-wider">{items[0]?.label}</span>
+            <div className="text-[11px] opacity-80">{items[0]?.value}% of infrastructure footprint</div>
+          </div>
+          <div className="font-mono text-base font-bold">{items[0]?.formatted}</div>
+        </div>
+
+        {/* Medium Block 2 (PostgreSQL 24%) -> span 5 */}
+        <div
+          className={cn(
+            "col-span-6 sm:col-span-5 rounded-xl border p-3 flex flex-col justify-between transition hover:scale-[1.01] cursor-pointer",
+            items[1]?.color
+          )}
+        >
+          <div>
+            <span className="text-xs font-semibold">{items[1]?.label}</span>
+            <div className="text-[10px] opacity-80">{items[1]?.value}%</div>
+          </div>
+          <div className="font-mono text-xs font-bold">{items[1]?.formatted}</div>
+        </div>
+
+        {/* Nested Blocks (Vector, S3, CDN) */}
+        <div className="col-span-6 sm:col-span-5 grid grid-cols-3 gap-2">
+          {items.slice(2).map((item, idx) => (
+            <div
+              key={idx}
+              className={cn(
+                "rounded-xl border p-2 flex flex-col justify-between transition hover:scale-[1.01] cursor-pointer text-center",
+                item.color
+              )}
+            >
+              <span className="text-[10px] font-semibold truncate" title={item.label}>
+                {item.label.split(" ")[0]}
+              </span>
+              <div className="font-mono text-[10px] font-bold">{item.value}%</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+export const TreemapChart = TreemapStatisticChart
+

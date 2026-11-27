@@ -2827,6 +2827,145 @@ export function HeatmapChartDemo() {
 }`,
     sections: [],
   },
+  {
+    slug: "candlestick-chart",
+    title: "Candlestick Chart",
+    category: "charts",
+    subcategory: "Charts",
+    description:
+      "Interactive financial candlestick OHLC chart with bullish/bearish candle wicks, volume bars, timeframe switching, and hover price readout.",
+    isNew: true,
+    dependencies: ["lucide-react"],
+    sourceFile: "packages/ui/src/primitives/chart.tsx",
+    code: `import { CandlestickStatisticChart } from "@etherealui/react"
+
+export function CandlestickChartDemo() {
+  return (
+    <CandlestickStatisticChart
+      title="BTC/USDT Perpetual"
+      subtitle="Binance Futures • 1H Interval"
+      currentPrice="$97,800.00"
+      change="+2.51%"
+    />
+  )
+}`,
+    sections: [],
+  },
+  {
+    slug: "depth-chart",
+    title: "Market Depth Chart",
+    category: "charts",
+    subcategory: "Charts",
+    description:
+      "Order book market depth chart visualizing cumulative Bid vs Ask volume curves, center market spread, and hover liquidity inspection.",
+    isNew: true,
+    dependencies: ["lucide-react"],
+    sourceFile: "packages/ui/src/primitives/chart.tsx",
+    code: `import { DepthStatisticChart } from "@etherealui/react"
+
+export function DepthChartDemo() {
+  return (
+    <DepthStatisticChart
+      title="Market Order Book Depth"
+      subtitle="Cumulative Bids (Buy) vs Asks (Sell) Liquidity"
+      midPrice="$97,810.00"
+      spread="$20.00 (0.02%)"
+    />
+  )
+}`,
+    sections: [],
+  },
+  {
+    slug: "radar-chart",
+    title: "Radar Chart",
+    category: "charts",
+    subcategory: "Charts",
+    description:
+      "Multivariate spider/polar chart for comparative AI foundation model benchmarking, security postures, and engineering skill matrices.",
+    isNew: true,
+    dependencies: [],
+    sourceFile: "packages/ui/src/primitives/chart.tsx",
+    code: `import { RadarStatisticChart } from "@etherealui/react"
+
+export function RadarChartDemo() {
+  return (
+    <RadarStatisticChart
+      title="AI Foundation Model Capability Radar"
+      subtitle="Multi-axis intelligence, speed, and safety benchmark"
+    />
+  )
+}`,
+    sections: [],
+  },
+  {
+    slug: "funnel-chart",
+    title: "Funnel Chart",
+    category: "charts",
+    subcategory: "Charts",
+    description:
+      "Multi-stage horizontal conversion funnel tracking visitor drop-off percentages, pipeline ARR values, and overall win rates.",
+    isNew: true,
+    dependencies: ["lucide-react"],
+    sourceFile: "packages/ui/src/primitives/chart.tsx",
+    code: `import { FunnelStatisticChart } from "@etherealui/react"
+
+export function FunnelChartDemo() {
+  return (
+    <FunnelStatisticChart
+      title="Enterprise Sales & Conversion Funnel"
+      subtitle="End-to-end customer journey drop-off and conversion benchmarks"
+    />
+  )
+}`,
+    sections: [],
+  },
+  {
+    slug: "gauge-chart",
+    title: "Gauge Speedometer Chart",
+    category: "charts",
+    subcategory: "Charts",
+    description:
+      "Semi-circular speedometer gauge with animated needle indicator, color threshold zones (Safe, Elevated, Critical), and workload index.",
+    isNew: true,
+    dependencies: ["lucide-react"],
+    sourceFile: "packages/ui/src/primitives/chart.tsx",
+    code: `import { GaugeStatisticChart } from "@etherealui/react"
+
+export function GaugeChartDemo() {
+  return (
+    <GaugeStatisticChart
+      title="Cluster Compute & GPU Pressure"
+      subtitle="Real-time AI inference capacity load"
+      value={78}
+      statusLabel="Elevated"
+    />
+  )
+}`,
+    sections: [],
+  },
+  {
+    slug: "treemap-chart",
+    title: "Treemap Cost Chart",
+    category: "charts",
+    subcategory: "Charts",
+    description:
+      "Hierarchical proportional tile chart mapping cloud infrastructure compute, database, and lakehouse monthly spend.",
+    isNew: true,
+    dependencies: ["lucide-react"],
+    sourceFile: "packages/ui/src/primitives/chart.tsx",
+    code: `import { TreemapStatisticChart } from "@etherealui/react"
+
+export function TreemapChartDemo() {
+  return (
+    <TreemapStatisticChart
+      title="Cloud Infrastructure Cost Treemap"
+      subtitle="Proportional compute, database, and storage monthly burn"
+      totalSpend="$43,910/mo"
+    />
+  )
+}`,
+    sections: [],
+  },
 ]
 
 export function getRegistryByCategory(category: RegistryCategory) {

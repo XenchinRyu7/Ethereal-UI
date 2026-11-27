@@ -63,6 +63,12 @@ import {
   DonutStatisticChart,
   RadialStatisticChart,
   HeatmapStatisticChart,
+  CandlestickStatisticChart,
+  DepthStatisticChart,
+  RadarStatisticChart,
+  FunnelStatisticChart,
+  GaugeStatisticChart,
+  TreemapStatisticChart,
   Checkbox,
   ColorPicker,
   Combobox,
@@ -1112,6 +1118,48 @@ export const LiveDemoRenderer: React.FC<{ slug: string; sectionId?: string }> = 
       return (
         <div className="w-full max-w-2xl">
           <HeatmapStatisticChart />
+        </div>
+      )
+
+    case "candlestick-chart":
+      return (
+        <div className="w-full max-w-2xl">
+          <CandlestickStatisticChart />
+        </div>
+      )
+
+    case "depth-chart":
+      return (
+        <div className="w-full max-w-2xl">
+          <DepthStatisticChart />
+        </div>
+      )
+
+    case "radar-chart":
+      return (
+        <div className="w-full max-w-md">
+          <RadarStatisticChart />
+        </div>
+      )
+
+    case "funnel-chart":
+      return (
+        <div className="w-full max-w-xl">
+          <FunnelStatisticChart />
+        </div>
+      )
+
+    case "gauge-chart":
+      return (
+        <div className="w-full max-w-sm">
+          <GaugeStatisticChart />
+        </div>
+      )
+
+    case "treemap-chart":
+      return (
+        <div className="w-full max-w-2xl">
+          <TreemapStatisticChart />
         </div>
       )
 
