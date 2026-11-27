@@ -1726,15 +1726,52 @@ export interface TreemapItem {
   label: string
   value: number
   formatted: string
-  color: string
+  accentColor?: string
+  bgClass?: string
+  borderClass?: string
 }
 
 const DEFAULT_TREEMAP_ITEMS: TreemapItem[] = [
-  { label: "Elastic Kubernetes (EKS)", value: 42, formatted: "$18,450/mo", color: "bg-blue-500/20 border-blue-500/40 text-blue-900 dark:text-blue-200" },
-  { label: "Managed PostgreSQL", value: 24, formatted: "$10,540/mo", color: "bg-indigo-500/20 border-indigo-500/40 text-indigo-900 dark:text-indigo-200" },
-  { label: "Vector Search & Embeddings", value: 16, formatted: "$7,020/mo", color: "bg-purple-500/20 border-purple-500/40 text-purple-900 dark:text-purple-200" },
-  { label: "S3 Object Lakehouse", value: 10, formatted: "$4,390/mo", color: "bg-emerald-500/20 border-emerald-500/40 text-emerald-900 dark:text-emerald-200" },
-  { label: "Global Edge CDN", value: 8, formatted: "$3,510/mo", color: "bg-amber-500/20 border-amber-500/40 text-amber-900 dark:text-amber-200" },
+  {
+    label: "Elastic Kubernetes (EKS)",
+    value: 42,
+    formatted: "$18,450/mo",
+    accentColor: "#2563eb",
+    bgClass: "bg-blue-50/70 dark:bg-blue-950/40",
+    borderClass: "border-blue-200 dark:border-blue-900/60 hover:border-blue-400 dark:hover:border-blue-700",
+  },
+  {
+    label: "Managed PostgreSQL",
+    value: 24,
+    formatted: "$10,540/mo",
+    accentColor: "#4f46e5",
+    bgClass: "bg-indigo-50/70 dark:bg-indigo-950/40",
+    borderClass: "border-indigo-200 dark:border-indigo-900/60 hover:border-indigo-400 dark:hover:border-indigo-700",
+  },
+  {
+    label: "Vector Embeddings",
+    value: 16,
+    formatted: "$7,020/mo",
+    accentColor: "#8b5cf6",
+    bgClass: "bg-violet-50/70 dark:bg-violet-950/40",
+    borderClass: "border-violet-200 dark:border-violet-900/60 hover:border-violet-400 dark:hover:border-violet-700",
+  },
+  {
+    label: "S3 Object Lakehouse",
+    value: 10,
+    formatted: "$4,390/mo",
+    accentColor: "#10b981",
+    bgClass: "bg-emerald-50/70 dark:bg-emerald-950/40",
+    borderClass: "border-emerald-200 dark:border-emerald-900/60 hover:border-emerald-400 dark:hover:border-emerald-700",
+  },
+  {
+    label: "Global Edge CDN",
+    value: 8,
+    formatted: "$3,510/mo",
+    accentColor: "#f59e0b",
+    bgClass: "bg-amber-50/70 dark:bg-amber-950/40",
+    borderClass: "border-amber-200 dark:border-amber-900/60 hover:border-amber-400 dark:hover:border-amber-700",
+  },
 ]
 
 export interface TreemapStatisticChartProps {
@@ -1759,7 +1796,7 @@ export const TreemapStatisticChart: React.FC<TreemapStatisticChartProps> = ({
         className
       )}
     >
-      <div className="flex items-center justify-between border-b border-zinc-100 pb-3 dark:border-zinc-800/80">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-zinc-100 pb-3 dark:border-zinc-800/80">
         <div>
           <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
             <Grid className="h-4 w-4 text-indigo-500" />
@@ -1769,57 +1806,107 @@ export const TreemapStatisticChart: React.FC<TreemapStatisticChartProps> = ({
             {subtitle}
           </p>
         </div>
-        <div className="text-right">
-          <span className="text-[10px] font-semibold uppercase text-zinc-400">Total Run Rate</span>
+        <div className="text-left sm:text-right">
+          <span className="text-[10px] font-semibold uppercase text-zinc-400 dark:text-zinc-500">Total Run Rate</span>
           <div className="font-mono text-sm font-bold text-zinc-900 dark:text-zinc-100">
             {totalSpend}
           </div>
         </div>
       </div>
 
-      <div className="mt-4 grid grid-cols-12 gap-2 h-56">
+      <div className="mt-4 grid grid-cols-12 gap-2.5 min-h-[250px]">
         {/* Large Block 1 (EKS 42%) -> span 7 */}
         <div
           className={cn(
-            "col-span-12 sm:col-span-7 row-span-2 rounded-xl border p-4 flex flex-col justify-between transition hover:scale-[1.01] cursor-pointer",
-            items[0]?.color
+            "col-span-12 sm:col-span-7 row-span-2 rounded-xl border p-4 flex flex-col justify-between transition-all hover:shadow-xs cursor-pointer",
+            items[0]?.bgClass || "bg-blue-50/70 dark:bg-blue-950/40",
+            items[0]?.borderClass || "border-blue-200 dark:border-blue-900/60"
           )}
         >
-          <div>
-            <span className="text-xs font-bold uppercase tracking-wider">{items[0]?.label}</span>
-            <div className="text-[11px] opacity-80">{items[0]?.value}% of infrastructure footprint</div>
+          <div className="flex items-start justify-between gap-2">
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="h-2.5 w-2.5 rounded-full shrink-0" style={{ backgroundColor: items[0]?.accentColor || "#2563eb" }} />
+                <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100 tracking-tight">
+                  {items[0]?.label}
+                </span>
+              </div>
+              <p className="mt-1 text-[11px] text-zinc-600 dark:text-zinc-300 font-medium">
+                {items[0]?.value}% of total infrastructure footprint
+              </p>
+            </div>
+            <span
+              className="inline-flex items-center rounded-md px-1.5 py-0.5 text-[10px] font-bold text-white shadow-2xs shrink-0"
+              style={{ backgroundColor: items[0]?.accentColor || "#2563eb" }}
+            >
+              {items[0]?.value}%
+            </span>
           </div>
-          <div className="font-mono text-base font-bold">{items[0]?.formatted}</div>
+          <div className="font-mono text-base font-bold text-zinc-900 dark:text-zinc-100 pt-3">
+            {items[0]?.formatted}
+          </div>
         </div>
 
         {/* Medium Block 2 (PostgreSQL 24%) -> span 5 */}
         <div
           className={cn(
-            "col-span-6 sm:col-span-5 rounded-xl border p-3 flex flex-col justify-between transition hover:scale-[1.01] cursor-pointer",
-            items[1]?.color
+            "col-span-12 sm:col-span-5 rounded-xl border p-3.5 flex flex-col justify-between transition-all hover:shadow-xs cursor-pointer",
+            items[1]?.bgClass || "bg-indigo-50/70 dark:bg-indigo-950/40",
+            items[1]?.borderClass || "border-indigo-200 dark:border-indigo-900/60"
           )}
         >
-          <div>
-            <span className="text-xs font-semibold">{items[1]?.label}</span>
-            <div className="text-[10px] opacity-80">{items[1]?.value}%</div>
+          <div className="flex items-start justify-between gap-2">
+            <div>
+              <div className="flex items-center gap-1.5">
+                <span className="h-2 w-2 rounded-full shrink-0" style={{ backgroundColor: items[1]?.accentColor || "#4f46e5" }} />
+                <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
+                  {items[1]?.label}
+                </span>
+              </div>
+              <p className="mt-0.5 text-[10px] text-zinc-600 dark:text-zinc-300 font-medium">
+                {items[1]?.value}% allocation
+              </p>
+            </div>
+            <span
+              className="inline-flex items-center rounded-md px-1.5 py-0.5 text-[10px] font-bold text-white shadow-2xs shrink-0"
+              style={{ backgroundColor: items[1]?.accentColor || "#4f46e5" }}
+            >
+              {items[1]?.value}%
+            </span>
           </div>
-          <div className="font-mono text-xs font-bold">{items[1]?.formatted}</div>
+          <div className="font-mono text-xs font-bold text-zinc-900 dark:text-zinc-100 pt-2">
+            {items[1]?.formatted}
+          </div>
         </div>
 
         {/* Nested Blocks (Vector, S3, CDN) */}
-        <div className="col-span-6 sm:col-span-5 grid grid-cols-3 gap-2">
+        <div className="col-span-12 sm:col-span-5 grid grid-cols-1 sm:grid-cols-3 gap-2">
           {items.slice(2).map((item, idx) => (
             <div
               key={idx}
               className={cn(
-                "rounded-xl border p-2 flex flex-col justify-between transition hover:scale-[1.01] cursor-pointer text-center",
-                item.color
+                "rounded-xl border p-2.5 flex flex-col justify-between transition-all hover:shadow-xs cursor-pointer text-left sm:text-center",
+                item.bgClass || "bg-zinc-50 dark:bg-zinc-800/50",
+                item.borderClass || "border-zinc-200 dark:border-zinc-700"
               )}
             >
-              <span className="text-[10px] font-semibold truncate" title={item.label}>
-                {item.label.split(" ")[0]}
-              </span>
-              <div className="font-mono text-[10px] font-bold">{item.value}%</div>
+              <div className="flex sm:flex-col items-center sm:items-center justify-between sm:justify-start gap-1">
+                <span
+                  className="text-[10px] font-bold text-zinc-900 dark:text-zinc-100 truncate w-full"
+                  title={item.label}
+                >
+                  {item.label.split(" ")[0]}
+                </span>
+                <span
+                  className="inline-flex items-center rounded-md px-1 py-0.5 text-[9px] font-bold text-white shrink-0"
+                  style={{ backgroundColor: item.accentColor || "#64748b" }}
+                >
+                  {item.value}%
+                </span>
+              </div>
+              <div className="font-mono text-[10px] font-bold text-zinc-900 dark:text-zinc-100 mt-1">
+                {item.formatted}
+              </div>
             </div>
           ))}
         </div>
