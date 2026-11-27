@@ -1,22 +1,17 @@
 ---
-import DocsLayout from "../../layouts/DocsLayout.astro"
+import BaseLayout from "../../layouts/BaseLayout.astro"
+import LandingNav from "../../components/LandingNav.astro"
 ---
 
-<DocsLayout
-  title="Community & Contributing"
+<BaseLayout
+  title="Community & Contributing — Ethereal UI"
   description="Open Source Community Hub, contributor guidelines, branch workflow rules, and component creation guide for Ethereal UI."
-  categoryLabel="Community"
-  toc={[
-    { id: "overview", label: "Community Overview" },
-    { id: "golden-rules", label: "Golden Rules (Aturan Kontribusi)" },
-    { id: "workflow", label: "Contribution Workflow" },
-    { id: "component-guide", label: "Menambahkan Komponen Baru" },
-    { id: "maintainers", label: "Maintainers & Channels" },
-  ]}
 >
-  <div class="space-y-12">
+  <LandingNav />
+
+  <main class="mx-auto max-w-4xl px-4 sm:px-6 py-12 sm:py-16 space-y-12">
     <!-- 1. Hero & Community Overview -->
-    <section id="overview" class="space-y-4 scroll-mt-20">
+    <header class="space-y-4">
       <div class="space-y-2.5">
         <div class="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-[11px] font-semibold text-blue-700 dark:border-blue-500/30 dark:bg-blue-500/10 dark:text-blue-300">
           <span>Open Source Software (OSS)</span>
@@ -25,10 +20,10 @@ import DocsLayout from "../../layouts/DocsLayout.astro"
           <span>&bull;</span>
           <span>Community Driven</span>
         </div>
-        <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
+        <h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
           Community &amp; Contribution Hub
         </h1>
-        <p class="max-w-3xl text-sm text-muted-foreground leading-relaxed">
+        <p class="max-w-3xl text-sm sm:text-base text-zinc-600 dark:text-zinc-400 leading-relaxed">
           Selamat datang di komunitas open source <strong>Ethereal UI</strong>! Ethereal UI dibangun dari awal sebagai proyek open source yang transparan, mudah di-extend, dan berfokus pada kualitas tinggi untuk developer React, Next.js, dan Astro. Kami menyambut kontribusi berupa komponen baru, perbaikan bug, peningkatan aksesibilitas, tema baru, maupun dokumentasi.
         </p>
       </div>
@@ -39,22 +34,22 @@ import DocsLayout from "../../layouts/DocsLayout.astro"
           href="https://github.com/XenchinRyu7/Ethereal-UI"
           target="_blank"
           rel="noreferrer"
-          class="group flex flex-col justify-between rounded-2xl border border-border bg-card p-4 transition-all hover:border-primary/50 hover:shadow-xs"
+          class="group flex flex-col justify-between rounded-2xl border border-zinc-200 bg-zinc-50/50 p-4 transition-all hover:border-blue-500/50 hover:bg-white hover:shadow-xs dark:border-zinc-800 dark:bg-zinc-900/50 dark:hover:border-blue-500/50 dark:hover:bg-zinc-900"
         >
           <div class="space-y-1.5">
             <div class="flex items-center justify-between">
-              <span class="text-xs font-semibold text-foreground group-hover:text-primary">
+              <span class="text-xs font-semibold text-zinc-900 dark:text-zinc-100 group-hover:text-blue-600 dark:group-hover:text-blue-400">
                 GitHub Repository
               </span>
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" class="text-muted-foreground group-hover:text-foreground">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" class="text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-100">
                 <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
               </svg>
             </div>
-            <p class="text-xs text-muted-foreground line-clamp-2">
+            <p class="text-xs text-zinc-600 dark:text-zinc-400 line-clamp-2">
               Berikan Star, clone source code monorepo, dan pantau rilis versi terbaru.
             </p>
           </div>
-          <span class="mt-3 text-[11px] font-medium text-primary flex items-center gap-1">
+          <span class="mt-3 text-[11px] font-medium text-blue-600 dark:text-blue-400 flex items-center gap-1">
             github.com/XenchinRyu7/Ethereal-UI &rarr;
           </span>
         </a>
@@ -63,20 +58,20 @@ import DocsLayout from "../../layouts/DocsLayout.astro"
           href="https://github.com/XenchinRyu7/Ethereal-UI/issues"
           target="_blank"
           rel="noreferrer"
-          class="group flex flex-col justify-between rounded-2xl border border-border bg-card p-4 transition-all hover:border-primary/50 hover:shadow-xs"
+          class="group flex flex-col justify-between rounded-2xl border border-zinc-200 bg-zinc-50/50 p-4 transition-all hover:border-blue-500/50 hover:bg-white hover:shadow-xs dark:border-zinc-800 dark:bg-zinc-900/50 dark:hover:border-blue-500/50 dark:hover:bg-zinc-900"
         >
           <div class="space-y-1.5">
             <div class="flex items-center justify-between">
-              <span class="text-xs font-semibold text-foreground group-hover:text-primary">
+              <span class="text-xs font-semibold text-zinc-900 dark:text-zinc-100 group-hover:text-blue-600 dark:group-hover:text-blue-400">
                 Issues &amp; Bug Reports
               </span>
               <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
             </div>
-            <p class="text-xs text-muted-foreground line-clamp-2">
+            <p class="text-xs text-zinc-600 dark:text-zinc-400 line-clamp-2">
               Laporkan bug styling, kendala kontras, atau request komponen baru.
             </p>
           </div>
-          <span class="mt-3 text-[11px] font-medium text-primary flex items-center gap-1">
+          <span class="mt-3 text-[11px] font-medium text-blue-600 dark:text-blue-400 flex items-center gap-1">
             Buka Issues di GitHub &rarr;
           </span>
         </a>
@@ -85,33 +80,33 @@ import DocsLayout from "../../layouts/DocsLayout.astro"
           href="https://github.com/XenchinRyu7/Ethereal-UI/discussions"
           target="_blank"
           rel="noreferrer"
-          class="group flex flex-col justify-between rounded-2xl border border-border bg-card p-4 transition-all hover:border-primary/50 hover:shadow-xs"
+          class="group flex flex-col justify-between rounded-2xl border border-zinc-200 bg-zinc-50/50 p-4 transition-all hover:border-blue-500/50 hover:bg-white hover:shadow-xs dark:border-zinc-800 dark:bg-zinc-900/50 dark:hover:border-blue-500/50 dark:hover:bg-zinc-900"
         >
           <div class="space-y-1.5">
             <div class="flex items-center justify-between">
-              <span class="text-xs font-semibold text-foreground group-hover:text-primary">
+              <span class="text-xs font-semibold text-zinc-900 dark:text-zinc-100 group-hover:text-blue-600 dark:group-hover:text-blue-400">
                 Discussions &amp; RFCs
               </span>
-              <span class="text-[10px] font-mono text-muted-foreground">Community</span>
+              <span class="text-[10px] font-mono text-zinc-400">Community</span>
             </div>
-            <p class="text-xs text-muted-foreground line-clamp-2">
+            <p class="text-xs text-zinc-600 dark:text-zinc-400 line-clamp-2">
               Diskusikan arsitektur komponen, usulan desain, atau tunjukkan showcase buatanmu.
             </p>
           </div>
-          <span class="mt-3 text-[11px] font-medium text-primary flex items-center gap-1">
+          <span class="mt-3 text-[11px] font-medium text-blue-600 dark:text-blue-400 flex items-center gap-1">
             Ikut Diskusi Komunitas &rarr;
           </span>
         </a>
       </div>
-    </section>
+    </header>
 
     <!-- 2. Golden Rules (Aturan Utama) -->
-    <section id="golden-rules" class="space-y-4 border-t border-border pt-8 scroll-mt-20">
+    <section class="space-y-4 border-t border-zinc-200 pt-8 dark:border-zinc-800">
       <div class="space-y-1">
-        <h2 class="text-xl font-bold tracking-tight text-foreground">
+        <h2 class="text-xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
           Golden Rules for Contributing (Aturan Kontribusi)
         </h2>
-        <p class="text-xs text-muted-foreground">
+        <p class="text-xs text-zinc-600 dark:text-zinc-400">
           Setiap kontributor wajib mematuhi aturan berikut agar proses review cepat dan codebase tetap bersih:
         </p>
       </div>
@@ -122,17 +117,17 @@ import DocsLayout from "../../layouts/DocsLayout.astro"
             <div class="flex h-6 w-6 items-center justify-center rounded-lg bg-amber-500 text-white font-mono text-xs font-bold">
               1
             </div>
-            <h3 class="text-sm font-semibold text-foreground">
+            <h3 class="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
               Wajib Bikin Branch Sendiri (Branching Rule)
             </h3>
           </div>
-          <p class="text-xs text-muted-foreground leading-relaxed">
-            <strong>DILARANG KERAS</strong> commit langsung ke branch <code class="rounded bg-muted px-1 py-0.5 font-mono text-[11px]">main</code>. Selalu buat branch terpisah untuk setiap fitur atau perbaikan:
+          <p class="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
+            <strong>DILARANG KERAS</strong> commit langsung ke branch <code class="rounded bg-zinc-100 dark:bg-zinc-800 px-1 py-0.5 font-mono text-[11px]">main</code>. Selalu buat branch terpisah untuk setiap fitur atau perbaikan:
           </p>
-          <ul class="text-xs space-y-1 text-muted-foreground font-mono">
-            <li>&bull; <strong class="text-foreground">feat/</strong>nama-fitur (misal: <code class="text-primary">feat/radial-slider</code>)</li>
-            <li>&bull; <strong class="text-foreground">fix/</strong>nama-bug (misal: <code class="text-primary">fix/input-contrast-border</code>)</li>
-            <li>&bull; <strong class="text-foreground">docs/</strong>topik (misal: <code class="text-primary">docs/contributing-guide</code>)</li>
+          <ul class="text-xs space-y-1 text-zinc-600 dark:text-zinc-400 font-mono">
+            <li>&bull; <strong class="text-zinc-900 dark:text-zinc-100">feat/</strong>nama-fitur (misal: <code class="text-blue-600 dark:text-blue-400">feat/radial-slider</code>)</li>
+            <li>&bull; <strong class="text-zinc-900 dark:text-zinc-100">fix/</strong>nama-bug (misal: <code class="text-blue-600 dark:text-blue-400">fix/input-contrast-border</code>)</li>
+            <li>&bull; <strong class="text-zinc-900 dark:text-zinc-100">docs/</strong>topik (misal: <code class="text-blue-600 dark:text-blue-400">docs/contributing-guide</code>)</li>
           </ul>
         </div>
 
@@ -141,12 +136,12 @@ import DocsLayout from "../../layouts/DocsLayout.astro"
             <div class="flex h-6 w-6 items-center justify-center rounded-lg bg-blue-600 text-white font-mono text-xs font-bold">
               2
             </div>
-            <h3 class="text-sm font-semibold text-foreground">
+            <h3 class="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
               Package Manager Wajib Menggunakan PNPM
             </h3>
           </div>
-          <p class="text-xs text-muted-foreground leading-relaxed">
-            Ethereal UI adalah monorepo Turborepo yang dikelola dengan <strong>pnpm</strong> (v9+). Jangan jalankan <code class="rounded bg-muted px-1 py-0.5 font-mono text-[11px]">npm install</code> atau <code class="rounded bg-muted px-1 py-0.5 font-mono text-[11px]">yarn</code> karena akan merusak <code class="font-mono">pnpm-lock.yaml</code>.
+          <p class="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
+            Ethereal UI adalah monorepo Turborepo yang dikelola dengan <strong>pnpm</strong> (v9+). Jangan jalankan <code class="rounded bg-zinc-100 dark:bg-zinc-800 px-1 py-0.5 font-mono text-[11px]">npm install</code> atau <code class="rounded bg-zinc-100 dark:bg-zinc-800 px-1 py-0.5 font-mono text-[11px]">yarn</code> karena akan merusak <code class="font-mono">pnpm-lock.yaml</code>.
           </p>
         </div>
 
@@ -155,17 +150,17 @@ import DocsLayout from "../../layouts/DocsLayout.astro"
             <div class="flex h-6 w-6 items-center justify-center rounded-lg bg-emerald-600 text-white font-mono text-xs font-bold">
               3
             </div>
-            <h3 class="text-sm font-semibold text-foreground">
+            <h3 class="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
               Wajib Lolos Lint &amp; Build 100%
             </h3>
           </div>
-          <p class="text-xs text-muted-foreground leading-relaxed">
+          <p class="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
             Sebelum membuka Pull Request, jalankan perintah validasi:
           </p>
-          <div class="rounded-xl border border-border bg-card p-2.5 font-mono text-xs text-foreground">
+          <div class="rounded-xl border border-zinc-200 bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 p-2.5 font-mono text-xs text-zinc-900 dark:text-zinc-100">
             pnpm turbo run lint &amp;&amp; pnpm turbo run build
           </div>
-          <p class="text-[11px] text-muted-foreground">
+          <p class="text-[11px] text-zinc-500">
             Pastikan seluruh package (@etherealui/react, @etherealui/cli, docs) berstatus hijau tanpa error TypeScript.
           </p>
         </div>
@@ -175,11 +170,11 @@ import DocsLayout from "../../layouts/DocsLayout.astro"
             <div class="flex h-6 w-6 items-center justify-center rounded-lg bg-purple-600 text-white font-mono text-xs font-bold">
               4
             </div>
-            <h3 class="text-sm font-semibold text-foreground">
+            <h3 class="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
               Standar Kode &amp; Anti-Slop Policy
             </h3>
           </div>
-          <p class="text-xs text-muted-foreground leading-relaxed">
+          <p class="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
             Komponen harus ditulis dengan kode bersih, accessible (Radix UI / ARIA), mendukung Light &amp; Dark mode dengan kontras tinggi, dan <strong>tanpa komentar boilerplate AI yang tidak berguna</strong>.
           </p>
         </div>
@@ -187,29 +182,29 @@ import DocsLayout from "../../layouts/DocsLayout.astro"
     </section>
 
     <!-- 3. Contribution Workflow -->
-    <section id="workflow" class="space-y-4 border-t border-border pt-8 scroll-mt-20">
+    <section class="space-y-4 border-t border-zinc-200 pt-8 dark:border-zinc-800">
       <div class="space-y-1">
-        <h2 class="text-xl font-bold tracking-tight text-foreground">
+        <h2 class="text-xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
           Step-by-Step Contribution Workflow
         </h2>
-        <p class="text-xs text-muted-foreground">
+        <p class="text-xs text-zinc-600 dark:text-zinc-400">
           Ikuti alur standar GitHub flow berikut dari fork hingga PR kamu dimerge:
         </p>
       </div>
 
       <div class="space-y-4">
         <!-- Step 1: Fork & Clone -->
-        <div class="rounded-2xl border border-border bg-card p-4 space-y-2.5">
+        <div class="rounded-2xl border border-zinc-200 bg-zinc-50/50 dark:border-zinc-800 dark:bg-zinc-900/50 p-4 space-y-2.5">
           <div class="flex items-center justify-between">
-            <h3 class="text-sm font-semibold text-foreground flex items-center gap-2">
-              <span class="rounded bg-primary/10 px-2 py-0.5 font-mono text-xs font-bold text-primary">Langkah 1</span>
+            <h3 class="text-sm font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+              <span class="rounded bg-blue-100 dark:bg-blue-900/40 px-2 py-0.5 font-mono text-xs font-bold text-blue-700 dark:text-blue-300">Langkah 1</span>
               <span>Fork &amp; Clone Repository</span>
             </h3>
           </div>
-          <p class="text-xs text-muted-foreground">
-            Fork repo resmi di <a href="https://github.com/XenchinRyu7/Ethereal-UI" target="_blank" rel="noreferrer" class="text-primary hover:underline font-mono">github.com/XenchinRyu7/Ethereal-UI</a>, lalu clone ke mesin lokal:
+          <p class="text-xs text-zinc-600 dark:text-zinc-400">
+            Fork repo resmi di <a href="https://github.com/XenchinRyu7/Ethereal-UI" target="_blank" rel="noreferrer" class="text-blue-600 dark:text-blue-400 hover:underline font-mono">github.com/XenchinRyu7/Ethereal-UI</a>, lalu clone ke mesin lokal:
           </p>
-          <pre class="overflow-x-auto rounded-xl border border-border bg-muted/60 p-3 text-xs font-mono text-foreground"><code># Clone repo fork milikmu
+          <pre class="overflow-x-auto rounded-xl border border-zinc-200/80 bg-zinc-950 p-3 text-xs font-mono text-zinc-100 dark:border-zinc-800"><code># Clone repo fork milikmu
 git clone https://github.com/&lt;username-kamu&gt;/Ethereal-UI.git
 cd Ethereal-UI
 
@@ -218,17 +213,17 @@ git remote add upstream https://github.com/XenchinRyu7/Ethereal-UI.git</code></p
         </div>
 
         <!-- Step 2: Install & Branch -->
-        <div class="rounded-2xl border border-border bg-card p-4 space-y-2.5">
+        <div class="rounded-2xl border border-zinc-200 bg-zinc-50/50 dark:border-zinc-800 dark:bg-zinc-900/50 p-4 space-y-2.5">
           <div class="flex items-center justify-between">
-            <h3 class="text-sm font-semibold text-foreground flex items-center gap-2">
-              <span class="rounded bg-primary/10 px-2 py-0.5 font-mono text-xs font-bold text-primary">Langkah 2</span>
+            <h3 class="text-sm font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+              <span class="rounded bg-blue-100 dark:bg-blue-900/40 px-2 py-0.5 font-mono text-xs font-bold text-blue-700 dark:text-blue-300">Langkah 2</span>
               <span>Install Dependencies &amp; Buat Branch Baru</span>
             </h3>
           </div>
-          <p class="text-xs text-muted-foreground">
+          <p class="text-xs text-zinc-600 dark:text-zinc-400">
             Tarik pembaruan dari <code class="font-mono">upstream main</code> lalu buat branch fitur:
           </p>
-          <pre class="overflow-x-auto rounded-xl border border-border bg-muted/60 p-3 text-xs font-mono text-foreground"><code># Install dependencies monorepo
+          <pre class="overflow-x-auto rounded-xl border border-zinc-200/80 bg-zinc-950 p-3 text-xs font-mono text-zinc-100 dark:border-zinc-800"><code># Install dependencies monorepo
 pnpm install
 
 # Buat branch terisolasi
@@ -238,39 +233,39 @@ git checkout -b feat/my-new-component</code></pre>
         </div>
 
         <!-- Step 3: Run Dev Server -->
-        <div class="rounded-2xl border border-border bg-card p-4 space-y-2.5">
+        <div class="rounded-2xl border border-zinc-200 bg-zinc-50/50 dark:border-zinc-800 dark:bg-zinc-900/50 p-4 space-y-2.5">
           <div class="flex items-center justify-between">
-            <h3 class="text-sm font-semibold text-foreground flex items-center gap-2">
-              <span class="rounded bg-primary/10 px-2 py-0.5 font-mono text-xs font-bold text-primary">Langkah 3</span>
+            <h3 class="text-sm font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+              <span class="rounded bg-blue-100 dark:bg-blue-900/40 px-2 py-0.5 font-mono text-xs font-bold text-blue-700 dark:text-blue-300">Langkah 3</span>
               <span>Jalankan Local Documentation Server</span>
             </h3>
           </div>
-          <p class="text-xs text-muted-foreground">
+          <p class="text-xs text-zinc-600 dark:text-zinc-400">
             Jalankan Astro docs server untuk menguji komponen dan perubahan styling secara real-time:
           </p>
-          <pre class="overflow-x-auto rounded-xl border border-border bg-muted/60 p-3 text-xs font-mono text-foreground"><code>pnpm dev
+          <pre class="overflow-x-auto rounded-xl border border-zinc-200/80 bg-zinc-950 p-3 text-xs font-mono text-zinc-100 dark:border-zinc-800"><code>pnpm dev
 # Buka http://localhost:4321 di browser</code></pre>
         </div>
 
         <!-- Step 4: Quality Check & PR -->
-        <div class="rounded-2xl border border-border bg-card p-4 space-y-2.5">
+        <div class="rounded-2xl border border-zinc-200 bg-zinc-50/50 dark:border-zinc-800 dark:bg-zinc-900/50 p-4 space-y-2.5">
           <div class="flex items-center justify-between">
-            <h3 class="text-sm font-semibold text-foreground flex items-center gap-2">
-              <span class="rounded bg-primary/10 px-2 py-0.5 font-mono text-xs font-bold text-primary">Langkah 4</span>
+            <h3 class="text-sm font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+              <span class="rounded bg-blue-100 dark:bg-blue-900/40 px-2 py-0.5 font-mono text-xs font-bold text-blue-700 dark:text-blue-300">Langkah 4</span>
               <span>Validasi &amp; Buka Pull Request (PR)</span>
             </h3>
           </div>
-          <p class="text-xs text-muted-foreground">
+          <p class="text-xs text-zinc-600 dark:text-zinc-400">
             Pastikan build berhasil, commit dengan format Conventional Commits, push ke fork kamu, lalu buka Pull Request:
           </p>
-          <pre class="overflow-x-auto rounded-xl border border-border bg-muted/60 p-3 text-xs font-mono text-foreground"><code># 1. Jalankan lint dan build
+          <pre class="overflow-x-auto rounded-xl border border-zinc-200/80 bg-zinc-950 p-3 text-xs font-mono text-zinc-100 dark:border-zinc-800"><code># 1. Jalankan lint dan build
 pnpm turbo run lint &amp;&amp; pnpm turbo run build
 
 # 2. Commit dan push branch
 git add .
 git commit -m "feat(ui): add MyNewComponent with dark mode contrast"
 git push origin feat/my-new-component</code></pre>
-          <p class="text-xs text-muted-foreground pt-1">
+          <p class="text-xs text-zinc-600 dark:text-zinc-400 pt-1">
             Buka GitHub fork kamu dan klik <strong>Compare &amp; pull request</strong> ke branch <code class="font-mono">main</code> di repo resmi <strong>XenchinRyu7/Ethereal-UI</strong>.
           </p>
         </div>
@@ -278,40 +273,40 @@ git push origin feat/my-new-component</code></pre>
     </section>
 
     <!-- 4. Component Creation Guide -->
-    <section id="component-guide" class="space-y-4 border-t border-border pt-8 scroll-mt-20">
+    <section class="space-y-4 border-t border-zinc-200 pt-8 dark:border-zinc-800">
       <div class="space-y-1">
-        <h2 class="text-xl font-bold tracking-tight text-foreground">
+        <h2 class="text-xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
           Panduan Menambahkan Komponen Baru
         </h2>
-        <p class="text-xs text-muted-foreground">
+        <p class="text-xs text-zinc-600 dark:text-zinc-400">
           Tiga tempat yang wajib kamu sentuh saat membuat komponen baru:
         </p>
       </div>
 
       <div class="space-y-3">
-        <div class="rounded-xl border border-border bg-card p-3.5 space-y-1">
-          <h4 class="text-xs font-semibold text-foreground font-mono">
+        <div class="rounded-xl border border-zinc-200 bg-zinc-50/50 dark:border-zinc-800 dark:bg-zinc-900/50 p-3.5 space-y-1">
+          <h4 class="text-xs font-semibold text-zinc-900 dark:text-zinc-100 font-mono">
             1. File Komponen: packages/ui/src/primitives/ atau blocks/
           </h4>
-          <p class="text-xs text-muted-foreground">
-            Gunakan <code class="font-mono">React.forwardRef</code>, utilitas <code class="font-mono">cn()</code>, styling Tailwind CSS v4, dan border kontras tegas (<code class="font-mono">border-input</code>).
+          <p class="text-xs text-zinc-600 dark:text-zinc-400">
+            Gunakan <code class="font-mono">React.forwardRef</code>, utilitas <code class="font-mono">cn()</code>, styling Tailwind CSS v4, dan border kontras tegas.
           </p>
         </div>
 
-        <div class="rounded-xl border border-border bg-card p-3.5 space-y-1">
-          <h4 class="text-xs font-semibold text-foreground font-mono">
+        <div class="rounded-xl border border-zinc-200 bg-zinc-50/50 dark:border-zinc-800 dark:bg-zinc-900/50 p-3.5 space-y-1">
+          <h4 class="text-xs font-semibold text-zinc-900 dark:text-zinc-100 font-mono">
             2. Export Library: packages/ui/src/index.ts
           </h4>
-          <p class="text-xs text-muted-foreground">
+          <p class="text-xs text-zinc-600 dark:text-zinc-400">
             Export komponen dan interface props-nya agar bisa diimpor dari <code class="font-mono">@etherealui/react</code>.
           </p>
         </div>
 
-        <div class="rounded-xl border border-border bg-card p-3.5 space-y-1">
-          <h4 class="text-xs font-semibold text-foreground font-mono">
+        <div class="rounded-xl border border-zinc-200 bg-zinc-50/50 dark:border-zinc-800 dark:bg-zinc-900/50 p-3.5 space-y-1">
+          <h4 class="text-xs font-semibold text-zinc-900 dark:text-zinc-100 font-mono">
             3. Registry Catalog: apps/docs/src/data/registry-catalog.ts
           </h4>
-          <p class="text-xs text-muted-foreground">
+          <p class="text-xs text-zinc-600 dark:text-zinc-400">
             Daftarkan metadata komponen (slug, title, category, dependencies, code demo) agar otomatis muncul di dokumentasi web dan bisa diinstall via CLI.
           </p>
         </div>
@@ -319,33 +314,33 @@ git push origin feat/my-new-component</code></pre>
     </section>
 
     <!-- 5. Maintainers & Community Channels -->
-    <section id="maintainers" class="space-y-4 border-t border-border pt-8 scroll-mt-20">
+    <section class="space-y-4 border-t border-zinc-200 pt-8 dark:border-zinc-800">
       <div class="space-y-1">
-        <h2 class="text-xl font-bold tracking-tight text-foreground">
+        <h2 class="text-xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
           Lead Maintainer &amp; Community Channels
         </h2>
-        <p class="text-xs text-muted-foreground">
+        <p class="text-xs text-zinc-600 dark:text-zinc-400">
           Terhubung langsung dengan tim pengembang dan kreator Ethereal UI:
         </p>
       </div>
 
-      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 rounded-2xl border border-border bg-card p-5">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 rounded-2xl border border-zinc-200 bg-zinc-50/50 dark:border-zinc-800 dark:bg-zinc-900/50 p-5">
         <div class="flex items-center gap-3.5">
           <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-600 font-mono text-sm font-bold text-white shadow-2xs">
             SR
           </div>
           <div>
-            <h4 class="text-sm font-bold text-foreground">
+            <h4 class="text-sm font-bold text-zinc-900 dark:text-zinc-100">
               Saeful Rohman
             </h4>
-            <p class="text-xs text-muted-foreground">
+            <p class="text-xs text-zinc-600 dark:text-zinc-400">
               Creator &amp; Lead Maintainer of Ethereal UI
             </p>
             <a
               href="https://github.com/XenchinRyu7"
               target="_blank"
               rel="noreferrer"
-              class="text-[11px] font-mono text-primary hover:underline"
+              class="text-[11px] font-mono text-blue-600 dark:text-blue-400 hover:underline"
             >
               @XenchinRyu7 on GitHub
             </a>
@@ -357,7 +352,7 @@ git push origin feat/my-new-component</code></pre>
             href="https://github.com/XenchinRyu7"
             target="_blank"
             rel="noreferrer"
-            class="inline-flex h-8 items-center gap-1.5 rounded-xl border border-border bg-background px-3 text-xs font-medium text-foreground shadow-2xs hover:bg-accent"
+            class="inline-flex h-8 items-center gap-1.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-3 text-xs font-medium text-zinc-900 dark:text-zinc-100 shadow-2xs hover:bg-zinc-100 dark:hover:bg-zinc-700"
           >
             <span>GitHub Profile</span>
           </a>
@@ -365,12 +360,12 @@ git push origin feat/my-new-component</code></pre>
             href="https://github.com/XenchinRyu7/Ethereal-UI"
             target="_blank"
             rel="noreferrer"
-            class="inline-flex h-8 items-center gap-1.5 rounded-xl bg-primary px-3 text-xs font-medium text-primary-foreground shadow-2xs hover:bg-primary/90"
+            class="inline-flex h-8 items-center gap-1.5 rounded-xl bg-blue-600 px-3 text-xs font-medium text-white shadow-2xs hover:bg-blue-700"
           >
             <span>Star on GitHub ⭐</span>
           </a>
         </div>
       </div>
     </section>
-  </div>
-</DocsLayout>
+  </main>
+</BaseLayout>

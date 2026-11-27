@@ -14,12 +14,12 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       return (
         <div
           className={cn(
-            "flex h-9 w-full items-center rounded-lg border border-input bg-background text-sm text-foreground transition-colors hover:border-foreground/70 focus-within:border-ring focus-within:ring-2 focus-within:ring-ring/20 shadow-2xs",
+            "flex h-9 w-full items-center rounded-lg border border-zinc-800/80 bg-background text-sm text-foreground transition-colors hover:border-zinc-950 focus-within:border-zinc-950 focus-within:ring-2 focus-within:ring-zinc-950/20 dark:border-zinc-700 dark:hover:border-zinc-500 dark:focus-within:border-zinc-400 dark:focus-within:ring-zinc-400/20 shadow-2xs",
             className
           )}
         >
           {prefixText && (
-            <span className="flex h-full items-center rounded-l-lg border-r border-input bg-muted px-3 text-xs text-muted-foreground select-none">
+            <span className="flex h-full items-center rounded-l-lg border-r border-zinc-800/80 dark:border-zinc-700 bg-muted px-3 text-xs text-muted-foreground select-none">
               {prefixText}
             </span>
           )}
@@ -40,7 +40,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             </span>
           )}
           {suffixText && (
-            <span className="flex h-full items-center border-l border-input bg-muted px-3 text-xs text-muted-foreground select-none">
+            <span className="flex h-full items-center border-l border-zinc-800/80 dark:border-zinc-700 bg-muted px-3 text-xs text-muted-foreground select-none">
               {suffixText}
             </span>
           )}
@@ -52,7 +52,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       <input
         type={type}
         className={cn(
-          "flex h-9 w-full rounded-lg border border-input bg-background px-3 py-1.5 text-sm text-foreground placeholder:text-muted-foreground transition-colors hover:border-foreground/70 focus-visible:outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/20 disabled:cursor-not-allowed disabled:opacity-50 shadow-2xs",
+          "flex h-9 w-full rounded-lg border border-zinc-800/80 bg-background px-3 py-1.5 text-sm text-foreground placeholder:text-muted-foreground transition-colors hover:border-zinc-950 focus-visible:outline-none focus-visible:border-zinc-950 focus-visible:ring-2 focus-visible:ring-zinc-950/20 dark:border-zinc-700 dark:hover:border-zinc-500 dark:focus-visible:border-zinc-400 dark:focus-visible:ring-zinc-400/20 disabled:cursor-not-allowed disabled:opacity-50 shadow-2xs",
           className
         )}
         ref={ref}
@@ -89,7 +89,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         }}
         onChange={handleChange}
         className={cn(
-          "flex min-h-[84px] w-full rounded-lg border border-input bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/20 disabled:cursor-not-allowed disabled:opacity-50 shadow-2xs",
+          "flex min-h-[84px] w-full rounded-lg border border-zinc-800/80 bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors hover:border-zinc-950 focus-visible:outline-none focus-visible:border-zinc-950 focus-visible:ring-2 focus-visible:ring-zinc-950/20 dark:border-zinc-700 dark:hover:border-zinc-500 dark:focus-visible:border-zinc-400 dark:focus-visible:ring-zinc-400/20 disabled:cursor-not-allowed disabled:opacity-50 shadow-2xs",
           autoResize && "resize-none overflow-hidden",
           className
         )}
