@@ -189,8 +189,41 @@ const jsonLdSchema = {
         }
       }
 
+      function restoreEtherealLanguage() {
+        try {
+          var saved = localStorage.getItem("ethereal-lang")
+          if (!saved) {
+            var browserLang = (navigator.language || "").toLowerCase()
+            saved = browserLang.startsWith("id") ? "id" : "en"
+          }
+          document.documentElement.lang = saved
+          document.documentElement.setAttribute("data-lang", saved)
+        } catch (e) {}
+      }
+
       restoreEtherealThemes()
-      document.addEventListener("astro:after-swap", restoreEtherealThemes)
+      restoreEtherealLanguage()
+      document.addEventListener("astro:after-swap", () => {
+        restoreEtherealThemes()
+        restoreEtherealLanguage()
+      })
+    </script>
+
+    <script>
+      import { applyTranslations } from "../i18n/store"
+
+      function runTranslations() {
+        applyTranslations()
+      }
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", runTranslations)
+      } else {
+        runTranslations()
+      }
+
+      document.addEventListener("astro:page-load", runTranslations)
+      window.addEventListener("ethereal-lang-change", runTranslations)
     </script>
   </head>
   <body class="min-h-screen overflow-x-hidden bg-background text-foreground antialiased">

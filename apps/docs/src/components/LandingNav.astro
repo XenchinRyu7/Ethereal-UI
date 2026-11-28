@@ -1,6 +1,7 @@
 ---
 import { NavbarSearchModal } from "./NavbarSearchModal"
 import { ThemeToggle } from "./ThemeToggle"
+import { LanguageToggle } from "./LanguageToggle"
 
 const pathname = Astro.url.pathname
 ---
@@ -25,6 +26,7 @@ const pathname = Astro.url.pathname
       <nav class="hidden md:flex items-center gap-5 lg:gap-6 text-xs font-medium">
         <a
           href="/docs/introduction"
+          data-i18n="nav.docs"
           class:list={[
             "transition-colors",
             pathname.startsWith("/docs") || pathname.startsWith("/components") || pathname.startsWith("/charts") || pathname.startsWith("/blocks")
@@ -36,6 +38,7 @@ const pathname = Astro.url.pathname
         </a>
         <a
           href="/showcase"
+          data-i18n="nav.showcase"
           class:list={[
             "transition-colors",
             pathname.startsWith("/showcase")
@@ -47,6 +50,7 @@ const pathname = Astro.url.pathname
         </a>
         <a
           href="/templates"
+          data-i18n="nav.templates"
           class:list={[
             "transition-colors",
             pathname.startsWith("/templates")
@@ -58,6 +62,7 @@ const pathname = Astro.url.pathname
         </a>
         <a
           href="/blog"
+          data-i18n="nav.blog"
           class:list={[
             "transition-colors",
             pathname.startsWith("/blog")
@@ -69,6 +74,7 @@ const pathname = Astro.url.pathname
         </a>
         <a
           href="/community"
+          data-i18n="nav.community"
           class:list={[
             "transition-colors",
             pathname.startsWith("/community")
@@ -87,6 +93,7 @@ const pathname = Astro.url.pathname
         <NavbarSearchModal client:load />
       </div>
 
+      <LanguageToggle client:load />
       <ThemeToggle client:load />
 
       <a
@@ -129,19 +136,23 @@ const pathname = Astro.url.pathname
     class="hidden md:hidden border-t border-border bg-card px-4 py-3 text-card-foreground"
   >
     <nav class="flex flex-col space-y-1 text-xs font-medium">
-      <a href="/docs/introduction" class="rounded-lg px-3 py-2 text-zinc-700 hover:bg-zinc-100 dark:text-zinc-200 dark:hover:bg-zinc-900">
+      <div class="flex items-center justify-between pb-2 border-b border-zinc-200 dark:border-zinc-800 mb-1">
+        <span class="text-[11px] text-zinc-500" data-i18n="common.language">Language</span>
+        <LanguageToggle client:load />
+      </div>
+      <a href="/docs/introduction" data-i18n="nav.docs" class="rounded-lg px-3 py-2 text-zinc-700 hover:bg-zinc-100 dark:text-zinc-200 dark:hover:bg-zinc-900">
         Docs
       </a>
-      <a href="/showcase" class="rounded-lg px-3 py-2 text-zinc-700 hover:bg-zinc-100 dark:text-zinc-200 dark:hover:bg-zinc-900">
+      <a href="/showcase" data-i18n="nav.showcase" class="rounded-lg px-3 py-2 text-zinc-700 hover:bg-zinc-100 dark:text-zinc-200 dark:hover:bg-zinc-900">
         Showcase
       </a>
-      <a href="/templates" class="rounded-lg px-3 py-2 text-zinc-700 hover:bg-zinc-100 dark:text-zinc-200 dark:hover:bg-zinc-900">
+      <a href="/templates" data-i18n="nav.templates" class="rounded-lg px-3 py-2 text-zinc-700 hover:bg-zinc-100 dark:text-zinc-200 dark:hover:bg-zinc-900">
         Templates
       </a>
-      <a href="/blog" class="rounded-lg px-3 py-2 text-zinc-700 hover:bg-zinc-100 dark:text-zinc-200 dark:hover:bg-zinc-900">
+      <a href="/blog" data-i18n="nav.blog" class="rounded-lg px-3 py-2 text-zinc-700 hover:bg-zinc-100 dark:text-zinc-200 dark:hover:bg-zinc-900">
         Blog
       </a>
-      <a href="/community" class="rounded-lg px-3 py-2 text-zinc-700 hover:bg-zinc-100 dark:text-zinc-200 dark:hover:bg-zinc-900">
+      <a href="/community" data-i18n="nav.community" class="rounded-lg px-3 py-2 text-zinc-700 hover:bg-zinc-100 dark:text-zinc-200 dark:hover:bg-zinc-900">
         Community
       </a>
       <div class="pt-2 border-t border-zinc-200 dark:border-zinc-800 flex items-center gap-2">

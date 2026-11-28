@@ -1,4 +1,5 @@
 import * as React from "react"
+import { getStoredLanguage, type Language } from "../i18n/store"
 import {
   Plus,
   Search,
@@ -51,6 +52,17 @@ export const LandingBentoShowcase: React.FC = () => {
   const [bypassMode, setBypassMode] = React.useState(true)
   const [selectedDay, setSelectedDay] = React.useState(14)
   const [statRange, setStatRange] = React.useState<"24h" | "7d" | "30d">("30d")
+  const [lang, setLang] = React.useState<Language>("en")
+
+  React.useEffect(() => {
+    setLang(getStoredLanguage())
+    const handleLangChange = (e: Event) => {
+      const custom = e as CustomEvent<{ lang: Language }>
+      if (custom.detail?.lang) setLang(custom.detail.lang)
+    }
+    window.addEventListener("ethereal-lang-change", handleLangChange)
+    return () => window.removeEventListener("ethereal-lang-change", handleLangChange)
+  }, [])
 
   // Auto-animate step progress like a live agentic workflow
   React.useEffect(() => {
@@ -80,18 +92,34 @@ export const LandingBentoShowcase: React.FC = () => {
           <Badge variant="blue" className="rounded-full px-2 py-0.5 text-[10px] font-semibold">
             <Sparkles className="h-2.5 w-2.5" /> v1.0.0
           </Badge>
-          <span>43 Components, 20 Agentic &amp; Enterprise Blocks, 870+ Themes</span>
+          <span>
+            {lang === "id"
+              ? "43 Komponen, 20 Blok Enterprise & Agen AI, 870+ Tema"
+              : "43 Components, 20 Agentic & Enterprise Blocks, 870+ Themes"}
+          </span>
           <ChevronRight className="h-3.5 w-3.5 text-zinc-400" />
         </div>
 
         <h1 className="text-4xl font-bold tracking-tight text-zinc-900 sm:text-6xl leading-[1.06] dark:text-zinc-100">
-          Agentic components, statistical blocks &amp; SaaS dashboards.
+          {lang === "id"
+            ? "Komponen agen cerdas, blok analitik & dashboard SaaS modern."
+            : "Agentic components, statistical blocks & SaaS dashboards."}
         </h1>
 
         <p className="max-w-xl text-sm sm:text-base text-zinc-500 dark:text-zinc-400 leading-relaxed">
-          Buttons, data tables, statistical widgets, calendars, command palettes, and full-page templates—crafted with{" "}
-          <strong className="font-medium text-zinc-900 dark:text-zinc-100">Tailwind CSS v4</strong> &amp;{" "}
-          <strong className="font-medium text-zinc-900 dark:text-zinc-100">Radix UI</strong>.
+          {lang === "id" ? (
+            <>
+              Tombol, tabel data, widget statistik, kalender, command palette, dan template halaman lengkap—dibuat dengan{" "}
+              <strong className="font-medium text-zinc-900 dark:text-zinc-100">Tailwind CSS v4</strong> &amp;{" "}
+              <strong className="font-medium text-zinc-900 dark:text-zinc-100">Radix UI</strong>.
+            </>
+          ) : (
+            <>
+              Buttons, data tables, statistical widgets, calendars, command palettes, and full-page templates—crafted with{" "}
+              <strong className="font-medium text-zinc-900 dark:text-zinc-100">Tailwind CSS v4</strong> &amp;{" "}
+              <strong className="font-medium text-zinc-900 dark:text-zinc-100">Radix UI</strong>.
+            </>
+          )}
         </p>
 
         {/* CTA Buttons using @etherealui/react Button Primitive */}
@@ -99,13 +127,13 @@ export const LandingBentoShowcase: React.FC = () => {
           <Button asChild variant="primary" size="lg" className="rounded-xl">
             <a href="/docs/installation">
               <Zap className="h-3.5 w-3.5" />
-              Install for free
+              {lang === "id" ? "Pasang gratis" : "Install for free"}
             </a>
           </Button>
           <Button asChild variant="outline" size="lg" className="rounded-xl">
             <a href="/components/avatar">
               <Layers className="h-3.5 w-3.5 text-zinc-500 dark:text-zinc-400" />
-              Browse all components
+              {lang === "id" ? "Jelajahi semua komponen" : "Browse all components"}
             </a>
           </Button>
           <button
