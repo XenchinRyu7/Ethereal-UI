@@ -10,19 +10,25 @@ interface TocItem {
 
 interface Props {
   title: string
+  idTitle?: string
   description?: string
+  idDescription?: string
   categoryLabel?: string
   toc?: TocItem[]
+  idToc?: TocItem[]
 }
 
 const {
   title,
+  idTitle,
   description,
+  idDescription,
   categoryLabel = "Components",
   toc = [
     { id: "preview", label: "Preview" },
     { id: "installation", label: "Installation" },
   ],
+  idToc,
 } = Astro.props
 
 const seoCategorySuffix =
@@ -53,7 +59,7 @@ const seoKeywords = `${title}, ${title} React, ${title} Tailwind CSS, @etherealu
 
       <!-- 2. Center Main Documentation Content -->
       <div class="flex-1 min-w-0 mx-auto w-full pt-2 pb-20">
-        <TopNav categoryLabel={categoryLabel} pageTitle={title} />
+        <TopNav categoryLabel={categoryLabel} pageTitle={title} idPageTitle={idTitle} />
 
         <main class="mt-8">
           <slot />
@@ -69,32 +75,84 @@ const seoKeywords = `${title}, ${title} React, ${title} Tailwind CSS, @etherealu
               <line x1="15" x2="3" y1="12" y2="12"/>
               <line x1="17" x2="3" y1="18" y2="18"/>
             </svg>
-            <span>On this page</span>
+            <span data-i18n="docs.onThisPage">On this page</span>
           </div>
 
-          <ul id="docs-toc-list" class="relative border-l border-border space-y-2 text-xs">
-            <span
-              id="docs-toc-indicator"
-              class="pointer-events-none absolute -left-px top-0 w-0.5 bg-primary transition-all duration-200 ease-out"
-              style="height: 16px; transform: translateY(0px);"
-            ></span>
-            {toc.map((item, idx) => (
-              <li data-toc-item={item.id} class="relative pl-3.5">
-                <a
-                  href={`#${item.id}`}
-                  data-toc-link={item.id}
-                  class:list={[
-                    "block py-0.5 transition-colors",
-                    idx === 0
-                      ? "font-medium text-foreground"
-                      : "text-muted-foreground hover:text-foreground",
-                  ]}
-                >
-                  {item.label}
-                </a>
-              </li>
-            ))}
-          </ul>
+          {idToc ? (
+            <>
+              <ul id="docs-toc-list-en" data-lang-content="en" class="relative border-l border-border space-y-2 text-xs">
+                <span
+                  id="docs-toc-indicator-en"
+                  class="pointer-events-none absolute -left-px top-0 w-0.5 bg-primary transition-all duration-200 ease-out"
+                  style="height: 16px; transform: translateY(0px);"
+                ></span>
+                {toc.map((item, idx) => (
+                  <li data-toc-item={item.id} class="relative pl-3.5">
+                    <a
+                      href={`#${item.id}`}
+                      data-toc-link={item.id}
+                      class:list={[
+                        "block py-0.5 transition-colors",
+                        idx === 0
+                          ? "font-medium text-foreground"
+                          : "text-muted-foreground hover:text-foreground",
+                      ]}
+                    >
+                      {item.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+
+              <ul id="docs-toc-list-id" data-lang-content="id" class="relative border-l border-border space-y-2 text-xs">
+                <span
+                  id="docs-toc-indicator-id"
+                  class="pointer-events-none absolute -left-px top-0 w-0.5 bg-primary transition-all duration-200 ease-out"
+                  style="height: 16px; transform: translateY(0px);"
+                ></span>
+                {idToc.map((item, idx) => (
+                  <li data-toc-item={item.id} class="relative pl-3.5">
+                    <a
+                      href={`#${item.id}`}
+                      data-toc-link={item.id}
+                      class:list={[
+                        "block py-0.5 transition-colors",
+                        idx === 0
+                          ? "font-medium text-foreground"
+                          : "text-muted-foreground hover:text-foreground",
+                      ]}
+                    >
+                      {item.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </>
+          ) : (
+            <ul id="docs-toc-list" class="relative border-l border-border space-y-2 text-xs">
+              <span
+                id="docs-toc-indicator"
+                class="pointer-events-none absolute -left-px top-0 w-0.5 bg-primary transition-all duration-200 ease-out"
+                style="height: 16px; transform: translateY(0px);"
+              ></span>
+              {toc.map((item, idx) => (
+                <li data-toc-item={item.id} class="relative pl-3.5">
+                  <a
+                    href={`#${item.id}`}
+                    data-toc-link={item.id}
+                    class:list={[
+                      "block py-0.5 transition-colors",
+                      idx === 0
+                        ? "font-medium text-foreground"
+                        : "text-muted-foreground hover:text-foreground",
+                    ]}
+                  >
+                    {item.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </nav>
     </div>
@@ -102,13 +160,24 @@ const seoKeywords = `${title}, ${title} React, ${title} Tailwind CSS, @etherealu
 
   <script>
     function initDocsTocScrollSpy() {
-      const tocList = document.getElementById("docs-toc-list")
-      const indicator = document.getElementById("docs-toc-indicator")
+      const tocList =
+        document.getElementById("docs-toc-list") ||
+        document.getElementById("docs-toc-list-en") ||
+        document.getElementById("docs-toc-list-id")
       const tocLinks = Array.from(
         document.querySelectorAll<HTMLAnchorElement>("[data-toc-link]")
       )
 
-      if (!tocList || !indicator || tocLinks.length === 0) return
+      if (!tocList || tocLinks.length === 0) return
+
+      function getActiveIndicator() {
+        const singleIndicator = document.getElementById("docs-toc-indicator")
+        if (singleIndicator) return singleIndicator
+        const isId = document.documentElement.getAttribute("data-lang") === "id"
+        return isId
+          ? document.getElementById("docs-toc-indicator-id")
+          : document.getElementById("docs-toc-indicator-en")
+      }
 
       const ids = tocLinks
         .map((link) => link.getAttribute("data-toc-link") || "")
@@ -120,6 +189,7 @@ const seoKeywords = `${title}, ${title} React, ${title} Tailwind CSS, @etherealu
       function setActiveToc(id: string) {
         if (!id) return
         activeId = id
+        const indicator = getActiveIndicator()
 
         tocLinks.forEach((link) => {
           const linkId = link.getAttribute("data-toc-link")
@@ -146,7 +216,7 @@ const seoKeywords = `${title}, ${title} React, ${title} Tailwind CSS, @etherealu
 
         const sections = ids
           .map((id) => document.getElementById(id))
-          .filter((el): el is HTMLElement => el !== null)
+          .filter((el): el is HTMLElement => el !== null && el.offsetParent !== null)
 
         if (sections.length === 0) return
 

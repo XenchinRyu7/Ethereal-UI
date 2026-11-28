@@ -1,11 +1,9 @@
 import type { APIRoute } from "astro"
-import { getCollection } from "astro:content"
 import { REGISTRY_ITEMS } from "../data/registry-catalog"
 
 const SITE_URL = "https://ethereal-ui.saefulrohman.dev"
 
 export const GET: APIRoute = async () => {
-  const docsEntries = await getCollection("docs")
   const lastMod = new Date().toISOString().split("T")[0]
 
   const staticRoutes: Array<{ path: string; priority: string; changefreq: string }> = [
@@ -19,8 +17,9 @@ export const GET: APIRoute = async () => {
     { path: "/blog", priority: "0.7", changefreq: "weekly" },
   ]
 
-  const docRoutes = docsEntries.map((entry) => ({
-    path: `/docs/${entry.id}`,
+  const docSlugs = ["introduction", "requirements", "installation", "theming", "cli-registry"]
+  const docRoutes = docSlugs.map((slug) => ({
+    path: `/docs/${slug}`,
     priority: "0.9",
     changefreq: "weekly",
   }))

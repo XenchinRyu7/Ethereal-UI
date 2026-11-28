@@ -99,6 +99,16 @@ export const translations = {
     // Footer
     "footer.builtBy": "Built with open source passion by",
     "footer.license": "Released under the MIT License.",
+
+    // Documentation Navigation & Layout
+    "docs.sidebarDocumentation": "Documentation",
+    "docs.sidebarIntro": "Introduction",
+    "docs.sidebarRequirements": "Requirements",
+    "docs.sidebarInstallation": "Installation",
+    "docs.sidebarTheming": "Theming & Contrast",
+    "docs.sidebarCliRegistry": "CLI & Registry",
+    "docs.onThisPage": "On this page",
+    "docs.category": "Documentation",
   },
   id: {
     // Navigation
@@ -196,6 +206,16 @@ export const translations = {
     // Footer
     "footer.builtBy": "Dibuat dengan dedikasi open source oleh",
     "footer.license": "Dirilis di bawah Lisensi MIT.",
+
+    // Documentation Navigation & Layout
+    "docs.sidebarDocumentation": "Dokumentasi",
+    "docs.sidebarIntro": "Pengantar",
+    "docs.sidebarRequirements": "Persyaratan",
+    "docs.sidebarInstallation": "Instalasi",
+    "docs.sidebarTheming": "Tema & Kontras",
+    "docs.sidebarCliRegistry": "CLI & Registri",
+    "docs.onThisPage": "Di halaman ini",
+    "docs.category": "Dokumentasi",
   },
 } as const
 

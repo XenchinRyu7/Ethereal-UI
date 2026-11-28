@@ -1,0 +1,119 @@
+---
+title: "Installation & Quick Start"
+description: "Step-by-step guide to installing @etherealui/react, setting up the Tailwind CSS v4 stylesheet, and building your first component."
+order: 3
+badge: "Getting Started"
+---
+
+## Installation Methods
+
+Two distinct methods are available to integrate Ethereal UI into your application:
+1. **Package Manager (NPM)**: The fastest and simplest path to start building production apps.
+2. **CLI & Copy-Paste**: Ideal if you want full source-code ownership in your repository (shadcn/ui workflow).
+
+---
+
+## Step 1: Install Package & Peer Dependencies
+
+Run the installation command using your package manager of choice:
+
+```bash
+# Using pnpm (Recommended)
+pnpm add @etherealui/react lucide-react clsx tailwind-merge class-variance-authority
+
+# Using npm
+npm install @etherealui/react lucide-react clsx tailwind-merge class-variance-authority
+
+# Using yarn
+yarn add @etherealui/react lucide-react clsx tailwind-merge class-variance-authority
+
+# Using bun
+bun add @etherealui/react lucide-react clsx tailwind-merge class-variance-authority
+```
+
+---
+
+## Step 2: Configure Stylesheet in Global CSS
+
+Import the native Tailwind CSS v4 engine followed by the Ethereal UI stylesheet in your application's root CSS entry point (e.g. `src/app/globals.css` in Next.js or `src/index.css` in Vite):
+
+```css
+/* Import native Tailwind CSS v4 engine */
+@import "tailwindcss";
+
+/* Import theme tokens, OKLCH variables, and Ethereal UI component styles */
+@import "@etherealui/react/styles.css";
+```
+
+> [!TIP]
+> Ensure the import order is respected: place `@import "tailwindcss";` before `@import "@etherealui/react/styles.css";`. No `<ThemeProvider>` context wrapper is required for base styling to take effect.
+
+---
+
+## Step 3: Build Your First Component
+
+Once dependencies and stylesheet imports are in place, you can immediately import and render Ethereal UI components in any React view:
+
+```tsx
+import React from "react"
+import { Button, Badge } from "@etherealui/react"
+import { Sparkles, ArrowRight } from "lucide-react"
+
+export default function WelcomeCard() {
+  return (
+    <div className="flex min-h-[280px] items-center justify-center p-6 bg-background text-foreground">
+      <div className="w-full max-w-md space-y-4 rounded-2xl border border-border bg-card p-6 shadow-sm">
+        <div className="flex items-center justify-between">
+          <Badge variant="blue" className="gap-1.5">
+            <Sparkles className="h-3 w-3" />
+            Ethereal UI Active
+          </Badge>
+          <span className="text-xs text-muted-foreground">React 19 Ready</span>
+        </div>
+
+        <div className="space-y-1">
+          <h2 className="text-lg font-bold tracking-tight text-foreground">
+            Installation Successful!
+          </h2>
+          <p className="text-xs text-muted-foreground leading-relaxed">
+            Your Ethereal UI components are seamlessly connected to Tailwind CSS v4 and ready for development.
+          </p>
+        </div>
+
+        <div className="pt-2 flex items-center gap-2">
+          <Button variant="primary" size="sm" className="gap-2">
+            <span>Open Dashboard</span>
+            <ArrowRight className="h-3.5 w-3.5" />
+          </Button>
+          <Button variant="outline" size="sm">
+            Documentation
+          </Button>
+        </div>
+      </div>
+    </div>
+  )
+}
+```
+
+---
+
+## Alternative Method: Ethereal UI CLI
+
+If you prefer having the component source code live directly inside your project workspace (e.g. `src/components/ui/`):
+
+### 1. Initialize Configuration via CLI
+```bash
+npx @etherealui/cli init
+```
+
+### 2. Add Individual Components
+```bash
+# Add Button primitive
+npx @etherealui/cli add button
+
+# Add Modal Dialog
+npx @etherealui/cli add dialog
+
+# Add Statistical Chart
+npx @etherealui/cli add area-chart
+```

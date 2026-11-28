@@ -1,0 +1,196 @@
+---
+title: "Theming & Contrast Safeguards"
+description: "Comprehensive guide to Ethereal UI's OKLCH theme architecture, zero-runtime React switching, CLI/curl theme downloads, and vaccines against 'Ghost Field' invisible text bugs."
+order: 4
+badge: "Design Tokens & WCAG AA"
+---
+
+## Overview
+
+The theming architecture in **Ethereal UI** is built on the philosophy of **Zero-Runtime Overhead**:
+- Built on native **Tailwind CSS v4 `@theme inline`** and standard CSS Custom Properties (`var(--primary)`, `var(--background)`, etc.).
+- **No `<ThemeProvider>` React Context required**: theme switching occurs purely at the browser CSS level via variable cascading without forcing React component re-renders.
+- 100% compatible with **870+ OKLCH community presets** browsable in the [Theme Explorer](/themes).
+
+---
+
+> [!CAUTION]
+> ## The "Ghost Field" & Contrast Inversion Trap (Invisible Text)
+>
+> ### Bug Symptoms
+> When styling forms or surface cards, AI agents or developers often combine static utility classes like:
+> ```tsx
+> /* ❌ FATAL MISTAKE: Text disappears in Dark Mode! */
+> <input className="bg-white text-foreground border-gray-300" />
+> <div className="bg-white text-foreground p-6 rounded-xl">Card Content</div>
+> ```
+>
+> ### Why Does Text Vanish (White on White)?
+> 1. **In Light Mode:** `bg-white` creates a white background, and `text-foreground` resolves to dark ink (`#09090b`). The UI looks fine initially, so the bug slips through testing.
+> 2. **In Dark Mode:** The semantic token `text-foreground` flips to light white (`#fafafa`). But because the background was hardcoded with `bg-white`, the result is **White Text on a White Background (Ghost Field)**! User input becomes completely invisible.
+>
+> ### The Inverse Problem: "Neon Burnout"
+> ```tsx
+> /* ❌ FATAL MISTAKE: Text vanishes on vibrant neon themes! */
+> <button className="bg-primary text-white">Save Changes</button>
+> ```
+> In modern Ethereal UI palettes (such as *Light Green*, *Cyberpunk*, or pastel schemes), `--primary` has a lightness score > 85% (neon green/yellow). When hardcoded with `text-white`, white text over neon green fails WCAG AA contrast tests and burns out readability.
+>
+> ### Vaccine & Absolute Rules
+> 1. **Use Ethereal UI Primitives Directly:** Built-in primitives (`<Input>`, `<Button>`, `<Card>`, `<DataTable>`, etc.) encapsulate semantic token pairings internally, making them **immune by default**.
+> 2. **NEVER hardcode Tailwind static color palettes:** Avoid `bg-blue-600`, `text-white`, `bg-white`, `border-gray-200`, `bg-zinc-900`.
+> 3. **ALWAYS pair background tokens with their matching foreground tokens:**
+>    - `bg-background` pairs with `text-foreground`
+>    - `bg-card` pairs with `text-card-foreground`
+>    - `bg-primary` pairs with `text-primary-foreground` *(NEVER `text-white`!)*
+>    - `bg-secondary` pairs with `text-secondary-foreground`
+>    - `bg-muted` pairs with `text-muted-foreground`
+>    - `bg-popover` pairs with `text-popover-foreground`
+
+---
+
+## Semantic Token Pairing Reference
+
+Use this pairing reference when designing custom interfaces:
+
+| UI Layer | Background Token | Paired Text Token | Contrast Guarantee & Purpose |
+| :--- | :--- | :--- | :--- |
+| **Canvas / Root** | `bg-background` | `text-foreground` | Adapts to Light / Dark viewport canvas automatically. |
+| **Card / Surface / Input Field** | `bg-card` or `bg-background` | `text-card-foreground` or `text-foreground` | Prevents input containers from turning stark white in Dark Mode. |
+| **Primary Actions (Main Buttons)** | `bg-primary` | `text-primary-foreground` | Resolves to black on neon themes, white on dark themes. |
+| **Secondary Controls / Tab Pills** | `bg-secondary` | `text-secondary-foreground` | Stable neutral contrast for filter bars, tabs, and secondary badges. |
+| **Muted / Subtitles / Hints** | `bg-muted` | `text-muted-foreground` | Captions, non-active tab indicators, and informational banners. |
+| **Floating Popovers / Modals** | `bg-popover` | `text-popover-foreground` | Dropdowns, calendar pickers, tooltips, and modal sheets. |
+| **Sidebar Navigation** | `bg-sidebar` | `text-sidebar-foreground` | Side drawer surfaces and vertical navigation trees. |
+
+---
+
+## Applying Themes in React & Next.js
+
+### 1. Mandatory `data-color-theme` Attribute on `<html>`
+The dynamic engine in Ethereal UI's `globals.css` specifies:
+```css
+html[data-color-theme]:not([data-color-theme="default"]) {
+  /* Dynamic engine: remaps radii, Oklab neutral scales, and elevation shadows */
+}
+```
+Ensure your root `<html>` tag carries `data-color-theme="custom"` (or your active theme preset name):
+
+```html
+<!-- index.html (Vite) or app/layout.tsx (Next.js) -->
+<html lang="en" class="dark" data-color-theme="custom">
+  <head>
+    <link rel="stylesheet" href="/themes/cyberpunk.css" />
+  </head>
+  <body class="bg-background text-foreground antialiased min-h-screen">
+    <!-- App Content -->
+  </body>
+</html>
+```
+
+### 2. Pasting Variables Directly into `globals.css`
+You can also copy the `:root` and `.dark` token blocks directly into your project's `globals.css`:
+
+```css
+/* src/styles/globals.css */
+@import "tailwindcss";
+@import "@etherealui/react/styles.css";
+
+:root {
+  --background: oklch(0.9818 0.0054 95.0986);
+  --foreground: oklch(0.3438 0.0269 95.7226);
+  --card: oklch(0.9665 0.0067 97.3521);
+  --card-foreground: oklch(0.3438 0.0269 95.7226);
+  --primary: oklch(0.6171 0.1375 39.0427);
+  --primary-foreground: oklch(1.0000 0 0);
+  --border: oklch(0.8847 0.0069 97.3628);
+}
+
+.dark {
+  --background: oklch(0.1822 0.0055 95.2104);
+  --foreground: oklch(0.9405 0.0058 95.1245);
+  --card: oklch(0.2241 0.0064 95.1783);
+  --card-foreground: oklch(0.9405 0.0058 95.1245);
+  --primary: oklch(0.6726 0.2904 341.4084);
+  --primary-foreground: oklch(1.0000 0 0);
+  --border: oklch(0.2984 0.0071 95.1952);
+}
+```
+
+---
+
+## Dynamic Theme Switching in React (No Context Provider)
+
+Because Ethereal UI bypasses React Context wrappers, you can switch themes on the fly using a lightweight JavaScript utility:
+
+```tsx
+import React, { useState } from "react"
+
+export function ThemeSwitcher() {
+  const [activeTheme, setActiveTheme] = useState("default")
+
+  const switchTheme = (themeName: string) => {
+    setActiveTheme(themeName)
+
+    // 1. Update the html attribute
+    document.documentElement.setAttribute("data-color-theme", themeName)
+
+    // 2. If resetting to default
+    if (themeName === "default") {
+      const activeLink = document.getElementById("ethereal-active-theme")
+      if (activeLink) activeLink.remove()
+      return
+    }
+
+    // 3. Inject or update active stylesheet link
+    let link = document.getElementById("ethereal-active-theme") as HTMLLinkElement | null
+    if (!link) {
+      link = document.createElement("link")
+      link.id = "ethereal-active-theme"
+      link.rel = "stylesheet"
+      document.head.appendChild(link)
+    }
+    link.href = `/themes/${themeName}.css`
+  }
+
+  return (
+    <div className="flex items-center gap-2">
+      <span className="text-xs text-muted-foreground font-medium">Theme:</span>
+      <select
+        value={activeTheme}
+        onChange={(e) => switchTheme(e.target.value)}
+        className="h-8 rounded-lg border border-border bg-background px-2.5 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+      >
+        <option value="default">Default Blue & Zinc</option>
+        <option value="cyberpunk">Cyberpunk Neon</option>
+        <option value="light-green">Light Green</option>
+        <option value="zen-inspired-theme">Zen Inspired</option>
+      </select>
+    </div>
+  )
+}
+```
+
+---
+
+## Downloading Theme Presets
+
+There are 3 convenient methods to obtain Ethereal UI theme presets:
+
+### Method 1: Using Ethereal UI CLI
+Download presets directly into your workspace:
+```bash
+# Downloads theme CSS to public/themes/
+npx @etherealui/cli@latest theme add cyberpunk
+npx @etherealui/cli@latest theme add light-green zen-inspired-theme
+```
+
+### Method 2: Direct Download via `curl` / `wget`
+All theme stylesheets are publicly hosted:
+```bash
+# Save directly into public/themes/ in your repo
+curl -o public/themes/cyberpunk.css https://ethereal-ui.saefulrohman.dev/themes/cyberpunk.css
+```
+
+### Method 3: Copy CSS from Theme Explorer
+Navigate to the [Theme Explorer](/themes), select any of the 870+ presets, and click **Copy CSS** to copy `:root` and `.dark` variables straight to your clipboard.

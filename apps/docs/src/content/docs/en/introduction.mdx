@@ -1,0 +1,62 @@
+---
+title: "Introduction"
+description: "Meet Ethereal UI — an enterprise React UI component library & block system powered by Tailwind CSS v4 and Radix UI Primitives."
+order: 1
+badge: "Overview"
+---
+
+## What is Ethereal UI?
+
+**Ethereal UI (`@etherealui/react`)** is an open-source, dark-mode first enterprise UI component library and dashboard system built specifically for **React 18 & 19**, **Tailwind CSS v4**, and **Radix UI Primitives**.
+
+Unlike commercial UI kits that lock data-dense enterprise components (such as server-side data tables, multi-metric KPI sparklines, collapsible app shells, AI reasoning streams, and RBAC settings matrices) behind a **$299+ paywall**, every primitive, chart, block, and full-page template in Ethereal UI is **100% free and MIT-licensed forever**.
+
+---
+
+## Why Ethereal UI?
+
+Modern developer teams often face the same dilemmas when building SaaS web applications or internal enterprise dashboards:
+
+1. **Complex Component Paywalls**: Basic components are free (buttons, badges, inputs), but the moment you need an *interactive filter bar*, *kanban board*, *AI prompt composer*, or *enterprise data grid*, you are forced into expensive per-seat licenses.
+2. **Color Contrast Fragility in AI Coding Agents**: When AI coding assistants (Cursor, Copilot, Claude) generate dark mode interfaces, they frequently introduce *"Ghost Field"* bugs — dark backgrounds with black text, or white backgrounds with white text.
+3. **Sluggish Tailwind CSS v4 Migration**: Many component libraries remain tethered to outdated JavaScript-based `tailwind.config.js` setups, failing to leverage Tailwind v4's high-speed Rust/LightningCSS engine.
+
+Ethereal UI was engineered from first principles to solve these challenges completely.
+
+---
+
+## Architectural Pillars
+
+Ethereal UI is founded upon 4 primary pillars:
+
+### 1. Radix UI Primitives & WCAG 2.1 AA
+Accessibility is never an afterthought. All keyboard navigation, screen reader announcements, ARIA focus management, and modal focus trapping are handled natively by Radix UI with zero compromises.
+
+### 2. Tailwind CSS v4 Native (@theme)
+Zero runtime JavaScript overhead for styling. Ethereal UI utilizes native CSS variables with the `@theme inline` directive, allowing the Tailwind v4 compiler to process styles at sub-millisecond speeds.
+
+### 3. OKLCH Color Architecture & Contrast Safeguards
+By adopting the *OKLCH (Oklab Lightness & Chroma)* color space, perceptual brightness is consistent across the entire color gamut. Text is mathematically guaranteed to remain crisp and legible in both Light and Dark modes.
+
+### 4. Copy & Paste or NPM Package
+You maintain total ownership of your code. Install as a standard NPM package (`@etherealui/react`), or copy component source code directly into your project via the CLI (`npx @etherealui/cli add <component>`).
+
+---
+
+## What's Included?
+
+| Category | Count | Description |
+| :--- | :--- | :--- |
+| **Base Primitives** | 43 Components | Buttons, modal dialogs, popovers, tabs, inputs, selects, sliders, badges, and core UI foundations. |
+| **Statistical SVG Charts** | 6 Variants | Area, Bar, Line, Donut, Radial Ring, and Heatmap charts built purely with SVG — zero heavy 3rd-party charting libraries. |
+| **Enterprise & AI Blocks** | 20 Blocks | Prompt composers, agent progress monitors, data tables, kanban boards, transaction ledgers, filter bars, and approval workflows. |
+| **Full-Page Templates** | 3 Dashboards | Executive Analytics, Customer Control Tower, and Workspace Settings ready for production. |
+| **Themes Engine** | 870+ Presets | OKLCH-based theme palettes swappable dynamically at runtime. |
+
+---
+
+## Next Steps
+
+* Check system and framework requirements in **[Requirements](/docs/requirements)**.
+* Start integrating into your project with the **[Installation Guide](/docs/installation)**.
+* Explore high-density data visualizations in **[Statistical Charts](/charts)**.

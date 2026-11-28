@@ -38,3 +38,14 @@ html.dark .docs-content pre.astro-code {
   background-color: var(--color-zinc-900) !important;
   border-color: var(--color-zinc-800);
 }
+
+/* Bilingual Document Content Visibility */
+html[data-lang="en"] [data-lang-content="id"],
+html:not([data-lang="id"]) [data-lang-content="id"] {
+  display: none !important;
+}
+
+html[data-lang="id"] [data-lang-content="en"] {
+  display: none !important;
+}
+

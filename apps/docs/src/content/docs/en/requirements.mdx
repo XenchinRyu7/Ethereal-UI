@@ -1,0 +1,68 @@
+---
+title: "Requirements & Prerequisites"
+description: "System specifications, minimum Node.js versions, React framework compatibility, and Tailwind CSS v4 architecture for Ethereal UI."
+order: 2
+badge: "Prerequisites"
+---
+
+## System Requirements
+
+Before installing Ethereal UI, ensure your development environment satisfies the following minimum specifications:
+
+| Requirement | Minimum Version | Recommended | Notes |
+| :--- | :--- | :--- | :--- |
+| **Node.js** | `>= 18.0.0` | `20.x` or `22.x` (LTS) | Modern runtime required for ES modules and Vite / Next.js bundlers. |
+| **Package Manager** | Latest version | `pnpm` (`>= 9.0.0`) | `pnpm` is strongly recommended for disk space efficiency and monorepo caching. |
+| **React** | `^18.0.0` or `^19.0.0` | React `19.x` | Full support for React Server Components (RSC) and React Server Actions. |
+| **Tailwind CSS** | `^4.0.0` (Tailwind v4) | `@tailwindcss/vite` or PostCSS v4 | Runs on native Tailwind v4 CSS variables without legacy JavaScript configs. |
+| **TypeScript** | `>= 5.0.0` | TypeScript `5.4+` | Ethereal UI is 100% written in TypeScript with comprehensive type declarations. |
+
+---
+
+## Framework Compatibility
+
+Ethereal UI is architected to run seamlessly across all modern React ecosystems:
+
+### 1. Next.js (App Router & Pages Router)
+* **Next.js 14 & 15**: Fully supported out-of-the-box.
+* Interactive primitives (Dialog, Popover, Dropdown) are tagged with `'use client'`.
+* Presentational components can be rendered directly on the server (Server Components).
+
+### 2. Vite + React
+* Compatible with standard `@vitejs/plugin-react` and `@tailwindcss/vite`.
+* Sub-second cold starts and instantaneous Hot Module Replacement (HMR).
+
+### 3. Astro (Island Architecture)
+* Works smoothly as React Islands within Astro layouts:
+  ```astro
+  <Button client:load>Click Me</Button>
+  ```
+* Supports Astro `<ClientRouter />` view transitions without UI flickers.
+
+### 4. Remix & React Router v7
+* Fully compatible with React Router v7's SSR and streaming capabilities.
+
+---
+
+## Styling Prerequisite: Tailwind CSS v4
+
+Ethereal UI embraces the **Tailwind CSS v4** design specification.
+
+Key differences from legacy Tailwind v3:
+
+* **Zero Configuration**: You **do not need** a `tailwind.config.js` or `tailwind.config.ts` file.
+* **CSS-First Theme**: All design tokens, radius, and typography are defined directly in your stylesheet using `@theme inline` or standard CSS variables.
+* **OKLCH Color Space**: Employs OKLCH color notations (`--primary: oklch(...)`) for mathematically uniform rendering across all displays.
+
+---
+
+## Peer Dependencies
+
+Ethereal UI relies on industry-standard utility libraries:
+
+* **lucide-react** (`^0.400.0` or later) for crisp scalable vector icons.
+* **clsx** and **tailwind-merge** for collision-free conditional class concatenation.
+* **class-variance-authority** (`cva`) for type-safe component variant dispatching.
+* **@radix-ui/react-*** primitives for headless accessibility state machines.
+
+All dependencies are resolved automatically when you follow the instructions in the **[Installation Guide](/docs/installation)**.

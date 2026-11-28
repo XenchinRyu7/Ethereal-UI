@@ -3,44 +3,88 @@ import { getCollection, render } from "astro:content"
 import DocsLayout from "../../layouts/DocsLayout.astro"
 
 export async function getStaticPaths() {
-  const entries = await getCollection("docs")
-  return entries.map((entry) => ({
-    params: { slug: entry.id },
-    props: { entry },
-  }))
+  const allDocs = await getCollection("docs")
+  const slugs = ["introduction", "requirements", "installation", "theming", "cli-registry"]
+
+  const paths = slugs.map((slug) => {
+    const enEntry = allDocs.find((doc) => doc.id === `en/${slug}`)
+    const idEntry = allDocs.find((doc) => doc.id === `id/${slug}`)
+
+    if (!enEntry || !idEntry) {
+      throw new Error(`Missing en or id entry for doc slug: ${slug}`)
+    }
+
+    return {
+      params: { slug },
+      props: { slug, enEntry, idEntry },
+    }
+  })
+
+  // Support /docs route default rendering introduction
+  const introEn = allDocs.find((doc) => doc.id === "en/introduction")!
+  const introId = allDocs.find((doc) => doc.id === "id/introduction")!
+  paths.push({
+    params: { slug: undefined },
+    props: { slug: "introduction", enEntry: introEn, idEntry: introId },
+  })
+
+  return paths
 }
 
-const { entry } = Astro.props
-const { Content, headings } = await render(entry)
+const { enEntry, idEntry } = Astro.props
+const { Content: EnContent, headings: enHeadings } = await render(enEntry)
+const { Content: IdContent, headings: idHeadings } = await render(idEntry)
 
-const toc = [
-  { id: "overview", label: entry.data.title },
-  ...headings
+const enToc = [
+  { id: "overview", label: enEntry.data.title },
+  ...enHeadings
+    .filter((h) => h.depth >= 2 && h.depth <= 3)
+    .map((h) => ({ id: h.slug, label: h.text })),
+]
+
+const idToc = [
+  { id: "overview", label: idEntry.data.title },
+  ...idHeadings
     .filter((h) => h.depth >= 2 && h.depth <= 3)
     .map((h) => ({ id: h.slug, label: h.text })),
 ]
 ---
 
 <DocsLayout
-  title={entry.data.title}
-  description={entry.data.description}
+  title={enEntry.data.title}
+  idTitle={idEntry.data.title}
+  description={enEntry.data.description}
+  idDescription={idEntry.data.description}
   categoryLabel="Documentation"
-  toc={toc}
+  toc={enToc}
+  idToc={idToc}
 >
   <article id="overview" class="space-y-6">
     <div class="space-y-2 border-b border-zinc-200 pb-6 dark:border-zinc-800">
       <h1 class="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
-        {entry.data.title}
+        <span data-lang-content="en">{enEntry.data.title}</span>
+        <span data-lang-content="id">{idEntry.data.title}</span>
       </h1>
       <p class="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
-        {entry.data.description}
+        <span data-lang-content="en">{enEntry.data.description}</span>
+        <span data-lang-content="id">{idEntry.data.description}</span>
       </p>
     </div>
 
+    <!-- English Content -->
     <div
-      class="docs-content space-y-4 text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed [&_h2]:text-lg [&_h2]:font-semibold [&_h2]:text-zinc-900 dark:[&_h2]:text-white [&_h2]:mt-8 [&_h2]:mb-3 [&_pre]:rounded-2xl [&_pre]:border [&_pre]:border-zinc-200/90 dark:[&_pre]:border-zinc-800 [&_pre]:p-4 [&_pre]:shadow-xs [&_code]:font-mono [&_code]:text-xs [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:my-1.5 [&_hr]:border-zinc-200 dark:[&_hr]:border-zinc-800 [&_hr]:my-6 [&_table]:w-full [&_th]:text-left [&_th]:py-2 [&_th]:text-xs [&_th]:text-zinc-500 [&_td]:py-2 [&_td]:border-t [&_td]:border-zinc-200 dark:[&_td]:border-zinc-800 [&_a]:text-blue-600 dark:[&_a]:text-blue-400 [&_a:hover]:underline"
+      data-lang-content="en"
+      class="docs-content docs-content-en space-y-4 text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed [&_h2]:text-lg [&_h2]:font-semibold [&_h2]:text-zinc-900 dark:[&_h2]:text-white [&_h2]:mt-8 [&_h2]:mb-3 [&_pre]:rounded-2xl [&_pre]:border [&_pre]:border-zinc-200/90 dark:[&_pre]:border-zinc-800 [&_pre]:p-4 [&_pre]:shadow-xs [&_code]:font-mono [&_code]:text-xs [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:my-1.5 [&_hr]:border-zinc-200 dark:[&_hr]:border-zinc-800 [&_hr]:my-6 [&_table]:w-full [&_th]:text-left [&_th]:py-2 [&_th]:text-xs [&_th]:text-zinc-500 [&_td]:py-2 [&_td]:border-t [&_td]:border-zinc-200 dark:[&_td]:border-zinc-800 [&_a]:text-blue-600 dark:[&_a]:text-blue-400 [&_a:hover]:underline"
     >
-      <Content />
+      <EnContent />
+    </div>
+
+    <!-- Indonesian Content -->
+    <div
+      data-lang-content="id"
+      class="docs-content docs-content-id space-y-4 text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed [&_h2]:text-lg [&_h2]:font-semibold [&_h2]:text-zinc-900 dark:[&_h2]:text-white [&_h2]:mt-8 [&_h2]:mb-3 [&_pre]:rounded-2xl [&_pre]:border [&_pre]:border-zinc-200/90 dark:[&_pre]:border-zinc-800 [&_pre]:p-4 [&_pre]:shadow-xs [&_code]:font-mono [&_code]:text-xs [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:my-1.5 [&_hr]:border-zinc-200 dark:[&_hr]:border-zinc-800 [&_hr]:my-6 [&_table]:w-full [&_th]:text-left [&_th]:py-2 [&_th]:text-xs [&_th]:text-zinc-500 [&_td]:py-2 [&_td]:border-t [&_td]:border-zinc-200 dark:[&_td]:border-zinc-800 [&_a]:text-blue-600 dark:[&_a]:text-blue-400 [&_a:hover]:underline"
+    >
+      <IdContent />
     </div>
 
     <script>

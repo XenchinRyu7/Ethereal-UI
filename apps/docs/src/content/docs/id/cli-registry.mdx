@@ -1,0 +1,59 @@
+---
+title: "Mesin CLI & Registri JSON"
+description: "Bagaimana Ethereal UI menyediakan JSON Registry statis yang kompatibel dengan shadcn CLI dan AI code generator otomatis."
+order: 5
+badge: "Registry API"
+---
+
+## Perintah Resmi CLI (`@etherealui/cli`)
+
+### 1. Inisialisasi Konfigurasi
+```bash
+npx @etherealui/cli@latest init
+```
+
+### 2. Tambahkan Komponen & Enterprise Blocks
+```bash
+npx @etherealui/cli@latest add button avatar stat-card
+npx @etherealui/cli@latest add data-table area-chart --overwrite
+```
+
+### 3. Unduh Tema Komunitas OKLCH
+```bash
+npx @etherealui/cli@latest theme add cyberpunk
+npx @etherealui/cli@latest theme add light-green zen-inspired-theme
+npx @etherealui/cli@latest theme list neon
+```
+
+---
+
+## Endpoint Registri JSON Langsung (Live)
+
+Setiap primitive, enterprise block, dan template dashboard halaman penuh di Ethereal UI secara otomatis diindeks dan disajikan sebagai static endpoint JSON saat proses build Astro:
+
+- **Indeks Registri Utama**: [`/registry/index.json`](/registry/index.json)
+- **Payload Item Individual**: `/registry/[slug].json` (contoh: [`/registry/data-table.json`](/registry/data-table.json), [`/registry/executive-analytics.json`](/registry/executive-analytics.json))
+
+---
+
+## Contoh Payload JSON Registri
+
+```json
+{
+  "$schema": "https://ethereal-ui.saefulrohman.dev/schema/registry-item.json",
+  "name": "data-table",
+  "title": "Enterprise Data Grid & Slide-Over Inspector",
+  "type": "registry:block",
+  "dependencies": [
+    "@radix-ui/react-dialog",
+    "@radix-ui/react-dropdown-menu",
+    "lucide-react"
+  ],
+  "files": [
+    {
+      "path": "packages/ui/src/blocks/data-table.tsx",
+      "type": "registry:block"
+    }
+  ]
+}
+```
